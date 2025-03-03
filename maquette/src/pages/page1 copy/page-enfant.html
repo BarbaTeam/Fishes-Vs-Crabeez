@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="english">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Matrio</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+
+<body>
+    <!-- app-navbar -->
+    <matrio path="components/app-navbar/app-navbar">
+        <a href="/" class="app-navbar-button">
+            menu
+        </a>
+        <a href="/page1.html" class="app-navbar-button">
+            config-partie
+        </a>
+        <a href="/page-enfant.html" class="app-navbar-button">
+            config-enfant
+        </a>
+        <a href="/page2.html" class="app-navbar-button">
+            jeu
+        </a>
+        <a href="/pageStatistics1.html" class="app-navbar-button">
+            statistics
+        </a>
+    </matrio>
+
+    <!-- app-main -->
+    <matrio path="components/app-main/app-main">
+        <matrio path="components/app-innerbox/app-innerbox" class="blue">
+        <div style="
+            height: 60vh;
+            width: 60vh;
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        ">
+
+            <div>
+                <p>NOM : KOPTER</p>
+                <p>Prénom : Eli</p>
+                <p>Âge : 7ans</p>
+                <p>Troubles: Dysgraphie</p>
+            </div>
+
+            <div>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    LeaderBoard :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Aide à la lecture :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Réponses affichées :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Réécriture des nombres :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Addition :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Soustraction :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Multiplication : 
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Division :
+                    <matrio path="components/app-settings-toggle/app-settings-toggle">
+                    </matrio>
+                </span>
+
+            </div>
+
+            <div>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Taille de la police :
+                    <matrio path="components/app-settings-slider/app-settings-slider">
+                    </matrio>
+                </span>
+                <span style="display: flex; flex-direction: row; gap: 15px;">
+                    Son :
+                    <matrio path="components/app-settings-slider/app-settings-slider">
+                    </matrio>
+                </span>
+                
+            </div>
+        </div>
+        </matrio>
+    </matrio>
+</body>
+
+</html>

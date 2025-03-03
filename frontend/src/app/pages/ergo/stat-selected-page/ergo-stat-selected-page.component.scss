@@ -1,0 +1,23 @@
+app-small-button{
+    margin: 0.5rem;
+}
+
+.name{
+    text-align: left;
+    width: 55%;
+    position: relative;
+    left: 3rem;
+}
+
+span {
+    font-size: 15px;
+    width: 100%;
+    display: flex; 
+    flex-direction: row; 
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.title{
+    font-size: 30px;
+}

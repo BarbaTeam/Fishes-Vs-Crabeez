@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="english">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Matrio</title>
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+
+<body>
+    <!-- app-navbar -->
+    <matrio path="components/app-navbar/app-navbar">
+        <a href="/" class="app-navbar-button">
+            menu
+        </a>
+        <a href="/page1.html" class="app-navbar-button">
+            config-partie
+        </a>
+        <a href="/page-enfant.html" class="app-navbar-button">
+            config-enfant
+        </a>
+        <a href="/page2.html" class="app-navbar-button">
+            jeu
+        </a>
+        <a href="/pageStatistics1.html" class="app-navbar-button">
+            statistics
+        </a>
+    </matrio>
+
+    <!-- app-main -->
+    <matrio path="components/app-main/app-main">
+        
+        <matrio path="components/app-innerbox/app-innerbox" class="little">
+            <matrio path="components/app-small-button/app-small-button">
+                <a href="/pageStatistics1.html" class="app-sidebar-button">Total</a>
+            </matrio>
+            <matrio path="components/app-small-button/app-small-button">
+                <a href="/pageStatistics2.html" class="app-sidebar-button">LastGame</a>
+            </matrio>
+        </matrio>
+        <matrio path="components/app-innerbox/app-innerbox" class="green">    
+            <h1>Stats for game one</h1>
+            <div>
+                <p>Leader Board: Jade Tan</p>
+                <p>Mots par minute: 9</p>
+                <p>Assimilation des notions mathematiques: trois sur dix</p>
+                <p>Mot le moins reussit: cent treize</p>
+            </div>
+        </matrio>
+    </matrio>
+</body>
+
+</html>

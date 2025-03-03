@@ -1,0 +1,96 @@
+.app-statistics {
+    background-color: #72A1E5;
+    display: grid;
+    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-rows: 5vh auto 1fr 5vh;
+    height: 100%;
+    width: 100%;
+}
+
+.app-statistics .main {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #FAF3E0;
+}
+
+.app-statistics .app-navbar {
+    grid-column: 1/4;
+    grid-row: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #72A1E5;
+    padding: 0 1rem;
+}
+
+.app-statistics .app-navbar .app-navbar-button {
+    height: 5vh;
+    width: auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #A787D5;
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+.app-statistics .rankings {
+    grid-column: 2;
+    grid-row: 3;
+    background-color: #FAF3E0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.app-statistics .rankings .ranking-item {
+    background-color: #E6DACE;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.app-statistics .app-screen {
+    grid-column: 2;
+    grid-row: 5;
+    display: flex;
+    flex-direction: column; /* Ensures elements are stacked vertically */
+    justify-content: center; /* Centers items vertically */
+    align-items: flex-start; /* Aligns items to the left */
+    background-color: #6a6c6f;
+    padding: 0 1rem;
+    position: absolute; /* Enables free positioning */
+    top: 50%; /* Moves the container 50% down */
+    left: 30%; /* Aligns to the left edge of the screen */
+    transform: translateY(-50%); /* Centers vertically relative to the screen */
+
+}
+
+
+
+.app-statistics .app-screen .app-screen-button {
+    height: 5vh;
+    width: auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #309a6a;
+    color: white;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+}

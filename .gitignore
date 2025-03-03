@@ -1,0 +1,7 @@
+.vscode/
+.idea/
+
+.local/
+
+node_modules/
+maquette_matrio/dist/

@@ -1,0 +1,65 @@
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 20%;
+    height: 9rem;
+    background-color: #b8defe;
+    border-radius: 0.5rem;
+    margin: 0.5rem;
+}
+
+:host:hover {
+    background-color: #b3d7ff;
+    cursor: pointer;
+}
+
+:host:active {
+    background-color: #92c3ff;
+}
+
+:host(.adder) {
+    background-color: #dbdbdb;
+}
+:host(.adder):hover {
+    cursor: pointer;
+    background-color: #ababab;
+}
+:host(.adder):active {
+    background-color: #868686;
+}
+
+:host(.horizontal) {
+    flex-direction: row;
+    align-items: center;
+    background-color: transparent;
+    width: 100%;
+    height: 5rem;
+    border-radius: 0%;
+    margin: 0rem;
+    font-size: 20px;
+    justify-content: flex-start;
+}
+
+:host(.horizontal) .name {
+    position: relative;
+    right: 3rem;
+} 
+
+:host(.navbar-profile-image) {
+    border-radius: 0rem;
+    background-color: transparent;
+    position: absolute;
+    left:16vh;
+    width: 7.5rem;
+    height: 7.5rem;
+    margin: 0;
+}
+
+:host .name{
+    text-align: center;
+    font-size: 15px;
+    position: relative;
+    top: 2vh;
+}

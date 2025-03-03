@@ -1,0 +1,22 @@
+.app-sidebar {
+    display: flex;
+    width: 10vh;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    height: 60vh;
+
+    background-color: #ac44d6;
+}
+
+.app-sidebar .app-sidebar-button {
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+
+    background-color: #ad0a30;
+}

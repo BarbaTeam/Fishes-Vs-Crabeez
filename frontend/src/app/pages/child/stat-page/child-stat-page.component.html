@@ -1,0 +1,35 @@
+<app-template>
+    <!--Zone de la navbar -->
+    <app-user-card class="navbar-profile-image">
+        <img src="assets/images/child-pps/red_fish.png" alt="PP 1" class="icon"/>
+    </app-user-card>
+    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active"><p class="name">Eli KOPTER</p></app-medium-button>
+    <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active"> Jouer </app-medium-button>
+    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active"> Mon classement </app-medium-button>
+
+    <!--Zone du main -->
+    <app-inner-box class="main-box button-list">
+        <app-small-button>TOTAL</app-small-button>
+        <app-small-button>Dernière partie</app-small-button>
+        <p>HISTORIQUE</p>
+        <app-small-button>Session 2</app-small-button>
+        <app-small-button>Session 1</app-small-button>
+    </app-inner-box>
+    
+    <app-inner-box class="main-box blue little">
+        <h1 class="title">CLASSEMENT</h1>
+        <app-user-card class="horizontal">
+            <img src="assets/images/child-pps/red_fish.png" alt="PP 1" class="icon leaderboard"/>
+            <p class="name">Eli KOPTER</p>
+        </app-user-card>
+        <app-user-card class="horizontal">
+            <img src="assets/images/child-pps/yellow_fish.png" alt="PP 1" class="icon leaderboard"/>
+            <p class="name">Test</p>
+        </app-user-card>
+        <app-user-card class="horizontal">
+            <img src="assets/images/child-pps/blue_fish.png" alt="PP 1" class="icon leaderboard"/>
+            <p class="name">Test</p>
+        </app-user-card>
+        
+    </app-inner-box>
+</app-template>

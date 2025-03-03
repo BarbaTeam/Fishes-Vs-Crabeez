@@ -1,0 +1,32 @@
+:host{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 10vh;
+    width: 40vw;
+    border-radius: 0.5rem;
+    
+    margin-left: 5vw;
+    margin-right: 5vw;
+
+    font-size: 30px;
+    font-weight: bold;
+    color: #11262d;
+    text-align: center;
+    background-color: #ff9918;
+
+    box-shadow: 0px 8px 0px #b07039, 0px 12px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
+}
+
+:host:hover{
+    cursor: pointer;
+    background-color: rgb(223, 144, 75);
+}
+
+:host:active{
+    background-color: #b07039;
+    box-shadow: 0px 4px 0px #724926, 0px 6px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(4px);
+}

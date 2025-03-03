@@ -1,0 +1,17 @@
+.app-small-user-icon {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    display: inline-block;
+    position: relative;
+}
+
+.app-small-user-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}

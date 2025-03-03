@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+    position: relative;
+    height: 20vh;
+    background-image: url('../../../../assets/images/environement/sky.gif');
+    background-size: cover;
+    background-position: center;
+}
+

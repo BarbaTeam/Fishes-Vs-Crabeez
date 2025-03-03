@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="english">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Maquette - Pixel Typer</title>
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+</head>
+
+<body>
+
+    <!-- app-navbar -->
+    <matrio path="components/app-navbar/app-navbar" class="app-navbar">
+        <a href="/" class="app-navbar-button">
+            menu
+        </a>
+        <a href="/page1.html" class="app-navbar-button">
+            config-partie
+        </a>
+        <a href="/page-enfant.html" class="app-navbar-button">
+            config-enfant
+        </a>
+        <a href="/page2.html" class="app-navbar-button">
+            jeu
+        </a>
+        <a href="/pageStatistics1.html" class="app-navbar-button">
+            statistics
+        </a>
+    </matrio>
+
+
+    <!-- app-main -->
+    <matrio path="components/app-main/app-main" class="app-main">
+        <matrio path="components/app-innerbox/app-innerbox" class="blue">
+            <matrio path="components/app-user-icon/app-user-icon">
+                <img src="assets/images/child-pps/pp-1.png" alt="PP 1" />
+            </matrio>
+            <matrio path="components/app-small-user-icon/app-small-user-icon">
+                <img src="assets/images/child-pps/pp-2.png" alt="PP 2" />
+            </matrio>
+        </matrio>
+    </matrio>
+
+</body>
+
+</html>

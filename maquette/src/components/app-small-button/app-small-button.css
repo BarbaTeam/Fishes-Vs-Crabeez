@@ -1,0 +1,26 @@
+.app-small-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 10vw;
+    height: 6vh;
+    margin-top:5%;
+    border-radius: 20px ;
+    background-color: #B5E48C;
+
+}
+
+.app-small-button__btn {
+    background-color: orange;
+    color: blue;
+    font-size: 20px;
+    padding: 10px 20px;
+    border: 2px solid black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.app-small-button__btn:hover {
+    background-color: darkorange;
+}

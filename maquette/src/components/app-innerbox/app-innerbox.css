@@ -1,0 +1,33 @@
+.app-innerbox {
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.app-innerbox.green {
+    padding:1%;
+    display: flex;
+    height: 60vh;
+    width: 60vh;
+    background-color: #B5E48C;
+    color: #BB8CE4;
+}
+
+.app-innerbox.little {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 60vh;
+    width: 20vh;
+    background-color: #FAF3E0;
+    color: #72A1E5;
+    font-size: large;
+}
+
+.app-innerbox.blue {
+    display:flex;
+    height: 70vh;
+    width: 70vh;
+    padding:1%;
+    background-color: #E0E7FA;
+    color: black;
+}

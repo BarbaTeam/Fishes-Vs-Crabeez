@@ -1,0 +1,36 @@
+html {
+  font-family: 'Roboto', sans-serif;
+}
+
+html,body {
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+  width: 100%;
+
+  border: none !important;
+  outline: none !important;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 5vh auto 1fr 5vh;
+  grid-template-columns: 1fr;
+
+  background-color: #72A1E5;
+}
+
+
+body .app-navbar {
+  grid-row: 2;
+  grid-column: 1;
+  background-color: #72A1E5;
+}
+
+
+body .app-main {
+  grid-row: 3;
+  grid-column: 1;
+  background-color: #FAF3E0;
+}

@@ -1,0 +1,65 @@
+<app-template>
+    <!--Zone de la navbar -->
+    <app-user-card class="navbar-profile-image">
+        <img src="assets/images/child-pps/red_fish.png" alt="PP 1" class="icon"/>
+    </app-user-card>
+    <app-medium-button class="navbar-button" [routerLink]="['/ergo-config-selected']" routerLinkActive="active"><p class="name">Eli KOPTER</p></app-medium-button>
+    <app-medium-button class="navbar-button red" [routerLink]="['/ergo-config']"> Retour </app-medium-button>
+    <app-medium-button class="navbar-button green" [routerLink]="['/ergo-config']"> Sauvegarder </app-medium-button>
+
+    <!--Zone du main -->
+    <app-inner-box class="main-box blue">
+
+        <span>NOM : KOPTER</span>
+        <span>Prénom : Eli</span>
+        <span>Âge : 7ans</span>
+        <span>Troubles: Dysgraphie</span>
+        <span>
+            LeaderBoard :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Statistiques avancées :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Aide à la lecture :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Taille de la police :
+            <app-settings-slider></app-settings-slider>
+        </span>
+        <span>
+            Son :
+            <app-settings-slider></app-settings-slider>
+        </span>
+        <span>
+            Réponses affichées :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Réécriture des nombres :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Addition :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Soustraction :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Multiplication : 
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+        <span>
+            Division :
+            <app-settings-toggle></app-settings-toggle>
+        </span>
+
+        
+
+    </app-inner-box>
+</app-template>

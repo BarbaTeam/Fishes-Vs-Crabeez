@@ -1,0 +1,51 @@
+:host{
+    height: 19vh;
+    width: 23.5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../../../../assets/images/environement/orange_conteneur_back.gif');
+    background-size:cover;
+    background-position: center;
+    color: #041833;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+:host:hover{
+    cursor: pointer;
+}
+
+:host(.active){
+    cursor: default;
+    color: #041833;
+    background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
+}
+
+:host(.inactive):hover{
+    cursor: default;
+}
+
+:host(.red){
+    background-image: url('../../../../assets/images/environement/red_conteneur_back.gif');
+}
+:host(.green){
+    background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
+
+}
+
+:host(.orange){
+    color: #51ADFF;
+    background-color: #FFA351;
+}
+:host(.orange):hover{
+    background-color: #b7743a;
+}
+:host(.orange):hover{
+    background-color: #744a25;
+}
+
+:host(.invisible){
+    visibility: hidden;
+}

@@ -1,0 +1,42 @@
+<div class="app-settings-slider">
+    <div class="app-settings-slider-line"></div>
+    <div class="app-settings-slider-head"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Variable globale pour stocker le slider en cours de déplacement
+            let currentSlider = null;
+
+            // Ajoute l'événement "mousedown" à tous les heads des sliders
+            document.querySelectorAll('.app-settings-slider').forEach(slider => {
+                const head = slider.querySelector('.app-settings-slider-head');
+                head.addEventListener("mousedown", function(e) {
+                currentSlider = { slider, head };
+                });
+            });
+
+            // Lorsqu'on relâche le clic, on annule le déplacement
+            document.addEventListener("mouseup", function(e) {
+                currentSlider = null;
+            });
+
+            // Déplace le head du slider actif en fonction de la position de la souris
+            document.addEventListener("mousemove", function(e) {
+                if (!currentSlider) return;
+
+                const { slider, head } = currentSlider;
+                const rect = slider.getBoundingClientRect();
+                // Position horizontale relative à la zone du slider
+                let pos = e.clientX - rect.left;
+                // Contraindre la position entre 0 et la largeur du slider
+                pos = Math.max(0, Math.min(pos, rect.width));
+
+                head.style.left = pos + "px";
+
+                // Exemple d'utilisation de la position pour calculer une valeur (entre 0 et 1)
+                const value = pos / rect.width;
+                console.log("Valeur du slider :", value);
+            });
+        });
+    </script>
+</div>

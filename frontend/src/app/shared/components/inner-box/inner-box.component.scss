@@ -1,0 +1,38 @@
+:host {
+    border-radius: 20px;
+    display:flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    overflow-y: hidden;
+    height: 70vh;
+    width: 77vh;
+    padding:1%;
+    margin: 1%;
+}
+
+:host(.blue) {
+    background-color: #E0E7FA;
+    color: black;
+}
+
+:host(.little) {
+    width: 35vh;
+    flex-direction: column;
+    align-items: center;
+    align-content: normal;
+}
+
+:host(.medium) {
+    width: 50vh;
+}
+
+:host(.button-list) {
+    flex-direction: column;
+    align-items: center;
+    height: 70vh;
+    width: 20vh;
+    color: #000000;
+    font-size: large;
+    font-weight: bold;
+    overflow-x: hidden;
+}

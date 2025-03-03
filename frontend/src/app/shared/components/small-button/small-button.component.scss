@@ -1,0 +1,22 @@
+:host{
+    height: 4.7vh;
+    width: 11vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    color: #B5D587;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #E0E7FA;
+    color: #11262d;
+    text-align: center;
+}
+
+:host:hover{
+    cursor: pointer;
+}
+
+:host:active{
+    cursor: pointer;
+}

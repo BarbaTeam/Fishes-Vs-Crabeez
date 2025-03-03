@@ -1,0 +1,42 @@
+.app-screen {
+    grid-column: 2;
+    grid-row: 5;
+    display: flex;
+    flex-direction: column; /* Ensures elements are stacked vertically */
+    justify-content: center; /* Centers items vertically */
+    align-items: flex-start; /* Aligns items to the left */
+    background-color: #2bc680;
+    padding: 0 1rem;
+    position: absolute; /* Enables free positioning */
+    top: 50%; /* Moves the container 50% down */
+    left: 30%; /* Aligns to the left edge of the screen */
+    transform: translateY(-50%); /* Centers vertically relative to the screen */
+    gap: 1rem;
+    width:40%;
+    height: 25%;
+}
+
+.app-screen-button {
+    height: 5vh;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    background-color: #A787D5;
+}
+
+.app-screen-input {
+    height: 5vh; /* Adjust the height as needed */
+    width: 20%; /* Adjust the width as needed */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem; /* Keeps the rounded corners */
+    background-color: #A787D5; /* Same background color as the button */
+    border: 1px solid #ccc; /* Optional border */
+    padding: 0 0.5rem; /* Adds space inside the input field */
+    font-size: 1rem; /* Adjust text size */
+    color: #000; /* Text color */
+}
+
