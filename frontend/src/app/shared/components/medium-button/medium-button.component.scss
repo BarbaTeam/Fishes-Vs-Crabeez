@@ -1,15 +1,16 @@
 :host{
-    height: 19vh;
-    width: 23.5vw;
+    height: max(6rem,19.8vh);
+    width: max(12.555rem,23vw);
     display: flex;
     justify-content: center;
     align-items: center;
     background-image: url('../../../../assets/images/environement/orange_conteneur_back.gif');
-    background-size:cover;
+    background-size: contain;
+    background-repeat: no-repeat;
     background-position: center;
     color: #041833;
     text-align: center;
-    font-size: 30px;
+    font-size: clamp(1rem, 1.8vw, 2rem);
     font-weight: bold;
 }
 
