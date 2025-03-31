@@ -40,26 +40,27 @@
     margin: 0rem;
     font-size: 20px;
     justify-content: flex-start;
+    margin-top: 0%;
 }
 
 :host(.horizontal) .name {
-    position: relative;
-    right: 3rem;
-} 
+    margin-top: 0%;
+    padding-left: 5%;
+}
 
-:host(.navbar-profile-image) {
-    border-radius: 0rem;
-    background-color: transparent;
-    position: absolute;
-    left:16vh;
-    width: 7.5rem;
-    height: 7.5rem;
-    margin: 0;
+:host(.navbar){
+    position: relative;
+    right: 60%;
+    width: 20vw;
+}
+
+:host(.navbar) .name{
+    font-size: 30px;
+    text-align: left;
 }
 
 :host .name{
     text-align: center;
     font-size: 15px;
-    position: relative;
-    top: 2vh;
+    margin-top: 10%;
 }

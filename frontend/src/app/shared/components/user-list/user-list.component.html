@@ -1,5 +1,3 @@
 <div class="user" *ngFor="let user of userList">
-    <app-user-card [user]="user"/>
+    <app-user-card [user]="user" (click)="selectUser(user.userId)"/>
 </div>
-<app-user-card routerLink="/child-play">
-</app-user-card>
