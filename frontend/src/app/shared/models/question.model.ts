@@ -1,4 +1,4 @@
-export const Notion = {
+export const QuestionNotion = {
   ADDITION: "ADDITION",
   SUBSTRACTION: "SUBSTRACTION",
   MULTIPLICATION: "MULTIPLICATION",
@@ -7,10 +7,10 @@ export const Notion = {
   ENCRYPTION: "ENCRYPTION",
   EQUATION: "EQUATION",
 } as const;
-export type Notion = typeof Notion[keyof typeof Notion];
+export type QuestionNotion = typeof QuestionNotion[keyof typeof QuestionNotion];
 
 export type Question = {
     prompt: string,
     answer: string,
-    notion: Notion,
+    notion: QuestionNotion,
 }

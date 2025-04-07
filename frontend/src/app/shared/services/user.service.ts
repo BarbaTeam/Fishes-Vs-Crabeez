@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
-import { User } from "../models/user.model";
 import { BehaviorSubject, Observable } from "rxjs";
 import { LocalStorageService } from "./localStorage.service";
+
+import { User } from "../models/user.model";
+import { MOCK_USER } from "../mocks/user.mock";
 
 @Injectable({
     providedIn: 'root'
@@ -10,13 +12,13 @@ import { LocalStorageService } from "./localStorage.service";
 /**
  * Remarques & Interrogations:
  *      Confirmer la bonne utilisation de BehaviorSubject, plûtot que Observable
-*/     
+ */
 export class UserService{
     private users: User[] = [];
     public users$: BehaviorSubject<User[]> = new BehaviorSubject(this.users);
 
     private LOCAL_STORAGE_KEY = "selectedUser"
-    private selectedUser!: User; 
+    private selectedUser!: User;
     public selectedUser$: BehaviorSubject<User> = new BehaviorSubject(this.selectedUser);
 
     constructor(private localStorageService : LocalStorageService) {
@@ -28,13 +30,7 @@ export class UserService{
 
     //plus tard on utilisera les requêtes https
     private loadUsers(): void {
-        this.users = [
-            { userId:"1", name: "Eli KOPTER", age: "9", icon: "red_fish.png"},
-            { userId:"2", name: "patrick KOPTER", age: "9", icon: "yellow_fish.png"},
-            { userId:"3", name: "lohann KOPTER", age: "9", icon: "blue_fish.png"},
-            { userId:"4", name: "juste KOPTER", age: "9", icon: "turtle.png"}
-
-        ]
+        this.users = MOCK_USER;
         this.users$.next(this.users);
     }
 
@@ -45,5 +41,4 @@ export class UserService{
             this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
         }
     }
-    
 }

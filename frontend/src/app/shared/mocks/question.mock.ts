@@ -1,45 +1,45 @@
-import { Question, Notion } from '../models/question.model';
+import { Question, QuestionNotion } from '../models/question.model';
 
 export const MOCK_QUESTIONS: Question[] = [
     {
+        prompt: "1 × 10 =\xa0",
+        answer: "dix",
+        notion: QuestionNotion.MULTIPLICATION,
+    }, {
         prompt: "",
         answer: "}!':\!",
-        notion: Notion.ENCRYPTION,
+        notion: QuestionNotion.ENCRYPTION,
     }, {
-        prompt: "Calculer : 1 * 10 =&nbsp;",
-        answer: "dix",
-        notion: Notion.MULTIPLICATION,
-    }, {
-        prompt: "Calculer : 10 + 6 =&nbsp;",
+        prompt: "10 + 6 =\xa0",
         answer: "seize",
-        notion: Notion.ADDITION,
+        notion: QuestionNotion.ADDITION,
     }, {
-        prompt: "Calculer : 8 + 2 =&nbsp;",
+        prompt: "8 + 2 =\xa0",
         answer: "dix",
-        notion: Notion.ADDITION,
+        notion: QuestionNotion.ADDITION,
     }, {
-        prompt: "Calculer : 4 - 2 =&nbsp;",
+        prompt: "4 - 2 =\xa0",
         answer: "deux",
-        notion: Notion.SUBSTRACTION,
+        notion: QuestionNotion.SUBSTRACTION,
     }, {
-        prompt: "Calculer : 10 - 9 =&nbsp;",
+        prompt: "10 - 9 =\xa0",
         answer: "un",
-        notion: Notion.SUBSTRACTION,
+        notion: QuestionNotion.SUBSTRACTION,
     }, {
-        prompt: "Calculer : 18 / 6 =&nbsp;",
+        prompt: "18 / 6 =\xa0",
         answer: "trois",
-        notion: Notion.DIVISION,
+        notion: QuestionNotion.DIVISION,
     }, {
-        prompt: "Reecrire 40 :&nbsp;",
+        prompt: "40 :\xa0",
         answer: "quarante",
-        notion: Notion.REWRITING
+        notion: QuestionNotion.REWRITING
     }, {
-        prompt: "Calculer : 3 - 9 =&nbsp;",
-        answer: "moins six",
-        notion: Notion.SUBSTRACTION,
+        prompt: "3 - 9 =\xa0",
+        answer: "-six",
+        notion: QuestionNotion.SUBSTRACTION,
     }, {
-        prompt: "Calculer 10 - 9 =&nbsp;",
+        prompt: "10 - 9 =\xa0",
         answer: "un",
-        notion: Notion.SUBSTRACTION,
+        notion: QuestionNotion.SUBSTRACTION,
     },
 ];
