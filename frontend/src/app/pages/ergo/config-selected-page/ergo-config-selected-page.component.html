@@ -10,21 +10,20 @@
     <!--Zone du main -->
     <app-inner-box class="main-box blue">
 
-        <span>NOM : KOPTER</span>
-        <span>Prénom : Eli</span>
-        <span>Âge : 7ans</span>
-        <span>Troubles: Dysgraphie</span>
+        <span>Nom : {{user.name}}</span>
+        <span>Prénom :</span>
+        <span>Âge : {{user.age}} ans</span>
         <span>
             LeaderBoard :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.leaderBoard"></app-settings-toggle>
         </span>
         <span>
             Statistiques avancées :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.advancedStats"></app-settings-toggle>
         </span>
         <span>
             Aide à la lecture :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.readingAssistance"></app-settings-toggle>
         </span>
         <span>
             Taille de la police :
@@ -36,27 +35,27 @@
         </span>
         <span>
             Réponses affichées :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.showsAnswer"></app-settings-toggle>
         </span>
         <span>
             Réécriture des nombres :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.numberRewrite"></app-settings-toggle>
         </span>
         <span>
             Addition :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.addition"></app-settings-toggle>
         </span>
         <span>
             Soustraction :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.soustraction"></app-settings-toggle>
         </span>
         <span>
             Multiplication : 
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.multiplication"></app-settings-toggle>
         </span>
         <span>
             Division :
-            <app-settings-toggle></app-settings-toggle>
+            <app-settings-toggle [checked]="user.userConfig.division"></app-settings-toggle>
         </span>
 
         
