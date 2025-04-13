@@ -41,4 +41,25 @@ export class UserService{
             this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
         }
     }
+
+    public saveChanges(changedUser: User): void {
+        if (changedUser) {
+          const index = this.users.findIndex(user => user.userId === changedUser.userId);
+      
+          if (index !== -1) {
+            this.users[index] = { ...changedUser }; //c'est un spread operator, ca sert à faire une copie de changedUser et pas utilisé directement l'instance passé en paramètre, une bonne pratique angular askip
+            
+            if (this.selectedUser.userId === changedUser.userId) {
+              this.selectedUser = { ...changedUser }; 
+              this.selectedUser$.next(this.selectedUser); 
+              this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
+          }
+
+            this.users$.next(this.users);
+            console.log(`User ${changedUser.userId} mis à jour.`);
+          } else {
+            console.warn(`User ${changedUser.userId} non trouvé dans la liste.`);
+          }
+        }
+      }
 }

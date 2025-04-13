@@ -1,24 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { User } from 'src/app/shared/models/user.model';
 import { UserService } from 'src/app/shared/services/user.service';
 
 @Component({
   selector: 'app-ergo-config-selected-page',
   templateUrl: './ergo-config-selected-page.component.html',
-  styleUrl: './ergo-config-selected-page.component.scss'
+  styleUrls: ['./ergo-config-selected-page.component.scss']
 })
-export class ErgoConfigSelectedPageComponent {
+export class ErgoConfigSelectedPageComponent implements OnInit {
 
-  user!: User;
-  
-  constructor(private userService: UserService) {
-      this.userService.selectedUser$.subscribe((user: User) => {
+    user!: User;
+    userTemp!: User;
+
+    constructor( private userService: UserService, private router: Router) {}
+
+    ngOnInit(): void {
+        this.userService.selectedUser$.subscribe((user: User) => {
           this.user = user;
-      })
-  }
+        });
+    }
 
-  ngOnInit() {
-      console.log(this.user);
-  }  
-  
+    onUserTempChanged(updatedUser: User): void {
+        this.userTemp = updatedUser;
+    }
+
+    saveChanges(): void {
+        if (this.userTemp) {
+            this.userService.saveChanges(this.userTemp);
+        }
+        this.router.navigate(['/ergo-config']);
+    }
+
+    cancelChanges(): void {
+        this.router.navigate(['/ergo-config']);
+    }
 }

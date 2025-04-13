@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from 'src/app/shared/services/user.service';
 import { User } from 'src/app/shared/models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-child-config-page',
@@ -10,14 +11,23 @@ import { User } from 'src/app/shared/models/user.model';
 export class ChildConfigPageComponent {
 
     user!: User;
+    userTemp!: User;
+    
+    constructor( private userService: UserService, private router: Router) {}
 
-    constructor(private userService: UserService) {
+    ngOnInit(): void {
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;
-        })
+        });
     }
 
-    ngOnInit() {
-        console.log(this.user);
-    }   
+    onUserTempChanged(updatedUser: User): void {
+        this.userTemp = updatedUser;
+    }
+
+    saveChanges(): void {
+        if (this.userTemp) {
+            this.userService.saveChanges(this.userTemp);
+        }
+    }
 }
