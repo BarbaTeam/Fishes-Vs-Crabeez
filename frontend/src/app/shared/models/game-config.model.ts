@@ -9,8 +9,9 @@
  * 1 is the usual rate.
  */
 export type GameConfig = {
-    max_duration: number | "inf",
-    min_nb_players: 1|2|3,
-    max_nb_players: 1|2|3,
-    monsters_spawn_rate: number,
+    maxDuration: number | "inf",
+    minNbPlayers: 1|2|3,
+    maxNbPlayers: 1|2|3,
+    monstersSpawnRate: number,
+    encrypted: boolean,
 };

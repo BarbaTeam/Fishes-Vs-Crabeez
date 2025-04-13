@@ -2,7 +2,7 @@ import { User } from "../models/user.model";
 
 export const MOCK_USER: User[] = [
     {
-        userId:"1",
+        userId:"u1",
         name: "Eli KOPTER",
         age: "9",
         icon: "red_fish.png",
@@ -22,7 +22,7 @@ export const MOCK_USER: User[] = [
             equation: true,
         }
     }, {
-        userId:"2",
+        userId:"u2",
         name: "patrick BATMAN",
         age: "9",
         icon: "yellow_fish.png",
@@ -41,7 +41,7 @@ export const MOCK_USER: User[] = [
             encryption: false,
             equation: false,}
     }, {
-        userId:"3",
+        userId:"u3",
         name: "Petelo WAWAZI",
         age: "9",
         icon: "blue_fish.png",
@@ -60,7 +60,8 @@ export const MOCK_USER: User[] = [
             encryption: true,
             equation: true,}
     }, {
-        userId:"4",
+
+        userId:"u4",
         name: "Camille RITELECU",
         age: "9",
         icon: "turtle.png",
