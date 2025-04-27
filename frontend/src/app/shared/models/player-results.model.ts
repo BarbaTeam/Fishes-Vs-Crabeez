@@ -12,6 +12,5 @@ export type PlayerResults = {
 
 export type PlayerStatistics = {
     playerId: UserID,
-    resultsSummary: Statistics,
-    answersShown: boolean,
+    statistics: Statistics,
 };
