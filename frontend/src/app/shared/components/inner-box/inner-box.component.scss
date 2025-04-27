@@ -15,15 +15,22 @@
     color: black;
 }
 
-:host(.little) {
-    width: 35vh;
-    flex-direction: column;
-    align-items: center;
-    align-content: normal;
+
+:host(.big) {
+    width: 50vw;
 }
 
 :host(.medium) {
-    width: 50vh;
+    width: 45vw;
+    overflow-x: hidden;
+}
+
+:host(.little) {
+    width: 40vh;
+    flex-direction: column;
+    align-items: center;
+    align-content: normal;
+    overflow-x: hidden;
 }
 
 :host(.button-list) {
@@ -35,4 +42,17 @@
     font-size: large;
     font-weight: bold;
     overflow-x: hidden;
+}
+
+:host(.scrollable) {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable both-edges;
+    transition: scrollbar-color 0.5s;
+    scrollbar-color: rgba(128, 128, 128, 0) transparent;
+} :host(.scrollable):hover {
+    scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
+} :host(.scrollable)::-webkit-scrollbar {
+    // NOTE : Doesn't work on all browser
+    width: 3px;
 }

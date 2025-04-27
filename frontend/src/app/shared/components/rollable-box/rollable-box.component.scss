@@ -1,0 +1,45 @@
+:host {
+    display: block;
+
+    margin: 1%;
+
+    position: relative;
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+:host .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1% 2%;
+    background-color: #f5f5f5;
+}
+
+:host .title {
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+:host .toggle-btn {
+    border: none;
+    //background: transparent;
+    background-color: #d4c9c9;
+    border-radius: 10px;
+
+    font-size: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+    cursor: pointer;
+}
+
+:host .content {
+    padding: 1% 2%;
+}

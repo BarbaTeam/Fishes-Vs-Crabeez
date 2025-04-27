@@ -1,0 +1,12 @@
+<div class="rollable-box" [class.unrolled]="isUnrolled">
+    <div class="header">
+        <p class="title">{{ title }}</p>
+        <button class="toggle-btn" (click)="toggle()">
+            {{ isUnrolled() ? '－' : '＋' }}
+        </button>
+    </div>
+
+    <div class="content" *ngIf="isUnrolled()">
+        <ng-content></ng-content>
+    </div>
+</div>

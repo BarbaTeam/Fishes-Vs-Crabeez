@@ -42,6 +42,7 @@ import { TemplateComponent } from './shared/components/template/template.compone
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { InnerBoxComponent } from './shared/components/inner-box/inner-box.component';
 import { SideBoxComponent } from './shared/components/side-box/side-box.component';
+import { RollableBoxComponent } from './shared/components/rollable-box/rollable-box.component';
 
 // Users :
 import { UserCardComponent } from './shared/components/user-card/user-card.component';
@@ -87,6 +88,8 @@ import { SettingsToggleComponent } from './shared/components/settings-toggle/set
 
         GameComponent,
 
+        UserConfigComponent,
+
 
         ////////////////////////////////////////////////////////////////////////
         // Shared Component :
@@ -97,6 +100,7 @@ import { SettingsToggleComponent } from './shared/components/settings-toggle/set
         MediumButtonComponent,
         InnerBoxComponent,
         SideBoxComponent,
+        RollableBoxComponent,
         // Users :
         UserCardComponent,
         UserListComponent,
