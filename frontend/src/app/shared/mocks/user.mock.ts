@@ -18,10 +18,12 @@ export const MOCK_USER: User[] = [
             soustraction: true,
             multiplication: true,
             division: true,
+            encryption: true,
+            equation: true,
         }
     }, {
         userId:"2",
-        name: "patrick KOPTER",
+        name: "patrick BATMAN",
         age: "9",
         icon: "yellow_fish.png",
         userConfig: {
@@ -35,10 +37,12 @@ export const MOCK_USER: User[] = [
             addition: true,
             soustraction: false,
             multiplication: false,
-            division: false,        }
+            division: false,
+            encryption: false,
+            equation: false,}
     }, {
         userId:"3",
-        name: "lohann KOPTER",
+        name: "Petelo WAWAZI",
         age: "9",
         icon: "blue_fish.png",
         userConfig: {
@@ -52,10 +56,12 @@ export const MOCK_USER: User[] = [
             addition: true,
             soustraction: true,
             multiplication: true,
-            division: true,        }
+            division: true,
+            encryption: true,
+            equation: true,}
     }, {
         userId:"4",
-        name: "juste KOPTER",
+        name: "Camille RITELECU",
         age: "9",
         icon: "turtle.png",
         userConfig: {
@@ -69,6 +75,8 @@ export const MOCK_USER: User[] = [
             addition: true,
             soustraction: true,
             multiplication: true,
-            division: true,        }
+            division: true,
+            encryption: true,
+            equation: true,}
     }
 ]

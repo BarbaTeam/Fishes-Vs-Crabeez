@@ -10,4 +10,6 @@ export type UserConfig = {
     soustraction: boolean;
     multiplication: boolean;
     division: boolean;
+    encryption: boolean,
+    equation: boolean,
 };

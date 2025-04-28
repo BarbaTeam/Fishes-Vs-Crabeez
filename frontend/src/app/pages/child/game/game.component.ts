@@ -54,7 +54,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.user = user;
         });
 
-        this.question = QuestionsGenerator.genNewQuestion();
+        this.question = QuestionsGenerator.genQuestion(this.questionMask);
 
         this.keydownHandler = this.checkInput.bind(this);
 
@@ -89,9 +89,23 @@ export class GameComponent implements OnInit, OnDestroy {
     public get questionNotion(): QuestionNotion {
         return this.question.notion;
     }
-    
+
     public get proposed_answer(): string {
         return this.proposed_answerInputs.join("");
+    }
+
+    // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
+    public get questionMask(): boolean[] {
+        const userConfig = this.user.userConfig;
+        return [
+            userConfig.addition,
+            userConfig.soustraction,
+            userConfig.multiplication,
+            userConfig.division,
+            userConfig.numberRewrite,
+            userConfig.encryption,
+            userConfig.equation
+        ];
     }
 
     private updateInputs(): void {
@@ -188,7 +202,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.gameEngine.answerCorrectly(this.gameEngine.playerInstance);
         }
 
-        this.question = QuestionsGenerator.genNewQuestion();
+        this.question = QuestionsGenerator.genQuestion(this.questionMask);
 
         if (this.question === undefined) {
             this.hasEnded = true;
@@ -256,22 +270,109 @@ export class GameComponent implements OnInit, OnDestroy {
 // Backend Simulator :
 ////////////////////////////////////////////////////////////////////////////////
 
-class QuestionsGenerator {
-    private static next_question_idx = 0;
-    private static questions = MOCK_QUESTIONS;
+import { num2words_fr, filterOnMask, randint } from "src/utils";
 
-    private constructor() {}
 
-    public static genNewQuestion(): Question {
-        return QuestionsGenerator.questions[
-            QuestionsGenerator.next_question_idx++
-        ];
+export class QuestionsGenerator {
+    private static _chooseNotion(mask: boolean[]): QuestionNotion {
+        const notions = Object.values(QuestionNotion);
+
+        const allowedNotions = filterOnMask(notions, mask);
+        if (allowedNotions.length === 0) {
+            throw new Error("Aucune notion autorisée par le masque fourni.");
+        }
+        return allowedNotions[randint(0, allowedNotions.length - 1)];
+    }
+
+    private static _convertNotionToOperator(notion: QuestionNotion): string {
+        switch (notion) {
+            case QuestionNotion.ADDITION:
+                return '+';
+            case QuestionNotion.SUBSTRACTION:
+                return '-';
+            case QuestionNotion.MULTIPLICATION:
+                return '*';
+            case QuestionNotion.DIVISION:
+                return '/';
+            default:
+                return 'NA';
+        }
+    }
+
+    private static _chooseOperands(operandsAmount: number = 2, minBound: number = 0, maxBound: number = 10): number[] {
+        const operands: number[] = [];
+        for (let i = 0; i < operandsAmount; i++) {
+            operands.push(randint(minBound, maxBound));
+        }
+        return operands;
+    }
+
+    private static _computeAnswer(operands: number[], operator: string): number {
+        switch (operator) {
+            case '+':
+                return operands[0] + operands[1];
+            case '-':
+                return operands[0] - operands[1];
+            case '*':
+                return operands[0] * operands[1];
+            case '/':
+                // Division entière
+                return Math.floor(operands[0] / operands[1]);
+            default:
+                throw new Error(`Unexpected operator: ${operator}`);
+        }
+    }
+
+    private static _genEncryptedString(length: number): string {
+        // TODO : utiliser l'ensemble complet des caractères si besoin
+        const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+
+        let ret = "";
+        for (let i = 0; i < length; i++) {
+            ret += characters.charAt(randint(0, characters.length - 1));
+        }
+        return ret;
+    }
+
+    // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
+    public static genQuestion(notionMask: boolean[] = [true, true, false, false, false, false, false]): Question {
+        const notion = this._chooseNotion(notionMask);
+
+        switch (notion) {
+            case QuestionNotion.REWRITING:
+                const nb = randint(0, 50);
+                return {
+                    prompt: `${nb} :\xa0`,
+                    answer: num2words_fr(nb),
+                    notion: notion,
+                };
+
+            case QuestionNotion.ENCRYPTION:
+                const length = randint(4, 6);
+                return {
+                    prompt: "",
+                    answer: this._genEncryptedString(length),
+                    notion: notion,
+                };
+
+            default:
+                const operator = this._convertNotionToOperator(notion);
+                const operands = this._chooseOperands();
+                const ans = this._computeAnswer(operands, operator);
+                return {
+                    prompt: `${operands[0]} ${operator} ${operands[1]} =\xa0`,
+                    //prompt: `${operands[0]} ${operator} ${operands[1]} =&nbsp;`,
+                    answer: num2words_fr(ans),
+                    notion: notion
+                };
+        }
     }
 }
 
 
 class AnswerChecker {
     public static checkAnswer(proposed_answer: string, question: Question): boolean {
+        console.log(`is correct : ${proposed_answer === question.answer}`);
         return proposed_answer === question.answer;
     }
 }
