@@ -1,12 +1,12 @@
 <app-template>
     <!--Zone de la navbar -->
-    <app-user-card class="navbar-profile-image">
-        <img src="assets/images/child-pps/red_fish.png" alt="PP 1" class="icon"/>
-    </app-user-card>
     <app-medium-button class="navbar-button" [routerLink]="['/ergo-stat-selected']" routerLinkActive="active"><p class ="name">Eli KOPTER</p></app-medium-button>
-    <app-medium-button class="navbar-button red" [routerLink]="['/ergo-stats']"> Retour </app-medium-button>
-    <app-medium-button class="navbar-button invisible"/>
-    
+    <app-medium-button class="navbar-button" [routerLink]="['/ergo-config-selected']" routerLinkActive="active">Configuration</app-medium-button>
+    <app-medium-button 
+        class="navbar-button red"
+        (click)="back()"
+        > Retour 
+    </app-medium-button>    
     <!--Zone du main -->
     <app-inner-box class="main-box button-list">
         <app-small-button>TOTAL</app-small-button>

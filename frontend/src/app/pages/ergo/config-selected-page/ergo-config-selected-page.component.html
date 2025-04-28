@@ -1,22 +1,28 @@
 <app-template>
     <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-config-selected']" routerLinkActive="active"><p class="name">{{user.name}}</p></app-medium-button>
-    <app-medium-button 
-        class="navbar-button red"
-        (click)="cancelChanges()"
-        > Retour 
+    <app-medium-button class="navbar-button"
+        [routerLink]="['/ergo-stat-selected']"
+        routerLinkActive="active"
+        > <p class="name">{{user.name}}</p>
     </app-medium-button>
-    <app-medium-button 
-        class="navbar-button green"
-        (click)="saveChanges()"
-        > Sauvegarder 
+    <app-medium-button class="navbar-button"
+        [routerLink]="['/ergo-config-selected']"
+        routerLinkActive="active"
+        > Configuration
+    </app-medium-button>
+    <app-medium-button
+        class="navbar-button red"
+        (click)="back()"
+        > Retour
     </app-medium-button>
 
+
     <!--Zone du main -->
-    <app-inner-box class="main-box blue">
-        <app-user-config 
-            [user]="user" 
+    <app-inner-box class="main-box blue center-content">
+        <app-user-config
+            [user]="user"
             (userTemp)="onUserTempChanged($event)">
         </app-user-config>
+        <app-big-button class="save" (click)="saveChanges()">Sauvegarder</app-big-button>
     </app-inner-box>
 </app-template>

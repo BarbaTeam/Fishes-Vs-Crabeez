@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { WelcomePageComponent } from './pages/welcome-page/welcome-page.component';
 import { ChildListPageComponent } from './pages/child/list-page/child-list-page.component';
 import { ErgoPlayPageComponent } from './pages/ergo/play-page/ergo-play-page.component';
-import { ErgoConfigPageComponent } from './pages/ergo/config-page/ergo-config-page.component';
-import { ErgoStatPageComponent } from './pages/ergo/stat-page/ergo-stat-page.component';
+import { ErgoListPageComponent } from './pages/ergo/list-page/ergo-list-page.component';
 import { ChildPlayPageComponent } from './pages/child/play-page/child-play-page.component';
 import { ChildConfigPageComponent } from './pages/child/config-page/child-config-page.component';
 import { ChildStatPageComponent } from './pages/child/stat-page/child-stat-page.component';
@@ -18,8 +17,7 @@ const routes: Routes = [
   { path: "", component: WelcomePageComponent },
   { path: "child-list", component: ChildListPageComponent },
   { path: "ergo-play", component: ErgoPlayPageComponent },
-  { path: "ergo-config", component: ErgoConfigPageComponent },
-  { path: "ergo-stats", component: ErgoStatPageComponent },
+  { path: "ergo-list", component: ErgoListPageComponent },
   { path: "child-play", component: ChildPlayPageComponent },
   { path: "child-config", component: ChildConfigPageComponent },
   { path: "child-stats", component: ChildStatPageComponent },

@@ -29,10 +29,9 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
         if (this.userTemp) {
             this.userService.saveChanges(this.userTemp);
         }
-        this.router.navigate(['/ergo-config']);
     }
 
-    cancelChanges(): void {
-        this.router.navigate(['/ergo-config']);
+    back(): void {
+        this.router.navigate(['/ergo-list']);
     }
 }

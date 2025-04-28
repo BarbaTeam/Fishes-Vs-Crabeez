@@ -7,8 +7,7 @@ import { UserID } from '../../models/ids';
 import { UserService } from '../../services/user.service'
 
 import { ChildListPageComponent } from 'src/app/pages/child/list-page/child-list-page.component';
-import { ErgoConfigPageComponent } from 'src/app/pages/ergo/config-page/ergo-config-page.component';
-import { ErgoStatPageComponent } from 'src/app/pages/ergo/stat-page/ergo-stat-page.component';
+import { ErgoListPageComponent } from 'src/app/pages/ergo/list-page/ergo-list-page.component';
 
 @Component({
   selector: 'app-user-list',
@@ -33,9 +32,7 @@ export class UserListComponent {
         this.userService.selectUser(userId);
         if(this.route.component === ChildListPageComponent)
             this.router.navigate(['/child-play']);
-        if(this.route.component === ErgoConfigPageComponent)
-            this.router.navigate(['/ergo-config-selected']);
-        if(this.route.component === ErgoStatPageComponent)
+        if(this.route.component === ErgoListPageComponent)
             this.router.navigate(['/ergo-stat-selected']);
     }
 }
