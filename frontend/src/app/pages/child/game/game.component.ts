@@ -86,7 +86,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
     ////////////////////////////////////////////////////////////////////////////
     // Getters :
-
+    public get questionNotion(): QuestionNotion {
+        return this.question.notion;
+    }
+    
     public get proposed_answer(): string {
         return this.proposed_answerInputs.join("");
     }
@@ -182,7 +185,7 @@ export class GameComponent implements OnInit, OnDestroy {
     private submitAnswer(): void {
         if (AnswerChecker.checkAnswer(this.proposed_answer, this.question)){
             this.score++;
-            this.gameEngine.answerCorrectly();
+            this.gameEngine.answerCorrectly(this.gameEngine.playerInstance);
         }
 
         this.question = QuestionsGenerator.genNewQuestion();
@@ -195,6 +198,8 @@ export class GameComponent implements OnInit, OnDestroy {
         this.expected_answerInputs = this.question.answer.split("");
         this.proposed_answerInputs = [];
         this.cursorPosition = 0;
+
+        this.gameEngine.questionNotion = this.question.notion;
     }
 
     private writeCharacter(c: string): void {

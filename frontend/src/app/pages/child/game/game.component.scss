@@ -4,14 +4,12 @@
     grid-template-rows: 20% 80%;
     height: 100%;
     width: 100%;
-    background: linear-gradient(#75d4ff, rgb(0, 50, 74));
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Input :
-////////////////////////////////////////////////////////////////////////////////
+    background: linear-gradient(
+        to bottom, 
+        #75d4ff 0%, 
+        #043750 80%, 
+        #043750 100%
+      );}
 
 .header {
     grid-row: 1;
@@ -37,9 +35,11 @@
 .correct {
     color: rgb(0, 151, 0);
 }
+
 .wrong {
     color: red;
 }
+
 .pending {
     color: #80808065;
 }
@@ -54,16 +54,14 @@
     background-color: #599ab860;
 }
 
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Game :
-////////////////////////////////////////////////////////////////////////////////
-
 .game {
     position: absolute;
     align-self: center;
     justify-self: center;
     height: 100%;
     width: 100%;
+}
+
+#layer1 {
+    display: none;
 }
