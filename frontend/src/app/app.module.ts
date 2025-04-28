@@ -57,6 +57,9 @@ import { SmallButtonComponent } from './shared/components/small-button/small-but
 import { SettingsSliderComponent } from './shared/components/settings-slider/settings-slider.component';
 import { SettingsToggleComponent } from './shared/components/settings-toggle/settings-toggle.component';
 
+// Miscellaneous :
+import { GradingLineComponent } from './shared/components/grading-line/grading-line.component';
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -109,6 +112,8 @@ import { SettingsToggleComponent } from './shared/components/settings-toggle/set
         SmallButtonComponent,
         SettingsSliderComponent,
         SettingsToggleComponent,
+        // Miscellaneous :
+        GradingLineComponent,
     ],
     imports: [
         BrowserModule,

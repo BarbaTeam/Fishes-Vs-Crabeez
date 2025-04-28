@@ -1,19 +1,29 @@
 <app-template>
-    <!--Zone de la navbar -->
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
     <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active"><p class="name">
         <app-user-card [user]="user" class="horizontal navbar"/>
     </app-medium-button>
     <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active"> Jouer </app-medium-button>
     <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active"> Mon classement </app-medium-button>
 
-    <!--Zone du main -->
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
     <app-side-box class="main-box button-list">
         <app-small-button
             [routerLink]="[]"
             [queryParams]="{ 'section': 0 }"
-            [ngClass]="[currSection === 0 ? 'active' : '']"
+            [class.active]="currSection === 0"
             style="width: 100%;"
         >
+            <!-- [ngClass]="[currSection === 0 ? 'active' : '']" -->
             <!-- [class.active]="currSection === 0" -->
             Stats
         </app-small-button>
@@ -24,7 +34,7 @@
             *ngFor="let i of availableHistorySections;"
             [routerLink]="[]"
             [queryParams]="{ 'section': i+1 }"
-            [ngClass]="[currSection === i+1 ? 'active' : '']"
+            [class.active]="currSection === i+1"
             style="width: 100%;"
         >
             {{ getFormattedGameDateByIndex(i, false) }}
@@ -40,14 +50,19 @@
     <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium">
         <h1 class="title">Statistiques générales</h1>
 
-        <p>Note : {{ sectionData.playerStats.resultsSummary.globalGrading.grade }} ({{ sectionData.playerStats.resultsSummary.globalGrading.accuracy }}%)</p>
+        <p>Note : {{ sectionData.playerStats.statistics.globalGrading.grade }} ({{ sectionData.playerStats.statistics.globalGrading.accuracy }}%)  (+{{ sectionData.playerStats.statistics.globalAccuracyImprovement }}%)</p>
 
-        <p *ngIf="notionGradings.length > 0">Détails par notions :</p>
-        <p *ngFor="let n of notionGradings">
-            {{ n.key }} : {{ n.grade }} ({{ n.accuracy }}%)
-        </p>
-
-        <p>Réponse affichées : {{ sectionData.playerStats.answersShown ? "Oui" : "Non" }}</p>
+        <app-rollable-box
+            *ngIf="notionGradings.length > 0"
+            [title]="'Détails par notions :'"
+        >
+            <app-grading-line
+                *ngFor="let n of notionGradings"
+                [key]="n.key"
+                [grading]="n.grading"
+                [improvement]="n.improvement"
+            />
+        </app-rollable-box>
     </app-inner-box>
     <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
         <h1 class="title">Classment</h1>
@@ -64,12 +79,19 @@
             *ngIf="notionGradings.length > 0"
             [title]="'Détails par notions :'"
         >
-            <p *ngFor="let n of notionGradings">
-                {{ n.key }} : {{ n.grade }} ({{ n.accuracy }}%)
-            </p>
+            <app-grading-line
+                *ngFor="let n of notionGradings"
+                [key]="n.key"
+                [grading]="n.grading"
+            />
         </app-rollable-box>
 
-        <p>Réponse affichées : {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}</p>
+        <p>
+            Réponse affichées :
+            <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
+                {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
+            </span>
+        </p>
     </app-inner-box>
     <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
         <h1 class="title">Classment</h1>

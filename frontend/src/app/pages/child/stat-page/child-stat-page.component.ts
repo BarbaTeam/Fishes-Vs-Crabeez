@@ -16,7 +16,7 @@ import { GameInfoService } from 'src/app/shared/services/game-info.service';
 import { User } from 'src/app/shared/models/user.model';
 import { PlayerResults, PlayerStatistics } from 'src/app/shared/models/player-results.model';
 import { QuestionNotion } from 'src/app/shared/models/question.model';
-import { Grading } from 'src/app/shared/models/results.model';
+import { Grade, Grading } from 'src/app/shared/models/results.model';
 import { GameLeaderboard } from 'src/app/shared/models/game-leaderboard.model';
 import { GameInfo } from 'src/app/shared/models/game-log.model';
 
@@ -69,8 +69,6 @@ export class ChildStatPageComponent implements OnInit {
 
     public currSection: Section;
     public sectionData: HistorySectionData | StatsSectionData | InvalidSectionData;
-
-    public gameDateRepr: string | undefined;
 
 
     constructor(
@@ -205,8 +203,8 @@ export class ChildStatPageComponent implements OnInit {
 
     public get notionGradings(): {
         key: string,
-        grade: string,
-        accuracy: number
+        grading: Grading,
+        improvement?: number,
     }[] {
         assert(
             this.isInStatsSection() || this.isInHistorySections(),
@@ -216,15 +214,34 @@ export class ChildStatPageComponent implements OnInit {
         );
 
         let allNotionGradings: [QuestionNotion, Grading][];
-        if (this.isInHistorySections()) {
+
+        if (this.isInStatsSection()) {
             allNotionGradings = Object.entries(
-                this.sectionData.playerResults.results.gradingPerNotion
+                this.sectionData.playerStats.statistics.gradingPerNotion
             ) as [QuestionNotion, Grading][];
-        } else {
-            allNotionGradings = Object.entries(
-                this.sectionData.playerStats.resultsSummary.gradingPerNotion
-            ) as [QuestionNotion, Grading][];
+
+            let ret = [];
+
+            for (const [notion , grading] of allNotionGradings) {
+                if (grading.grade === 'XF') {
+                    continue;
+                }
+
+                ret.push({
+                    key: mapQuestionNotionToName(notion),
+                    grading: grading,
+                    improvement: this.sectionData.playerStats.statistics.accuracyImprovementPerNotion[notion]
+                })
+            }
+
+            return ret;
         }
+
+        assert(this.isInHistorySections());
+
+        allNotionGradings = Object.entries(
+            this.sectionData.playerResults.results.gradingPerNotion
+        ) as [QuestionNotion, Grading][];
 
         let ret = [];
 
@@ -235,7 +252,7 @@ export class ChildStatPageComponent implements OnInit {
 
             ret.push({
                 key: mapQuestionNotionToName(notion),
-                ...grading,
+                grading: grading,
             })
         }
 

@@ -1,0 +1,47 @@
+.grading-line {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+
+    .key {
+        color: black;
+        font-weight: 600;
+        margin-right: 0.25rem;
+    }
+
+    .sep {
+        margin: 0 0.25rem;
+    }
+
+    .grade {
+        font-weight: 700;
+    }
+
+    .improvement {
+        margin-left: 0.5rem;
+        font-weight: 600;
+
+        &.positive {
+            color: green;
+        }
+        &.negative {
+            color: red;
+        }
+    }
+}
+
+
+/*
+.host #grade {
+
+}
+
+.host #accuracy {
+
+}
+
+.host #improvement {
+
+}
+*/
