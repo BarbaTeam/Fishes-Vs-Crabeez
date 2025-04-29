@@ -1,10 +1,10 @@
 <app-template>
     <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active"><p class="name">
+    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active"><p class="name">
         <app-user-card [user]="user" class="horizontal navbar"/>
     </app-medium-button>
     <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active"> Jouer </app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active"> Mon classement </app-medium-button>
+    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active"> Configuration </app-medium-button>
 
     <!--Zone du main -->
     <app-big-button class="main-button" [routerLink]="['/child-lobby']">Trouver une partie</app-big-button>
