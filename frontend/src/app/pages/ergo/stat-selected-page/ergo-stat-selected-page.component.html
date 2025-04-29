@@ -56,7 +56,7 @@
 
 
     <!-- Statistic Section : -->
-    <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium">
+    <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium scrollable">
         <h1 class="title">Statistiques générales</h1>
 
         <ng-container *ngIf="sectionData.playerStats.statistics.globalGrading.grade !== 'XF'; else noStatistics">
@@ -88,6 +88,15 @@
                 </span>
             </p>
 
+            <app-mistakes-boxes
+                [title]="'Erreurs Communes'"
+                [mistakes]="getMostCommonMistakesSimplified()"
+            />
+
+            <app-mistakes-boxes
+                [title]="'Erreurs Récentes'"
+                [mistakes]="getMostRecentMistakesSimplified()"
+            />
         </ng-container>
 
         <ng-template #noStatistics>
@@ -116,6 +125,13 @@
     <app-inner-box *ngIf="isInHistorySections()" class="main-box blue medium scrollable">
         <h1 class="title">Partie du {{ getFormattedGameDate(true) }}</h1>
 
+        <p>
+            Réponse affichées :
+            <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
+                {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
+            </span>
+        </p>
+
         <app-grading-line
             [key]="'Note'"
             [grading]="sectionData.playerResults.results.globalGrading"
@@ -137,12 +153,10 @@
             {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
         </p>
 
-        <p>
-            Réponse affichées :
-            <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
-                {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
-            </span>
-        </p>
+        <app-mistakes-boxes
+            [title]="'Erreurs'"
+            [mistakes]="sectionData.playerResults.results.mistakes"
+        />
     </app-inner-box>
 
     <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">

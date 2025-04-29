@@ -1,4 +1,5 @@
 import { PlayerStatistics } from "../models/player-results.model"
+import { AnsweredQuestion } from "../models/question.model"
 import { Grade } from "../models/results.model"
 
 // TODO : Defining true mocks
@@ -30,12 +31,20 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             },
 
             mostCommonMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, 1]
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, 1]
+                ],
             },
             mostRecentMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")],
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")]
+                ],
             },
         },
     },
@@ -68,12 +77,20 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             },
 
             mostCommonMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, 1]
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, 1]
+                ],
             },
             mostRecentMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")],
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")]
+                ],
             },
         },
     },
@@ -105,12 +122,20 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             },
 
             mostCommonMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, 1]
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, 1]
+                ],
             },
             mostRecentMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")],
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")]
+                ],
             },
         },
     },
@@ -142,12 +167,20 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             },
 
             mostCommonMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, 1]
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, 1]
+                ],
             },
             mostRecentMistakes: {
-                spelling: [],
-                calculation: [],
+                spelling: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")],
+                ],
+                calculation: [
+                    [{} as AnsweredQuestion, new Date("2025-04-28T10:30:00.000Z")]
+                ],
             },
         },
     },

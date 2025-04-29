@@ -1,0 +1,48 @@
+<p
+    class="title"
+    *ngIf="spellingMistakes.length > 0 || calculationMistakes.length > 0"
+>
+    {{ title }} :
+</p>
+
+<app-rollable-box
+    *ngIf="spellingMistakes.length > 0"
+    [title]="'Fautes d\'orthographe'"
+>
+    <table class="mistake-table">
+        <thead>
+            <tr>
+                <th>Proposition</th>
+                <th>Attendu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mistake of spellingMistakes">
+                <td>{{ mistake.proposed }}</td>
+                <td>{{ mistake.expected }}</td>
+            </tr>
+        </tbody>
+    </table>
+</app-rollable-box>
+
+<app-rollable-box
+    *ngIf="calculationMistakes.length > 0"
+    [title]="'Fautes de calcul'"
+>
+    <table class="mistake-table">
+        <thead>
+            <tr>
+                <th>Énoncé</th>
+                <th>Proposition</th>
+                <th>Attendu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let mistake of calculationMistakes">
+                <td>{{ mistake.prompt }}</td>
+                <td>{{ mistake.proposed }}</td>
+                <td>{{ mistake.expected }}</td>
+            </tr>
+        </tbody>
+    </table>
+</app-rollable-box>
