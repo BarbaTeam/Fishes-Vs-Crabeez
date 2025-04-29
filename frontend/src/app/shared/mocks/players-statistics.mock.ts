@@ -6,7 +6,9 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
     {
         playerId: "u1",
         statistics: {
-            globalGrading: { grade: Grade.XF, accuracy: 0 },
+            wordsPerMinute: 2.466666666666667,
+            wordsPerMinuteImprovement: -0.066666666666667,
+            globalGrading: { grade: Grade.F, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
@@ -41,7 +43,10 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
     {
         playerId: "u2",
         statistics: {
-            globalGrading: { grade: Grade.XF, accuracy: 0 },
+            wordsPerMinute: 3.7666666666666666,
+            wordsPerMinuteImprovement: -1.366666666666667,
+
+            globalGrading: { grade: Grade.F, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
@@ -76,7 +81,9 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
     {
         playerId: "u3",
         statistics: {
-            globalGrading: { grade: Grade.XF, accuracy: 0 },
+            wordsPerMinute: 4,
+            wordsPerMinuteImprovement: +2,
+            globalGrading: { grade: Grade.F, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
@@ -111,7 +118,9 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
     {
         playerId: "u4",
         statistics: {
-            globalGrading: { grade: Grade.XF, accuracy: 0 },
+            wordsPerMinute: 3,
+            wordsPerMinuteImprovement: 0,
+            globalGrading: { grade: Grade.F, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },

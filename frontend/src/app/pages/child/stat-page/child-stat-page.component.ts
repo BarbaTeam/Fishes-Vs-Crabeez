@@ -16,7 +16,7 @@ import { GameInfoService } from 'src/app/shared/services/game-info.service';
 import { User } from 'src/app/shared/models/user.model';
 import { PlayerResults, PlayerStatistics } from 'src/app/shared/models/player-results.model';
 import { QuestionNotion } from 'src/app/shared/models/question.model';
-import { Grade, Grading } from 'src/app/shared/models/results.model';
+import { Grading } from 'src/app/shared/models/results.model';
 import { GameLeaderboard } from 'src/app/shared/models/game-leaderboard.model';
 import { GameInfo } from 'src/app/shared/models/game-log.model';
 
@@ -41,7 +41,7 @@ type HistorySection = typeof Section[Extract<keyof typeof Section, `HISTORY_SECT
 type InvalidSectionData = undefined;
 type StatsSectionData = {
     playerStats: PlayerStatistics,
-    leaderboard: unknown, // TODO : Supporting global leaderboard
+    leaderboard: GameLeaderboard | undefined //unknown, // TODO : Supporting global leaderboard
 };
 type HistorySectionData = {
     gameInfo: GameInfo,
@@ -52,9 +52,9 @@ type HistorySectionData = {
 
 
 @Component({
-  selector: 'app-child-stat-page',
-  templateUrl: './child-stat-page.component.html',
-  styleUrl: './child-stat-page.component.scss',
+    selector: 'app-child-stat-page',
+    templateUrl: './child-stat-page.component.html',
+    styleUrl: './child-stat-page.component.scss',
 })
 export class ChildStatPageComponent implements OnInit {
     public user!: User;
