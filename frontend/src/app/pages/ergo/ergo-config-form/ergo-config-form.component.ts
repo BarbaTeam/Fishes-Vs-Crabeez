@@ -25,6 +25,7 @@ export class ErgoConfigFormComponent {
 
     validateUser(): void {
       const notions = [
+        this.userTemp.userConfig.numberRewrite,
         this.userTemp.userConfig.addition,
         this.userTemp.userConfig.soustraction,
         this.userTemp.userConfig.multiplication,
