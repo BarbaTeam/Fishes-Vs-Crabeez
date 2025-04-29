@@ -8,12 +8,18 @@
         routerLinkActive="active"
         >Configuration 
     </app-medium-button>
-    <app-medium-button class="navbar-button green" 
+    <app-medium-button 
+        class="navbar-button" 
+        [class.green]="isValid"
+        [class.grey]="!isValid"
         (click)="createUser()"
         >Créer
     </app-medium-button>
 
     <app-inner-box class="main-box blue">
-        
+        <app-user-config 
+            [user]="userBlank" 
+            (userTemp)="onUserTempChanged($event)">
+        </app-user-config>
     </app-inner-box>
 </app-template>

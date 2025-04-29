@@ -12,6 +12,8 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
 
     user!: User;
     userTemp!: User;
+    showSuccess = false;
+    showDeleted = false;
 
     constructor( private userService: UserService, private router: Router) {}
 
@@ -28,10 +30,25 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
     saveChanges(): void {
         if (this.userTemp) {
             this.userService.saveChanges(this.userTemp);
+            this.showSuccess = true;
+            setTimeout(() => {
+                this.showSuccess = false;
+            }, 2000);
         }
     }
 
     back(): void {
+        this.router.navigate(['/ergo-list']);
+    }
+
+    removeSafety(): void {
+        this.showDeleted = true;
+    }
+    putSafety(): void {
+        this.showDeleted = false;
+    }
+    removeUser(): void {
+        this.userService.removeUser(this.userTemp);
         this.router.navigate(['/ergo-list']);
     }
 }
