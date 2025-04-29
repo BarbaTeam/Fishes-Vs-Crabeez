@@ -1,10 +1,7 @@
 <app-template>
     <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button"
-        [routerLink]="['/ergo-stat-selected']"
-        routerLinkActive="active"
-    >
-        <p class="name"> {{user.name}} </p>
+    <app-medium-button class="navbar-button" [routerLink]="['/ergo-stat-selected']" routerLinkActive="active"><p class="name">
+        <app-user-card [user]="user" class="horizontal navbar"/>
     </app-medium-button>
     <app-medium-button class="navbar-button"
         [routerLink]="['/ergo-config-selected']"
