@@ -12,6 +12,7 @@ import { ErgoLobbyGameComponent } from './pages/ergo/lobby-game/ergo-lobby-game.
 import { ErgoConfigSelectedPageComponent } from './pages/ergo/config-selected-page/ergo-config-selected-page.component';
 import { ErgoStatSelectedPageComponent } from './pages/ergo/stat-selected-page/ergo-stat-selected-page.component';
 import { GameComponent } from './pages/child/game/game.component';
+import { ErgoConfigFormComponent } from './pages/ergo/ergo-config-form/ergo-config-form.component';
 
 const routes: Routes = [
   { path: "", component: WelcomePageComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: "child-stats", component: ChildStatPageComponent },
   { path: "child-lobby", component: ChildLobbyGameComponent },
   { path: "ergo-lobby", component: ErgoLobbyGameComponent },
+  { path: "ergo-config-form", component: ErgoConfigFormComponent },
   { path: "ergo-config-selected", component: ErgoConfigSelectedPageComponent },
   { path: "ergo-stat-selected", component: ErgoStatSelectedPageComponent },
   { path: "game", component: GameComponent}

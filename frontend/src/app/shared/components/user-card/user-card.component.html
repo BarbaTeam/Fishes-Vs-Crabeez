@@ -1,6 +1,8 @@
-<div class="icon">
-    <img src="../../assets/images/child-pps/{{user.icon}}" alt="icone de {{user.name}}">
-</div>
-<div class="name">
-    {{user.name}}
+<div class="usercard">
+    <div class="icon">
+        <img [src]="'../../assets/images/child-pps/' + user.icon" [alt]="'Icône de ' + user.name">
+    </div>
+    <div class="name">
+        {{ user.name }}
+    </div>
 </div>
