@@ -94,6 +94,20 @@
             <p>Statistiques Indisponible</p>
             <p>L'utilisateur n'a pas encore était évalué.</p>
         </ng-template>
+
+
+        <div class="badge-group">
+            <h3>Badges acquis :</h3>
+        
+            <span class="badge-list">
+                <img class="badge" src="../../../../assets/images//icons/crab_killer_trophy.png" alt="Eliminer 200 crabes" title="Eliminer 200 crabes">
+                <img class="badge" src="../../../../assets/images//icons/defender_trophy.png" alt="Vous avez atteint un score de plus de 1000 points" title="Vous avez atteint un score de plus de 1000 points">
+                <img class="badge" src="../../../../assets/images//icons/zap_trophy.png" alt="Vous êtes sorti de l'état électrique 50 fois" title="Vous êtes sorti de l'état électrique 50 fois">
+            </span>
+        </div>
+
+
+
     </app-inner-box>
 
     <app-inner-box *ngIf="isInStatsSection()  && user.userConfig.leaderBoard" class="main-box blue little">
@@ -136,6 +150,16 @@
             Mot par minute :
             {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
         </p>
+
+        <div class="badge-group">
+            <h3>Récompenses acquises :</h3>
+        
+            <span class="badge-list">
+                <img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
+                <img class="badge" src="../../../../assets/images//icons/silver_trophy.png" alt="Vous avez eu un très bon score" title="Vous avez eu un très bon score">
+                <img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez fait de votre mieux" title="Vous avez fait de votre mieux et vous êtes récompensés pour ça">
+            </span>
+        </div>
     </app-inner-box>
 
     <app-inner-box *ngIf="isInHistorySections() && user.userConfig.leaderBoard" class="main-box blue little">
