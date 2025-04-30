@@ -63,3 +63,76 @@
 #layer1 {
     display: none;
 }
+
+.end-game-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    background: linear-gradient(135deg, #7382d6, #7b87ce);
+    color: #fff;
+    padding: 2rem 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    z-index: 10;
+    font-family: 'Segoe UI', sans-serif;
+    animation: fadeInUp 0.8s ease-out;
+    width: 20vw;
+    height: 50vh;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .end-game-box .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .end-game-box .message {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .end-game-box .score {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+
+  .badge{
+    height: 4rem;
+    width: 4rem;
+}
+
+.badge-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap; 
+    margin-bottom: 1.5rem;
+  }
+
+
+
+.voile{
+    z-index: 2;
+    background-color: #0000005e;
+    height: 100vh;
+    width: 100vw;
+}

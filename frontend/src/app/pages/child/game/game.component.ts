@@ -44,13 +44,13 @@ export class GameComponent implements OnInit, OnDestroy {
     private gameEngine!: GameEngine;
 
     public score: number;
-    private hasEnded: boolean;
+    public hasEnded: boolean;
 
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors & Destructors :
 
-    constructor(private userService: UserService) {
+    constructor(private userService: UserService, private router: Router) {
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;
         });
@@ -67,7 +67,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
         this.score = 0;
 
-        this.hasEnded = false;
+        this.hasEnded = true;
     }
 
     ngOnInit(): void {
@@ -167,6 +167,10 @@ export class GameComponent implements OnInit, OnDestroy {
     ////////////////////////////////////////////////////////////////////////////
     // Actions :
 
+    public set end(bool: boolean){
+        this.hasEnded = bool;
+    }
+
     private gotoStart(): void {
         this.cursorPosition = 0;
     }
@@ -239,14 +243,14 @@ export class GameComponent implements OnInit, OnDestroy {
         this.audio.play();
     }
 
-    private stopAudio(): void {
+    public stopAudio(): void {
         if (this.audio) {
             this.audio.pause();
             this.audio.currentTime = 0; 
         }
     }
 
-    private encryptAudio: HTMLAudioElement | null = null;
+    public encryptAudio: HTMLAudioElement | null = null;
     private hasDecryptAudio: boolean = true;
     private setupEncryptAudio(): void {
         if(this.questionNotion === "ENCRYPTION"){
@@ -258,7 +262,7 @@ export class GameComponent implements OnInit, OnDestroy {
         }
     }
 
-    private stopEncryptAudio(): void {
+    public stopEncryptAudio(): void {
         if (this.encryptAudio) {
             this.encryptAudio.pause();
             this.encryptAudio.currentTime = 0; 
@@ -323,6 +327,10 @@ export class GameComponent implements OnInit, OnDestroy {
         }
         this.updateInputs();
     }
+
+    public back(){
+        this.router.navigate(['/child-play']);
+    }
 }
 
 
@@ -332,6 +340,7 @@ export class GameComponent implements OnInit, OnDestroy {
 ////////////////////////////////////////////////////////////////////////////////
 
 import { num2words_fr, filterOnMask, randint } from "src/utils";
+import { Router } from '@angular/router';
 
 export class QuestionsGenerator {
     private static _chooseNotion(mask: boolean[]): QuestionNotion {
