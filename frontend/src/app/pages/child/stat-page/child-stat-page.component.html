@@ -4,14 +4,23 @@
     ---                              NAVBAR                                  ---
     --------------------------------------------------------------------------->
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active"><p class="name">
-        <app-user-card [user]="user" class="horizontal navbar"/>
+    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active">
+        <p class="name">
+            <app-user-card [user]="user" class="horizontal navbar"/>
+        </p>
     </app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active"> Jouer </app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active"> Configuration </app-medium-button>
+
+    <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active">
+        Jouer
+    </app-medium-button>
+
+    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active">
+        Configuration
+    </app-medium-button>
 
 
-        <!--------------------------------------------------------------------------
+
+    <!--------------------------------------------------------------------------
     ---                               MAIN                                   ---
     --------------------------------------------------------------------------->
 
@@ -87,9 +96,9 @@
         </ng-template>
     </app-inner-box>
 
-    <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
+    <app-inner-box *ngIf="isInStatsSection()  && user.userConfig.leaderBoard" class="main-box blue little">
         <h1 class="title">Classement</h1>
-        <ng-container *ngIf="sectionData.leaderboard !== undefined && user.userConfig.leaderBoard; else noLeaderboard">
+        <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
             <app-user-card
                 *ngFor="let lbuserId of sectionData.leaderboard.ranking"
                 [userId]="lbuserId"
@@ -127,11 +136,11 @@
             Mot par minute :
             {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
         </p>
-
     </app-inner-box>
-    <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
+
+    <app-inner-box *ngIf="isInHistorySections() && user.userConfig.leaderBoard" class="main-box blue little">
         <h1 class="title">Classment</h1>
-        <ng-container *ngIf="sectionData.leaderboard !== undefined && user.userConfig.leaderBoard; else noLeaderboard">
+        <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
             <app-user-card
                 *ngFor="let lbuserId of sectionData.leaderboard.ranking"
                 [userId]="lbuserId"
