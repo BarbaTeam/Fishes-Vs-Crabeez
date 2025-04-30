@@ -1,0 +1,80 @@
+
+<div class="header" (click)="toogle()">
+    <img
+        class="avatar"
+        [src]="'../../assets/images/child-pps/' + user.icon"
+        [alt]="'Icône de ' + user.name"
+    />
+    <span class="name">{{ user.name }}</span>
+    <button class="toggle-btn" aria-label="Toggle details">
+        {{ isUnrolled() ? '－' : '＋' }}
+    </button>
+</div>
+
+<div class="content" *ngIf="isUnrolled()">
+    <span >
+        Réécriture des nombres :
+        <app-settings-toggle [(checked)]="user.userConfig.numberRewrite"/>
+    </span>
+
+    <span>
+        Addition :
+        <app-settings-toggle [(checked)]="user.userConfig.addition"/>
+    </span>
+
+    <span>
+        Soustraction :
+        <app-settings-toggle [(checked)]="user.userConfig.soustraction"/>
+    </span>
+
+    <span>
+        Multiplication :
+        <app-settings-toggle [(checked)]="user.userConfig.multiplication"/>
+    </span>
+
+    <span>
+        Division :
+        <app-settings-toggle [(checked)]="user.userConfig.division"/>
+    </span>
+</div>
+
+
+
+<!--
+    <app-user-card
+    [user] = "user"
+    class="usercard horizontal"
+    />
+
+
+    <button class="toggle-btn" (click)="toogle()">
+        {{ isUnrolled() ? '－' : '＋' }}
+    </button>
+
+    <div class="content" *ngIf="isUnrolled()">
+        <span >
+            Réécriture des nombres :
+            <app-settings-toggle [(checked)]="user.userConfig.numberRewrite"/>
+        </span>
+
+        <span>
+            Addition :
+            <app-settings-toggle [(checked)]="user.userConfig.addition"/>
+        </span>
+
+        <span>
+            Soustraction :
+            <app-settings-toggle [(checked)]="user.userConfig.soustraction"/>
+        </span>
+
+        <span>
+            Multiplication :
+            <app-settings-toggle [(checked)]="user.userConfig.multiplication"/>
+        </span>
+
+        <span>
+            Division :
+            <app-settings-toggle [(checked)]="user.userConfig.division"/>
+        </span>
+    </div>
+-->
