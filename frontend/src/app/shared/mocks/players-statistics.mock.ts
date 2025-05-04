@@ -55,14 +55,14 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             wordsPerMinute: 3.7666666666666666,
             wordsPerMinuteImprovement: -1.366666666666667,
 
-            globalGrading: { grade: Grade.XF, accuracy: 0 },
+            globalGrading: { grade: Grade.F, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
                 SUBSTRACTION:   { grade: Grade.XF, accuracy: 0 },
                 MULTIPLICATION: { grade: Grade.XF, accuracy: 0 },
                 DIVISION:       { grade: Grade.XF, accuracy: 0 },
-                REWRITING:      { grade: Grade.XF, accuracy: 0 },
+                REWRITING:      { grade: Grade.A, accuracy: 0 },
                 ENCRYPTION:     { grade: Grade.XF, accuracy: 0 },
                 EQUATION:       { grade: Grade.XF, accuracy: 0 },
             },

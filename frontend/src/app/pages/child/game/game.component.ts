@@ -67,7 +67,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
         this.score = 0;
 
-        this.hasEnded = true;
+        this.hasEnded = false;
     }
 
     ngOnInit(): void {
@@ -212,6 +212,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.gameEngine.answerCorrectly(this.gameEngine.playerInstance);
         }
         this.question = QuestionsGenerator.genQuestion(this.questionMask);
+        this.inputs = [];
         this.setupEncryptAudio();
 
         if (this.question === undefined) {
@@ -423,6 +424,10 @@ export class QuestionsGenerator {
                     answer: this._genEncryptedString(length),
                     notion: notion,
                 };
+            
+            case QuestionNotion.EQUATION :
+                // TODO : One day
+                return this.genQuestion(notionMask);
 
             default:
                 const operator = this._convertNotionToOperator(notion);

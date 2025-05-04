@@ -30,7 +30,7 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
     }
 
     saveChanges(): void {
-        if (this.userTemp) {
+        if (this.userTemp && this.isValid) {
             this.userService.saveChanges(this.userTemp);
             this.showSuccess = true;
             setTimeout(() => {
@@ -56,24 +56,24 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
 
     validateUser(): void {
         const notions = [
-          this.userTemp.userConfig.numberRewrite,
-          this.userTemp.userConfig.addition,
-          this.userTemp.userConfig.soustraction,
-          this.userTemp.userConfig.multiplication,
-          this.userTemp.userConfig.division,
-          this.userTemp.userConfig.encryption,
-          this.userTemp.userConfig.equation
+            this.userTemp.userConfig.numberRewrite,
+            this.userTemp.userConfig.addition,
+            this.userTemp.userConfig.soustraction,
+            this.userTemp.userConfig.multiplication,
+            this.userTemp.userConfig.division,
+            this.userTemp.userConfig.encryption,
+            this.userTemp.userConfig.equation
         ];
         console.log('Notions:', notions);
         const atLeastOneNotionSelected = notions.some(n => n === true);
-  
+
         this.isValid =
-          !!this.userTemp &&
-          this.userTemp.name.trim().length > 0 &&
-          this.userTemp.icon !== 'unknown.png' &&
-          this.userTemp.age !== '' &&
-          !isNaN(Number(this.userTemp.age)) &&
-          Number(this.userTemp.age) > 0 &&
-          atLeastOneNotionSelected;
-      }
+            !!this.userTemp &&
+            this.userTemp.name.trim().length > 0 &&
+            this.userTemp.icon !== 'unknown.png' &&
+            this.userTemp.age !== '' &&
+            !isNaN(Number(this.userTemp.age)) &&
+            Number(this.userTemp.age) > 0 &&
+            atLeastOneNotionSelected;
+    }
 }
