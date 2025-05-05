@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 
 
@@ -7,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
     templateUrl: './rollable-box.component.html',
     styleUrl: './rollable-box.component.scss',
 })
-export class RollableBoxComponent implements OnInit{
+export class RollableBoxComponent {
 
     @Input()
     title!: string;
@@ -16,10 +16,6 @@ export class RollableBoxComponent implements OnInit{
 
     public isUnrolled(): boolean {
         return this._isUnrolled;
-    }
-
-    ngOnInit(): void {
-        console.log(`title: ${this.title}`);
     }
 
     public toggle(): void {

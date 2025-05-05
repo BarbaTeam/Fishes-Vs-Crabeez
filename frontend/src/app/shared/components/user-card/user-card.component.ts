@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { UserService } from '../../services/user.service';
 
@@ -20,7 +20,9 @@ export class UserCardComponent implements OnInit {
     @Input()
     userId?: UserID
 
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService
+    ) {}
 
     ngOnInit(): void {
         if (this.userId) {

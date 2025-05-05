@@ -20,11 +20,11 @@
 
         <div *ngIf="showIconSelector" class="icon-selector">
             <img
-            *ngFor="let icon of availableIcons"
-            [src]="'../../assets/images/child-pps/' + icon"
-            [alt]="icon"
-            class="icon-option"
-            (click)="selectIcon(icon)"
+                *ngFor="let icon of availableIcons"
+                [src]="'../../assets/images/child-pps/' + icon"
+                [alt]="icon"
+                class="icon-option"
+                (click)="selectIcon(icon)"
             />
         </div>
     </div>
@@ -34,12 +34,18 @@
 
         <span>
             Taille de la police :
-            <app-settings-slider [(value)]="localUserTemp.userConfig.fontSize" (valueChange)="onChange()"></app-settings-slider>
+            <app-settings-slider
+                [(value)]="localUserTemp.userConfig.fontSize"
+                (valueChange)="onChange()"
+            />
         </span>
 
         <span>
             Son :
-            <app-settings-slider [(value)]="localUserTemp.userConfig.sound" (valueChange)="onChange()"></app-settings-slider>
+            <app-settings-slider
+                [(value)]="localUserTemp.userConfig.sound"
+                (valueChange)="onChange()"
+            />
         </span>
     </div>
 
@@ -48,27 +54,42 @@
 
         <span>
             LeaderBoard :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.leaderBoard" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.leaderBoard"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
             Statistiques avancées :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.advancedStats" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.advancedStats"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
             Aide à la lecture :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.readingAssistance" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.readingAssistance"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
             Réponses affichées :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.showsAnswer" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.showsAnswer"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
             Questions cryptées :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.encryption" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.encryption"
+                (checkedChange)="onChange()"
+            />
         </span>
     </div>
 
@@ -77,27 +98,42 @@
 
         <span >
             Réécriture des nombres :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.numberRewrite" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.numberRewrite"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span>
             Addition :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.addition" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.addition"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span>
             Soustraction :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.soustraction" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.soustraction"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span>
             Multiplication :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.multiplication" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.multiplication"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span>
             Division :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.division" (checkedChange)="onChange()"></app-settings-toggle>
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.division"
+                (checkedChange)="onChange()"
+            />
         </span>
     </div>
 </div>

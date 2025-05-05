@@ -6,8 +6,8 @@ export class Turtle {
 
     private x: number;
     private y: number;
-    private width: number; 
-    private height: number; 
+    private width: number;
+    private height: number;
     private frontSeats: Player[];
     private middleSeats: Player[];
     private backSeats: Player[];
@@ -15,7 +15,10 @@ export class Turtle {
 
     private image: HTMLImageElement;
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement) {
+    constructor(
+        private gameEngine: GameEngine,
+        private canvas: HTMLCanvasElement
+    ) {
         this.gameEngine = gameEngine;
 
         this.x = this.canvas.width / 2- 100;
@@ -29,11 +32,11 @@ export class Turtle {
 
         this.image = new Image();
         this.image.src = "../../../../assets/images/game/player/turtle_64x64.png";
-    }   
+    }
 
     public get position(): {x:number, y:number} {
         return {x: this.x, y: this.y};
-    }  
+    }
 
     public update(): void {
     }

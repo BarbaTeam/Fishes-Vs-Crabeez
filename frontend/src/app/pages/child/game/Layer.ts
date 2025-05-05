@@ -3,12 +3,17 @@ import { GameEngine } from "./game-engine";
 export class Layer{
     private image: HTMLImageElement;
     private speedModifier: number;
-    private width: number; 
-    private height: number; 
+    private width: number;
+    private height: number;
     private x: number;
     private y: number;
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement, image: HTMLImageElement, speedModifier: number) {
+    constructor(
+        private gameEngine: GameEngine,
+        private canvas: HTMLCanvasElement,
+        image: HTMLImageElement,
+        speedModifier: number
+    ) {
         this.gameEngine = gameEngine;
         this.canvas = canvas;
         this.image = image;
@@ -17,7 +22,7 @@ export class Layer{
         this.height = 256;
         this.x=0;
         this.y=this.canvas.height - this.height;
-    }   
+    }
 
     update(): void {
         if(this.x <= -this.width) this.x = 0;

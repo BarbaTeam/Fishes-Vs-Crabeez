@@ -2,7 +2,7 @@ import { Enemy } from "./Enemy";
 import { GameEngine } from "./game-engine";
 
 export class Drone extends Enemy {
-     
+
     private image: HTMLImageElement;
 
     constructor(gameEngine: GameEngine,  canvas: HTMLCanvasElement, x?: number, y?: number, side?: number) {
@@ -12,7 +12,7 @@ export class Drone extends Enemy {
         this.image.src = "../../../../assets/images/game/enemy/drone_32x32.png";
         this.speed *= 1.3;
         this.score *= 0.5
-    }   
+    }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         const scaledWidth = this.width * 0.9;

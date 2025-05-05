@@ -14,13 +14,13 @@ git clone git@github.com:2019-2020-ps6/2023-2024-ps6-NAME_OF_YOUR_TEAM.git
 
 3) Install the dependencies
 
-Open command prompt inside the cloned repository and run: 
+Open command prompt inside the cloned repository and run:
 
 ```
 npm install
 ```
 
-If you have an error saying that npm is not a known command, it means that NodeJS is not installed. 
+If you have an error saying that npm is not a known command, it means that NodeJS is not installed.
 
 4) Install angular/cli
 
@@ -59,17 +59,17 @@ Before running the tests, you need to run your front-end and back-end:
 
 ## Angular documentation
 
-The best documentation is the [Official Angular Documentation](https://angular.io/docs). 
+The best documentation is the [Official Angular Documentation](https://angular.io/docs).
 It contains everything and it is always up to date.
 
-#### Important note 
-We are working with Angular version 2+ (here Angular 8). When you look for some documentation, add "Angular 2" in your 
-research to be sure to find the right documentation. You might find documentation about AngularJS, run if it's the case! 
+#### Important note
+We are working with Angular version 2+ (here Angular 8). When you look for some documentation, add "Angular 2" in your
+research to be sure to find the right documentation. You might find documentation about AngularJS, run if it's the case!
 It's a very old version totally different from our version.
 
 ## Documentation - Links
 
-Documentation Angular: 
+Documentation Angular:
 
 - [Directives](https://angular.io/docs/ts/latest/guide/attribute-directives.html)
 - [Pipes](https://angular.io/docs/ts/latest/guide/pipes.html)
@@ -86,7 +86,7 @@ Documentation on Observables:
 
 ## Questions?
 
-Any question? Do not hesitate to contact us on slack for any question. 
+Any question? Do not hesitate to contact us on slack for any question.
 
 ## Additional commands available
 

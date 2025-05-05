@@ -1,12 +1,15 @@
 import { GameEngine } from "./game-engine";
 
 export class Ui{
-    
+
     private fontSize: number;
     private fontFamily: string;
     private fontColor: string;
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement) {
+    constructor(
+        private gameEngine: GameEngine,
+        private canvas: HTMLCanvasElement
+    ) {
         this.gameEngine = gameEngine;
         this.fontSize = 50;
         this.fontFamily = 'Roboto, sans-serif';

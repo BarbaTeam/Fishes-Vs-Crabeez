@@ -22,7 +22,9 @@ export class PlayerInLobbyComponent implements OnInit {
 
     private _isUnrolled: boolean = false;
 
-    constructor(private userService: UserService) {}
+    constructor(
+        private userService: UserService
+    ) {}
 
 
     ngOnInit(): void {

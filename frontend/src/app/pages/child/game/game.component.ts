@@ -1,10 +1,13 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
 
-import { Question, QuestionNotion } from 'src/app/shared/models/question.model';
-import { MOCK_QUESTIONS } from 'src/app/shared/mocks/question.mock';
-import { User } from 'src/app/shared/models/user.model';
 import { UserService } from 'src/app/shared/services/user.service';
 import { GameEngine } from './game-engine';
+
+import { User } from 'src/app/shared/models/user.model';
+import { Question, QuestionNotion } from 'src/app/shared/models/question.model';
+
+import { MOCK_QUESTIONS } from 'src/app/shared/mocks/question.mock';
+
 
 
 type Input = {
@@ -38,7 +41,7 @@ export class GameComponent implements OnInit, OnDestroy {
     public inputs: Input[] = [];
 
     public cursorPosition: number;
-    
+
     @ViewChild('headerRef') headerRef!: ElementRef<HTMLElement>;
     @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
     private gameEngine!: GameEngine;
@@ -50,7 +53,10 @@ export class GameComponent implements OnInit, OnDestroy {
     ////////////////////////////////////////////////////////////////////////////
     // Constructors & Destructors :
 
-    constructor(private userService: UserService, private router: Router) {
+    constructor(
+        private userService: UserService,
+        private router: Router
+    ) {
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;
         });
@@ -247,7 +253,7 @@ export class GameComponent implements OnInit, OnDestroy {
     public stopAudio(): void {
         if (this.audio) {
             this.audio.pause();
-            this.audio.currentTime = 0; 
+            this.audio.currentTime = 0;
         }
     }
 
@@ -266,7 +272,7 @@ export class GameComponent implements OnInit, OnDestroy {
     public stopEncryptAudio(): void {
         if (this.encryptAudio) {
             this.encryptAudio.pause();
-            this.encryptAudio.currentTime = 0; 
+            this.encryptAudio.currentTime = 0;
             let decryptAudio = new Audio('../../../../assets/sons/decrypted.mp3');
             decryptAudio.volume = 0.5 * this.user.userConfig.sound;
             decryptAudio.play();
@@ -403,7 +409,7 @@ export class QuestionsGenerator {
         }
         return ret;
     }
- 
+
     // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
     public static genQuestion(notionMask: boolean[] = [true, true, false, false, false, false, false]): Question {
         const notion = this._chooseNotion(notionMask);
@@ -424,7 +430,7 @@ export class QuestionsGenerator {
                     answer: this._genEncryptedString(length),
                     notion: notion,
                 };
-            
+
             case QuestionNotion.EQUATION :
                 // TODO : One day
                 return this.genQuestion(notionMask);
@@ -446,7 +452,6 @@ export class QuestionsGenerator {
 
 class AnswerChecker {
     public static checkAnswer(proposed_answer: string, question: Question): boolean {
-        console.log(`is correct : ${proposed_answer === question.answer}`);
         return proposed_answer === question.answer;
     }
 }

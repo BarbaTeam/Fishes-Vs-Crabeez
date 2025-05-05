@@ -6,8 +6,8 @@ export class Player {
 
     private x: number;
     private y: number;
-    private width: number; 
-    private height: number; 
+    private width: number;
+    private height: number;
     private seat: number;
     private hasChangedSeat: boolean;
     private angle: number = 0;
@@ -16,7 +16,10 @@ export class Player {
     private decryptedImage: HTMLImageElement;
     private encryptedImage: HTMLImageElement;
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement) {
+    constructor(
+        private gameEngine: GameEngine,
+        private canvas: HTMLCanvasElement
+    ) {
         this.gameEngine = gameEngine;
 
         this.x = this.canvas.width / 2 - 50;
@@ -34,11 +37,11 @@ export class Player {
         this.encryptedImage.src = "../../../../assets/images/game/player/yellow_fish_encrypted.png";
 
         document.addEventListener("keydown", this.keydownHandler);
-    }   
-    
+    }
+
     public get position(): {x:number, y:number} {
         return {x: this.x, y: this.y};
-    }  
+    }
 
     public get seatValue(): number {
         return this.seat;
@@ -71,7 +74,7 @@ export class Player {
     public shoot(): void {
         if(this.gameEngine.questionNotion !== "ENCRYPTION")
             this.projectiles.push(new Projectile(this.gameEngine, this));
-    }   
+    }
 
     public update(): void {
         if(this.hasChangedSeat) {
@@ -97,7 +100,7 @@ export class Player {
             projectile.update();
         });
         this._projectiles = this.projectiles.filter(projectile => !projectile.isMarkedForDeletion);
-    }    
+    }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         const target = this.gameEngine.closestEnemy(this.seat);
@@ -110,15 +113,15 @@ export class Player {
             this.angle = 0;
         }
 
-        ctx.save(); 
-        ctx.translate(this.x + this.width / 2, this.y + this.height / 2); 
+        ctx.save();
+        ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
 
         if (this.angle > Math.PI / 2 || this.angle < -Math.PI / 4) {
-            ctx.scale(-1, 1); 
-            this.angle = -this.angle - Math.PI/2; 
+            ctx.scale(-1, 1);
+            this.angle = -this.angle - Math.PI/2;
         }
 
-        ctx.rotate(this.angle); 
+        ctx.rotate(this.angle);
 
 
         if (this.gameEngine.questionNotion == "ENCRYPTION"){

@@ -1,6 +1,16 @@
 <app-template>
-    <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button" [routerLink]="['/child-lobby']" routerLinkActive="active">Lancement de la partie</app-medium-button>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-lobby']"
+        routerLinkActive="active"
+    >
+        Lancement de la partie
+    </app-medium-button>
 
     <!--Zone du main -->
     <app-inner-box class="main-box blue little">

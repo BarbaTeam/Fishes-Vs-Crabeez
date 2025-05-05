@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 import { UserService } from "./user.service";
-import { LocalStorageService } from "./localStorage.service";
+import { LocalStorageService } from "./local-storage.service";
 
 import { User } from "../models/user.model";
 import { PlayerResults } from "../models/player-results.model";
@@ -24,14 +24,14 @@ export class PlayerResultsService {
 
     // Internal State :
     private user!: User;
-    private _playerResultsList: PlayerResults[];
+    private _playerResultsList: PlayerResults[] = [] as PlayerResults[];
 
 
     // Public Observables :
     public readonly isLoading$: BehaviorSubject<boolean>
         = new BehaviorSubject(false);
     public readonly playerResultsList$: BehaviorSubject<PlayerResults[]>
-        = new BehaviorSubject([] as PlayerResults[]);
+        = new BehaviorSubject(this._playerResultsList);
 
 
     constructor(
@@ -39,8 +39,6 @@ export class PlayerResultsService {
         private userService: UserService,
         private localStorageService: LocalStorageService,
     ) {
-        this._playerResultsList = [];
-
         const saved = this.localStorageService.getData(
             PlayerResultsService.LocalStorageKey.PLAYER_RESULTS_LIST
         );
@@ -86,7 +84,6 @@ export class PlayerResultsService {
      * corresponding to the selected user.
      */
     private async _fetchLatestPlayerResults(): Promise<PlayerResults[]> {
-        // TODO : Directly asking for the 5 latest player results instead of fetching them all
         // TODO : Replacing usage of local mocks w/ HTTP requests
 
         const ret: PlayerResults[] = MOCK_PLAYERS_RESULTS

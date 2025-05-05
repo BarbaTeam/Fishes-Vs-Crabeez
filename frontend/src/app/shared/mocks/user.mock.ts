@@ -4,7 +4,7 @@ export const MOCK_USER: User[] = [
     {
         userId:"u1",
         name: "Eli KOPTER",
-        age: "9",
+        age: 9,
         icon: "red_fish.png",
         userConfig: {
             showsAnswer: true,
@@ -19,12 +19,12 @@ export const MOCK_USER: User[] = [
             multiplication: true,
             division: true,
             encryption: true,
-            equation: true,
+            equation: false,
         }
     }, {
         userId:"u2",
         name: "patrick BATMAN",
-        age: "9",
+        age: 9,
         icon: "yellow_fish.png",
         userConfig: {
             showsAnswer: false,
@@ -43,7 +43,7 @@ export const MOCK_USER: User[] = [
     }, {
         userId:"u3",
         name: "Petelo WAWAZI",
-        age: "9",
+        age: 9,
         icon: "blue_fish.png",
         userConfig: {
             showsAnswer: true,
@@ -58,12 +58,12 @@ export const MOCK_USER: User[] = [
             multiplication: true,
             division: true,
             encryption: true,
-            equation: true,}
+            equation: false,}
     }, {
 
         userId:"u4",
         name: "Camille RITELECU",
-        age: "9",
+        age: 9,
         icon: "turtle.png",
         userConfig: {
             showsAnswer: true,
@@ -78,6 +78,6 @@ export const MOCK_USER: User[] = [
             multiplication: true,
             division: true,
             encryption: true,
-            equation: true,}
+            equation: false,}
     }
 ]

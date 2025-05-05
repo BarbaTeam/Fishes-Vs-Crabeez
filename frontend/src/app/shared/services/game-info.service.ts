@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { LocalStorageService } from './localStorage.service';
+import { LocalStorageService } from './local-storage.service';
 
 import { GameInfo } from '../models/game-log.model';
 import { GameID } from '../models/ids';
@@ -19,24 +19,19 @@ export class GameInfoService {
         GAME_INFO_MAP: "gameInfoMap"
     } as const;
 
-
     // Internal State :
-    private _gameInfoMap = new Map<GameID, GameInfo>();
-    private _subject = new BehaviorSubject<Map<GameID, GameInfo>>(
-        new Map()
-    );
+    private _gameInfoMap: Map<GameID, GameInfo> = new Map();
 
 
-    // Public Observables :
-    public readonly gameInfoMap$ = this._subject.asObservable();
+    // Internal Observable :
+    private _gameInfoMap$: BehaviorSubject<Map<GameID, GameInfo>>
+        = new BehaviorSubject(this._gameInfoMap);
 
 
     constructor(
         // private http: HttpClient,
         private localStorage: LocalStorageService,
     ) {
-        this._gameInfoMap = new Map();
-
         const saved = this.localStorage.getData(
             GameInfoService.LocalStorageKey.GAME_INFO_MAP
         );
@@ -50,7 +45,7 @@ export class GameInfoService {
             }
         }
 
-        this._subject.next(this._gameInfoMap);
+        this._gameInfoMap$.next(this._gameInfoMap);
     }
 
 
@@ -58,9 +53,7 @@ export class GameInfoService {
      * @returns A promise resolving to the leaderboard corresponding to the game
      * if there is one, otherwise it resolves to `undefined`.
      */
-    private async _fetchGameInfo(gameId: GameID)
-        : Promise<GameInfo|undefined>
-    {
+    private async _fetchGameInfo(gameId: GameID): Promise<GameInfo|undefined> {
         // TODO : Replacing usage of local mocks w/ HTTP requests
 
         let ret = MOCK_GAMES_INFO.find(
@@ -87,7 +80,7 @@ export class GameInfoService {
     {
         if (this._gameInfoMap.has(gameId)) {
             // Early return as the leaderboard has already been cached
-            return this.gameInfoMap$.pipe(
+            return this._gameInfoMap$.pipe(
                 map(m => m.get(gameId))
             );
         }
@@ -95,7 +88,7 @@ export class GameInfoService {
         from(this._fetchGameInfo(gameId)).pipe(
             tap(result => {
                 if (!result) {
-                    this._subject.next(this._gameInfoMap);
+                    this._gameInfoMap$.next(this._gameInfoMap);
                     return;
                 }
 
@@ -104,15 +97,13 @@ export class GameInfoService {
                     GameInfoService.LocalStorageKey.GAME_INFO_MAP,
                     JSON.stringify([...this._gameInfoMap.entries()]),
                 );
-                this._subject.next(this._gameInfoMap);
+                this._gameInfoMap$.next(this._gameInfoMap);
             }),
             catchError(() => [undefined]),
         ).subscribe();
 
-        let ret = this.gameInfoMap$.pipe(
+        return this._gameInfoMap$.pipe(
             map(m => m.get(gameId))
         );
-
-        return ret;
     }
 }

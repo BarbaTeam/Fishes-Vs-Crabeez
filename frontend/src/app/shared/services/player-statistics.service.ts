@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 
 import { UserService } from "./user.service";
-import { LocalStorageService } from "./localStorage.service";
+import { LocalStorageService } from "./local-storage.service";
 
 import { User } from "../models/user.model";
 import { PlayerStatistics } from "../models/player-results.model";
@@ -24,21 +24,19 @@ export class PlayerStatisticsService {
 
     // Internal State :
     private user!: User;
-    private _playerStatistics: PlayerStatistics;
+    private _playerStatistics: PlayerStatistics = {} as PlayerStatistics;
 
     // Public Observables :
     public readonly isLoading$: BehaviorSubject<boolean>
         = new BehaviorSubject(false);
     public readonly playerStatistics$: BehaviorSubject<PlayerStatistics>
-        = new BehaviorSubject({} as PlayerStatistics);
+        = new BehaviorSubject(this._playerStatistics);
 
     constructor(
         // private http: HttpClient,
         private userService: UserService,
         private localStorageService: LocalStorageService,
     ) {
-        this._playerStatistics = {} as PlayerStatistics;
-
         const saved = this.localStorageService.getData(
             PlayerStatisticsService.LocalStorageKey.PLAYER_STATISTICS
         );

@@ -2,7 +2,7 @@ import { Enemy } from "./Enemy";
 import { GameEngine } from "./game-engine";
 
 export class Crab extends Enemy {
-     
+
     private image: HTMLImageElement;
 
     constructor(gameEngine: GameEngine,  canvas: HTMLCanvasElement, x?: number, y?: number) {
@@ -10,7 +10,7 @@ export class Crab extends Enemy {
 
         this.image = new Image();
         this.image.src = "../../../../assets/images/game/enemy/crab_32x32.png";
-    }   
+    }
 
     public draw(ctx: CanvasRenderingContext2D): void {
         const scaledWidth = this.width * 1.5;

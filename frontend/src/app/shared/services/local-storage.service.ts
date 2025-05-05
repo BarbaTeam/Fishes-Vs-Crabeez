@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 
+
+/**
+ * Service to ease the use of the local storage.
+ */
 @Injectable({
     providedIn: 'root'
 })

@@ -1,17 +1,28 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild, AfterViewInit } from '@angular/core';
 
+
+
 @Component({
     selector: 'app-settings-slider',
     templateUrl: './settings-slider.component.html',
     styleUrls: ['./settings-slider.component.scss']
 })
 export class SettingsSliderComponent implements AfterViewInit {
-    @Input() value: number = 0; 
-    @Output() valueChange = new EventEmitter<number>();
+    @Input()
+    value: number = 0;
 
-    @ViewChild('slider') sliderRef!: ElementRef;
-    @ViewChild('head') headRef!: ElementRef;
-    @ViewChild('line') lineRef!: ElementRef;
+    @Output()
+    valueChange = new EventEmitter<number>();
+
+    @ViewChild('slider')
+    sliderRef!: ElementRef;
+
+    @ViewChild('head')
+    headRef!: ElementRef;
+
+    @ViewChild('line')
+    lineRef!: ElementRef;
+
 
     isDragging = false;
 
