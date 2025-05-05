@@ -4,34 +4,35 @@ const router = new Router();
 const Manager = require('./manager')
 
 ////////////////////////////////////////////////////////////////////////////////
-// AFFICHER TOUT LES USERS :
+// AFFICHER TOUTES LES GAMELEADERBOARD :
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Manager.getUsers());
+        res.status(200).json(Manager.getGameLeaderboards());
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get('/:userId', (req, res) => {
+router.get('/:gameLeaderboardId', (req, res) => {
     try {
-        res.status(200).json(Manager.getUserById(req.params.userId));
+        res.status(200).json(Manager.getGameLeaderboardById(req.params.gameLeaderboardId));
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// CREER UN USER :
+// CREER UNE GAMELEADERBOARD :
 
 router.post('/', (req, res) =>{
     try {
-        res.status(201).json(Manager.createUser(req.body));
+        res.status(201).json(Manager.createGameLeaderboard(req.body));
     } catch (err) {
         if (err.name === 'ValidationError'){
             res.status(400).json(err.extra);
         } else {
+            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -39,11 +40,11 @@ router.post('/', (req, res) =>{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// METTRE A JOUR UNE QUESTION :
+// METTRE A JOUR UNE GAMELEADERBOARD :
 
-router.put('/:userId', (req, res) => {
+router.put('/:gameLeaderboardId', (req, res) => {
     try {
-      res.status(200).json(Manager.updateUser(req.params.userId, req.body))
+      res.status(201).json(Manager.updateGameLeaderboard(req.params.gameLeaderboardId, req.body))
     } catch (err) {
       manageAllErrors(res, err)
     }
@@ -51,11 +52,11 @@ router.put('/:userId', (req, res) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// DELETE UN USER :
+// DELETE UNE GAMELEADERBOARD :
 
-router.delete('/:userId', (req, res) =>{
+router.delete('/:gameLeaderboardId', (req, res) =>{
     try {
-        Manager.deleteUser(req.params.userId);
+        Manager.deleteGameLeaderboard(req.params.gameLeaderboardId);
         res.status(204).end();
     } catch (err) {
         res.status(500).json(err);

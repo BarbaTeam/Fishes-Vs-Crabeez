@@ -4,34 +4,35 @@ const router = new Router();
 const Manager = require('./manager')
 
 ////////////////////////////////////////////////////////////////////////////////
-// AFFICHER TOUT LES USERS :
+// AFFICHER TOUTES LES LEADERBOARD :
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Manager.getUsers());
+        res.status(200).json(Manager.getLeaderboards());
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get('/:userId', (req, res) => {
+router.get('/:leaderboardId', (req, res) => {
     try {
-        res.status(200).json(Manager.getUserById(req.params.userId));
+        res.status(200).json(Manager.getLeaderboardById(req.params.leaderboardId));
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// CREER UN USER :
+// CREER UNE LEADERBOARD :
 
 router.post('/', (req, res) =>{
     try {
-        res.status(201).json(Manager.createUser(req.body));
+        res.status(201).json(Manager.createLeaderboard(req.body));
     } catch (err) {
         if (err.name === 'ValidationError'){
             res.status(400).json(err.extra);
         } else {
+            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -39,11 +40,11 @@ router.post('/', (req, res) =>{
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// METTRE A JOUR UNE QUESTION :
+// METTRE A JOUR UNE LEADERBOARD :
 
-router.put('/:userId', (req, res) => {
+router.put('/:leaderboardId', (req, res) => {
     try {
-      res.status(200).json(Manager.updateUser(req.params.userId, req.body))
+      res.status(201).json(Manager.updateLeaderboard(req.params.leaderboardId, req.body))
     } catch (err) {
       manageAllErrors(res, err)
     }
@@ -51,11 +52,11 @@ router.put('/:userId', (req, res) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// DELETE UN USER :
+// DELETE UNE LEADERBOARD :
 
-router.delete('/:userId', (req, res) =>{
+router.delete('/:leaderboardId', (req, res) =>{
     try {
-        Manager.deleteUser(req.params.userId);
+        Manager.deleteLeaderboard(req.params.leaderboardId);
         res.status(204).end();
     } catch (err) {
         res.status(500).json(err);
