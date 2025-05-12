@@ -1,9 +1,3 @@
-<app-navbar class="template-navbar">
-    <ng-content select=".navbar-profile-image" class="navbar-profile-image"/>
-    <ng-content select=".navbar-button" class="navbar-button"/>
-    <ng-content select=".navbar-text" class="navbar-text"/>
-</app-navbar>
-<div class="template-main">
-    <ng-content select=".main-button"/>
-    <ng-content select=".main-box"/>
-</div>
+<ng-content select="app-navbar" class="template-navbar"/>
+
+<ng-content select="app-body" class="template-body"/>

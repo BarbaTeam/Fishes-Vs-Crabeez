@@ -3,12 +3,12 @@
     <div class="config-group">
         <h3>Informations utilisateur</h3>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             <label for="name">Nom :</label>
             <input id="name" type="text" [(ngModel)]="localUserTemp.name" (ngModelChange)="onChange()" class="underline-input"/>
         </span>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             <label for="age">Âge :</label>
             <input id="age" type="number" size="2" [(ngModel)]="localUserTemp.age" (ngModelChange)="onChange()" class="underline-input"/> ans
         </span>
@@ -60,7 +60,7 @@
             />
         </span>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             Statistiques avancées :
             <app-settings-toggle
                 [(checked)]="localUserTemp.userConfig.advancedStats"
@@ -68,7 +68,7 @@
             />
         </span>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             Aide à la lecture :
             <app-settings-toggle
                 [(checked)]="localUserTemp.userConfig.readingAssistance"
@@ -76,7 +76,7 @@
             />
         </span>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             Réponses affichées :
             <app-settings-toggle
                 [(checked)]="localUserTemp.userConfig.showsAnswer"
@@ -84,7 +84,7 @@
             />
         </span>
 
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+        <span *ngIf="isInErgoPage">
             Questions cryptées :
             <app-settings-toggle
                 [(checked)]="localUserTemp.userConfig.encryption"
@@ -93,7 +93,7 @@
         </span>
     </div>
 
-    <div *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'" class="config-group">
+    <div *ngIf="isInErgoPage" class="config-group">
         <h3>Mathématiques</h3>
 
         <span >

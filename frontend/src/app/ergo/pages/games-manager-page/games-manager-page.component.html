@@ -1,0 +1,47 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/ergo/childs-list']"
+            routerLinkActive="active"
+        >
+            Liste des joueurs
+        </app-navbar-button>
+
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/ergo/games-manager']"
+            routerLinkActive="active"
+        >
+            Gestionnaire de parties
+        </app-navbar-button>
+
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/home']"
+        >
+            Accueil
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-big-button
+            class="main-box orange"
+            [routerLink]="['/ergo/game-lobby']"
+        >
+            Lancer la partie
+        </app-big-button>
+    </app-body>
+
+</app-template>

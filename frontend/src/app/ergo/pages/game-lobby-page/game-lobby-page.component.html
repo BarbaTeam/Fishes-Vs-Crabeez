@@ -1,0 +1,90 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            class="red"
+            [routerLink]="['/ergo/games-manager']"
+            routerLinkActive="active"
+        >
+            Retour
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/ergo/game-lobby']"
+            routerLinkActive="active"
+        >
+            Gestionnaire de parties
+        </app-navbar-button>
+
+        <app-navbar-button
+            class="green"
+        >
+            Démarrer
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-inner-box class="main-box blue little scrollable">
+            <p> Joueurs en attentes :</p>
+            <app-player-in-lobby
+                [userId]="'u1'"
+                style="
+                    --lobby-icon-size: 2rem;
+                    --lobby-font-size: 0.8rem;
+                    --lobby-padding: 0rem;
+                "
+            />
+
+            <app-player-in-lobby
+                [userId]="'u4'"
+                style="
+                    --lobby-icon-size: 2rem;
+                    --lobby-font-size: 0.8rem;
+                    --lobby-padding: 0rem;
+                "
+            />
+
+            <app-player-in-lobby
+                [userId]="'u3'"
+                style="
+                    --lobby-icon-size: 2rem;
+                    --lobby-font-size: 0.8rem;
+                    --lobby-padding: 0rem;
+                "
+            />
+        </app-inner-box>
+
+        <app-inner-box class="main-box blue medium">
+            <span>
+                Encyrptage des questions :
+                <app-settings-toggle/>
+            </span>
+            <span>
+                Temps de la partie : 20min
+            </span>
+            <span>
+                Fréquence d'apparition des méduses :
+                <app-settings-slider/>
+            </span>
+            <span>
+                Fréquence d'apparition des crabes :
+                <app-settings-slider/>
+            </span>
+            <span>
+                Vitesse des crabes :
+                <app-settings-slider/>
+            </span>
+        </app-inner-box>
+    </app-body>
+
+</app-template>

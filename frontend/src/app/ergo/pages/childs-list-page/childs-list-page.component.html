@@ -1,0 +1,51 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/ergo/childs-list']"
+            routerLinkActive="active"
+        >
+            Liste des joueurs
+        </app-navbar-button>
+
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/ergo/games-manager']"
+            routerLinkActive="active"
+        >
+            Gestionnaire de parties
+        </app-navbar-button>
+
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/home']"
+        >
+            Accueil
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-inner-box class="main-box blue scrollable" style="width: 47.5vw">
+            <app-user-list
+                [users]="users"
+                (userClick)="onUserClick($event)"
+            />
+            <app-user-card
+                [user]="userBlank"
+                (click)="addNewUser()"
+            />
+        </app-inner-box>
+    </app-body>
+
+</app-template>

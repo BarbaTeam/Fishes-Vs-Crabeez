@@ -1,5 +1,5 @@
 <app-user-card
-    *ngFor="let user of userList"
+    *ngFor="let user of users"
     [user]="user"
-    (click)="selectUser(user.userId)"
+    (click)="userClick.emit(user.userId)"
 />

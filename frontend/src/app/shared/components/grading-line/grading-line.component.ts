@@ -1,9 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Grade, Grading } from 'src/app/shared/models/results.model';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ChildStatPageComponent } from 'src/app/pages/child/stat-page/child-stat-page.component';
+
+import { UserService } from '../../services/user.service';
+
+import { User } from '../../models/user.model';
+import { Grade, Grading } from '@app/shared/models/results.model';
+
+// TODO : Remove dependency to page components on dumb components
+import { ProfilePageComponent } from '@app/child/pages/profile-page/profile-page.component';
 
 
 
@@ -35,7 +39,8 @@ export class GradingLineComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.isOnChildApp = this.route.component === ChildStatPageComponent;
+        // TODO : See imports "TODO"
+        this.isOnChildApp = this.route.component === ProfilePageComponent;
 
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;

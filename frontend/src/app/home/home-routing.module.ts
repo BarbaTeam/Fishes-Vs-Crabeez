@@ -1,0 +1,32 @@
+////////////////////////////////////////////////////////////////////////////////
+// Imports :
+////////////////////////////////////////////////////////////////////////////////
+
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Pages :
+
+import { ChoicePageComponent } from './pages/choice-page/choice-page.component';
+import { ChildsListPageComponent } from './pages/childs-list-page/childs-list-page.component';
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// HomeRoutingModule :
+////////////////////////////////////////////////////////////////////////////////
+
+const ROUTES: Routes = [
+    { path: "", component: ChoicePageComponent },
+    { path: "childs-list", component: ChildsListPageComponent },
+];
+
+
+
+@NgModule({
+    imports: [RouterModule.forChild(ROUTES)],
+    exports: [RouterModule]
+})
+export class HomeRoutingModule {}
