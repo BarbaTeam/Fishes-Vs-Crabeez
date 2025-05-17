@@ -1,57 +1,60 @@
-const GameLeaderboard = require('../../models/game-leaderboard.model');
+const { GameLeaderboardTable } = require('../../shared/tables/game-leaderboard.table');
+
+
 
 exports.getGameLeaderboards = () => {
     try {
-        return GameLeaderboard.get();
+        return GameLeaderboardTable.getAll();
     } catch (err) {
         throw new Error(
-            `Manager : failed to retrive gameLeaderboards.\n
-            Caught : ${err}`
+            `[GameLeaderboard Manager] Get Error : ${err}`
         );
     }
 }
 
 exports.getGameLeaderboardById = (id) => {
     try {
-        return GameLeaderboard.getById(id);
+        return GameLeaderboardTable.getByKey({gameId: id});
     } catch (err) {
         throw new Error(
-            `Manager : failed to retrive gameLeaderboard with Id : ${id}.\n
-            Caught : ${err}`
+            `[GameLeaderboard Manager] Get Error : ${err}`
         );
     }
 }
+
+
+
+////////////////////////////////////////////////////////////////////////////////
+// DEBUG ::
+////////////////////////////////////////////////////////////////////////////////
 
 exports.createGameLeaderboard = (gameLeaderboard) => {
     try {
-        return GameLeaderboard.create({...gameLeaderboard});
+        GameLeaderboardTable.create({...gameLeaderboard});
+        return GameLeaderboardTable.getAll().at(-1);
     } catch (err) {
         throw new Error(
-            `Manager : failed to create gameLeaderboard.\n
-            Caught : ${err}`
+            `[GameLeaderboard Manager] Create Error : ${err}`
         );
     }
 }
 
-exports.updateGameLeaderboard = (id, gameLeaderboard) => {
+exports.updateGameLeaderboardById = (id, update) => {
     try {
-        return GameLeaderboard.update(id, gameLeaderboard);
+        return GameLeaderboardTable.updateByKey({gameId: id}, update);
     } catch (err) {
         throw new Error(
-            `Manager : failed to update gameLeaderboard.\n
-            Caught : ${err}`
+            `[GameLeaderboard Manager] Update Error : ${err}`
         );
     }
 }
 
-exports.deleteGameLeaderboard = (id, gameLeaderboard) => {
+exports.deleteGameLeaderboardById = (id) => {
     try {
-        return GameLeaderboard.delete(id, gameLeaderboard);
+        GameLeaderboardTable.deleteByKey({gameId: id});
     } catch (err) {
         throw new Error(
-            `Manager : failed to delete gameLeaderboard.\n
-            Caught : ${err}`
+            `[GameLeaderboard Manager] Delete Error : ${err}`
         );
     }
 }
-

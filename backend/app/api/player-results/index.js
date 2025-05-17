@@ -11,15 +11,24 @@ const router = new Router();
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Manager.getGameLeaderboards());
+        res.status(200).json(Manager.getPlayersResults());
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get('/:gameLeaderboardId', (req, res) => {
+router.get('/:playerId', (req, res) => {
     try {
-        res.status(200).json(Manager.getGameLeaderboardById(req.params.gameLeaderboardId));
+        const { limit } = req.query;
+        res.status(200).json(Manager.getPlayerResultsList(req.params.playerId, limit));
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.get('/:playerId/:gameId', (req, res) => {
+    try {
+        res.status(200).json(Manager.getPlayerResultsByIds(req.params.playerId, req.params.gameId));
     } catch (err) {
         res.status(500).json(err);
     }
@@ -38,7 +47,7 @@ router.get('/:gameLeaderboardId', (req, res) => {
 
 router.post('/', (req, res) => {
     try {
-        res.status(201).json(Manager.createGameLeaderboard(req.body));
+        res.status(201).json(Manager.insertPlayerResults(req.body));
     } catch (err) {
         if (err.name === 'ValidationError'){
             res.status(400).json(err.extra);
@@ -53,9 +62,9 @@ router.post('/', (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////
 // PUT :
 
-router.put('/:gameLeaderboardId', (req, res) => {
+router.put('/:playerId/:gameId', (req, res) => {
     try {
-      res.status(201).json(Manager.updateGameLeaderboardById(req.params.gameLeaderboardId, req.body));
+      res.status(201).json(Manager.updatePlayerResultsByIds(req.params.playerId, req.params.gameId, req.body));
     } catch (err) {
       manageAllErrors(res, err);
     }
@@ -65,9 +74,18 @@ router.put('/:gameLeaderboardId', (req, res) => {
 ////////////////////////////////////////////////////////////////////////////////
 // DELETE :
 
-router.delete('/:gameLeaderboardId', (req, res) => {
+router.delete('/:playerId', (req, res) => {
     try {
-        Manager.deleteGameLeaderboardById(req.params.gameLeaderboardId);
+        Manager.deletePlayerResultsList(req.params.playerId);
+        res.status(204).end();
+    } catch (err) {
+        res.status(500).json(err);
+    }
+});
+
+router.delete('/:playerId/:gameId', (req, res) => {
+    try {
+        Manager.deletePlayerResultsByIds(req.params.playerId, req.params.gameId);
         res.status(204).end();
     } catch (err) {
         res.status(500).json(err);

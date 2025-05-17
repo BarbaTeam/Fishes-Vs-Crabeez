@@ -1,57 +1,55 @@
-const User = require('../../models/user.model');
+const { UserTable } = require('../../shared/tables/user.table');
+
+
 
 exports.getUsers = () => {
     try {
-        return User.get();
+        return UserTable.getAll();
     } catch (err) {
         throw new Error(
-            `Manager : failed to retrive users.\n
-            Caught : ${err}`
+            `[User Manager] Get Error : ${err}`
         );
     }
 }
 
 exports.getUserById = (id) => {
     try {
-        return User.getById(id);
+        return UserTable.getByKey({userId: id});
     } catch (err) {
         throw new Error(
-            `Manager : failed to retrive user with Id : ${id}.\n
-            Caught : ${err}`
+            `[User Manager] Get Error : ${err}`
         );
     }
 }
 
 exports.createUser = (user) => {
     try {
-        return User.create({...user});
+        UserTable.create({...user})
+        return UserTable.getAll().at(-1);
     } catch (err) {
         throw new Error(
-            `Manager : failed to create user.\n
-            Caught : ${err}`
+            `[User Manager] Create Error : ${err}`
         );
     }
 }
 
-exports.updateUser = (id, user) => {
+exports.updateUserById = (id, update) => {
     try {
-        return User.update(id, user);
+        UserTable.updateByKey({userId: id}, update);
+        return UserTable.getByKey({userId: id});
     } catch (err) {
         throw new Error(
-            `Manager : failed to update user.\n
-            Caught : ${err}`
+            `[User Manager] Update Error : ${err}`
         );
     }
 }
 
-exports.deleteUser = (id, user) => {
+exports.deleteUserById = (id) => {
     try {
-        return User.delete(id, user);
+        UserTable.deleteByKey({userId: id});
     } catch (err) {
         throw new Error(
-            `Manager : failed to delete user.\n
-            Caught : ${err}`
+            `[User Manager] Delete Error : ${err}`
         );
     }
 }
-
