@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { assert } from '@app/utils';
@@ -59,17 +59,18 @@ type HistorySectionData = {
 export class ProfilePageComponent implements OnInit {
     public user!: User;
 
+    public currSection: Section = 0;
+
     // Statistics Section Data :
     private _playerStatistics!: PlayerStatistics;
     private _globalLeaderboard!: GlobalLeaderboard;
 
     // History Sections Data :
     private _playerResultsList!: PlayerResults[];
-    private _gameInfoList!: GameInfo[];
     private _gameLeaderboardList!: GameLeaderboard[];
 
-    public availableHistorySections!: Section[];
-    public currSection: Section;
+    public gamesInfos!: GameInfo[];
+
     public sectionData: HistorySectionData | StatsSectionData | InvalidSectionData;
 
 
@@ -81,22 +82,21 @@ export class ProfilePageComponent implements OnInit {
         private leaderboardService: LeaderboardService,
         private route: ActivatedRoute,
     ) {
-        this.currSection = 0;
-
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;
         });
 
 
         this.playerStatisticsService.playerStatistics$.subscribe(
-            (playerStatistics: PlayerStatistics) => {
-                this._playerStatistics = playerStatistics;
+            (playerStatistics: PlayerStatistics|null) => {
+                if (playerStatistics) this._playerStatistics = playerStatistics;
             }
         )
 
-        this.leaderboardService.globalLeaderBoard$.subscribe(
+        this.leaderboardService.globalLeaderboard$.subscribe(
             (globalLeaderboard: GlobalLeaderboard) => {
                 this._globalLeaderboard = globalLeaderboard;
+                this._updateSectionData();
             }
         )
 
@@ -111,28 +111,35 @@ export class ProfilePageComponent implements OnInit {
             map((playerResultsList) => playerResultsList.map(pr => pr.gameId)),
         );
 
-        gameIdsStream$.pipe(
+        const gamesInfos$ = gameIdsStream$.pipe(
             switchMap((gameIds) =>
                 (gameIds.length > 0)
                 ? combineLatest(gameIds.map(
-                    id => this.gameInfoService.getInfo$(id)
+                    id => (
+                        this.gameInfoService.getGameInfoById$(id)
+                    ) as Observable<GameInfo>
                 ))
                 : of([])
             )
-        ).subscribe((gameInfoList) => {
-            this._gameInfoList = gameInfoList as GameInfo[];
-            this._updateAvailableHistorySections();
+        )
+
+        const gamesLeaderboards$ = gameIdsStream$.pipe(
+            switchMap((gameIds) =>
+                (gameIds.length > 0)
+                ? combineLatest(gameIds.map(
+                    id => (
+                        this.leaderboardService.getGameLeaderboardById$(id)
+                    ) as Observable<GameLeaderboard>
+                ))
+                : of([])
+            )
+        )
+
+        gamesInfos$.subscribe((gamesInfos) => {
+            this.gamesInfos = gamesInfos as GameInfo[];
         });
 
-        gameIdsStream$.pipe(
-            switchMap((gameIds) =>
-                (gameIds.length > 0)
-                ? combineLatest(gameIds.map(
-                    id => this.leaderboardService.getLeaderboard$(id)
-                ))
-                : of([])
-            )
-        ).subscribe((gameLeaderboardList) => {
+        gamesLeaderboards$.subscribe((gameLeaderboardList) => {
             this._gameLeaderboardList = gameLeaderboardList as GameLeaderboard[];
         });
     }
@@ -169,12 +176,6 @@ export class ProfilePageComponent implements OnInit {
     ////////////////////////////////////////////////////////////////////////////
     // Operations :
 
-    private _updateAvailableHistorySections(): void {
-        this.availableHistorySections = [
-            ...Array(Math.min(this._playerResultsList.length, 5)).keys()
-        ] as Section[];
-    }
-
     private _updateSectionData(): void {
         if (this.isInInvalidSection()) {
             this.sectionData = undefined;
@@ -193,7 +194,7 @@ export class ProfilePageComponent implements OnInit {
 
         const historySectionId = this.currSection - 1;
         this.sectionData = {
-            gameInfo: this._gameInfoList[historySectionId],
+            gameInfo: this.gamesInfos[historySectionId],
             playerResults: this._playerResultsList[historySectionId],
             leaderboard: this._gameLeaderboardList[historySectionId],
         }
@@ -261,17 +262,6 @@ export class ProfilePageComponent implements OnInit {
         return ret;
     }
 
-    public getFormattedGameDateByIndex(idx: number, detailed: boolean = false): string {
-        let date = new Date(this._gameInfoList[idx].date);
-        return formatDate(date, detailed);
-    }
-
-    public getFormattedGameDate(detailed: boolean = false): string {
-        assert(this.isInHistorySections())
-        let date = new Date(this.sectionData.gameInfo.date);
-        return formatDate(date, detailed);
-    }
-
 
     ////////////////////////////////////////////////////////////////////////////
     // Checkers :
@@ -300,6 +290,10 @@ export class ProfilePageComponent implements OnInit {
 
 
 
+////////////////////////////////////////////////////////////////////////////////
+// Utils :
+////////////////////////////////////////////////////////////////////////////////
+
 function mapQuestionNotionToName(notion: QuestionNotion): string {
     switch (notion) {
         case QuestionNotion.ADDITION      : return "Addition";
@@ -310,17 +304,4 @@ function mapQuestionNotionToName(notion: QuestionNotion): string {
         case QuestionNotion.REWRITING     : return "Réécriture";
         case QuestionNotion.ENCRYPTION    : return "Encodage";
     }
-}
-
-function formatDate(date: Date, detailed: boolean = false): string {
-    const day = date.getDate().toString().padStart(2, "0");
-    const month = (date.getMonth() + 1).toString().padStart(2, "0"); // getMonth() est 0-indexé
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-
-    if (detailed) {
-        return `${day}/${month}/${year} ${hours}:${minutes}`;
-    }
-    return `${day}/${month}/${year}`
 }

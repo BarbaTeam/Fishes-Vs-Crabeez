@@ -70,9 +70,9 @@ export class ChildConfigPageComponent implements OnInit {
     ////////////////////////////////////////////////////////////////////////////
     // Actions :
 
-    saveChanges(): void {
+    async saveChanges(): Promise<void> {
         if (this._userTemp && this.isValid) {
-            this.userService.saveChanges(this._userTemp);
+            await this.userService.saveChanges(this._userTemp);
             this.showSuccess = true;
             setTimeout(() => {
                 this.showSuccess = false;
@@ -90,8 +90,8 @@ export class ChildConfigPageComponent implements OnInit {
     putSafety(): void {
         this.showDeleted = false;
     }
-    removeUser(): void {
-        this.userService.removeUser(this._userTemp);
+    async removeUser(): Promise<void> {
+        await this.userService.removeUserById(this.user.userId);
         this.back();
     }
 }
