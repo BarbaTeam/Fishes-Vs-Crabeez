@@ -1,116 +1,106 @@
 :host {
-    width: 100%;
+  /* 🌈 Variables de base */
+  --lobby-bg: #ffffff;
+  --lobby-border: #ccc;
+  --lobby-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --lobby-radius: 10px;
+  --lobby-font: 'Segoe UI', sans-serif;
 
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    overflow: hidden;
-    background: white;
-    font-family: sans-serif;
-    font-size: var(--lobby-font-size);
+  --lobby-icon-size: 3rem;
+  --lobby-font-size: 1.1rem;
+  --lobby-padding: 1rem;
 
-    --lobby-icon-size: 2rem;     /* Taille de l’avatar */
-    --lobby-font-size: 1rem;     /* Taille du texte */
-    --lobby-padding: 0.5rem;     /* Espacement interne */
+  display: block;
+  width: 100%;
+  font-family: var(--lobby-font);
+  font-size: var(--lobby-font-size);
+  border: 1px solid var(--lobby-border);
+  border-radius: var(--lobby-radius);
+  background-color: var(--lobby-bg);
+  box-shadow: var(--lobby-shadow);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  margin-bottom: 1rem;
 }
 
+:host(:hover) {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
 
+/* 🔝 En-tête */
 .header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--lobby-padding);
-    cursor: pointer;
-    user-select: none;
-    background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--lobby-padding);
+  background-color: #f5f5f5;
+  min-height: 4rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s;
 }
 
+.header:hover {
+  background-color: #eaeaea;
+}
+
+/* 👤 Avatar */
 .avatar {
-    width: var(--lobby-icon-size);
-    height: var(--lobby-icon-size);
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 0.5rem;
+  width: var(--lobby-icon-size);
+  height: var(--lobby-icon-size);
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 1rem;
 }
 
+/* 🧾 Nom */
 .name {
-    flex: 1;
-    font-weight: 600;
+  flex: 1;
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #222;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
+/* 🔘 Bouton */
 .toggle-btn {
-    border: none;
-    background-color: #d4c9c9;
-    border-radius: 10px;
-
-    height: 1.5em;
-
-    font-size: 1.2em;
-    line-height: 1;
-    cursor: pointer;
+  width: 2.5em;
+  height: 2.5em;
+  font-size: 1.4em;
+  border: none;
+  background-color: #d4c9c9;
+  border-radius: 10px;
+  line-height: 1;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
 }
 
+.toggle-btn:hover {
+  background-color: #b5aeae;
+}
+
+/* 📦 Contenu */
 .content {
-    display: flex;
-    flex-direction: column;
-    padding: var(--lobby-padding);
-    margin-bottom: 10px;
-    background: #fff;
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  padding: var(--lobby-padding);
+  background-color: #fff;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
 }
 
-
-
-
-
-
-
-
-
-/*
-:host {
-    display: block;
-
-    margin: 1%;
-
-    position: relative;
-    border-radius: 10px;
-    background-color: white;
-    width: 100%;
-
-    overflow: hidden;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* 🚪 Animation ouverture/fermeture */
+.hidden {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
 }
 
-
-:host .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1% 2%;
-    background-color: #f5f5f5;
+.visible {
+  max-height: 100vh;
+  opacity: 1;
+  pointer-events: all;
 }
-
-:host .usercard {
-    width: 20%;
-}
-
-:host .toggle-btn {
-    border: none;
-    background-color: #d4c9c9;
-    border-radius: 10px;
-
-    font-size: 1.5rem;
-    width: 1.5em;
-    height: 1.5em;
-    line-height: 1.5em;
-    text-align: center;
-    cursor: pointer;
-}
-:host .toggle-btn:hover {
-    background-color: #b5aeae;
-}
-
-:host .content {
-    padding: 1% 2%;
-}
-*/
