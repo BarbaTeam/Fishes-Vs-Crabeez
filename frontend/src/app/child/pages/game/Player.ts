@@ -8,8 +8,8 @@ export class Player {
     private y: number;
     private width: number;
     private height: number;
-    private seat: number;
-    private hasChangedSeat: boolean;
+    private lane: number;
+    private hasChangedLane: boolean;
     private angle: number = 0;
     private _projectiles: Projectile[] = [];
 
@@ -27,8 +27,8 @@ export class Player {
         this.width = 100;
         this.height = 100;
         this._projectiles = [];
-        this.seat = Math.floor(Math.random() * 3) + 1;;
-        this.hasChangedSeat = true;
+        this.lane = Math.floor(Math.random() * 3) + 1;;
+        this.hasChangedLane = true;
 
         this.decryptedImage = new Image();
         this.decryptedImage.src = "../../../../assets/images/game/player/yellow_fish.png";
@@ -44,7 +44,7 @@ export class Player {
     }
 
     public get seatValue(): number {
-        return this.seat;
+        return this.lane;
     }
 
     public get projectiles(): Projectile[] {
@@ -53,17 +53,15 @@ export class Player {
 
     public keydownHandler = (event: KeyboardEvent): void => {
         switch(event.key) {
-            case "ArrowLeft":
-                this.seat = 1;
-                this.hasChangedSeat = true;
-                break;
             case "ArrowUp":
-                this.seat = 2;
-                this.hasChangedSeat = true;
+                if(this.lane < 3)
+                    this.lane ++;
+                    this.hasChangedLane = true;
                 break;
-            case "ArrowRight":
-                this.seat = 3;
-                this.hasChangedSeat = true;
+            case "ArrowDown":
+                if(this.lane > 1)
+                    this.lane --;
+                    this.hasChangedLane = true;
                 break;
             default:
                 break;
@@ -77,24 +75,25 @@ export class Player {
     }
 
     public update(): void {
-        if(this.hasChangedSeat) {
-            switch(this.seat) {
+        if(this.hasChangedLane) {
+            switch(this.lane) {
                 case 1:
-                    this.x = this.canvas.width / 2 - 50 -200;
-                    this.y = this.canvas.height - 250 - 50;
+                    this.x = 100;
+                    this.y = (this.canvas.height + 300) - (this.canvas.height / 4) *2;
                     break;
                 case 2:
-                    this.x = this.canvas.width / 2 - 50;
-                    this.y = this.canvas.height - 300 - 150;
+                    this.x = 100;
+                    this.y = (this.canvas.height  + 300) - (this.canvas.height / 4) *3;
                     break;
                 case 3:
-                    this.x = this.canvas.width / 2 - 50  +200;
-                    this.y = this.canvas.height - 250 - 50;
+                    this.x = 100;
+                    this.y = (this.canvas.height  + 300) - (this.canvas.height / 4) *4;
                     break;
                 default:
                     break;
             }
-            this.hasChangedSeat = false;
+             
+            this.hasChangedLane = false;
         }
         this.projectiles.forEach(projectile => {
             projectile.update();
@@ -103,25 +102,11 @@ export class Player {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        const target = this.gameEngine.closestEnemy(this.seat);
-        if(target){
-            const dx = target.position.x - this.x;
-            const dy = target.position.y - this.y;
-            this.angle = Math.atan2(dy, dx) + Math.PI / 4; // + 45 degrés car le poisson est incliné de 45 degrés de base
-        }
-        else {
-            this.angle = 0;
-        }
 
         ctx.save();
         ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
 
-        if (this.angle > Math.PI / 2 || this.angle < -Math.PI / 4) {
-            ctx.scale(-1, 1);
-            this.angle = -this.angle - Math.PI/2;
-        }
-
-        ctx.rotate(this.angle);
+        ctx.rotate(Math.PI/4);
 
 
         if (this.gameEngine.questionNotion == "ENCRYPTION"){
