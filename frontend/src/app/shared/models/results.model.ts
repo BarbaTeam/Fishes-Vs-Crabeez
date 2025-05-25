@@ -2,20 +2,14 @@ import { AnsweredQuestion, QuestionNotion } from "./question.model";
 
 
 export const Grade = {
-    A_PLUS : "A+",  // 97..100%
-    A      : "A" ,  // 93..96%
-    A_MINUS: "A-",  // 90..92%
-    B_PLUS : "B+",  // 87..89%
-    B      : "B" ,  // 83..86%
-    B_MINUS: "B-",  // 80..82%
-    C_PLUS : "C+",  // 77..79%
-    C      : "C" ,  // 73..76%
-    C_MINUS: "C-",  // 70..72%
-    D_PLUS : "D+",  // 67..69%
-    D      : "D" ,  // 63..66%
-    D_MINUS: "D-",  // 60..62%
-    F      : "F" ,  //  0..59%
-    XF     : "XF",  // Not graded
+    S : "S" ,  // 96..100%
+    A : "A" ,  // 90..95%
+    B : "B" ,  // 76..89%
+    C : "C" ,  // 46..75%
+    D : "D" ,  // 30..44%
+    E : "E" ,  // 21..29
+    F : "F" ,  //  0..20%
+    XF: "XF",  // Not graded
 } as const;
 export type Grade = typeof Grade[keyof typeof Grade];
 

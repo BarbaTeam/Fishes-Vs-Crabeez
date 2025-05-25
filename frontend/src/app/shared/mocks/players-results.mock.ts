@@ -23,15 +23,15 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         answersShown: true,
         results: {
             wordsPerMinute: 1.6666666666666667,
-            globalGrading: { grade: "A-" , accuracy: 70 },
+            globalGrading: { grade: "A" , accuracy: 70 },
             gradingPerNotion: {
                 ADDITION      : { grade: "A" , accuracy: 70 },
-                SUBSTRACTION  : { grade: "B+" , accuracy: 60 },
+                SUBSTRACTION  : { grade: "B" , accuracy: 60 },
                 MULTIPLICATION: { grade: "A" , accuracy: 80 },
-                DIVISION      : { grade: "A+", accuracy: 100 },
+                DIVISION      : { grade: "A", accuracy: 100 },
                 EQUATION      : { grade: "XF", accuracy: 0 },
                 REWRITING     : { grade: "A", accuracy: 80 },
-                ENCRYPTION    : { grade: "C+" , accuracy: 30 },
+                ENCRYPTION    : { grade: "C" , accuracy: 30 },
             },
             mistakes: {
                 spelling: [
@@ -84,10 +84,10 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         answersShown: false,
         results: {
             wordsPerMinute: 2.1666666666666665,
-            globalGrading: { grade: "B+", accuracy: 65 },
+            globalGrading: { grade: "B", accuracy: 65 },
             gradingPerNotion: {
-                ADDITION      : { grade: "A-", accuracy: 70 },
-                SUBSTRACTION  : { grade: "B+", accuracy: 60 },
+                ADDITION      : { grade: "A", accuracy: 70 },
+                SUBSTRACTION  : { grade: "B", accuracy: 60 },
                 MULTIPLICATION: { grade: "XF", accuracy: 0 },
                 DIVISION      : { grade: "XF", accuracy: 0 },
                 EQUATION      : { grade: "XF", accuracy: 0 },
@@ -142,8 +142,8 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
             wordsPerMinute: 2,
             globalGrading: { grade: "B", accuracy: 83.33333333333334 },
             gradingPerNotion: {
-                ADDITION:      { grade: "B-", accuracy: 81.81818181818183 },
-                SUBSTRACTION:  { grade: "A+", accuracy: 100 },
+                ADDITION:      { grade: "B", accuracy: 81.81818181818183 },
+                SUBSTRACTION:  { grade: "A", accuracy: 100 },
                 MULTIPLICATION:{ grade: "XF", accuracy: 0 },
                 DIVISION:      { grade: "XF", accuracy: 0 },
                 EQUATION:      { grade: "XF", accuracy: 0 },
@@ -196,9 +196,9 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         answersShown: false,
         results: {
             wordsPerMinute: 3.2,
-            globalGrading: { grade: "D+", accuracy: 68.75 },
+            globalGrading: { grade: "D", accuracy: 68.75 },
             gradingPerNotion: {
-                ADDITION      : { grade: "A+", accuracy: 100 },
+                ADDITION      : { grade: "A", accuracy: 100 },
                 SUBSTRACTION  : { grade: "B" , accuracy: 54.54545454545455 },
                 MULTIPLICATION: { grade: "XF", accuracy: 0 },
                 DIVISION      : { grade: "XF", accuracy: 0 },
@@ -257,15 +257,15 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         answersShown: true,
         results: {
             wordsPerMinute: 1.6,
-            globalGrading: { grade: "B+", accuracy: 60 },
+            globalGrading: { grade: "B", accuracy: 60 },
             gradingPerNotion: {
-                ADDITION      : { grade: "B+" , accuracy: 60 },
+                ADDITION      : { grade: "B" , accuracy: 60 },
                 SUBSTRACTION  : { grade: "A" , accuracy: 80 },
-                MULTIPLICATION: { grade: "A-" , accuracy: 70 },
-                DIVISION      : { grade: "B-", accuracy: 40 },
+                MULTIPLICATION: { grade: "A" , accuracy: 70 },
+                DIVISION      : { grade: "B", accuracy: 40 },
                 EQUATION      : { grade: "XF", accuracy: 0 },
                 REWRITING     : { grade: "A", accuracy: 80 },
-                ENCRYPTION    : { grade: "C+" , accuracy: 30 },
+                ENCRYPTION    : { grade: "C" , accuracy: 30 },
             },
             mistakes: {
                 spelling: [
@@ -318,15 +318,15 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         answersShown: true,
         results: {
             wordsPerMinute: 3.8,
-            globalGrading: { grade: "D+", accuracy: 9 },
+            globalGrading: { grade: "D", accuracy: 9 },
             gradingPerNotion: {
-                ADDITION      : { grade: "D+", accuracy: 9 },
-                SUBSTRACTION  : { grade: "D+", accuracy: 9 },
-                MULTIPLICATION: { grade: "D+", accuracy: 9 },
+                ADDITION      : { grade: "D", accuracy: 9 },
+                SUBSTRACTION  : { grade: "D", accuracy: 9 },
+                MULTIPLICATION: { grade: "D", accuracy: 9 },
                 DIVISION      : { grade: "XF", accuracy: 0 },
                 EQUATION      : { grade: "XF", accuracy: 0 },
-                REWRITING     : { grade: "D+", accuracy: 9 },
-                ENCRYPTION    : { grade: "D+", accuracy: 9 },
+                REWRITING     : { grade: "D", accuracy: 9 },
+                ENCRYPTION    : { grade: "D", accuracy: 9 },
             },
             mistakes: {
                 spelling: [

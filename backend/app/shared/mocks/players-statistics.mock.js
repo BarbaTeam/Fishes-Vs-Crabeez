@@ -13,12 +13,12 @@ const MOCK_PLAYER_STATISTICS_PLACEHOLDERS = [
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION      : { grade: "A" , accuracy: 70 },
-                SUBSTRACTION  : { grade: "B+" , accuracy: 60 },
-                MULTIPLICATION: { grade: "A+" , accuracy: 90 },
-                DIVISION      : { grade: "A+", accuracy: 100 },
+                SUBSTRACTION  : { grade: "B" , accuracy: 60 },
+                MULTIPLICATION: { grade: "A" , accuracy: 90 },
+                DIVISION      : { grade: "A", accuracy: 100 },
                 EQUATION      : { grade: "XF", accuracy: 0 },
                 REWRITING     : { grade: "A", accuracy: 80 },
-                ENCRYPTION    : { grade: "C+" , accuracy: 30 },
+                ENCRYPTION    : { grade: "C" , accuracy: 30 },
             },
             accuracyImprovementPerNotion: {
                 ADDITION:       0,

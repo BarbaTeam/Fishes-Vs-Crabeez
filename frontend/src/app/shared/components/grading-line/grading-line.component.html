@@ -3,21 +3,19 @@
 
     <span class="sep">&nbsp;:&nbsp;</span>
 
-    <span *ngIf="user.userConfig.advancedStats || !isOnChildApp" class="grade" [style.color]="gradeColor()">{{ grading.grade }}</span>
-    <img *ngIf="!user.userConfig.advancedStats && isOnChildApp" [src]="'../../../../assets/images/icons/' + iconGrade + '.png'" alt="Note" class="iconGrade" />
-    <span *ngIf="user.userConfig.advancedStats || !isOnChildApp" class="accuracy">&nbsp;({{ grading.accuracy }}%)</span>
+    <img [src]="gradeIcon" [alt]="grading.grade" class="grade" />
 
-    <ng-container *ngIf="improvement !== undefined">
-        <span *ngIf="user.userConfig.advancedStats || !isOnChildApp"
+    <ng-container *ngIf="advancedStatsActivated">
+        <span class="accuracy">
+            &nbsp;({{ grading.accuracy }}%)
+        </span>
+        <span
             class="improvement"
             [class.positive]="improvement! > 0"
             [class.negative]="improvement! < 0"
+            *ngIf="improvement !== 0"
         >
             {{ improvement! > 0 ? '+' : '' }}{{ improvement }}%
         </span>
-        <img *ngIf="!user.userConfig.advancedStats && isOnChildApp && improvement > 0" [src]="'../../../../assets/images/icons/green_arrow.png'" alt="improvement" class="iconImprovement" />
-
     </ng-container>
-
-    <span *ngIf="!user.userConfig.advancedStats && isOnChildApp" [style.color]="gradeColor()" class="bravoText">{{ bravoText }}</span>
 </p>
