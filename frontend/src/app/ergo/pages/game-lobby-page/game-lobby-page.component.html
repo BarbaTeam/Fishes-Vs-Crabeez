@@ -36,32 +36,21 @@
     <app-body>
         <app-inner-box class="main-box blue little scrollable">
             <p> Joueurs en attentes :</p>
-            <app-player-in-lobby
-                [userId]="'u1'"
-                style="
-                    --lobby-icon-size: 2rem;
-                    --lobby-font-size: 0.8rem;
-                    --lobby-padding: 0rem;
-                "
-            />
-
-            <app-player-in-lobby
-                [userId]="'u4'"
-                style="
-                    --lobby-icon-size: 2rem;
-                    --lobby-font-size: 0.8rem;
-                    --lobby-padding: 0rem;
-                "
-            />
-
-            <app-player-in-lobby
-                [userId]="'u3'"
-                style="
-                    --lobby-icon-size: 2rem;
-                    --lobby-font-size: 0.8rem;
-                    --lobby-padding: 0rem;
-                "
-            />
+            <ng-container *ngIf="players.length !== 0 ; else waitingForPlayers">
+                <app-player-in-lobby
+                    *ngFor="let player of players"
+                    [user]="player"
+                    style="
+                        --lobby-icon-size: 2rem;
+                        --lobby-font-size: 0.8rem;
+                        --lobby-padding: 0rem;
+                    "
+                    />
+            </ng-container>
+            <ng-template #waitingForPlayers>
+                <p>En attente de joueurs...</p>
+            </ng-template>
+      
         </app-inner-box>
 
         <app-inner-box class="main-box blue medium">
