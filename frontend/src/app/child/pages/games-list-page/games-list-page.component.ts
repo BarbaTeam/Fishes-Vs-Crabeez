@@ -55,6 +55,10 @@ export class GamesListPageComponent implements OnDestroy {
             this.router.navigate(['child/joining-games']);
         }));
 
+        this.subscriptions.add(this.socket.on<void>('gameStarted').subscribe(() => {
+            this.router.navigate(['child/game']);
+        }))
+
         this.socket.onReady(() => {
             this.socket.sendMessage('playerConnected', this.user);
             this.socket.sendMessage('requestLobbyState', {});
