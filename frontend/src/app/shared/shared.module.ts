@@ -34,6 +34,10 @@ import { SmallButtonComponent } from './components/small-button/small-button.com
 import { SettingsSliderComponent } from './components/settings-slider/settings-slider.component';
 import { SettingsToggleComponent } from './components/settings-toggle/settings-toggle.component';
 
+// Notification
+import { NotifComponent } from './components/notif/notif.component';
+import { NotifContainerComponent } from './components/notif-container/notif-container.component';
+
 // Miscellaneous :
 import { GradingLineComponent } from './components/grading-line/grading-line.component';
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
@@ -64,6 +68,7 @@ const SHARED_COMPONENTS = [
     InnerBoxComponent,
     SideBoxComponent,
     RollableBoxComponent,
+    MistakesBoxesComponent,
 
     // Users :
     UserCardComponent,
@@ -75,9 +80,12 @@ const SHARED_COMPONENTS = [
     SettingsSliderComponent,
     SettingsToggleComponent,
 
+    // Notification :
+    NotifComponent,
+    NotifContainerComponent,
+
     // Miscellaneous :
     GradingLineComponent,
-    MistakesBoxesComponent,
     PlayerInLobbyComponent,
     UserConfigComponent,
     LobbyCardComponent
