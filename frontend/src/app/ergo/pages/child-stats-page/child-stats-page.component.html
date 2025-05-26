@@ -96,7 +96,7 @@
                     </app-rollable-box>
 
                     <p>
-                        Mot par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
+                        Mots par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
                         <span
                             *ngIf="sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
                             [style.color]="improvement > 0 ? 'green' : 'red'"
@@ -152,17 +152,19 @@
             <ng-container *ngIf="sectionData.playerResults as pr; else loadingResults">
                 <h1 class="title">Partie du {{ sectionData.gameInfo.date | date:'dd/MM/yyyy HH:mm' }}</h1>
 
-                <p>
-                    Réponse affichées :
-                    <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
+                <div class="section-block">
+                    <div class="info-line">
+                        <strong>Réponses affichées :</strong>
+                        <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
                         {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
-                    </span>
-                </p>
+                        </span>
+                    </div>
 
-                <app-grading-line
-                    [key]="'Note'"
-                    [grading]="sectionData.playerResults.results.globalGrading"
-                />
+                    <app-grading-line
+                        [key]="'Note'"
+                        [grading]="sectionData.playerResults.results.globalGrading"
+                    />
+                </div>
 
                 <app-rollable-box
                     *ngIf="notionGradings.length > 0"
@@ -175,10 +177,12 @@
                     />
                 </app-rollable-box>
 
-                <p>
-                    Mot par minute :
-                    {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
-                </p>
+                <div class="section-block">
+                    <div class="info-line">
+                        <strong>Mots par minute :</strong>
+                        <span>{{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}</span>
+                    </div>
+                </div>
 
                 <app-mistakes-boxes
                     [title]="'Erreurs'"
