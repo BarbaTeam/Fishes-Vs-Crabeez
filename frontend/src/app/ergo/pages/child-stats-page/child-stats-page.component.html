@@ -10,9 +10,7 @@
             [routerLink]="['/ergo/child-stats']"
             routerLinkActive="active"
         >
-            <p class="name">
-                <app-user-card [user]="user" class="horizontal navbar"/>
-            </p>
+            <app-user-card [user]="user" class="horizontal navbar"/>
         </app-navbar-button>
 
         <app-navbar-button
@@ -140,7 +138,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal"
+                    class="horizontal unclickable classement"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>
@@ -193,7 +191,7 @@
         </app-inner-box>
 
         <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
-            <h1 class="title">Classment</h1>
+            <h1 class="title">Classement</h1>
 
             <ng-template *ngIf="sectionData.leaderboard === undefined">
                 <p>Classement Indisponible</p>
@@ -203,7 +201,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal"
+                    class="horizontal unclickable classement"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>

@@ -10,3 +10,8 @@ span {
     gap: 15px;
     margin-bottom: 15px;
 }
+
+.title {
+    font-size: clamp(10px, 5vw, 17px);
+    padding-bottom: 2rem;
+}

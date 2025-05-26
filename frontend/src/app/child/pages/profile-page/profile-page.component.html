@@ -9,9 +9,7 @@
             [routerLink]="['/child/profile']"
             routerLinkActive="active"
         >
-            <p class="name">
-                <app-user-card [user]="user" class="horizontal navbar"/>
-            </p>
+            <app-user-card [user]="user" class="horizontal navbar"/>
         </app-navbar-button>
 
         <app-navbar-button
@@ -137,7 +135,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal unclickable"
+                    class="horizontal unclickable classement"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>
@@ -198,7 +196,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal unclickable"
+                    class="horizontal unclickable classement"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>
