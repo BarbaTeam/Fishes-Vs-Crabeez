@@ -6,6 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrl: './lobby-card.component.scss'
 })
 export class LobbyCardComponent {
-  @Input() lobbyId!: number;
+  @Input() lobbyId!: string;
   @Input() playerCount!: number;
 }

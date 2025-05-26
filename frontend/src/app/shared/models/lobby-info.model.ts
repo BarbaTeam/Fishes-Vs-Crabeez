@@ -1,6 +1,6 @@
 import { User } from "./user.model";
 
 export type LobbyInfo = {
-    lobbyId: number,
+    lobbyId: string,
     players: User[],
 };

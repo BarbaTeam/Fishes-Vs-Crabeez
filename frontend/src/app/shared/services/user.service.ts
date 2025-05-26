@@ -9,6 +9,7 @@ import { LocalStorageService } from "./local-storage.service";
 
 import { User } from "../models/user.model";
 import { UserID } from "../models/ids";
+import { SocketService } from "./socket.service";
 
 
 
@@ -60,6 +61,7 @@ export class UserService{
     constructor(
         private http: HttpClient,
         private localStorageService : LocalStorageService,
+        private socket: SocketService
     ) {
         // Users :
         from(this._fetchUsers()).subscribe((users) => {
@@ -122,6 +124,7 @@ export class UserService{
                 UserService.LocalStorageKey.SELECTED_USER,
                 JSON.stringify(this._selectedUser)
             );
+            this.socket.setCurrentUser(this._selectedUser);
         }
     }
 

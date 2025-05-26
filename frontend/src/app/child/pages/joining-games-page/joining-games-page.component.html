@@ -36,11 +36,14 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-lobby-card *ngFor="let lobby of lobbies"
-        [lobbyId]="lobby.lobbyId"
-        [playerCount]="lobby.players.length"
-        (click)="joinLobby(lobby.lobbyId)"
-        />
+        <app-inner-box *ngIf="lobbies && lobbies.length" class="scrollable column no-background small">
+            <app-lobby-card *ngFor="let lobby of lobbies"
+                [lobbyId]="lobby.lobbyId"
+                [playerCount]="lobby.players.length"
+                (click)="joinLobby(lobby.lobbyId)"
+            >
+            </app-lobby-card>
+        </app-inner-box>
     </app-body>
 
 </app-template>
