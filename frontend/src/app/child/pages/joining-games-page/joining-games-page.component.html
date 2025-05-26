@@ -34,7 +34,7 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box *ngIf="lobbies && lobbies.length" class="scrollable column no-background small">
+        <app-inner-box *ngIf="lobbies && lobbies.length" class="scrollable column no-background medium" style="width: 35vw;">
             <app-lobby-card *ngFor="let lobby of lobbies"
                 [lobbyId]="lobby.lobbyId"
                 [playerCount]="lobby.players.length"

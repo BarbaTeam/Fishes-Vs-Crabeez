@@ -1,36 +1,48 @@
-:host{
-    display: flex;
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 
-    height: 4.7vh;
-    width: 11vw;
+  height: 4.7vh;
+  width: 11vw;
 
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  border-radius: 0; /* pixel-style */
+  font-size: 20px;
+  font-weight: bold;
 
-    border-radius: 0.5rem;
+  background-color: #E0E7FA;
+  color: #01579b;
 
-    font-size: 20px;
-    font-weight: bold;
+  border: 2px solid #b0c4de;
+  box-shadow:
+    4px 4px 0 #cbdcf5,
+    8px 8px 0 rgba(0, 128, 176, 0.1);
 
-    background-color: #E0E7FA;
-    color: #11262d;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+  image-rendering: pixelated;
+  transition: all 0.2s ease-in-out;
 }
-:host:hover{
-    cursor: pointer;
-    background-color: #bfc5d9;
+
+:host:hover {
+  cursor: pointer;
+  background-color: #d0d9f5;
+  box-shadow:
+    2px 2px 0 #bcd4ee,
+    4px 4px 0 rgba(0, 128, 176, 0.1);
 }
 
 :host(.active) {
-    background-color: #669d94;
-    box-shadow: none;
+  background-color: #669d94;
+  color: #ffffff;
+  box-shadow: none;
+  border: 2px solid #4b7b75;
 }
-:host(.active):hover{
-    cursor: default;
-    background-color: #669d94;
+
+:host(.active):hover {
+  cursor: default;
+  background-color: #669d94;
 }
 
 :host(.auto-width) {
-    width: auto;
+  width: auto;
 }
