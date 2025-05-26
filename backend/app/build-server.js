@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const { Server } = require('socket.io');
 const api = require('./api');
+const number = require('joi/lib/types/number');
+const { UserSchema } = require('./shared/schemas/user.schema')
 
 module.exports = (cb) => {
     const app = express();
@@ -24,53 +26,62 @@ module.exports = (cb) => {
         }
     });
 
-    let players = [];
-    let roomCreated = false;
+    let lobbies = new Map();
+    let lobbyCount = 0;
 
     io.on('connection', (socket) => {
         let currentPlayer = null;
+        let currentLobbyId = null;
 
         console.log('Client connected:', socket.id);
 
 
         socket.on('createLobby', () => {
-            roomCreated = true;
-            players = []; 
+            currentLobbyId = lobbyCount++;
+            lobbies.set(currentLobbyId, []);
+            io.emit('lobbyCreated', currentLobbyId); 
             console.log('[SERVER] Lobby created by', socket.id);
         });
 
-        socket.on('destroyLobby', () => {
-            roomCreated = false;
-            players = [];
-            io.emit('lobbyState', players);
-            io.emit('lobbyClosed'); 
+        socket.on('closeLobby', (lobbyId) => {
+            lobbies.delete(lobbyId);
+            io.emit('lobbyClosed', lobbyId); 
             console.log('[SERVER] Lobby destroyed by', socket.id);
         });
 
-        socket.on('playerConnected', (player) => {
-            if (!roomCreated) return;
+        socket.on('playerConnected', ({lobbyId, player}) => {
             currentPlayer = player;
-            const alreadyExists = players.some(p => p.userId === player.userId);
+            currentLobbyId = lobbyId;
+            const alreadyExists = lobbies.get(lobbyId).some(p => p.userId === player.userId);
             if (!alreadyExists) {
-                players.push(player);
-                socket.broadcast.emit('playerConnected', player);
-                console.log(`[SERVER] Player connected: ${player.username}`);
+                lobbies.get(lobbyId).push(player);
+                socket.broadcast.emit('playerConnected', {lobbyId, player});
+                console.log(`[SERVER] Player connected: ${player.username} to lobby ${lobbyId}`);
             }
         });
 
         socket.on('playerDisconnected', () => {
-            if (currentPlayer) {
-                players = players.filter(p => p.userId !== currentPlayer.userId);
-                io.emit('playerDisconnected', currentPlayer);
+            if (currentPlayer && currentLobbyId) {
+                const newList = lobbies.get(currentLobbyId).filter(p => p.userId !== currentPlayer.userId);
+                lobbies.set(currentLobbyId,newList);
+                io.emit('playerDisconnected', {lobbyId, currentPlayer});
                 console.log(`[SERVER] Player disconnected: ${currentPlayer.username}`);
             }
         });
 
-        socket.on('requestLobbyState', () => {
-            if (roomCreated) {
-                socket.emit('lobbyState', players);
+        socket.on('requestLobbies', () => {
+            if(lobbies){
+                socket.emit('lobbies', lobbies);
             } else {
-                console.log('[SERVER] Lobby not created yet');
+                console.log('[SERVER] No lobby found')
+            }
+        })
+
+        socket.on('requestLobbyState', (lobbyId) => {
+            if (lobbyId) {
+                socket.emit('lobbyState', lobbies.get(lobbyId));
+            } else {
+                console.log(`[SERVER] Lobby ${lobbyId} not found`);
             }
         });
 

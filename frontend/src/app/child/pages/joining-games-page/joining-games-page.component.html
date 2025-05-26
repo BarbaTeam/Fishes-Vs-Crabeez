@@ -36,9 +36,11 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-big-button (click)="findGame()" [routerLink]="['/child/games-list']">
-            Trouver une partie
-        </app-big-button>
+        <app-lobby-card *ngFor="let lobby of lobbies"
+        [lobbyId]="lobby.lobbyId"
+        [playerCount]="lobby.players.length"
+        (click)="joinLobby(lobby.lobbyId)"
+        />
     </app-body>
 
 </app-template>
