@@ -32,6 +32,7 @@ module.exports = (cb) => {
 
         console.log('Client connected:', socket.id);
 
+
         socket.on('createLobby', () => {
             roomCreated = true;
             players = []; 
@@ -48,7 +49,6 @@ module.exports = (cb) => {
 
         socket.on('playerConnected', (player) => {
             if (!roomCreated) return;
-
             currentPlayer = player;
             const alreadyExists = players.some(p => p.userId === player.userId);
             if (!alreadyExists) {
@@ -58,19 +58,19 @@ module.exports = (cb) => {
             }
         });
 
+        socket.on('playerDisconnected', () => {
+            if (currentPlayer) {
+                players = players.filter(p => p.userId !== currentPlayer.userId);
+                io.emit('playerDisconnected', currentPlayer);
+                console.log(`[SERVER] Player disconnected: ${currentPlayer.username}`);
+            }
+        });
+
         socket.on('requestLobbyState', () => {
             if (roomCreated) {
                 socket.emit('lobbyState', players);
             } else {
                 console.log('[SERVER] Lobby not created yet');
-            }
-        });
-
-        socket.on('disconnect', () => {
-            if (currentPlayer) {
-                players = players.filter(p => p.userId !== currentPlayer.userId);
-                io.emit('playerDisconnected', currentPlayer);
-                console.log(`[SERVER] Player disconnected: ${currentPlayer.username}`);
             }
         });
 
