@@ -1,0 +1,33 @@
+<p class="stat-line">
+    <span class="title">{{ title }}</span>
+    <span class="sep">&nbsp;:&nbsp;</span>
+
+    @if (isGradingline()) {
+        <img class="grade" [src]="gradeIcon" [alt]="value.grade"/>
+
+        @if(withAdvancedStats) {
+            <span class="accuracy">({{ value.accuracy }}%)</span>
+            @if (improvement) {
+                <span
+                    class="improvement"
+                    [class.positive]="improvement! > 0"
+                    [class.negative]="improvement! < 0"
+                >
+                    {{ improvement! > 0 ? '+' : '' }}{{ improvement }}%
+                </span>
+            }
+        }
+    } @else if(isWPMLine()) {
+        <span class="wpm">{{ value.toFixed(2) }}</span>
+
+        @if (withAdvancedStats && improvement) {
+            <span
+                class="improvement"
+                [class.positive]="improvement! > 0"
+                [class.negative]="improvement! < 0"
+            >
+                {{ improvement! > 0 ? '+' : '' }}{{ improvement }}%
+            </span>
+        }
+    }
+</p>
