@@ -30,27 +30,47 @@
         </div>
     </div>
 
-    <div class="config-group">
-        <h3>Affichage</h3>
+    <div *ngIf="isInErgoPage" class="config-group">
+        <h3>Mathématiques*</h3>
 
-        <span>
-            Taille de la police :
-            <span>
-                0<app-settings-slider
-                    [(value)]="localUserTemp.userConfig.fontSize"
-                    (valueChange)="onChange()"
-                />1
-            </span>
+        <span >
+            Réécriture des nombres :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.numberRewrite"
+                (checkedChange)="onChange()"
+            />
         </span>
 
         <span>
-            Son :
-            <span>
-                0<app-settings-slider
-                    [(value)]="localUserTemp.userConfig.sound"
-                    (valueChange)="onChange()"
-                />1
-            </span>
+            Addition :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.addition"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span>
+            Soustraction :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.soustraction"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span>
+            Multiplication :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.multiplication"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span>
+            Division :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.userConfig.division"
+                (checkedChange)="onChange()"
+            />
         </span>
     </div>
 
@@ -98,47 +118,29 @@
         </span>
     </div>
 
-    <div *ngIf="isInErgoPage" class="config-group">
-        <h3>Mathématiques*</h3>
+    <div class="config-group">
+        <h3>Affichage</h3>
 
-        <span >
-            Réécriture des nombres :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.numberRewrite"
-                (checkedChange)="onChange()"
-            />
+        <span>
+            Taille de la police :
+            <span>
+                0<app-settings-slider
+                    [(value)]="localUserTemp.userConfig.fontSize"
+                    (valueChange)="onChange()"
+                />1
+            </span>
         </span>
 
         <span>
-            Addition :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.addition"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span>
-            Soustraction :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.soustraction"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span>
-            Multiplication :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.multiplication"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span>
-            Division :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.division"
-                (checkedChange)="onChange()"
-            />
+            Son :
+            <span>
+                0<app-settings-slider
+                    [(value)]="localUserTemp.userConfig.sound"
+                    (valueChange)="onChange()"
+                />1
+            </span>
         </span>
     </div>
+
+    
 </div>
