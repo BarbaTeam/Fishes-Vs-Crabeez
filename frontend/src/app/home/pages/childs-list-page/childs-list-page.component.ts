@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '@app/shared/services/user.service';
+import { SocketService } from '@app/shared/services/socket.service';
 
 import { User } from '@app/shared/models/user.model';
 import { UserID } from '@app/shared/models/ids';
@@ -14,18 +16,64 @@ import { UserID } from '@app/shared/models/ids';
 })
 export class ChildsListPageComponent {
     public users!: User[];
+    public filteredUsers: User[] = [];
+    private subscriptions: Subscription = new Subscription();
+    private selectedUserIds: UserID[] = [];
 
     constructor(
         private userService: UserService,
         private router: Router,
-    ) {
-        this.userService.users$.subscribe((users: User[]) => {
-            this.users = users;
-        });
+        private socket: SocketService,
+    ) {}
+
+    ngOnInit(): void {
+        this.initSocket();
+        this.socket.sendMessage('deselectUser', this.socket.id);
+
+        this.subscriptions.add(
+            this.userService.users$.subscribe((users: User[]) => {
+                this.users = users;
+                this.updateFilteredUsers();
+            })
+        );
+
+        this.socket.sendMessage('requestSelectedUsersId', {});
     }
 
-    onUserClick (userId: UserID) {
-        this.userService.selectUser(userId);
-        this.router.navigate(['/child/joining-games']);
+
+    private initSocket(): void {
+        this.subscriptions.add(
+            this.socket.on<UserID>('userSelectionGranted').subscribe((userId) => {
+                this.userService.selectUser(userId);
+                this.router.navigate(['/child/joining-games']);
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<UserID>('userSelectionDenied').subscribe((userId) => {
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<UserID[]>('selectedUsersUpdate').subscribe((selectedUserIds: UserID[]) => {
+                this.selectedUserIds = selectedUserIds;
+                this.updateFilteredUsers();
+            })
+        );
+    }
+
+    private updateFilteredUsers(): void {
+        if (this.users) {
+            this.filteredUsers = this.users.filter(u => !this.selectedUserIds.includes(u.userId));
+        }
+    }
+
+
+    onUserClick(userId: UserID) {
+        this.socket.sendMessage('selectUser', userId);
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 }

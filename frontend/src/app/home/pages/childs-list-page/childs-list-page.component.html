@@ -17,7 +17,7 @@
     <app-body>
         <app-inner-box class="main-box blue scrollable" style="width: 47.5vw;">
             <app-user-list
-                [users]="users"
+                [users]="filteredUsers"
                 (userClick)="onUserClick($event)"
             />
         </app-inner-box>

@@ -3,7 +3,9 @@ import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
 import { User } from '@app/shared/models/user.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root'
+})
 export class SocketService {
     private _currentUser?: User;
 
@@ -23,6 +25,10 @@ export class SocketService {
 
     on<T = any>(type: string): Observable<T> {
         return this.socket.fromEvent<T>(type);
+    }
+
+    get id() {
+        return this.socket.ioSocket.id;
     }
 
     onReady(callback: () => void): void {
