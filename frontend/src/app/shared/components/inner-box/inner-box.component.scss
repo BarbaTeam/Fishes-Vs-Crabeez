@@ -35,7 +35,7 @@
 }
 
 :host(.center-content) {
-    justify-content: center;
+    align-items: center;
 }
 
 :host(.column) {
@@ -124,4 +124,9 @@
     &::-webkit-scrollbar-track {
         background: transparent;
     }
+}
+
+:host(.transparent){
+  background-color: transparent;
+  border-color: transparent;
 }

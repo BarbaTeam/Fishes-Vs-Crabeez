@@ -2,7 +2,6 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { User } from '@app/shared/models/user.model';
-import { GameInfo } from '@app/shared/models/game-info.model';
 import { SocketService } from '@app/shared/services/socket.service';
 
 @Component({
@@ -48,13 +47,19 @@ export class GameLobbyPageComponent implements OnDestroy {
             })
         );
 
+        this.subscriptions.add(
+            this.socket.on<void>('gameStarted').subscribe(() => {
+                this.state = 'En cours de jeu';
+            })
+        );
+
         this.socket.onReady(() => {
             this.socket.sendMessage('createGame', {});
         });
     }
 
     public startGame(): void {
-        this.socket.sendMessage('ergoStartGame', { roomId: this.gameId });
+        this.socket.sendMessage('prepareStartGame');
     }
 
     ngOnDestroy(): void {

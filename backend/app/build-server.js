@@ -61,7 +61,7 @@ module.exports = (cb) => {
             const newGame = {
                 creatorSocketId: socket.id,
                 players: [],
-                state: 'waiting'
+                state: 'En attente'
             };
 
             games.set(gameId, newGame);
@@ -76,24 +76,26 @@ module.exports = (cb) => {
             broadcastGamesUpdate();
         });
 
+        socket.on('askAccessToGame', ({gameId}) => {
+            if (!games.has(gameId)) return;
+            const game = games.get(gameId);
+            if (game.state === 'En cours de jeu') {
+                socket.emit('accessDenied');
+                return;
+            }
+            socket.emit('accessGranted', gameId);
+        });
+
         socket.on('joinGame', ({ gameId, player }) => {
             currentPlayer = player;
             currentGame = gameId;
-
-            if (!games.has(gameId)) return;
-
             const game = games.get(gameId);
-            if (game.state === 'playing') {
-                socket.emit('joinDenied', { reason: 'Game already started' });
-                return;
-            }
 
             socket.join(gameId);
 
             if (!game.players.some(p => p.userId === player.userId)) {
                 game.players.push(player);
             }
-
             io.to(gameId).emit('playerConnected', player);
             broadcastGamesUpdate();
         });
@@ -131,33 +133,23 @@ module.exports = (cb) => {
             const game = games.get(gameId);
             socket.emit('gameState', {
                 players: game?.players || [],
-                state: game?.state || 'waiting'
+                state: game?.state || 'En attente'
             });
         });
 
-        socket.on('ergoStartGame', () => {
-            if (currentGame && games.has(currentGame)) {
-                const game = games.get(currentGame);
-                game.state = 'playing';
-                io.to(currentGame).emit('gameStarted');
-                broadcastGamesUpdate();
-            }
-        });
-
-        // Facultatif : transition "starting" -> "playing" avec délai
         socket.on('prepareStartGame', () => {
             if (currentGame && games.has(currentGame)) {
                 const game = games.get(currentGame);
-                game.state = 'starting';
+                game.state = 'En préparation';
+                io.to(currentGame).emit('prepareStartGame');
                 broadcastGamesUpdate();
-
                 setTimeout(() => {
                     if (games.has(currentGame)) {
-                        game.state = 'playing';
+                        game.state = 'En cours de jeu';
                         io.to(currentGame).emit('gameStarted');
                         broadcastGamesUpdate();
                     }
-                }, 3000);
+                }, 5000);
             }
         });
 

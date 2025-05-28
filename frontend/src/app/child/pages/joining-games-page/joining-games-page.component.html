@@ -34,10 +34,13 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box *ngIf="games && games.length" class="scrollable column no-background medium" style="width: 35vw;">
+        <app-inner-box *ngIf="games && games.length" class="scrollable column no-background medium center-content" style="width: 40vw;">
+            <p class="title">Liste des parties</p>
+            <p class="sub-title">Cliquez pour rejoindre</p>
             <app-game-card *ngFor="let game of games"
                 [gameId]="game.gameId"
                 [playerCount]="game.players.length"
+                [gameState]="game.state"
                 (click)="joinGame(game.gameId)"
             >
             </app-game-card>

@@ -15,6 +15,7 @@ import { GameInfo } from '@app/shared/models/game-info.model';
 export class GamesListPageComponent implements OnDestroy {
     public players: User[] = [];
     public roomId: string = '';
+    public state = 'En attente';
     private subscriptions = new Subscription();
     private user!: User;
     private userReady = false;
@@ -53,6 +54,7 @@ export class GamesListPageComponent implements OnDestroy {
         this.subscriptions.add(
             this.socket.on<any>('gameState').subscribe( ({players, state}) => {
                 this.players = players;
+                this.state = state;
             })
         );
 
@@ -80,6 +82,19 @@ export class GamesListPageComponent implements OnDestroy {
             })
         );
 
+        this.subscriptions.add(
+            this.socket.on<void>('prepareStartGame').subscribe(() => {
+                this.state = 'En préparation';
+                this.startCountdown();
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<void>('gameStarted').subscribe(() => {
+                this.router.navigate(['child/game'], { queryParams: { id: this.roomId } });
+            })
+        );
+
         this.socket.onReady(() => {
             this.socket.sendMessage('joinGame', {
                 gameId: this.roomId,
@@ -88,6 +103,18 @@ export class GamesListPageComponent implements OnDestroy {
 
             this.socket.sendMessage('requestGameState', this.roomId);
         });
+    }
+
+    public countdown: number = 5;
+
+    private startCountdown(): void {
+        this.countdown = 5;
+        const interval = setInterval(() => {
+            this.countdown--;
+            if (this.countdown < 0) {
+                clearInterval(interval);
+            }
+        }, 1000);
     }
 
     ngOnDestroy(): void {

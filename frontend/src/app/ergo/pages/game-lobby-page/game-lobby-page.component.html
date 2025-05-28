@@ -36,8 +36,8 @@
 
     <app-body>
         <app-inner-box class="main-box blue little scrollable">
-            <p class="title">Joueurs en attente</p>
-            <ng-container *ngIf="players.length !== 0 ; else waitingForPlayers">
+            <p *ngIf="state === 'En attente' ; else gameInProgress" class="title">Joueurs en attente</p>
+            <ng-container *ngIf="players.length !== 0 && state === 'En attente' ; else waitingForPlayers">
                 <app-player-in-lobby
                     *ngFor="let player of players"
                     [user]="player"
@@ -50,6 +50,9 @@
             </ng-container>
             <ng-template #waitingForPlayers>
                 <p>En attente de joueurs...</p>
+            </ng-template>
+            <ng-template #gameInProgress>
+                <p>La partie est en cours !</p>
             </ng-template>
       
         </app-inner-box>

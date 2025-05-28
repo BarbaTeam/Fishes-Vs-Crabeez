@@ -4,5 +4,6 @@
   </div>
   <div class="game-body">
     <p>Joueurs : {{ playerCount }}</p>
+    <p [ngClass]="getStatusClass(gameState)">{{ gameState }}</p>
   </div>
 </div>
