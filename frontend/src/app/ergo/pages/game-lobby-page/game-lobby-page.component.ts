@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { User } from '@app/shared/models/user.model';
-import { LobbyInfo } from '@app/shared/models/lobby-info.model';
+import { GameInfo } from '@app/shared/models/game-info.model';
 import { SocketService } from '@app/shared/services/socket.service';
 
 @Component({
@@ -11,7 +11,8 @@ import { SocketService } from '@app/shared/services/socket.service';
     styleUrls: ['./game-lobby-page.component.scss']
 })
 export class GameLobbyPageComponent implements OnDestroy {
-    public roomId: string = '';
+    public gameId: string = '';
+    public state: string = '';
     public players: User[] = [];
 
     private subscriptions = new Subscription();
@@ -22,50 +23,43 @@ export class GameLobbyPageComponent implements OnDestroy {
 
     private initSocket(): void {
         this.subscriptions.add(
-            this.socket.on<string>('lobbyCreated').subscribe(newRoomId => {
-                if (!this.roomId) {
-                    this.roomId = newRoomId;
-                    this.socket.sendMessage('requestLobbyState', this.roomId);
-                }
+            this.socket.on<any>('gameCreated').subscribe(({gameId, state}) => {
+                this.gameId = gameId;
+                this.state = state;
             })
         );
 
         this.subscriptions.add(
-            this.socket.on<LobbyInfo>('lobbyState').subscribe(({ lobbyId, players }) => {
-                if (lobbyId === this.roomId) {
-                    this.players = players;
-                }
+            this.socket.on<any>('gameState').subscribe(({ players, state }) => {
+                this.players = players;
+                this.state = state;
             })
         );
 
         this.subscriptions.add(
-            this.socket.on<any>('playerConnected').subscribe(({ lobbyId, player }) => {
-                if (lobbyId === this.roomId && !this.players.some(p => p.userId === player.userId)) {
-                    this.players.push(player);
-                }
+            this.socket.on<any>('playerConnected').subscribe( player => {
+                this.players.push(player);
             })
         );
 
         this.subscriptions.add(
-            this.socket.on<any>('playerDisconnected').subscribe(({ lobbyId, player }) => {
-                if (lobbyId === this.roomId) {
-                    this.players = this.players.filter(p => p.userId !== player.userId);
-                }
+            this.socket.on<any>('playerDisconnected').subscribe(player => {
+                this.players = this.players.filter(p => p.userId !== player.userId);
             })
         );
 
         this.socket.onReady(() => {
-            this.socket.sendMessage('createLobby', {});
+            this.socket.sendMessage('createGame', {});
         });
     }
 
     public startGame(): void {
-        this.socket.sendMessage('ergoStartGame', { roomId: this.roomId });
+        this.socket.sendMessage('ergoStartGame', { roomId: this.gameId });
     }
 
     ngOnDestroy(): void {
-        if (this.roomId) {
-            this.socket.sendMessage('closeLobby', this.roomId);
+        if (this.gameId) {
+            this.socket.sendMessage('closeGame', this.gameId);
         }
         this.subscriptions.unsubscribe();
     }

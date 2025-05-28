@@ -24,12 +24,12 @@ module.exports = (cb) => {
         }
     });
 
-    const roomPlayers = new Map(); // lobbyId => { creatorSocketId, players, lastActive }
-    const selectedUsersId = new Map(); // socket.id => userId ; pour ne pas pouvoir selectionner le même utilisateur plusieurs fois
+    const games = new Map(); // gameId => { creatorSocketId, players, state }
+    const selectedUsersId = new Map(); // socket.id => userId
 
     io.on('connection', (socket) => {
         let currentPlayer = null;
-        let currentRoom = null;
+        let currentGame = null;
 
         console.log(`[SERVER] Client connecté : ${socket.id}`);
 
@@ -51,114 +51,166 @@ module.exports = (cb) => {
         });
 
         socket.on('requestSelectedUsersId', () => {
-                const selectedUserList = Array.from(selectedUsersId.values());
-                socket.emit('selectedUsersUpdate', selectedUserList);
-            }
-        );
+            socket.emit('selectedUsersUpdate', Array.from(selectedUsersId.values()));
+        });
 
-        socket.on('createLobby', () => {
-            const lobbyId = `lobby-${Date.now()}`;
-            roomPlayers.set(lobbyId, {
+        socket.on('createGame', () => {
+            const gameId = `game-${Date.now()}`;
+            currentGame = gameId;
+
+            const newGame = {
                 creatorSocketId: socket.id,
                 players: [],
-                lastActive: Date.now()
+                state: 'waiting'
+            };
+
+            games.set(gameId, newGame);
+            socket.join(gameId);
+
+            io.emit('gameCreated', {
+                gameId,
+                players: newGame.players,
+                state: newGame.state
             });
 
-            socket.join(lobbyId);
-            io.emit('lobbyCreated', lobbyId);
+            broadcastGamesUpdate();
         });
 
-        socket.on('joinLobby', ({ lobbyId, player }) => {
+        socket.on('joinGame', ({ gameId, player }) => {
             currentPlayer = player;
-            currentRoom = lobbyId;
-            socket.join(lobbyId);
+            currentGame = gameId;
 
-            if (!roomPlayers.has(lobbyId)) return;
+            if (!games.has(gameId)) return;
 
-            const lobby = roomPlayers.get(lobbyId);
-            if (!lobby.players.some(p => p.userId === player.userId)) {
-                lobby.players.push(player);
+            const game = games.get(gameId);
+            if (game.state === 'playing') {
+                socket.emit('joinDenied', { reason: 'Game already started' });
+                return;
             }
 
-            lobby.lastActive = Date.now();
+            socket.join(gameId);
 
-            io.to(lobbyId).emit('playerConnected', { lobbyId, player });
-            broadcastLobbiesUpdate();
+            if (!game.players.some(p => p.userId === player.userId)) {
+                game.players.push(player);
+            }
+
+            io.to(gameId).emit('playerConnected', player);
+            broadcastGamesUpdate();
         });
 
-        socket.on('leaveLobby', ({ lobbyId, player }) => {
-            if (!roomPlayers.has(lobbyId)) return;
+        socket.on('leaveGame', ({ gameId, player }) => {
+            if (!games.has(gameId)) return;
 
-            const lobby = roomPlayers.get(lobbyId);
-            lobby.players = lobby.players.filter(p => p.userId !== player.userId);
-            lobby.lastActive = Date.now();
+            const game = games.get(gameId);
+            game.players = game.players.filter(p => p.userId !== player.userId);
 
-            socket.leave(lobbyId);
-            io.to(lobbyId).emit('playerDisconnected', { lobbyId, player });
-            broadcastLobbiesUpdate();
+            socket.leave(gameId);
+            io.to(gameId).emit('playerDisconnected', player);
+            broadcastGamesUpdate();
         });
 
-        socket.on('closeLobby', (lobbyId) => {
-            roomPlayers.delete(lobbyId);
-            io.emit('lobbyClosed', lobbyId);
-            io.to(lobbyId).emit('leaveLobby', lobbyId);
-            broadcastLobbiesUpdate();
+        socket.on('closeGame', (gameId) => {
+            io.to(gameId).emit('leaveGame');
+            io.emit('gameClosed', gameId);
+            games.delete(gameId);
+            broadcastGamesUpdate();
         });
 
-        socket.on('requestLobbies', () => {
-            const detailedLobbies = Array.from(roomPlayers.entries()).map(([lobbyId, lobby]) => ({
-                lobbyId,
-                players: lobby.players
+        socket.on('requestGames', () => {
+            const detailedGames = Array.from(games.entries()).map(([gameId, game]) => ({
+                gameId,
+                players: game.players,
+                state: game.state
             }));
 
-            socket.emit('lobbies', detailedLobbies.map(l => l.lobbyId));
-            socket.emit('lobbiesUpdated', detailedLobbies);
+            socket.emit('games', detailedGames.map(l => l.gameId));
+            socket.emit('gamesUpdated', detailedGames);
         });
 
-        socket.on('requestLobbyState', (lobbyId) => {
-            const lobby = roomPlayers.get(lobbyId);
-            const players = lobby?.players || [];
-            socket.emit('lobbyState', { lobbyId, players });
+        socket.on('requestGameState', (gameId) => {
+            const game = games.get(gameId);
+            socket.emit('gameState', {
+                players: game?.players || [],
+                state: game?.state || 'waiting'
+            });
         });
 
         socket.on('ergoStartGame', () => {
-            if (currentRoom) {
-                io.to(currentRoom).emit('gameStarted');
+            if (currentGame && games.has(currentGame)) {
+                const game = games.get(currentGame);
+                game.state = 'playing';
+                io.to(currentGame).emit('gameStarted');
+                broadcastGamesUpdate();
             }
         });
 
+        // Facultatif : transition "starting" -> "playing" avec délai
+        socket.on('prepareStartGame', () => {
+            if (currentGame && games.has(currentGame)) {
+                const game = games.get(currentGame);
+                game.state = 'starting';
+                broadcastGamesUpdate();
+
+                setTimeout(() => {
+                    if (games.has(currentGame)) {
+                        game.state = 'playing';
+                        io.to(currentGame).emit('gameStarted');
+                        broadcastGamesUpdate();
+                    }
+                }, 3000);
+            }
+        });
+
+        // Game logic
+        const { QuestionsGenerator } = require('./game/question-generator');
+        const { UserTable } = require('./shared/tables/user.table');
+
+        socket.on('requestQuestion', (userId) => {
+            const user = UserTable.getByKey({ userId });
+            const mask = [
+                user.userConfig.addition,
+                user.userConfig.soustraction,
+                user.userConfig.multiplication,
+                user.userConfig.division,
+                user.userConfig.numberRewrite,
+                user.userConfig.encryption,
+                user.userConfig.equation
+            ];
+            socket.emit('questionCreated', QuestionsGenerator.genQuestion(mask));
+        });
+
         socket.on('disconnect', () => {
-            for (const [lobbyId, lobby] of roomPlayers.entries()) {
-                if (lobby.creatorSocketId === socket.id) {
-                    roomPlayers.delete(lobbyId);
-                    io.emit('lobbyClosed', lobbyId);
+            for (const [gameId, game] of games.entries()) {
+                if (game.creatorSocketId === socket.id) {
+                    games.delete(gameId);
+                    io.emit('gameClosed', gameId);
                 }
             }
 
-            if (currentPlayer && currentRoom && roomPlayers.has(currentRoom)) {
-                const lobby = roomPlayers.get(currentRoom);
-                lobby.players = lobby.players.filter(p => p.userId !== currentPlayer.userId);
-                io.to(currentRoom).emit('playerDisconnected', { lobbyId: currentRoom, player: currentPlayer });
+            if (currentPlayer && currentGame && games.has(currentGame)) {
+                const game = games.get(currentGame);
+                game.players = game.players.filter(p => p.userId !== currentPlayer.userId);
+                io.to(currentGame).emit('playerDisconnected', { gameId: currentGame, player: currentPlayer });
             }
 
             selectedUsersId.delete(socket.id);
 
             broadcastSelectedUsers();
-            broadcastLobbiesUpdate();
+            broadcastGamesUpdate();
         });
 
         function broadcastSelectedUsers() {
-            console.log("update")
             const selectedUserList = Array.from(selectedUsersId.values());
             io.emit('selectedUsersUpdate', selectedUserList);
         }
 
-        function broadcastLobbiesUpdate() {
-            const lobbyList = Array.from(roomPlayers.entries()).map(([lobbyId, lobby]) => ({
-                lobbyId,
-                players: lobby.players
+        function broadcastGamesUpdate() {
+            const gameList = Array.from(games.entries()).map(([gameId, game]) => ({
+                gameId,
+                players: game.players,
+                state: game.state
             }));
-            io.emit('lobbiesUpdated', lobbyList);
+            io.emit('gamesUpdated', gameList);
         }
     });
 
