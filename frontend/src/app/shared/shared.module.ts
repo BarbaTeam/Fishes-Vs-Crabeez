@@ -46,6 +46,7 @@ import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-l
 import { UserConfigComponent } from './components/user-config/user-config.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { ChoiceButtonComponent } from '@app/home/pages/choice-page/choice-button/choice-button.component';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +93,8 @@ const SHARED_COMPONENTS = [
     // Miscellaneous :
     PlayerInLobbyComponent,
     UserConfigComponent,
-    GameCardComponent
+    GameCardComponent,
+    ChoiceButtonComponent
 ];
 
 
