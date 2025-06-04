@@ -1,128 +1,69 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 
-import { User } from '@app/shared/models/user.model';
 import { SocketService } from '@app/shared/services/socket.service';
 import { UserService } from '@app/shared/services/user.service';
-import { GameInfo } from '@app/shared/models/game-info.model';
+import { GamesLobbyService } from '@app/shared/services/games-lobby.service';
+
+import { GameID } from '@app/shared/models/ids';
+import { GameLobby, GameLobbyState  } from '@app/shared/models/game-lobby.model';
+import { User } from '@app/shared/models/user.model';
+
+
 
 @Component({
     selector: 'app-games-list-page',
     templateUrl: './games-list-page.component.html',
     styleUrl: './games-list-page.component.scss'
 })
-export class GamesListPageComponent implements OnDestroy {
-    public players: User[] = [];
-    public roomId: string = '';
-    public state = 'En attente';
+export class GamesListPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
-    private user!: User;
-    private userReady = false;
-    private roomReady = false;
+    public user!: User;
+    public waitingGames: GameLobby[] = [];
+    public selected: 'solo' | 'multi' | null = null;
 
     constructor(
         private socket: SocketService,
         private userService: UserService,
+        private gamesLobbyService: GamesLobbyService,
         private router: Router,
-        private route: ActivatedRoute
-    ) {
+    ) {}
+
+    ngOnInit(): void {
         this.subscriptions.add(
-            this.userService.selectedUser$.subscribe(user => {
-                this.user = user;
-                this.userReady = true;
-                this.tryInitSocket();
-            })
+            this.userService.selectedUser$.subscribe(user => this.user = user)
         );
 
         this.subscriptions.add(
-            this.route.queryParams.subscribe(params => {
-                this.roomId = params['id'];
-                this.roomReady = true;
-                this.tryInitSocket();
+            this.gamesLobbyService.gamesLobbyPerStates$.subscribe(gameLobbiesPerStates => {
+                // NOTE : Might be changed to support display of running games
+                this.waitingGames = gameLobbiesPerStates[GameLobbyState.WAITING];
             })
         );
     }
 
-    private tryInitSocket(): void {
-        if (this.userReady && this.roomReady) {
-            this.initSocket();
-        }
-    }
-
-    private initSocket(): void {
-        this.subscriptions.add(
-            this.socket.on<any>('gameState').subscribe( ({players, state}) => {
-                this.players = players;
-                this.state = state;
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<User>('playerConnected').subscribe(player => {
-                this.players.push(player);
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<User>('playerDisconnected').subscribe(player => {
-                this.players = this.players.filter(p => p.userId !== player.userId);
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<void>('gameClosed').subscribe(() => {
-                this.router.navigate(['child/joining-games']);
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<string>('leaveGame').subscribe(() => {
-                this.router.navigate(['child/joining-games']);
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<void>('prepareStartGame').subscribe(() => {
-                this.state = 'En préparation';
-                this.startCountdown();
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<void>('gameStarted').subscribe(() => {
-                this.router.navigate(['child/game'], { queryParams: { id: this.roomId } });
-            })
-        );
-
-        this.socket.onReady(() => {
-            this.socket.sendMessage('joinGame', {
-                gameId: this.roomId,
-                player: this.user
+    public joinGame(gameId: GameID): void {
+        this.socket.on<string>('tryJoinGame_SUCCESS')
+            .pipe(first()) // <-- one time subscription
+            .subscribe(() => {
+                this.router.navigate(['/child/game-lobby'], { queryParams: { id: gameId } });
             });
 
-            this.socket.sendMessage('requestGameState', this.roomId);
-        });
+        this.socket.on<string>('tryJoinGame_FAILURE')
+            .pipe(first()) // <-- one time subscription
+            .subscribe(() => {
+                // TODO : Show notification
+            });
+
+        this.socket.sendMessage('tryJoinGame', gameId);
     }
-
-    public countdown: number = 5;
-
-    private startCountdown(): void {
-        this.countdown = 5;
-        const interval = setInterval(() => {
-            this.countdown--;
-            if (this.countdown < 0) {
-                clearInterval(interval);
-            }
-        }, 1000);
+    public onExpand(mode: 'solo' | 'multi') {
+        this.selected = mode;
     }
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
-
-        this.socket.sendMessage('leaveGame', {
-            gameId: this.roomId,
-            player: this.user
-        });
     }
 }

@@ -7,12 +7,14 @@ import { HTTP_API } from '@app/app-settings';
 
 import { LocalStorageService } from './local-storage.service';
 
-import { GameInfo } from '../models/game-log.model';
-import { GameID } from '../models/ids';
+import { GameID } from '@app/shared/models/ids';
+import { GameInfo } from '@app/shared/models/game-log.model';
 
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root'
+})
 export class GameInfoService {
     // Local Storage Keys :
     private static readonly LocalStorageKey = {

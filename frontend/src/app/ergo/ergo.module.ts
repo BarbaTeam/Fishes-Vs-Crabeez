@@ -2,12 +2,21 @@
 // Imports :
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+// Modules :
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared/shared.module';
 
 import { ErgoRoutingModule } from './ergo-routing.module';
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Host :
+
+import { ErgoHostComponent } from './ergo-host.component';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -39,6 +48,7 @@ const PAGES_COMPONENTS = [
 
 @NgModule({
     declarations: [
+        ErgoHostComponent,
         ...PAGES_COMPONENTS,
     ],
     imports: [
@@ -47,6 +57,7 @@ const PAGES_COMPONENTS = [
         SharedModule,
     ],
     exports: [
+        ErgoHostComponent,
         ...PAGES_COMPONENTS,
     ],
 })

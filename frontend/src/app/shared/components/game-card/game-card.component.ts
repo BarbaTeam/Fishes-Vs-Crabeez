@@ -1,16 +1,22 @@
 import { Component, Input } from '@angular/core';
 
+import { GameLobby, GameLobbyState } from '@app/shared/models/game-lobby.model';
+
+
+
 @Component({
   selector: 'app-game-card',
   templateUrl: './game-card.component.html',
   styleUrl: './game-card.component.scss'
 })
 export class GameCardComponent {
-  @Input() gameId!: string;
-  @Input() playerCount!: number;
-  @Input() gameState!: string;
+    @Input()
+    gameLobby!: GameLobby;
 
-  getStatusClass(state: string): string {
-    return 'status-' + state.replace(/\s+/g, '-').toLowerCase();
-  }
+    get state_fr(): string {
+        switch (this.gameLobby.state) {
+            case GameLobbyState.RUNNING : return "En cours";
+            case GameLobbyState.WAITING : return "En attente";
+        }
+    }
 }

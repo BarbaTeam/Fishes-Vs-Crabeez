@@ -327,7 +327,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public back(){
-        this.router.navigate(["/child/joining-games"]);
+        this.router.navigate(["/child/games-list"]);
     }
 }
 
