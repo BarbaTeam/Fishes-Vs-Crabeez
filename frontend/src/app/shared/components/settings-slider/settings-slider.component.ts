@@ -36,10 +36,9 @@ export class SettingsSliderComponent implements AfterViewInit {
         const line = this.lineRef.nativeElement;
         const width = slider.offsetWidth;
         head.style.left = `${this.value * width}px`;
-        const r = Math.round(204 + (255 - 204) * this.value);
-        const g = Math.round(204 + (212 - 204) * this.value);
-        const b = Math.round(204 + (102 - 204) * this.value);
-
+        const r = Math.round(204 + (75 - 204) * this.value);
+        const g = Math.round(204 + (123 - 204) * this.value);
+        const b = Math.round(204 + (117 - 204) * this.value);
         head.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
         line.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 

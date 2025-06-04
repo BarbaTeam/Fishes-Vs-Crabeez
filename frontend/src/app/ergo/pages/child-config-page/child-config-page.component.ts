@@ -92,6 +92,7 @@ export class ChildConfigPageComponent implements OnInit {
         this.showDeleted = false;
     }
     async removeUser(): Promise<void> {
+        if(!this.showDeleted) return;
         await this.userService.removeUserById(this.user.userId);
         this.back();
     }
