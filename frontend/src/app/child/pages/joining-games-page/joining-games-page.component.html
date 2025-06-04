@@ -34,6 +34,65 @@
     --------------------------------------------------------------------------->
 
     <app-body>
+       <div class="game-mode" [class.expanded]="selected">
+            <h2>Choisissez votre mode de jeu !</h2>
+
+            <ng-container *ngIf="!selected">
+                <app-expandable-button
+                class="card-wrapper"
+                title="Solo"
+                imageUrl="../../assets/images/icons/solo.png"
+                description="Vous affronterez une horde de crabe, seul, mais déterminé(e), arriveriez vous à les repousser ?"
+                mode="solo"
+                [expanded]="false"
+                (expand)="onExpand($event)">
+                </app-expandable-button>
+
+                <app-expandable-button
+                class="card-wrapper"
+                title="Équipe"
+                imageUrl="../../assets/images/icons/multi.png"
+                description="Les crabes n'ont pas peur d'une bande d'enfant comme vous, montrez leur le contraire !"
+                mode="multi"
+                [expanded]="false"
+                (expand)="onExpand($event)">
+                </app-expandable-button>
+            </ng-container>
+
+            <ng-container *ngIf="selected">
+                <app-expandable-button
+                class="card-wrapper expanded-card"
+                [title]="selected === 'solo' ? 'Solo' : 'Équipe'"
+                subtitle="Les règles du jeu"
+                [mode]="selected"
+                [expanded]="true"
+                imageUrl="'../../assets/images/icons/ergo_choice.png'"
+                [description]="selected === 'solo' ? 
+                    '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position des hordes qui arrivent\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'
+                    : 
+                    '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position et vos alliés\n\n⚔️ Mettez vous face à l\'ennemi pour pouvoir l\'éliminer\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'"
+                (expand)="onExpand($event)">
+                    <div class="game-list" *ngIf="games && games.length && selected !== 'solo'">
+                        <p class="title">Liste des parties</p>
+                        <p class="sub-title">Cliquez pour rejoindre</p>
+                        <app-game-card *ngFor="let game of games"
+                            [gameId]="game.gameId"
+                            [playerCount]="game.players.length"
+                            [gameState]="game.state"
+                            (click)="joinGame(game.gameId)"
+                        >
+                        </app-game-card>
+                    </div>
+                    <p *ngIf="!games || !games.length && selected !== 'solo'">En attente de parties...</p>
+                </app-expandable-button>
+
+            </ng-container>
+        </div>
+        
+        <div class="back-button-container" *ngIf="selected">
+            <div class="back-button" (click)="selected = null">Retour</div>
+        </div>
+        <!--
         <app-inner-box *ngIf="games && games.length" class="scrollable column no-background medium center-content" style="width: 40vw;">
             <p class="title">Liste des parties</p>
             <p class="sub-title">Cliquez pour rejoindre</p>
@@ -46,6 +105,7 @@
             </app-game-card>
         </app-inner-box>
         <p *ngIf="!games || !games.length">En attente de parties...</p>
+        -->
     </app-body>
 
 </app-template>

@@ -1,21 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
-
 .game-card {
-  font-family: 'Press Start 2P', monospace;
   background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
   padding: 1.5rem;
   border: 3px solid #4dd0e1;
-  border-radius: 8px;
   color: #01579b;
   image-rendering: pixelated;
   overflow: hidden;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   min-width: 250px;
+  height: 12vh;
   max-width: 400px;
+  margin-bottom: 1rem;
 
   &:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 6px 6px 12px rgba(1, 87, 155, 0.3);
+    transform: translate(-1px, -1px);
+    cursor: pointer;
+    box-shadow: 2px 2px rgba(1, 87, 155, 0.3);
   }
 
   .game-header {
@@ -32,8 +31,9 @@
   }
 
   .game-body {
-    p {
-      margin: 0.25rem 0;
+    display: flex;
+    justify-content: space-around;
+    div {
       font-size: 0.75rem;
       text-shadow: 1px 1px 0 #e0f7fa;
     }

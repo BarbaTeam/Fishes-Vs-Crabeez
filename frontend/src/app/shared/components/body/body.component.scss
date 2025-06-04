@@ -1,6 +1,9 @@
 :host {
-    background: linear-gradient(#75d4ff,rgb(0, 50, 74),);
+    height: 100%;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    background: linear-gradient(#75d4ff, rgb(0, 50, 74));
 }

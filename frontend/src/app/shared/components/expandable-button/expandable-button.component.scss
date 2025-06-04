@@ -1,0 +1,106 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease;
+  position: relative;
+  overflow: visible;
+  cursor: pointer;
+  padding: 2rem;
+  font-size: 1.5rem;
+  width: 80%;
+  height: 90%;
+  justify-self: center;
+
+  background-color: var(--background-blue, #E0E7FA);
+  color: var(--text-default, #01579b);
+  border: 2px solid #b0c4de;
+  image-rendering: pixelated;
+  box-sizing: border-box;
+}
+
+p{
+  font-size: 1rem;
+    white-space: pre-line;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.card.expanded {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  width: 90%;
+  padding: 2rem;
+  cursor: default;
+  align-items: center;
+  overflow: visible;
+  transform: none;
+  height: 90%; 
+}
+
+.card.expanded.reverse-layout {
+  direction: rtl;
+}
+
+.card.expanded.reverse-layout .card-left,
+.card.expanded.reverse-layout .card-right {
+  direction: ltr;
+}
+
+.card.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.3s ease;
+}
+
+.card-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.card-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: 100%;
+  min-height: 0; 
+  overflow: hidden;
+}
+
+.card-image {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  object-fit: contain;
+  border: 2px solid #b0c4de;
+  image-rendering: pixelated;
+}
+
+.content {
+  text-align: center;
+}
+
+button {
+  margin-top: 2rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  background-color: #0078d4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005fa3;
+}

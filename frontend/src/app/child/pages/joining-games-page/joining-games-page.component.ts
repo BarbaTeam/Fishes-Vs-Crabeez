@@ -15,6 +15,9 @@ export class JoiningGamesPageComponent implements OnInit, OnDestroy {
     user!: User;
     games: GameInfo[] = [];
     private subscriptions = new Subscription();
+    selected: 'solo' | 'multi' | null = null;
+
+  
 
     constructor(
         private userService: UserService,
@@ -72,6 +75,10 @@ export class JoiningGamesPageComponent implements OnInit, OnDestroy {
 
     joinGame(gameId: string): void {
         this.socket.sendMessage('askAccessToGame', { gameId: gameId});
+    }
+
+    onExpand(mode: 'solo' | 'multi') {
+        this.selected = mode;
     }
 
     ngOnDestroy(): void {
