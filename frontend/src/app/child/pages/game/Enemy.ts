@@ -27,23 +27,23 @@ export class Enemy {
         switch (this.lane) {
             case 1:
                 this.x = x ||  this.canvas.width;
-                this.y = y ||  (this.canvas.height  + 300) - (this.canvas.height / 4) *2;
+                this.y = y ||  (this.canvas.height  + 400) - (this.canvas.height / 4) *2;
                 break;
             case 2:
                 this.x = x || this.canvas.width;
-                this.y = y || (this.canvas.height  + 300) - (this.canvas.height / 4) * 3;
+                this.y = y || (this.canvas.height  + 400) - (this.canvas.height / 4) * 3;
                 break;
             case 3:
                 this.x = x ||  this.canvas.width;
-                this.y = y ||  this.canvas.height  + 300 - (this.canvas.height / 4) * 4;
+                this.y = y ||  this.canvas.height  + 400 - (this.canvas.height / 4) * 4;
                 break;
             default:
                 this.x = 0;
                 this.y = 0;
                 break
         }
-        this.width = 100,
-        this.height = 100
+        this.width = 150,
+        this.height = 150
         this.alive = true;
         this.speed = 0.2;
         this.score = 10;

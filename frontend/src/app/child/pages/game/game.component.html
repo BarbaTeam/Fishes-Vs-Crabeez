@@ -1,16 +1,23 @@
+
 <div #headerRef class="header">
-    <div class="question">
-        <p>{{ question.prompt }}</p>
-    </div>
-    <div class="answer">
-        <span
-            *ngFor="let input of inputs; let i = index"
-            [ngClass]="[input.status, i === cursorPosition ? 'cursor' : '']"
-        >
-            {{ input.letter }}
-        </span>
+    <div class="question-container">
+        <div class="question">
+            <p>{{ question.prompt }}</p>
+        </div>
+        <div class="answer">
+            <span
+                *ngFor="let input of inputs; let i = index"
+                [ngClass]="[input.status, i === cursorPosition ? 'cursor' : '']"
+            >
+                {{ input.letter }}
+            </span>
+        </div>
     </div>
 </div>
 
+<div class="score-container">
+    <p>Score : 0</p>
+</div>
+
 <canvas #gameCanvas class="game"></canvas>
-<img id="layer1" src="../../../../assets/images/game/world/bottombackgroundbigv2.png">
+<img id="layer1" src="../../../../assets/images/game/world/background.png">

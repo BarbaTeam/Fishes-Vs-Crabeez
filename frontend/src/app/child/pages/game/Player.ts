@@ -22,10 +22,10 @@ export class Player {
     ) {
         this.gameEngine = gameEngine;
 
-        this.x = this.canvas.width / 2 - 50;
-        this.y = this.canvas.height - 200 - 50;
-        this.width = 100;
-        this.height = 100;
+        this.x = this.canvas.width / 2 - 100;
+        this.y = this.canvas.height - 200 - 100;
+        this.width = 150;
+        this.height = 150;
         this._projectiles = [];
         this.lane = Math.floor(Math.random() * 3) + 1;;
         this.hasChangedLane = true;
@@ -78,16 +78,16 @@ export class Player {
         if(this.hasChangedLane) {
             switch(this.lane) {
                 case 1:
-                    this.x = 100;
-                    this.y = (this.canvas.height + 300) - (this.canvas.height / 4) *2;
+                    this.x = 150;
+                    this.y = (this.canvas.height + 400) - (this.canvas.height / 4) *2;
                     break;
                 case 2:
-                    this.x = 100;
-                    this.y = (this.canvas.height  + 300) - (this.canvas.height / 4) *3;
+                    this.x = 150;
+                    this.y = (this.canvas.height  + 400) - (this.canvas.height / 4) *3;
                     break;
                 case 3:
-                    this.x = 100;
-                    this.y = (this.canvas.height  + 300) - (this.canvas.height / 4) *4;
+                    this.x = 150;
+                    this.y = (this.canvas.height  + 400) - (this.canvas.height / 4) *4;
                     break;
                 default:
                     break;

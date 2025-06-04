@@ -107,7 +107,6 @@ export class GameEngine {
     }
 
     private update(): void {
-        this.background.update();
         this.player.update();
         this.enemies.forEach(enemy =>{
             enemy.update();
