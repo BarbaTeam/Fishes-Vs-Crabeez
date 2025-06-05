@@ -116,7 +116,9 @@ export class GamesLobbyService {
             [GameLobbyState.WAITING]: gameLobbies.filter(l => l.state === GameLobbyState.WAITING),
         })
 
-        this.selectGameLobby(this._selectedGameLobby.gameId);
+        if (this._selectedGameLobby?.gameId) {
+            this.selectGameLobby(this._selectedGameLobby.gameId);
+        }
     }
 
 

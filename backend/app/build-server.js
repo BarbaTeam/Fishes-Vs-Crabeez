@@ -6,7 +6,9 @@ const http = require('http');
 const { Server } = require('socket.io');
 
 const api = require('./api');
-const { AppClient } = require('./io/app-client');
+
+const { AppClient } = require('./sockets/app-client');
+
 
 
 module.exports = (cb) => {
