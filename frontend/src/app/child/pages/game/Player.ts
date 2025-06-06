@@ -1,33 +1,23 @@
-import { GameEngine } from "./game-engine";
-import { GameComponent } from "./game.component";
-import { Projectile } from "./Projectile";
-
 export class Player {
 
     private x: number;
     private y: number;
+
     private width: number;
     private height: number;
-    private lane: number;
+    private lane!: number;
     private hasChangedLane: boolean;
-    private angle: number = 0;
-    private _projectiles: Projectile[] = [];
 
     private decryptedImage: HTMLImageElement;
     private encryptedImage: HTMLImageElement;
 
-    constructor(
-        private gameEngine: GameEngine,
+    private constructor(
         private canvas: HTMLCanvasElement
     ) {
-        this.gameEngine = gameEngine;
-
         this.x = this.canvas.width / 2 - 100;
         this.y = this.canvas.height - 200 - 100;
         this.width = 150;
         this.height = 150;
-        this._projectiles = [];
-        this.lane = Math.floor(Math.random() * 3) + 1;;
         this.hasChangedLane = true;
 
         this.decryptedImage = new Image();
@@ -36,42 +26,16 @@ export class Player {
         this.encryptedImage = new Image();
         this.encryptedImage.src = "../../../../assets/images/game/player/yellow_fish_encrypted.png";
 
-        document.addEventListener("keydown", this.keydownHandler);
     }
 
-    public get position(): {x:number, y:number} {
-        return {x: this.x, y: this.y};
+    public static fromJson(data: any, canvas : HTMLCanvasElement): Player {
+        const player = new Player(canvas);
+        player.lane = data.lane;
+        return player;
     }
 
-    public get seatValue(): number {
-        return this.lane;
-    }
-
-    public get projectiles(): Projectile[] {
-        return this._projectiles;
-    }
-
-    public keydownHandler = (event: KeyboardEvent): void => {
-        switch(event.key) {
-            case "ArrowUp":
-                if(this.lane < 3)
-                    this.lane ++;
-                    this.hasChangedLane = true;
-                break;
-            case "ArrowDown":
-                if(this.lane > 1)
-                    this.lane --;
-                    this.hasChangedLane = true;
-                break;
-            default:
-                break;
-        }
-    }
-
-
-    public shoot(): void {
-        if(this.gameEngine.questionNotion !== "ENCRYPTION")
-            this.projectiles.push(new Projectile(this.gameEngine, this));
+    public get position() : { x: number, y: number } {
+        return { x : this.x, y : this.y }
     }
 
     public update(): void {
@@ -95,29 +59,9 @@ export class Player {
              
             this.hasChangedLane = false;
         }
-        this.projectiles.forEach(projectile => {
-            projectile.update();
-        });
-        this._projectiles = this.projectiles.filter(projectile => !projectile.isMarkedForDeletion);
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        ctx.save();
-
-        ctx.translate(this.x, this.y);
-
-        ctx.rotate(Math.PI / 4);
-
-        const img = this.gameEngine.questionNotion === "ENCRYPTION"
-            ? this.encryptedImage
-            : this.decryptedImage;
-
-        ctx.drawImage(img, -this.width / 2, -this.height / 2, this.width, this.height);
-
-        ctx.restore();
-
-        this.projectiles.forEach(projectile => {
-            projectile.draw(ctx);
-        });
+        ctx.drawImage(this.encryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
     }
 }

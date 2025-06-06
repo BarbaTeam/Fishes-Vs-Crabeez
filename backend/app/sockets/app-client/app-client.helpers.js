@@ -1,6 +1,7 @@
 const { UserID, GameID, GameLobby } = require("../../shared/types");
 
 
+
 // TODO : Introducing a `UsersManager` to ease the manipulation of games
 
 /** @type {UserID[]} */
@@ -22,10 +23,6 @@ const CHILD_ROOM = "CHILD_ROOM";
 const ERGO_ROOM = "ERGO_ROOM";
 
 
-// TODO : Removing it once we are (finally) using multithreading
-const GAMES_RUNTIME = {};
-
-
 
 module.exports = {
     CONNECTED_USERS_ID,
@@ -37,6 +34,4 @@ module.exports = {
     GUEST_ROOM,
     CHILD_ROOM,
     ERGO_ROOM,
-
-    GAMES_RUNTIME,
 };

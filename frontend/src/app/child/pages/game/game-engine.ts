@@ -1,158 +1,85 @@
-import { GameComponent } from "./game.component";
-
-import { QuestionNotion } from "@app/shared/models/question.model";
-
+import { UserID } from "@app/shared/models/ids";
+import { Background } from "./Background";
+import { Player } from "./Player";
+import { Projectile } from "./Projectile";
 import { Enemy } from "./Enemy";
 import { Crab } from "./Crab";
-import { Player } from "./Player";
-import { HiveCrab } from "./HiveCrab";
-import { Drone } from "./Drone";
-import { Ui } from "./Ui";
-import { Background } from "./Background";
-import { playBubbleSound, playKillSound, playScoreSound, playSuccess } from "./Sound";
-
-
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
     private background: Background;
-    private player : Player;
-    private currentQuestionNotion: QuestionNotion;
-    private Ui: Ui;
-    private score: number;
+    private players: Map<UserID, Player>;
+    private projectiles: Projectile[];
     private enemies: Enemy[];
-    private speed: number;
+    private score: number;
+    private gameLoopId: number | null = null;
 
-    constructor(
-        private gameComponent: GameComponent,
-        private canvas: HTMLCanvasElement
-    ) {
+    constructor(private canvas: HTMLCanvasElement) {
         this.ctx = canvas.getContext('2d')!;
-        this.adjustCanvaResolution();
+        this.adjustCanvasResolution();
         this.background = new Background(this, canvas);
-        this.player = new Player(this, canvas);
-        this.currentQuestionNotion = gameComponent.questionNotion;
-        this.enemies = [new Crab(this, canvas)];
-        this.Ui = new Ui(this, canvas);
+
+        this.players = new Map();
+        this.enemies = [];
+        this.projectiles = [];
         this.score = 0;
-        this.speed = 1;
-        this.startGameLoop();
+        this.init();
     }
 
-    public answerCorrectly(player : Player): void {
-        if(this.closestEnemy(player.seatValue) && this.questionNotion !== "ENCRYPTION" ){
-            this.player.shoot();
-            playBubbleSound(this.gameComponent.user.userConfig.sound);
+    init() {
+        this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
+    }
+
+    stop() {
+        if (this.gameLoopId !== null) {
+            clearInterval(this.gameLoopId);
+            this.gameLoopId = null;
         }
-    }
-    public get speedValue(): number {
-        return this.speed;
-    }
-
-    public get scoreValue(): number {
-        return this.score;
-    }
-
-    public get playerPosition(): {x:number, y:number} {
-        return this.player.position;
-    }
-
-    public get playerInstance(){
-        return this.player;
-    }
-
-    public set questionNotion(value: QuestionNotion) {
-        this.currentQuestionNotion = value;
-    }
-
-    public get questionNotion(): QuestionNotion {
-        return this.currentQuestionNotion;
-    }
-
-    public closestEnemy(side: number): Enemy | undefined {
-        const enemiesOnSide = this.enemies.filter(enemy => enemy.sideValue === side);
-
-        if(!enemiesOnSide[0]){
-            return undefined;
-        }
-        let closest = enemiesOnSide[0];
-        this.enemies.forEach(enemy=>{
-            if(enemy.position.y > closest.position.y) closest = enemy;
-        });
-        return closest;
-    }
-
-    private checkCollision(obj1: any, obj2: any): boolean {
-        if (!obj1 || !obj2) return false;
-        if (!obj1.position || !obj2.position) return false;
-
-        const dx = obj1.position.x - obj2.position.x;
-        const dy = obj1.position.y - obj2.position.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        return distance < obj1.width / 2 + obj2.width / 2;
-    }
-
-    private kill(enemy: Enemy): void {
-        if(enemy instanceof HiveCrab){
-            this.enemies.push(new Drone(this,this.canvas, enemy.position.x, enemy.position.y, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x+40, enemy.position.y-40, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x-50, enemy.position.y+40, enemy.sideValue));
-        }
-        playKillSound(this.gameComponent.user.userConfig.sound);
-        enemy.destroy();
-    }
-
-    private addEnemy(): void {
-        let newEnemy = Math.random() > 0.3 ? new Crab(this,this.canvas) : new HiveCrab(this, this.canvas);
-        this.enemies.push(newEnemy);
     }
 
     private update(): void {
-        this.player.update();
-        this.enemies.forEach(enemy =>{
-            enemy.update();
-            this.player.projectiles.forEach(projectile => {
-                if(this.checkCollision(enemy, projectile)) {
-                    this.kill(enemy);
-                    projectile.destroy();
-                    this.score += enemy.scoreValue;
-                    playScoreSound(this.gameComponent.user.userConfig.sound);
-                }
-            });
-        });
-        this.enemies = this.enemies.filter(enemy => enemy.isAlive);
-        if (this.enemies.length < 1) {
-            this.addEnemy();
+        for (const player of this.players.values()) {
+            player.update();
         }
+        for (const enemy of this.enemies) {
+            enemy.update();
+        }
+        for (const projectile of this.projectiles) {
+            projectile.update();
+        }
+
+        this.projectiles = this.projectiles.filter(p => !p.markedForDeletion);
+        this.enemies = this.enemies.filter(e => e.alive);
     }
 
     private draw(ctx: CanvasRenderingContext2D): void {
         this.background.draw(ctx);
-        this.Ui.draw(ctx);
-        this.player.draw(ctx);
-        this.enemies.forEach(enemy=>{
-            if (enemy instanceof Crab) {
-                enemy.draw(ctx);
-            } else if (enemy instanceof HiveCrab) {
-                enemy.draw(ctx);
-            } else if (enemy instanceof Drone) {
+
+        for (const player of this.players.values()) {
+            player.draw(ctx);
+        }
+
+        this.projectiles.forEach(projectile => {
+            projectile.draw(ctx);
+        });
+
+        this.enemies.forEach(enemy => {
+            if(enemy instanceof Crab){
                 enemy.draw(ctx);
             }
         });
     }
 
-    private adjustCanvaResolution(): void {
-        const scale = window.devicePixelRatio;
+    private adjustCanvasResolution(): void {
+        const scale = window.devicePixelRatio || 1;
         this.canvas.width = this.canvas.clientWidth * scale;
         this.canvas.height = this.canvas.clientHeight * scale;
+        this.ctx.scale(scale, scale);
     }
 
-    private startGameLoop(): void {
-        const loop = () => {
-            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.update();
-            this.draw(this.ctx);
-            requestAnimationFrame(loop);
-        };
-        loop();
+    private updateGameLoop(): void {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.update();
+        this.draw(this.ctx);
     }
-  }
+}

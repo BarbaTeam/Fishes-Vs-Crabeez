@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
-
+import { Subscription } from 'rxjs';
 import { UserService } from '@app/shared/services/user.service';
 import { GameEngine } from './game-engine';
 
 import { User } from '@app/shared/models/user.model';
 import { Question, QuestionNotion } from '@app/shared/models/question.model';
+import { Router } from '@angular/router';
+import { SocketService } from '@app/shared/services/socket.service';
 
 
 
@@ -29,9 +31,11 @@ export class GameComponent implements OnInit, OnDestroy {
         letter: '\xa0', status: "pending"
     };
 
-    public user!: User;
+    private subscriptions = new Subscription();
 
-    public question: Question;
+    public user!: User;
+    public question!: Question;
+
     private keydownHandler: (event: KeyboardEvent) => void;
 
     public expected_answerInputs: string[] = [];
@@ -52,19 +56,15 @@ export class GameComponent implements OnInit, OnDestroy {
 
     constructor(
         private userService: UserService,
-        private router: Router
+        private router: Router,
+        private socket : SocketService,
     ) {
         this.userService.selectedUser$.subscribe((user: User) => {
             this.user = user;
         });
 
-        this.question = QuestionsGenerator.genQuestion(this.questionMask);
         this.setupEncryptAudio();
         this.keydownHandler = this.checkInput.bind(this);
-
-        this.expected_answerInputs = this.question.answer.split("");
-        this.proposed_answerInputs = [];
-        this.inputs = [];
 
         this.cursorPosition = 0;
 
@@ -73,16 +73,30 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.initSocket();
+        this.socket.sendMessage('requestQuestion');
         this.setupAudio();
         document.addEventListener("keydown", this.keydownHandler);
         this.updateInputs();
+    }
+
+    private initSocket() {
+        this.subscriptions.add(
+            this.socket.on<Question>('newQuestion').subscribe(question => {
+                this.question = question;
+                this.inputs = [];
+                this.expected_answerInputs = this.question.answer.split("");
+                this.proposed_answerInputs = [];
+                this.cursorPosition = 0;
+            })
+        )
     }
 
     ngAfterViewInit(): void {
         this.setupFontSize(`${3 * this.user.userConfig.fontSize}rem`);
 
         const canvas = this.canvasRef.nativeElement;
-        this.gameEngine = new GameEngine(this, canvas);
+        this.gameEngine = new GameEngine(canvas);
     }
 
     ngOnDestroy(): void {
@@ -205,23 +219,13 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     private submitAnswer(): void {
-        if (AnswerChecker.checkAnswer(this.proposed_answer.toLowerCase(), this.question)){
-            this.score++;
-            this.gameEngine.answerCorrectly(this.gameEngine.playerInstance);
+        const answer = {
+            prompt : this.question.prompt,
+            expected_answer : this.question.answer,
+            proposed_answer : this.proposed_answer,
+            notion : this.question.notion,
         }
-        this.question = QuestionsGenerator.genQuestion(this.questionMask);
-        this.inputs = [];
-        this.setupEncryptAudio();
-
-        if (this.question === undefined) {
-            return;
-        }
-
-        this.expected_answerInputs = this.question.answer.split("");
-        this.proposed_answerInputs = [];
-        this.cursorPosition = 0;
-
-        this.gameEngine.questionNotion = this.question.notion;
+        this.socket.sendMessage('sendAnswer', (answer));
     }
 
     private writeCharacter(c: string): void {
@@ -317,6 +321,14 @@ export class GameComponent implements OnInit, OnDestroy {
                 this.submitAnswer();
                 break;
 
+            case "ArrowUp":
+                this.socket.sendMessage('changeLane', ("UP"));
+                break;
+
+            case "ArrowDown":
+                this.socket.sendMessage('changeLane', ("DOWN"));
+                break;
+
             default :
                 if (keyPressed.length === 1) {
                     this.writeCharacter(keyPressed);
@@ -328,126 +340,5 @@ export class GameComponent implements OnInit, OnDestroy {
 
     public back(){
         this.router.navigate(["/child/games-list"]);
-    }
-}
-
-
-
-////////////////////////////////////////////////////////////////////////////////
-// Backend Simulator :
-////////////////////////////////////////////////////////////////////////////////
-
-import { Router } from '@angular/router';
-
-import { filterOnMask, randint } from '@app/utils';
-import { num2words_fr } from '@app/utils/backend-utils';
-
-
-
-class QuestionsGenerator {
-    private static _chooseNotion(mask: boolean[]): QuestionNotion {
-        const notions = Object.values(QuestionNotion);
-
-        const allowedNotions = filterOnMask(notions, mask);
-        if (allowedNotions.length === 0) {
-            throw new Error("Aucune notion autorisée par le masque fourni.");
-        }
-        return allowedNotions[randint(0, allowedNotions.length - 1)];
-    }
-
-    private static _convertNotionToOperator(notion: QuestionNotion): string {
-        switch (notion) {
-            case QuestionNotion.ADDITION:
-                return '+';
-            case QuestionNotion.SUBSTRACTION:
-                return '-';
-            case QuestionNotion.MULTIPLICATION:
-                return '*';
-            case QuestionNotion.DIVISION:
-                return '/';
-            default:
-                return 'NA';
-        }
-    }
-
-    private static _chooseOperands(operandsAmount: number = 2, minBound: number = 0, maxBound: number = 10): number[] {
-        const operands: number[] = [];
-        for (let i = 0; i < operandsAmount; i++) {
-            operands.push(randint(minBound, maxBound));
-        }
-        return operands;
-    }
-
-    private static _computeAnswer(operands: number[], operator: string): number {
-        switch (operator) {
-            case '+':
-                return operands[0] + operands[1];
-            case '-':
-                return operands[0] - operands[1];
-            case '*':
-                return operands[0] * operands[1];
-            case '/':
-                // Division entière
-                return Math.floor(operands[0] / operands[1]);
-            default:
-                throw new Error(`Unexpected operator: ${operator}`);
-        }
-    }
-
-    private static _genEncryptedString(length: number): string {
-        // TODO : utiliser l'ensemble complet des caractères si besoin
-        const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_{|}";
-
-        let ret = "";
-        for (let i = 0; i < length; i++) {
-            ret += characters.charAt(randint(0, characters.length - 1));
-        }
-        return ret;
-    }
-
-    // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
-    public static genQuestion(notionMask: boolean[] = [true, true, false, false, false, false, false]): Question {
-        const notion = this._chooseNotion(notionMask);
-
-        switch (notion) {
-            case QuestionNotion.REWRITING:
-                const nb = randint(0, 50);
-                return {
-                    prompt: `${nb} :\xa0`,
-                    answer: num2words_fr(nb),
-                    notion: notion,
-                };
-
-            case QuestionNotion.ENCRYPTION:
-                const length = randint(4, 6);
-                return {
-                    prompt: "",
-                    answer: this._genEncryptedString(length),
-                    notion: notion,
-                };
-
-            case QuestionNotion.EQUATION :
-                // TODO : One day
-                return this.genQuestion(notionMask);
-
-            default:
-                const operator = this._convertNotionToOperator(notion);
-                const operands = this._chooseOperands();
-                const ans = this._computeAnswer(operands, operator);
-                return {
-                    prompt: `${operands[0]} ${operator} ${operands[1]} =\xa0`,
-                    //prompt: `${operands[0]} ${operator} ${operands[1]} =&nbsp;`,
-                    answer: num2words_fr(ans),
-                    notion: notion
-                };
-        }
-    }
-}
-
-
-
-class AnswerChecker {
-    public static checkAnswer(proposed_answer: string, question: Question): boolean {
-        return proposed_answer === question.answer;
     }
 }
