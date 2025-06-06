@@ -15,14 +15,11 @@ export const childDeactivateGuard: CanDeactivateFn<any> = (
     // TODO : Checking wether the child can leave (e.g with a password)
     const socket = inject(SocketService);
 
-    /*
     const goingBackHome = (nextState?.url ?? '').startsWith('/home');
     if (goingBackHome) {
-        alert("cc");
-        socket.on<void>('goBackHome');
+        socket.sendMessage('goBackHome');
         return true;
     }
-    */
 
     socket.disconnect();
     return true;
