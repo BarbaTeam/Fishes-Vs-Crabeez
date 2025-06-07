@@ -1,10 +1,27 @@
 import { UserID } from "./ids";
-import { UserConfig } from "./user-config.model";
+import { QuestionNotion } from "./question.model";
+
+
+
+export type UserQuestionNotionsMask = Record<QuestionNotion, boolean>;
+
+export type UserConfig = {
+    advancedStats: boolean,
+    leaderBoard: boolean,
+
+    showsAnswer: boolean,
+    readingAssistance: boolean,
+
+    fontSize: number,
+    sound: number,
+
+    notionsMask: UserQuestionNotionsMask
+};
 
 export type User = {
     userId: UserID;
     name: string;
     age: number;
     icon: string;
-    userConfig: UserConfig;
-}
+    config: UserConfig;
+};

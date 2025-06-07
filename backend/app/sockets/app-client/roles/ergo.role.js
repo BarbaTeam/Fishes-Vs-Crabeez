@@ -43,7 +43,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
                 name: "",
                 playersId: [],
                 state: GameLobbyState.WAITING,
-                playersTempConfig: {},
+                playersNotionsMask: {},
                 masterId: this.socket.id,
             };
             GAMES.set(newGame.gameId, newGame);

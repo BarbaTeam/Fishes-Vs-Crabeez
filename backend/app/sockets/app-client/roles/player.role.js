@@ -55,7 +55,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
                 throw new Error("Should never happen if the user act normally");
             }
             gameToLeave.playersId.splice(playerToRemoveIdx, 1);
-            delete gameToLeave.playersTempConfig[this._userId];
+            delete gameToLeave.playersNotionsMask[this._userId];
 
             this.io.to(leftGameId).to(this.socket.id).emit('gameUpdated', gameToLeave);
         });
@@ -80,7 +80,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
         if (idx !== -1) {
             game.playersId.splice(idx, 1);
         }
-        delete game.playersTempConfig[this._userId];
+        delete game.playersNotionsMask[this._userId];
 
         this.io.to(this._gameId).emit('gameUpdated', game);
 

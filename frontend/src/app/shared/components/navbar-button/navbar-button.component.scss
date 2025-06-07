@@ -1,81 +1,80 @@
 :host {
+    height: max(6rem, 19.8vh);
+    width: max(12.555rem, 23vw);
 
-  height: max(6rem, 19.8vh);
-  width: max(12.555rem, 23vw);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
 
-  background-image: url('../../../../assets/images/environement/orange_conteneur_back.gif');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
+    background-image: url('../../../../assets/images/environement/orange_conteneur_back.gif');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 
-  color: #041833;
-  text-align: center;
-  font-size: clamp(1rem, 1.8vw, 2rem);
-  font-weight: bold;
-  text-shadow: 3px 3px 5px rgba(47, 32, 0, 0.7);
+    color: #041833;
+    text-align: center;
+    font-size: clamp(1rem, 1.8vw, 2rem);
+    font-weight: bold;
+    text-shadow: 3px 3px 5px rgba(47, 32, 0, 0.7);
 
-  
-  padding-bottom: 2%;
-  box-sizing: border-box;
-  overflow: hidden;
 
-  transition: transform 0.3s;
+    padding-bottom: 2%;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    transition: transform 0.3s;
 }
 
 :host:hover {
-  cursor: pointer;
-  transform: translateY(-3px) scale(0.95);
+    cursor: pointer;
+    transform: translateY(-3px) scale(0.95);
 }
 
 :host(.active) {
-  cursor: default;
-  transform: translateY(0) scale(1);
-  color: #041833;
-  padding-bottom: 0;
-  background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
+    cursor: default;
+    transform: translateY(0) scale(1);
+    color: #041833;
+    padding-bottom: 0;
+    background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
 }
 
 :host(.inactive):hover {
-  cursor: default;
+    cursor: default;
 }
 
 :host(.red) {
-  background-image: url('../../../../assets/images/environement/red_conteneur_back.gif');
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    background-image: url('../../../../assets/images/environement/red_conteneur_back.gif');
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 :host(.green) {
-  background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
-  color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 :host(.grey) {
-  background-image: url('../../../../assets/images/environement/grey_conteneur_back.gif');
-  color: #eaeaea;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    background-image: url('../../../../assets/images/environement/grey_conteneur_back.gif');
+    color: #eaeaea;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
 
 :host(.grey):hover {
-  cursor: not-allowed;
-  transform: none;
+    cursor: not-allowed;
+    transform: none;
 }
 
 :host(.orange) {
-  color: #51ADFF;
-  background-color: #FFA351;
+    color: #51ADFF;
+    background-color: #FFA351;
 }
 
 :host(.orange):hover {
-  background-color: #744a25; 
+    background-color: #744a25; 
 }
 
 :host(.invisible) {
-  visibility: hidden;
+    visibility: hidden;
 }

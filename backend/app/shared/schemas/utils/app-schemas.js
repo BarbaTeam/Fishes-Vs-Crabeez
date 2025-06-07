@@ -33,13 +33,15 @@ const UserConfigSchema = objectSchema({
     fontSize: numberSchema.required(),
     sound: numberSchema.required(),
 
-    numberRewrite: booleanSchema.required(),
-    addition: booleanSchema.required(),
-    soustraction: booleanSchema.required(),
-    multiplication: booleanSchema.required(),
-    division: booleanSchema.required(),
-    encryption: booleanSchema.required(),
-    equation: booleanSchema.required(),
+    notionsMask: objectSchema({
+        ADDITION: booleanSchema.required(),
+        SUBSTRACTION: booleanSchema.required(),
+        MULTIPLICATION: booleanSchema.required(),
+        DIVISION: booleanSchema.required(),
+        EQUATION: booleanSchema.required(),
+        REWRITING: booleanSchema.required(),
+        ENCRYPTION: booleanSchema.required(),
+    }).required()
 });
 
 const GameConfigSchema = objectSchema({

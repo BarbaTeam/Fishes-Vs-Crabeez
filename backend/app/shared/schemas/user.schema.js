@@ -9,5 +9,5 @@ exports.UserSchema = objectSchema({
     name: stringSchema.required(),
     age: numberSchema.required(),
     icon: stringSchema.required(),
-    userConfig: UserConfigSchema.required(),
+    config: UserConfigSchema.required(),
 }).required();

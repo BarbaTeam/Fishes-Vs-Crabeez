@@ -30,6 +30,16 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 
 
 /**
+ * @typedef {Object} Question
+ * @property {string} prompt
+ * @property {string} answer
+ * @property {QuestionNotion} notion - One of QuestionNotion
+ *
+ * @memberof types
+ */
+
+
+/**
  * @typedef {Object} AnsweredQuestion
  * @property {string} prompt
  * @property {string} expected_answer
@@ -129,7 +139,7 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 
 /**
  * @typedef {Object} Leaderboard
- * @property {UserID[]} ranking       - Array of user IDs sorted from best to worst
+ * @property {UserID[]} ranking - Array of user IDs sorted from best to worst
  * @property {Grading[]} gradingPerPlayer - Corresponding grading for each user
  *
  * @memberof types
@@ -152,33 +162,24 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 
 
 /**
- * @typedef {Object} TempConfig
- * @property {boolean} addition
- * @property {boolean} soustraction
- * @property {boolean} multiplication
- * @property {boolean} division
- * @property {boolean} equation
- * @property {boolean} numberRewrite
- * @property {boolean} encryption
+ * @typedef {Record<QuestionNotion, boolean>} UserQuestionNotionsMask
  *
  * @memberof types
  */
 
+
 /**
  * @typedef {Object} UserConfig
- * @property {boolean} showsAnswer      - Whether to display correct answers
- * @property {boolean} readingAssistance - Whether to enable reading assistance
- * @property {boolean} advancedStats    - Whether to show advanced statistics
- * @property {boolean} leaderBoard      - Whether to display the leaderboard
- * @property {number} fontSize          - UI font size
- * @property {number} sound             - Sound volume level (0–100)
- * @property {boolean} numberRewrite    - Enable number rewriting tasks
- * @property {boolean} addition         - Enable addition tasks
- * @property {boolean} soustraction     - Enable subtraction tasks
- * @property {boolean} multiplication   - Enable multiplication tasks
- * @property {boolean} division         - Enable division tasks
- * @property {boolean} encryption       - Enable encryption tasks
- * @property {boolean} equation         - Enable equation tasks
+ * @property {boolean} advancedStats
+ * @property {boolean} leaderBoard
+ *
+ * @property {boolean} showsAnswer
+ * @property {boolean} readingAssistance
+ *
+ * @property {number} fontSize
+ * @property {number} sound
+ *
+ * @property {UserQuestionNotionsMask} notionsMask
  *
  * @memberof types
  */
@@ -186,11 +187,11 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 
 /**
  * @typedef {Object} User
- * @property {UserID} userId     - Unique identifier for the user
- * @property {string} name       - User's display name
- * @property {number} age        - User's age in years
- * @property {string} icon       - URL or key of the user's avatar/icon
- * @property {UserConfig} userConfig - User-specific configuration settings
+ * @property {UserID} userId
+ * @property {string} name
+ * @property {number} age
+ * @property {string} icon
+ * @property {UserConfig} config
  *
  * @memberof types
  */
@@ -202,8 +203,17 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @property {string} name
  * @property {UserID[]} playersId
  * @property {GameLobbyState} state
- * @property {Record<UserID, TempConfig>} playersTempConfig
+ * @property {Record<UserID, UserQuestionNotionsMask>} playersNotionsMask
  * @property {string|null} [masterId]   // socket.id of the GAME_MASTER, or null if none
  *
  * @memberof types
  */
+
+
+
+module.exports = {
+    Grade,
+    GameLobbyState,
+    MistakeCategory,
+    QuestionNotion,
+};

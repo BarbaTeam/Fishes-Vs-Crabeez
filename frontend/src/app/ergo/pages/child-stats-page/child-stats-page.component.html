@@ -101,7 +101,7 @@
                         [title]="'Mots par minute'"
                         [value]="ps.statistics.wordsPerMinute"
                         [improvement]="ps.statistics.wordsPerMinuteImprovement"
-                        [withAdvancedStats]="user.userConfig.advancedStats"
+                        [withAdvancedStats]="user.config.advancedStats"
                     />
 
                     <app-mistakes-box
@@ -182,7 +182,7 @@
                     <app-stat-line
                         [title]="'Mots par minutes'"
                         [value]="pr.results.wordsPerMinute"
-                        [withAdvancedStats]="user.userConfig.advancedStats"
+                        [withAdvancedStats]="user.config.advancedStats"
                     />
                 </div>
 

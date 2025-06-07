@@ -93,7 +93,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     ngAfterViewInit(): void {
-        this.setupFontSize(`${3 * this.user.userConfig.fontSize}rem`);
+        this.setupFontSize(`${3 * this.user.config.fontSize}rem`);
 
         const canvas = this.canvasRef.nativeElement;
         this.gameEngine = new GameEngine(canvas);
@@ -116,24 +116,13 @@ export class GameComponent implements OnInit, OnDestroy {
         return this.proposed_answerInputs.join("");
     }
 
-    // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
-    public get questionMask(): boolean[] {
-        const userConfig = this.user.userConfig;
-        return [
-            userConfig.addition,
-            userConfig.soustraction,
-            userConfig.multiplication,
-            userConfig.division,
-            userConfig.numberRewrite,
-            userConfig.encryption,
-            userConfig.equation
-        ];
+    public get questionMask(): Record<QuestionNotion, boolean> {
+        return this.user.config.notionsMask;
     }
 
     private updateInputs(): void {
-        const userConfig = this.user.userConfig;
         const showsAnswer = (
-            userConfig.showsAnswer
+            this.user.config.showsAnswer
             || this.question.notion == QuestionNotion.ENCRYPTION
         );
 
@@ -240,7 +229,7 @@ export class GameComponent implements OnInit, OnDestroy {
         if (!this.audio) {
             this.audio = new Audio('../../../../assets/sons/in-game-music.mp3');
             this.audio.loop = true;
-            this.audio.volume = 0.5 * this.user.userConfig.sound;
+            this.audio.volume = 0.5 * this.user.config.sound;
         }
         this.audio.play();
     }
@@ -269,7 +258,7 @@ export class GameComponent implements OnInit, OnDestroy {
             this.encryptAudio.pause();
             this.encryptAudio.currentTime = 0;
             let decryptAudio = new Audio('../../../../assets/sons/decrypted.mp3');
-            decryptAudio.volume = 0.5 * this.user.userConfig.sound;
+            decryptAudio.volume = 0.5 * this.user.config.sound;
             decryptAudio.play();
         }
     }
@@ -278,7 +267,7 @@ export class GameComponent implements OnInit, OnDestroy {
         if (!this.encryptAudio) {
             this.encryptAudio = new Audio('../../../../assets/sons/encrypted.mp3');
             this.encryptAudio.loop = true;
-            this.encryptAudio.volume = 0.5 * this.user.userConfig.sound;
+            this.encryptAudio.volume = 0.5 * this.user.config.sound;
         }
         this.encryptAudio.play();
     }
@@ -339,6 +328,6 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public back(){
-        this.router.navigate(["/child/games-list"]);
+        this.router.navigate(["/child"]);
     }
 }

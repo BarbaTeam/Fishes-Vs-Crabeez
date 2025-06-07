@@ -93,7 +93,7 @@
                         [title]="'Note'"
                         [value]="ps.statistics.globalGrading"
                         [improvement]="ps.statistics.globalAccuracyImprovement"
-                        [withAdvancedStats]="user.userConfig.advancedStats"
+                        [withAdvancedStats]="user.config.advancedStats"
                     />
 
                     <app-rollable-box
@@ -105,7 +105,7 @@
                             [title]="n.key"
                             [value]="n.grading"
                             [improvement]="n.improvement"
-                            [withAdvancedStats]="user.userConfig.advancedStats"
+                            [withAdvancedStats]="user.config.advancedStats"
                         />
                     </app-rollable-box>
 
@@ -113,7 +113,7 @@
                         [title]="'Mots par minutes'"
                         [value]="ps.statistics.wordsPerMinute"
                         [improvement]="ps.statistics.wordsPerMinuteImprovement"
-                        [withAdvancedStats]="user.userConfig.advancedStats"
+                        [withAdvancedStats]="user.config.advancedStats"
                     />
                 </ng-container>
 
@@ -127,7 +127,7 @@
             </ng-template>
         </app-inner-box>
 
-        <app-inner-box *ngIf="isInStatsSection() && user.userConfig.leaderBoard" class="blue little">
+        <app-inner-box *ngIf="isInStatsSection() && user.config.leaderBoard" class="blue little">
             <h1 class="title">Classement</h1>
 
             <ng-template *ngIf="sectionData.leaderboard === undefined">
@@ -155,7 +155,7 @@
                 <app-stat-line
                     [title]="'Note'"
                     [value]="sectionData.playerResults.results.globalGrading"
-                    [withAdvancedStats]="user.userConfig.advancedStats"
+                    [withAdvancedStats]="user.config.advancedStats"
                 />
 
                 <app-rollable-box
@@ -166,14 +166,14 @@
                         *ngFor="let n of notionGradings"
                         [title]="n.key"
                         [value]="n.grading"
-                        [withAdvancedStats]="user.userConfig.advancedStats"
+                        [withAdvancedStats]="user.config.advancedStats"
                     />
                 </app-rollable-box>
 
                 <app-stat-line
                     [title]="'Mots par minutes'"
                     [value]="sectionData.playerResults.results.wordsPerMinute"
-                    [withAdvancedStats]="user.userConfig.advancedStats"
+                    [withAdvancedStats]="user.config.advancedStats"
                 />
 
                 <div class="badge-group">
@@ -191,7 +191,7 @@
             </ng-template>
         </app-inner-box>
 
-        <app-inner-box *ngIf="isInHistorySections() && user.userConfig.leaderBoard" class="main-box blue little">
+        <app-inner-box *ngIf="isInHistorySections() && user.config.leaderBoard" class="main-box blue little">
             <h1 class="title">Classement</h1>
 
             <ng-template *ngIf="sectionData.leaderboard === undefined">

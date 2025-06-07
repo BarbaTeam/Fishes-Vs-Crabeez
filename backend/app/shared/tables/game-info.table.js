@@ -1,10 +1,14 @@
+const { GameInfo } = require('../types');
+const { GameInfoSchema } = require('../schemas/game-info.schema');
+
 const { DatabaseTable } = require('./utils/db-table')
 const { genGameKey } = require('./utils/key-generators');
 
-const { GameInfoSchema } = require('../schemas/game-info.schema');
 
 
-
+/**
+ * @type {Database<GameInfo>}
+ */
 exports.GameInfoTable = new DatabaseTable(
     "GameInfo",
     GameInfoSchema,

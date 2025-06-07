@@ -14,26 +14,33 @@
 <div class="content" *ngIf="isUnrolled()">
     <span >
         Réécriture des nombres :
-        <app-settings-toggle [(checked)]="user.userConfig.numberRewrite"/>
+        <app-settings-toggle [(checked)]="user.config.notionsMask.REWRITING"/>
     </span>
 
     <span>
         Addition :
-        <app-settings-toggle [(checked)]="user.userConfig.addition"/>
+        <app-settings-toggle [(checked)]="user.config.notionsMask.ADDITION"/>
     </span>
 
     <span>
         Soustraction :
-        <app-settings-toggle [(checked)]="user.userConfig.soustraction"/>
+        <app-settings-toggle [(checked)]="user.config.notionsMask.SUBSTRACTION"/>
     </span>
 
     <span>
         Multiplication :
-        <app-settings-toggle [(checked)]="user.userConfig.multiplication"/>
+        <app-settings-toggle [(checked)]="user.config.notionsMask.MULTIPLICATION"/>
     </span>
 
     <span>
         Division :
-        <app-settings-toggle [(checked)]="user.userConfig.division"/>
+        <app-settings-toggle [(checked)]="user.config.notionsMask.DIVISION"/>
     </span>
+
+    <!--
+    <span>
+        Equation :
+        <app-settings-toggle [(checked)]="user.config.notionsMask.EQUATION"/>
+    </span>
+    -->
 </div>
