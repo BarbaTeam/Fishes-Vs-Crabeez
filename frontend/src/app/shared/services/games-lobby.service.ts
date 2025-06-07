@@ -83,8 +83,6 @@ export class GamesLobbyService {
 
         this.socket.on<GameLobby>('gameUpdated').subscribe(
             game => {
-                // DEBUG ::
-                console.log(game);
                 this._gamesLobbyMap.set(game.gameId, game);
                 this._updateObservable();
             }

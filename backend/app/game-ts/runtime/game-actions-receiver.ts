@@ -9,6 +9,10 @@ export class GameActionsReceiver {
         private model: GameModel,
     ) {}
 
+    public onStartupRequested(): void {
+        this.model.startup();
+    }
+
     public onAnswerReceived(playerId: UserID, answer: AnsweredQuestion): void {
         this.model.quizHandler.receiveAnswer(playerId, answer);
     }

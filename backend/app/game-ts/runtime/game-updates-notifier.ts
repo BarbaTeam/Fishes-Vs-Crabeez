@@ -1,4 +1,4 @@
-import { Server } from 'socket.io';
+import { Server, BroadcastOperator, Namespace } from 'socket.io';
 
 import { Question, UserID } from '../../shared/types';
 
@@ -9,46 +9,51 @@ import { Enemy } from '../model/game-engine/enemies/enemy';
 
 export class GameUpdatesNotifier {
     constructor(
-        private io: Server,
+        private io: Server|Namespace|BroadcastOperator<any, any>,
     ) {}
 
+    public onStartup(startupPackage: any) {
+        console.log(`[NOTIFIER] : Sending startup package ${startupPackage}\n\n`);
+        this.io.emit('gameStartup', startupPackage);
+    }
+
     public onNewQuestionForPlayer(playerId: UserID, question: Question) {
-        console.log(`[NOTIFIER] : New question sent to player : ${playerId}`);
+        console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
         this.io.to(playerId).emit('newQuestion', question);
     }
 
     public onPlayerChangedLane(playerId: UserID, lane: number) {
-        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${lane}`);
+        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${lane}\n\n`);
         this.io.emit('playerChangedLane', playerId, lane);
     }
 
     public onPlayerShot(playerId: UserID, projectile: Projectile) {
-        console.log(`[NOTIFIER] : Player : ${playerId} shot a projectile`);
-        this.io.emit('newProjectile', projectile);
+        console.log(`[NOTIFIER] : Player : ${playerId} shot a projectile\n\n`);
+        this.io.emit('newProjectile', {playerId: playerId, projectile: projectile.toJSON()});
     }
 
     public onPlayerScoreUpdated(playerId: UserID, newScore: number) {
-        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
+        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}\n\n`);
         this.io.to(playerId).emit('scoreUpdated', newScore);
     }
 
     public onEnemyAdded(enemy: Enemy){
-        console.log(`[NOTIFIER] : A new enemy spawned`);
-        this.io.emit('enemyAdded', enemy);
+        console.log(`[NOTIFIER] : A new enemy spawned\n\n`);
+        this.io.emit('enemyAdded', enemy.toJSON());
     }
 
     public onEnemyKilled(projectile : Projectile, enemy: Enemy) {
-        console.log(`[NOTIFIER] : An enemy has been slain`);
-        this.io.emit('enemyKilled', projectile, enemy);
+        console.log(`[NOTIFIER] : An enemy has been slain\n\n`);
+        this.io.emit('enemyKilled', {projectile: projectile.toJSON(), enemy: enemy.toJSON()});
     }
 
     public onPlayerParalyzed(playerId: UserID) {
-        console.log(`[NOTIFIER] : Player ${playerId} is paralyzed !`);
+        console.log(`[NOTIFIER] : Player ${playerId} is paralyzed !\n\n`);
         this.io.emit('playerParalyzed', playerId);
     }
 
     public onPlayerDeparalyzed(playerId: UserID) {
-        console.log(`[NOTIFIER] : Player ${playerId} freed himself !`);
+        console.log(`[NOTIFIER] : Player ${playerId} freed himself !\n\n`);
         this.io.emit('playerDeparalyzed', playerId);
     }
 }

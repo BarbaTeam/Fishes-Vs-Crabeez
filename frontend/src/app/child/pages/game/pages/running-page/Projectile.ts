@@ -15,8 +15,10 @@ export class Projectile {
     ) {
         this._id = id;
         this.player = player;
-        this.x = this.player.position.x;
-        this.y = this.player.position.y;
+        //this.x = this.player.position.x;
+        //this.y = this.player.position.y;
+        this.x = 200;
+        this.y = 500;
         this.width = 50;
         this.height = 50;
 

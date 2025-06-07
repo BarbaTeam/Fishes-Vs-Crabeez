@@ -5,6 +5,10 @@ class GameActionsReceiver {
     constructor(model) {
         this.model = model;
     }
+    onStartupRequested() {
+        console.log("[RECEIVER] Request for startup package received");
+        this.model.startup();
+    }
     onAnswerReceived(playerId, answer) {
         this.model.quizHandler.receiveAnswer(playerId, answer);
     }
