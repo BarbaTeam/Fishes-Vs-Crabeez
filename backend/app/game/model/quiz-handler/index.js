@@ -8,6 +8,9 @@ class QuizHandler {
         this.model = model;
         this.notifier = notifier;
         this._playersNotionsMask = playersNotionsMask;
+        for (const [playerId, playerMask] of Object.entries(playersNotionsMask)) {
+            this.notifier.onNewQuestionForPlayer(playerId, utils_1.QuestionsGenerator.genQuestion(playerMask));
+        }
     }
     receiveAnswer(playerId, ans) {
         // TODO : Accumulating answers
