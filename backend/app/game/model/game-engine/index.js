@@ -1,10 +1,12 @@
-const Crab = require('./enemy/crab');
-const Player = require('./player');
-const Projectile = require('./projectile');
+const { Crab } = require('./enemy/crab');
+const { Player } = require('./player');
+const { Projectile } = require('./projectile');
+
+
 
 class GameEngine {
-    constructor(sender) {
-        this.sender = sender;
+    constructor(notifier) {
+        this.notifier = notifier;
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
@@ -18,7 +20,7 @@ class GameEngine {
     registerPlayer(playerId, lane = 1) {
         const player = new Player(lane);
         this.players[playerId] = player;
-        this.sender.playerJoined(player);
+        this.notifier.playerJoined(player);
     }
 
     handleMove(playerId, direction) {
@@ -28,7 +30,7 @@ class GameEngine {
         if (direction === 'UP') player.moveUp();
         else if (direction === 'DOWN') player.moveDown();
 
-        this.sender.playerMoved(playerId, player.lane);
+        this.notifier.playerMoved(playerId, player.lane);
     }
 
     handleShoot(playerId) {
@@ -38,7 +40,7 @@ class GameEngine {
         const projectile = new Projectile(player);
         this.projectiles.push(projectile);
 
-        this.sender.playerShot(projectile);
+        this.notifier.playerShot(projectile);
     }
 
     _checkCollision(obj1, obj2) {
@@ -74,7 +76,7 @@ class GameEngine {
                     projectile.destroy();
                     player.score += enemy.score;
 
-                    this.sender.playerScored(projectile, enemy, player.score);
+                    this.notifier.playerScored(projectile, enemy, player.score);
                 }
             });
         });
@@ -84,9 +86,11 @@ class GameEngine {
 
         if (this.enemies.length < 3) {
             const enemy = this._addEnemy();
-            this.sender.enemyAdded(enemy);
+            this.notifier.enemyAdded(enemy);
         }
     }
 }
+
+
 
 module.exports = GameEngine;

@@ -1,5 +1,4 @@
-const { Question } = require('../../shared/types');
-const { QuestionNotion } = require('../../shared/types/enums');
+import { Question, QuestionNotion } from '../../../../shared/types';
 
 
 
@@ -7,14 +6,9 @@ const { QuestionNotion } = require('../../shared/types/enums');
 // Utils :
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Convert a number to its French words representation.
- * @param {number} n
- * @returns {string}
- */
-function num2words_fr(n) {
+function num2words_fr(n:number): string {
     ////////////////////////////////////////////////////////////////////////////
-    // Constants:
+    // Constantes :
 
     const UNITS = [
         "", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit",
@@ -24,20 +18,16 @@ function num2words_fr(n) {
         "", "", "vingt", "trente", "quarante", "cinquante", "soixante"
     ];
     const DENOMINATIONS = [
-        { value: 1e9, singular: "milliard", plural: "millions" },
+        { value: 1e9, singular: "milliard", plural: "milliards" },
         { value: 1e6, singular: "million", plural: "millions" },
         { value: 1e3, singular: "mille", plural: "mille" }
     ];
 
-    ////////////////////////////////////////////////////////////////////////////
-    // Helper Function:
 
-    /**
-     * Convert numbers less than 1000 to words.
-     * @param {number} num
-     * @returns {string}
-     */
-    function convertLessThanOneThousand(num) {
+    ////////////////////////////////////////////////////////////////////////////
+    // Helper Function :
+
+    function convertLessThanOneThousand(num: number): string {
         let current = "";
 
         if (num >= 100) {
@@ -48,18 +38,18 @@ function num2words_fr(n) {
             } else {
                 current += UNITS[hundred] + " cent";
             }
-            // Add "s" to "cent" if exact and greater than one
+            // Ajoute un "s" à "cent" uniquement s'il n'est pas suivi et qu'il est exact
             if (num === 0 && hundred > 1) {
                 current += "s";
             }
             if (num > 0) current += " ";
         }
 
-        if (num < 17) {
+        if (num < 17) { // de 0 à 16
             current += UNITS[num];
-        } else if (num < 20) {
+        } else if (num < 20) { // 17, 18, 19
             current += "dix-" + UNITS[num - 10];
-        } else if (num < 70) {
+        } else if (num < 70) {  // 20 à 69
             let ten = Math.floor(num / 10);
             let unit = num % 10;
             current += TENS[ten];
@@ -68,16 +58,18 @@ function num2words_fr(n) {
             } else if (unit > 0) {
                 current += "-" + UNITS[unit];
             }
-        } else if (num < 80) {
+        } else if (num < 80) { // 70 à 79
+            // 70 = soixante-dix, 71 = soixante et onze, ...
             let unit = num - 60;
             current += "soixante";
-            if (unit === 11) {
+            if(unit === 11) { // 71 : soixante et onze
                 current += " et " + UNITS[unit];
             } else {
                 current += "-" + num2words_fr(unit);
             }
-        } else if (num < 100) {
+        } else if (num < 100) { // 80 à 99
             let unit = num - 80;
+            // 80 est "quatre-vingts" si pas de reste, sinon "quatre-vingt"
             current += "quatre-vingt";
             if (unit === 0) {
                 current += "s";
@@ -91,8 +83,9 @@ function num2words_fr(n) {
         return current;
     }
 
+
     ////////////////////////////////////////////////////////////////////////////
-    // Main Logic:
+    // Main Logic :
 
     if (!Number.isFinite(n)) {
         throw new Error("Can only convert finite number");
@@ -101,18 +94,18 @@ function num2words_fr(n) {
         return "zéro";
     }
     if (n < 0) {
-        return "moins " + num2words_fr(-n);
-    }
+        return "moins " + num2words_fr(-n)
+    };
 
     let ret = "";
     let remainder = n;
-    for (let i = 0; i < DENOMINATIONS.length; i++) {
+    for (let i=0; i < DENOMINATIONS.length; i++) {
         const { value, singular, plural } = DENOMINATIONS[i];
         if (remainder >= value) {
             let count = Math.floor(remainder / value);
             remainder = remainder % value;
 
-            // For "mille" we don't say "un mille"
+            // Pour "mille" on ne dit pas "un mille"
             if (value === 1e3 && count === 1) {
                 ret += "mille";
             } else {
@@ -129,150 +122,76 @@ function num2words_fr(n) {
     return ret;
 }
 
+
 /**
- * Returns a random integer between min (inclusive) and max (inclusive).
- * @param {number} min - Minimum value
- * @param {number} max - Maximum value
- * @returns {number}
+ * @param min The minimum included boundary.
+ * @param max The maximum excluded boundary.
+ * @reurn A random integer btwn 'min' and 'max'.
  */
-function randint(min, max) {
+function randint(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-/**
- * Filters an array by a boolean mask.
- * @template T
- * @param {T[]} arr - Array to filter
- * @param {boolean[]} mask - Mask indicating which items to keep
- * @returns {T[]}
- */
-function filterOnMask(arr, mask) {
-    return arr.filter((notion, _) => mask[notion])
-    return arr.filter((_, index) => mask[index]);
-}
-
-
 
 ////////////////////////////////////////////////////////////////////////////////
-// Question Generator:
+// Question Generator :
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
- * @class QuestionsGenerator
- */
-class QuestionsGenerator {
-    constructor(playersConfig) {
-        this.mask = [
-            playersConfig.addition,
-            playersConfig.soustraction,
-            playersConfig.multiplication,
-            playersConfig.division,
-            playersConfig.equation,
-            playersConfig.numberRewrite,
-            playersConfig.encryption,
-        ];
-    }
-
-    updateMaskOnConfig(playerId, newConfig) {
-        this.mask = [
-            playersConfig.addition,
-            playersConfig.soustraction,
-            playersConfig.multiplication,
-            playersConfig.division,
-            playersConfig.equation,
-            playersConfig.numberRewrite,
-            playersConfig.encryption,
-        ];
-
-    }
-
-
-    /**
-     * Choose a random notion from the mask.
-     * @private
-     * @param {Record<QuestionNotion, boolean[]>} mask
-     * @returns {QuestionNotion}
-     */
-    static _chooseNotion(mask) {
-        const allowedNotions = Object.values(
-            QuestionNotion
-        ).filter((notion, _) => mask[notion]);
+export class QuestionsGenerator {
+    private static _chooseNotion(mask: Record<QuestionNotion, boolean>): QuestionNotion {
+        const notions = Object.values(QuestionNotion) as QuestionNotion[];
+        const allowedNotions = notions.filter((notion) => mask[notion]);
 
         if (allowedNotions.length === 0) {
-            throw new Error("No notion allowed by the provided mask.");
+            throw new Error("Aucune notion autorisée par le masque fourni.");
         }
 
         return allowedNotions[randint(0, allowedNotions.length - 1)];
     }
 
-    /**
-     * Convert a notion to its operator symbol.
-     * @private
-     * @param {QuestionNotion} notion
-     * @returns {string}
-     */
-    static _convertNotionToOperator(notion) {
+    private static _convertNotionToOperator(notion: QuestionNotion): string {
         switch (notion) {
             case QuestionNotion.ADDITION:
-                return "+";
+                return '+';
             case QuestionNotion.SUBSTRACTION:
-                return "-";
+                return '-';
             case QuestionNotion.MULTIPLICATION:
-                return "*";
+                return '*';
             case QuestionNotion.DIVISION:
-                return "/";
+                return '/';
             default:
-                return "NA";
+                return 'NA';
         }
     }
 
-    /**
-     * Choose random operands between bounds.
-     * @private
-     * @param {number} [operandsAmount=2]
-     * @param {number} [minBound=0]
-     * @param {number} [maxBound=10]
-     * @returns {number[]}
-     */
-    static _chooseOperands(operandsAmount = 2, minBound = 0, maxBound = 10) {
-        const operands = [];
+    private static _chooseOperands(operandsAmount: number = 2, minBound: number = 0, maxBound: number = 10): number[] {
+        const operands: number[] = [];
         for (let i = 0; i < operandsAmount; i++) {
             operands.push(randint(minBound, maxBound));
         }
         return operands;
     }
 
-    /**
-     * Compute the answer given operands and operator.
-     * @private
-     * @param {number[]} operands
-     * @param {string} operator
-     * @returns {number}
-     */
-    static _computeAnswer(operands, operator) {
+    private static _computeAnswer(operands: number[], operator: string): number {
         switch (operator) {
-            case "+":
+            case '+':
                 return operands[0] + operands[1];
-            case "-":
+            case '-':
                 return operands[0] - operands[1];
-            case "*":
+            case '*':
                 return operands[0] * operands[1];
-            case "/":
+            case '/':
+                // Division entière
                 return Math.floor(operands[0] / operands[1]);
             default:
                 throw new Error(`Unexpected operator: ${operator}`);
         }
     }
 
-    /**
-     * Generate a random encrypted string of given length.
-     * @private
-     * @param {number} length
-     * @returns {string}
-     */
-    static _genEncryptedString(length) {
-        // TODO: expand character set if needed
+    private static _genEncryptedString(length: number): string {
+        // TODO : utiliser l'ensemble complet des caractères si besoin
         const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_{|}";
+
         let ret = "";
         for (let i = 0; i < length; i++) {
             ret += characters.charAt(randint(0, characters.length - 1));
@@ -280,51 +199,51 @@ class QuestionsGenerator {
         return ret;
     }
 
-    /**
-     * Generate a question based on a notion mask.
-     * @param {boolean[]} [notionMask=[true, true, false, false, false, false, false]]
-     * @returns {Question}
-     */
-    static genQuestion(notionMask = [true, true, false, false, false, false, false]) {
+    // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
+    public static genQuestion(
+        notionMask: Record<QuestionNotion, boolean> = {
+            [QuestionNotion.ADDITION]      : true,
+            [QuestionNotion.SUBSTRACTION]  : true,
+            [QuestionNotion.MULTIPLICATION]: false,
+            [QuestionNotion.DIVISION]      : false,
+            [QuestionNotion.EQUATION]      : false,
+            [QuestionNotion.REWRITING]     : false,
+            [QuestionNotion.ENCRYPTION]    : false,
+        }
+    ): Question {
         const notion = this._chooseNotion(notionMask);
 
         switch (notion) {
-            case QuestionNotion.REWRITING: {
+            case QuestionNotion.REWRITING:
                 const nb = randint(0, 50);
                 return {
                     prompt: `${nb} :\xa0`,
                     answer: num2words_fr(nb),
-                    notion
+                    notion: notion,
                 };
-            }
-            case QuestionNotion.ENCRYPTION: {
+
+            case QuestionNotion.ENCRYPTION:
                 const length = randint(4, 6);
                 return {
                     prompt: "",
                     answer: this._genEncryptedString(length),
-                    notion
+                    notion: notion,
                 };
-            }
-            case QuestionNotion.EQUATION:
-                // TODO: implement equation case in the future
+
+            case QuestionNotion.EQUATION :
+                // TODO : One day
                 return this.genQuestion(notionMask);
 
-            default: {
+            default:
                 const operator = this._convertNotionToOperator(notion);
                 const operands = this._chooseOperands();
                 const ans = this._computeAnswer(operands, operator);
                 return {
                     prompt: `${operands[0]} ${operator} ${operands[1]} =\xa0`,
+                    //prompt: `${operands[0]} ${operator} ${operands[1]} =&nbsp;`,
                     answer: num2words_fr(ans),
-                    notion
+                    notion: notion
                 };
-            }
         }
     }
 }
-
-
-
-module.exports = {
-    QuestionsGenerator
-};

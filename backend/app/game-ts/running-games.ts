@@ -1,4 +1,2 @@
 // TODO : Removing it once we are (finally) using multithreading
-const GAMES_RUNNING = {};
-
-module.exports = { GAMES_RUNNING };
+export const GAMES_RUNNING = {};

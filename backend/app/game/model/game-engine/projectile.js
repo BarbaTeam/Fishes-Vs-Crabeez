@@ -1,7 +1,7 @@
 class Projectile {
     constructor(player) {
         this.player = player;
-        this.x = player.x + player.width; 
+        this.x = player.x + player.width;
         this.y = player.y + player.height / 2 - 25;
         this.width = 50;
         this.height = 50;
@@ -18,4 +18,6 @@ class Projectile {
     }
 }
 
-module.exports = Projectile;
+
+
+module.exports = { Projectile };
