@@ -1,5 +1,10 @@
-export class Enemy {
+export type EnemyID = `ennemy-${number}`;
 
+
+export class Enemy {
+    public readonly id: EnemyID;
+
+    public health: number;
     public lane : 1 | 2 | 3;
     public x : number;
     public y : number;
@@ -9,7 +14,9 @@ export class Enemy {
     public speed : number;
     public score : number;
 
-    constructor(lane? : 1|2|3, x? : number,y? : number) {
+    constructor(health: number, lane? : 1|2|3, x? : number, y? : number) {
+        this.id = `ennemy-${Date.now()}`;
+
         this.lane = lane !== undefined ? lane : Math.floor(Math.random() * 3) + 1 as  1 | 2 | 3;
         this.x = x !== undefined ? x : 1000;
 
@@ -22,7 +29,7 @@ export class Enemy {
         this.score = 10;
     }
 
-    _setInitialPosition(providedY : number | undefined) {
+    private _setInitialPosition(providedY : number | undefined) {
         if (providedY !== undefined) return providedY;
 
         switch (this.lane) {
@@ -37,15 +44,28 @@ export class Enemy {
         }
     }
 
-    destroy() {
+    public destroy() {
         this.alive = false;
     }
 
-    update() {
+    public update() {
         if (this.x > 100) {
             this.x -= this.speed;
         } else {
             this.alive = false;
         }
+    }
+
+    toJSON(): any {
+        return {
+            lane  : this.lane,
+            x     : this.x,
+            y     : this.y,
+            width : this.width,
+            height: this.height,
+            alive : this.alive,
+            health: this.health,
+            speed : this.speed,
+        };
     }
 }

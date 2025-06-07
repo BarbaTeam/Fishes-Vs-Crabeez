@@ -1,29 +1,18 @@
-const { Server } = require('socket.io');
-
-const { GameLobby } = require('../../shared/types');
-
-const { GameActionsReceiver } = require('./game-actions-receiver');
-const { GameUpdatesNotifier } = require('./game-updates-notifier');
-const { GameModel } = require('../model');
-
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameRuntime = void 0;
+const game_actions_receiver_1 = require("./game-actions-receiver");
+const game_updates_notifier_1 = require("./game-updates-notifier");
+const model_1 = require("../model");
 class GameRuntime {
-    /**
-     * @param {Server} io
-     * @param {GameLobby} gameLobby
-     */
-    constructor (io, gameLobby) {
-        this.notifier = new GameUpdatesNotifier(io);
-        this.model    = new GameModel(this.notifier, gameLobby);
-        this.receiver = new GameActionsReceiver(this.model);
+    constructor(io, gameLobby) {
+        this.notifier = new game_updates_notifier_1.GameUpdatesNotifier(io);
+        this.model = new model_1.GameModel(this.notifier, gameLobby);
+        this.receiver = new game_actions_receiver_1.GameActionsReceiver(this.model);
     }
-
-    // TODO : Adding end for game
     runOneFrame() {
+        // TODO : Supporting game's ending
         this.model.runOneFrame();
     }
 }
-
-
-
-module.exports = { GameRuntime };
+exports.GameRuntime = GameRuntime;

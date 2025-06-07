@@ -2,11 +2,14 @@ const { Server, Socket } = require('socket.io');
 
 const { UserID, GameID } = require("../../../shared/types");
 
+
 const { CONNECTED_USERS_ID, GAMES } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
 const { ChildRole_Impl } = require('./child.role');
+
+const { RUNNING_GAMES } = require('../../../game/running-games');
 
 
 
@@ -61,7 +64,14 @@ class PlayerRole_Impl extends ChildRole_Impl {
         });
 
         this._registerListener('sendAnswer', (answer) => {
-            // TODO : Transferring answers the game runtime
+            RUNNING_GAMES[this._gameId].receiver.onAnswerReceived(this._userId, answer);
+        });
+
+        this._registerListener('changeLane', (direc) => {
+            if (!["UP", "DOWN"].includes(direc)) {
+                throw new Error(`Invalid lane changement direction ${direc}`);
+            }
+            RUNNING_GAMES[this._gameId].receiver.onLaneChanged(this._userId, direc);
         });
     }
 

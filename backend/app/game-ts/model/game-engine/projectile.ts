@@ -1,15 +1,24 @@
 import { Player } from "./player";
 
+export type ProjectileID = `projectile-${number}`;
+
+
+
 export class Projectile {
-    public player : Player;
+    public readonly id: ProjectileID;
+
     public x : number;
     public y : number;
     public width: number;
     public height : number;
     public speed : number;
+
+    public player : Player;
     public markedForDeletion : boolean;
 
     constructor(player : Player) {
+        this.id = `projectile-${Date.now()}`
+
         this.player = player;
         this.x = player.x + player.width;
         this.y = player.y + player.height / 2 - 25;
@@ -26,5 +35,16 @@ export class Projectile {
     update() {
         if(this.x > 3000) this.destroy();
         this.x += this.speed;
+    }
+
+    toJSON(): any {
+        return {
+            id: this.id,
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            speed: this.speed,
+        };
     }
 }

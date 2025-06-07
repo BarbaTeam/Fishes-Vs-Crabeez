@@ -1,21 +1,15 @@
-const GameEngine = require("./game-engine");
-
-
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameModel = void 0;
+const game_engine_1 = require("./game-engine");
+const quiz_handler_1 = require("./quiz-handler");
 class GameModel {
-    constructor (notifier) {
-        this.gameEngine = new GameEngine(notifier);
-
-        this.qGenerator = new QuestionGenerator();
-        this.ansChecker;
+    constructor(notifier, gameLobby) {
+        this.gameEngine = new game_engine_1.GameEngine(this, notifier, gameLobby.playersId);
+        this.quizHandler = new quiz_handler_1.QuizHandler(this, notifier, gameLobby.playersNotionsMask);
     }
-
-    // TODO : Adding end for game
     runOneFrame() {
         this.gameEngine.update();
     }
 }
-
-
-
-module.exports = { GameModel };
+exports.GameModel = GameModel;

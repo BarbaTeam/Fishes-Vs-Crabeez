@@ -7,18 +7,12 @@ import { QuizHandler } from './quiz-handler';
 
 
 export class GameModel {
-    private gameEngine: GameEngine;
-    private quizHandler: QuizHandler;
+    public readonly gameEngine: GameEngine;
+    public readonly quizHandler: QuizHandler;
 
-    /**
-     * @param {GameEventsNotifier} notifier
-     * @param {GameLobby} gameLobby
-     */
     constructor (notifier: GameUpdatesNotifier, gameLobby: GameLobby) {
-        // TODO : Using 'gameLobby'
-
-        this.gameEngine = new GameEngine(notifier);
-        this.quizHandler = new QuizHandler(notifier);
+        this.gameEngine = new GameEngine(this, notifier, gameLobby.playersId);
+        this.quizHandler = new QuizHandler(this, notifier, gameLobby.playersNotionsMask);
     }
 
     public runOneFrame() {

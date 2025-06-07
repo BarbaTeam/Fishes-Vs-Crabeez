@@ -14,8 +14,6 @@ import { childDeactivateGuard } from './guards/child-deactivate.guard';
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 import { GamesListPageComponent } from './pages/games-list-page/games-list-page.component';
-import { GameLobbyPageComponent } from './pages/game-lobby-page/game-lobby-page.component';
-import { GameComponent } from './pages/game/game.component';
 
 
 
@@ -35,8 +33,16 @@ export const ROUTES: Routes = [
             { path: 'settings', component: SettingsPageComponent },
 
             { path: 'games-list', component: GamesListPageComponent },
-            { path: 'game-lobby', component: GameLobbyPageComponent },
-            { path: 'game', component: GameComponent },
+
+            // Game Subtree :
+            {
+                path: "game",
+                loadChildren: () => import(
+                    "@app/child/pages/game/game.module"
+                ).then(
+                    m => m.GameModule
+                ),
+            },
         ],
     },
 ];

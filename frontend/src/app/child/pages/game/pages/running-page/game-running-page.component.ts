@@ -7,6 +7,7 @@ import { User } from '@app/shared/models/user.model';
 import { Question, QuestionNotion } from '@app/shared/models/question.model';
 import { Router } from '@angular/router';
 import { SocketService } from '@app/shared/services/socket.service';
+import { UserID } from '@app/shared/models/ids';
 
 
 
@@ -22,11 +23,11 @@ type Input = {
 ////////////////////////////////////////////////////////////////////////////////
 
 @Component({
-    selector: 'app-game',
-    templateUrl: './game.component.html',
-    styleUrls: ['./game.component.scss']
+    selector: 'app-game-running-page',
+    templateUrl: './game-running-page.component.html',
+    styleUrls: ['./game-running-page.component.scss']
 })
-export class GameComponent implements OnInit, OnDestroy {
+export class GameRunningPageComponent implements OnInit, OnDestroy {
     private static readonly INPUTS_END: Input = {
         letter: '\xa0', status: "pending"
     };
@@ -50,6 +51,9 @@ export class GameComponent implements OnInit, OnDestroy {
 
     public score: number;
 
+    private readonly normalAudio = new Audio('../../../../assets/sons/in-game-music.mp3');
+    private readonly paralyzedAudio = new Audio('../../../../assets/sons/encrypted.mp3');
+
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors & Destructors :
@@ -63,13 +67,11 @@ export class GameComponent implements OnInit, OnDestroy {
             this.user = user;
         });
 
-        this.setupEncryptAudio();
         this.keydownHandler = this.checkInput.bind(this);
 
         this.cursorPosition = 0;
 
         this.score = 0;
-
     }
 
     ngOnInit(): void {
@@ -89,7 +91,29 @@ export class GameComponent implements OnInit, OnDestroy {
                 this.proposed_answerInputs = [];
                 this.cursorPosition = 0;
             })
-        )
+        );
+
+        this.subscriptions.add(
+            this.socket.on<UserID>('playerParalyzed').subscribe(paralyzedPlayerId => {
+                if (paralyzedPlayerId === this.user.userId) {
+                    this.playEncryptAudio();
+                } else {
+                    // TODO : Displaying correct player as paralyzed
+                    // NOTE : Might be managed by the game engine
+                }
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<UserID>('playerParalyzed').subscribe(paralyzedPlayerId => {
+                if (paralyzedPlayerId === this.user.userId) {
+                    this.stopEncryptAudio();
+                } else {
+                    // TODO : Displaying correct player as deparalyzed
+                    // NOTE : Might be managed by the game engine
+                }
+            })
+        );
     }
 
     ngAfterViewInit(): void {
@@ -108,22 +132,14 @@ export class GameComponent implements OnInit, OnDestroy {
 
     ////////////////////////////////////////////////////////////////////////////
     // Getters :
-    public get questionNotion(): QuestionNotion {
-        return this.question.notion;
-    }
-
     public get proposed_answer(): string {
         return this.proposed_answerInputs.join("");
-    }
-
-    public get questionMask(): Record<QuestionNotion, boolean> {
-        return this.user.config.notionsMask;
     }
 
     private updateInputs(): void {
         const showsAnswer = (
             this.user.config.showsAnswer
-            || this.question.notion == QuestionNotion.ENCRYPTION
+            || this.question?.notion == QuestionNotion.ENCRYPTION
         );
 
         const PENDING_SPACE: Input = {letter: '\xa0', status: "pending"};
@@ -163,7 +179,7 @@ export class GameComponent implements OnInit, OnDestroy {
             }
         }
 
-        ret.push(GameComponent.INPUTS_END);
+        ret.push(GameRunningPageComponent.INPUTS_END);
 
         this.inputs = ret;
     }
@@ -242,17 +258,14 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     public encryptAudio: HTMLAudioElement | null = null;
-    private hasDecryptAudio: boolean = true;
-    private setupEncryptAudio(): void {
-        if(this.questionNotion === "ENCRYPTION"){
-            this.playEncryptAudio();
-            this.hasDecryptAudio = false;
-        }   else if(!this.hasDecryptAudio){
-            this.stopEncryptAudio();
-            this.hasDecryptAudio = true;
+    private playEncryptAudio(): void {
+        if (!this.encryptAudio) {
+            this.encryptAudio = new Audio('../../../../assets/sons/encrypted.mp3');
+            this.encryptAudio.loop = true;
+            this.encryptAudio.volume = 0.5 * this.user.config.sound;
         }
+        this.encryptAudio.play();
     }
-
     public stopEncryptAudio(): void {
         if (this.encryptAudio) {
             this.encryptAudio.pause();
@@ -261,15 +274,6 @@ export class GameComponent implements OnInit, OnDestroy {
             decryptAudio.volume = 0.5 * this.user.config.sound;
             decryptAudio.play();
         }
-    }
-
-    private playEncryptAudio(): void {
-        if (!this.encryptAudio) {
-            this.encryptAudio = new Audio('../../../../assets/sons/encrypted.mp3');
-            this.encryptAudio.loop = true;
-            this.encryptAudio.volume = 0.5 * this.user.config.sound;
-        }
-        this.encryptAudio.play();
     }
 
     private setupFontSize(size: string): void {
