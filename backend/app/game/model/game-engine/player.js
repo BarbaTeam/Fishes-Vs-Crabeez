@@ -2,15 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
 class Player {
-    constructor(id, lane = 1) {
+    constructor(id, color, lane = 1) {
         this.id = id;
         this.score = 0;
-        this.width = 150;
-        this.height = 150;
+        this.width = 5;
+        this.height = 5;
         this._lane = lane; // 1, 2, 3
-        this.x = 150;
-        this.y = 0;
-        this.hasChangedLane = true;
+        this.color = color;
+        this.x = 10;
+        this.hasChangedLane = false;
         this.update();
     }
     get lane() {
@@ -35,17 +35,16 @@ class Player {
             this.update();
         }
     }
-    update(screenHeight = 1080) {
-        const laneHeight = screenHeight / 4;
-        switch (this.lane) {
+    update() {
+        switch (this.lane) { //espacements de 25px entre les lanes
             case 1:
-                this.y = laneHeight * 2;
+                this.y = 49;
                 break;
             case 2:
-                this.y = laneHeight;
+                this.y = 33;
                 break;
             case 3:
-                this.y = 0;
+                this.y = 17;
                 break;
         }
     }
@@ -57,6 +56,7 @@ class Player {
             width: this.width,
             height: this.height,
             lane: this.lane,
+            color: this.color,
         };
     }
 }

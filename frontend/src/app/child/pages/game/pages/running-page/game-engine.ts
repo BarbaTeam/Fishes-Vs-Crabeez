@@ -1,5 +1,4 @@
 import { Subscription } from "rxjs";
-import { first } from "rxjs/operators";
 
 import { SocketService } from "@app/shared/services/socket.service";
 
@@ -21,6 +20,7 @@ export class GameEngine {
     private score: number;
     private gameLoopId: number | null = null;
     private subscriptions = new Subscription();
+    private receivedStartup = false;
 
     constructor(
         private canvas: HTMLCanvasElement,
@@ -30,6 +30,7 @@ export class GameEngine {
         this.initSocket();
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvasResolution();
+        window.addEventListener('resize', () => this.adjustCanvasResolution());
 
         this.players = new Map();
 
@@ -48,18 +49,23 @@ export class GameEngine {
     private initSocket() {
         this.subscriptions.add(
             this.socket.on<any>('gameStartup').subscribe((startupPackage: any) => {
+                if (this.receivedStartup) {
+                    return;
+                }
+                this.receivedStartup = true;
+
                 console.log("[STARTUP] Package :");
                 console.log(startupPackage);
-
+                
                 const players = startupPackage.players;
                 for (let player of players) {
-                    this.players.set(player.id, Player.fromJson(player, this.canvas));
+                    this.players.set(player.id, Player.fromJSON(player, this.canvas));
                 }
             })
         );
 
         this.subscriptions.add(
-            this.socket.on<{playerId : UserID, lane : number}>('playerChangedLane').subscribe(({playerId : playerId, lane : lane})=>{
+            this.socket.on<any>('playerChangedLane').subscribe(({playerId : playerId, lane : lane})=>{
                 const player = this.players.get(playerId);
                 if(player){
                     player.lane = lane;
@@ -72,7 +78,7 @@ export class GameEngine {
                 console.log(playerId);
                 console.log(this.players.get(playerId));
                 console.log(projectile);
-                this.projectiles.push(Projectile.fromJson(projectile, this.players.get(playerId)!));
+                this.projectiles.push(Projectile.fromJSON(projectile, this.canvas, this.players.get(playerId)!));
             })
         );
         this.subscriptions.add(
@@ -130,8 +136,13 @@ export class GameEngine {
 
     private adjustCanvasResolution(): void {
         const scale = window.devicePixelRatio || 1;
-        this.canvas.width = this.canvas.clientWidth * scale;
-        this.canvas.height = this.canvas.clientHeight * scale;
+
+        this.canvas.style.width = "100vw";
+        this.canvas.style.height = "100vh";
+
+        this.canvas.width = window.innerWidth * scale;
+        this.canvas.height = window.innerHeight * scale;
+
         this.ctx.scale(scale, scale);
     }
 

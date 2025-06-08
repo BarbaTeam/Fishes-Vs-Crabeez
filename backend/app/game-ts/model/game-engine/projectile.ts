@@ -20,10 +20,10 @@ export class Projectile {
         this.id = `projectile-${Date.now()}`
 
         this.player = player;
-        this.x = player.x + player.width;
-        this.y = player.y + player.height / 2 - 25;
-        this.width = 50;
-        this.height = 50;
+        this.x = player.x + player.width / 2;
+        this.y = player.y + player.height / 2;
+        this.width = 2.5;
+        this.height = 2.5;
         this.speed = 10;
         this.markedForDeletion = false;
     }
@@ -33,7 +33,7 @@ export class Projectile {
     }
 
     update() {
-        if(this.x > 3000) this.destroy();
+        if(this.x > 100) this.destroy();
         this.x += this.speed;
     }
 

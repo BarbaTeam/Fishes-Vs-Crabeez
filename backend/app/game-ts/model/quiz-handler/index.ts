@@ -43,6 +43,11 @@ export class QuizHandler {
             // TODO : Asking `GameEngine` to deparalyze the player
             // this.model.gameEngine. ??? (playerId);
             this.notifier.onPlayerDeparalyzed(playerId);
+            this.notifier.onNewQuestionForPlayer(
+                playerId,
+                QuestionsGenerator.genQuestion(this._playersNotionsMask[playerId]),
+            );
+            return;
         }
         this.model.gameEngine.handleShoot(playerId);
         this.notifier.onNewQuestionForPlayer(

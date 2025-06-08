@@ -11,12 +11,13 @@ class GameEngine {
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
+        const COLORS = ["red", "blue", "yellow"];
         for (const [i, playerId] of playersId.entries()) {
-            this.registerPlayer(playerId, i + 1);
+            this.registerPlayer(playerId, COLORS[i], i + 1);
         }
     }
-    registerPlayer(playerId, lane = 1) {
-        const player = new player_1.Player(playerId, lane);
+    registerPlayer(playerId, color, lane = 1) {
+        const player = new player_1.Player(playerId, color, lane);
         player.id = playerId;
         this.players[playerId] = player;
     }
@@ -85,5 +86,3 @@ class GameEngine {
     }
 }
 exports.GameEngine = GameEngine;
-GameEngine.V_SCREEN_WIDTH = 1920;
-GameEngine.V_SCREEN_HEIGHT = 1200;

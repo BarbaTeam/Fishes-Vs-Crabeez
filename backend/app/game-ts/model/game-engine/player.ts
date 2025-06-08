@@ -1,7 +1,5 @@
 import { UserID } from "../../../shared/types";
 
-
-
 export class Player {
     public id : UserID;
 
@@ -14,19 +12,22 @@ export class Player {
     public hasChangedLane : boolean;
     public score : number;
 
-    constructor(id: UserID, lane = 1) {
+    public color: "yellow"|"blue"|"red";
+
+    constructor(id: UserID, color: "yellow"|"blue"|"red", lane = 1) {
         this.id = id;
 
         this.score = 0;
 
-        this.width = 150;
-        this.height = 150;
+        this.width = 5;
+        this.height = 5;
 
         this._lane = lane; // 1, 2, 3
-        this.x = 150;
-        this.y = 0;
+        this.color = color;
 
-        this.hasChangedLane = true;
+        this.x = 10;
+
+        this.hasChangedLane = false;
 
         this.update();
     }
@@ -57,18 +58,16 @@ export class Player {
         }
     }
 
-    update(screenHeight = 1080) {
-        const laneHeight = screenHeight / 4;
-
-        switch (this.lane) {
+    update() {
+        switch (this.lane) { //espacements de 25px entre les lanes
             case 1:
-                this.y = laneHeight * 2;
+                this.y = 49;
                 break;
             case 2:
-                this.y = laneHeight;
+                this.y = 33;
                 break;
             case 3:
-                this.y = 0;
+                this.y = 17;
                 break;
         }
     }
@@ -81,6 +80,7 @@ export class Player {
             width: this.width,
             height: this.height,
             lane: this.lane,
+            color: this.color,
         };
     }
 }
