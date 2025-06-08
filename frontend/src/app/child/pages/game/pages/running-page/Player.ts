@@ -3,37 +3,36 @@ import { scaleToCanvas } from "./scale-utils";
 
 export class Player {
     private _id: UserID;
-
-    private virtualX: number;
-    private virtualY!: number;
+    public x!: number;
+    public y!: number;
     private virtualWidth: number;
     private virtualHeight: number;
-
-    private _lane!: number;
-
     private decryptedImage: HTMLImageElement;
+    public playerIconUrl!: string;
     private encryptedImage: HTMLImageElement;
 
 
-    constructor(private canvas: HTMLCanvasElement, id: UserID, ) {
+    private constructor(private canvas: HTMLCanvasElement, id: UserID) {
         this._id = id;
 
-        this.virtualX = 5;
-        this.virtualWidth = 5;
-        this.virtualHeight = 5;
+        this.virtualWidth = 7;
+        this.virtualHeight = 7;
 
         this.decryptedImage = new Image();
         this.encryptedImage = new Image();
     }
 
-    public static fromJSON(data: any, canvas: HTMLCanvasElement): Player {
+    public static fromJSON(data: any, localPlayerId: UserID, canvas: HTMLCanvasElement): Player {
         const player = new Player(canvas, data.id);
-        player.lane = data.lane;
-
+        player.x = data.x;
+        player.y = data.y;
+        if(data.id === localPlayerId) {
+            player.decryptedImage.src = `../../../../assets/images/game/player/${data.color}_fish_active.png`;
+        } else {
+            player.decryptedImage.src = `../../../../assets/images/game/player/${data.color}_fish.png`;
+        }
+        player.playerIconUrl = `../../../../assets/images/game/player/${data.color}_fish.png`;
         player.encryptedImage.src =  `../../../../assets/images/game/player/${data.color}_fish_encrypted.png`;
-        player.decryptedImage.src = `../../../../assets/images/game/player/${data.color}_fish.png`;
-
-        player.update();
         return player;
     }
 
@@ -42,40 +41,27 @@ export class Player {
     }
 
     public get position(): { x: number, y: number } {
-        return { x: this.virtualX, y: this.virtualY };
-    }
-
-    public set lane(value: number) {
-        this._lane = value;
-    }
-
-    public get lane(): number {
-        return this._lane;
-    }
-
-    public update(): void {
-        switch (this.lane) {
-            case 1:
-                this.virtualY = 49;
-                break;
-            case 2:
-                this.virtualY = 33;
-                break;
-            case 3:
-                this.virtualY = 17;
-                break;
-        }
+        return { x: this.x, y: this.y };
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
+        const now = performance.now();
+        const oscillation = Math.sin(now / 300 + this.x) * 3; // pour que chaque poisson ai une oscillation différente
+
         const { x, y, width, height } = scaleToCanvas(
-            this.virtualX,
-            this.virtualY,
+            this.x,
+            this.y,
             this.virtualWidth,
             this.virtualHeight,
-            this.canvas
+            this.canvas,
+            this.decryptedImage
         );
 
+        ctx.save(); 
+        ctx.translate(0, oscillation);
+
         ctx.drawImage(this.decryptedImage, x, y, width, height);
+
+        ctx.restore(); 
     }
 }

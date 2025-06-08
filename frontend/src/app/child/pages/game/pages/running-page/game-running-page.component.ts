@@ -37,6 +37,10 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     public user!: User;
     public question!: Question;
+    
+    public localPlayerIconUrl: string = '';
+    public player1IconUrl: string = '';
+    public player2IconUrl: string = '';
 
     private keydownHandler: (event: KeyboardEvent) => void;
 
@@ -48,6 +52,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     @ViewChild('headerRef') headerRef!: ElementRef<HTMLElement>;
     @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
+    
     private gameEngine!: GameEngine;
 
     public score: number;
@@ -124,6 +129,21 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
         const canvas = this.canvasRef.nativeElement;
         this.gameEngine = new GameEngine(canvas, this.socket, this.user.userId);
+        this.subscriptions.add(
+            this.gameEngine.localPlayerImageSrcChanged.subscribe(url => {
+                this.localPlayerIconUrl = url;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.player1ImageSrcChanged.subscribe(url => {
+                this.player1IconUrl = url;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.player2ImageSrcChanged.subscribe(url => {
+                this.player2IconUrl = url;
+            })
+        );
     }
 
     ngOnDestroy(): void {

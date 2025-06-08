@@ -4,6 +4,7 @@ exports.GameEngine = void 0;
 const crab_1 = require("./enemies/crab");
 const player_1 = require("./player");
 const projectile_1 = require("./projectile");
+const variables_1 = require("./variables");
 class GameEngine {
     constructor(model, notifier, playersId) {
         this.model = model;
@@ -11,13 +12,12 @@ class GameEngine {
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
-        const COLORS = ["red", "blue", "yellow"];
         for (const [i, playerId] of playersId.entries()) {
-            this.registerPlayer(playerId, COLORS[i], i + 1);
+            this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
     }
-    registerPlayer(playerId, color, lane = 1) {
-        const player = new player_1.Player(playerId, color, lane);
+    registerPlayer(playerId, color, num_lane) {
+        const player = new player_1.Player(playerId, color, variables_1.LANES[num_lane]);
         player.id = playerId;
         this.players[playerId] = player;
     }
@@ -29,7 +29,17 @@ class GameEngine {
             player.moveUp();
         else if (direction === 'DOWN')
             player.moveDown();
-        this.notifier.onPlayerChangedLane(playerId, player.lane);
+        console.log(`[MOVE] ${playerId} moved to lane ${player.lane.num}`);
+        this.notifier.onPlayerChangedLane(playerId, player.lane.num, player.x, player.y);
+        this.notifyAllLanes();
+    }
+    notifyAllLanes() {
+        for (const lane of variables_1.LANES) {
+            const players = lane.getPlayers();
+            for (const player of players) {
+                this.notifier.onPlayerChangedPosition(player.id, player.x, player.y);
+            }
+        }
     }
     handleShoot(playerId) {
         const player = this.players[playerId];
