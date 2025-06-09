@@ -6,8 +6,6 @@ export class Player {
     public id: UserID;
     public x: number;
     public y: number;
-    public width: number = 5;
-    public height: number = 5;
     public lane: Lane;
     public hasChangedLane: boolean = false;
     public score: number = 0;

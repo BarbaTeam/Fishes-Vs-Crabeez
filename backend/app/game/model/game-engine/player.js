@@ -4,8 +4,6 @@ exports.Player = void 0;
 const variables_1 = require("./variables");
 class Player {
     constructor(id, color, lane) {
-        this.width = 5;
-        this.height = 5;
         this.hasChangedLane = false;
         this.score = 0;
         this.isParalysed = false;

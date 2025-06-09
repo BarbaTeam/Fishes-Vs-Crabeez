@@ -32,10 +32,7 @@ export class Enemy {
             this.virtualHeight,
             this.canvas,
             this.enemyImage,
-        );
-
-        console.log(`[DRAW] Drawing enemy ${this._id} at (${this.x}, ${this.y})`);
-        
+        );        
         ctx.drawImage(this.enemyImage, x, y, width, height); 
     }
 

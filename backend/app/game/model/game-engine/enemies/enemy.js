@@ -36,13 +36,13 @@ class Enemy {
         }
         switch (this.lane.num) {
             case 1:
-                return 49;
+                return variables_1.bandHeight * 3.5;
             case 2:
-                return 33;
+                return variables_1.bandHeight * 2.5;
             case 3:
-                return 17;
+                return variables_1.bandHeight * 1.5;
             default:
-                return 17;
+                return variables_1.bandHeight * 1.5;
         }
     }
     destroy() {

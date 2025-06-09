@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Projectile = void 0;
+const variables_1 = require("./variables");
 class Projectile {
     constructor(player) {
         this.id = `projectile-${Date.now()}`;
         this.player = player;
-        this.x = player.x + player.width / 2;
-        this.y = player.y + player.height / 2;
+        this.x = player.x;
+        this.y = player.y;
         this.width = 2.5;
         this.height = 2.5;
         this.speed = 10;
@@ -16,7 +17,7 @@ class Projectile {
         this.markedForDeletion = true;
     }
     update() {
-        if (this.x > 100)
+        if (this.x > variables_1.VIRTUAL_WIDTH)
             this.destroy();
         this.x += this.speed;
     }

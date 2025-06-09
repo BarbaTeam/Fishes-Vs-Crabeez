@@ -16,8 +16,8 @@ export class Player {
     private constructor(private canvas: HTMLCanvasElement, id: UserID) {
         this._id = id;
 
-        this.virtualWidth = 7;
-        this.virtualHeight = 7;
+        this.virtualWidth = 5;
+        this.virtualHeight = 5;
 
         this.decryptedImage = new Image();
         this.encryptedImage = new Image();

@@ -1,6 +1,6 @@
 import { randint } from "../../../../shared/utils/random";
 import { Lane, LaneNumber } from "../lane";
-import { LANES } from "../variables";
+import { bandHeight, LANES } from "../variables";
 
 
 export type EnemyID = `ennemy-${number}`;
@@ -68,13 +68,13 @@ export class Enemy {
 
         switch (this.lane.num) {
             case 1:
-                return 49;
+                return bandHeight * 3.5;
             case 2:
-                return 33;
+                return bandHeight * 2.5;
             case 3:
-                return 17;
+                return bandHeight * 1.5;
             default:
-                return 17;
+                return bandHeight * 1.5;
         }
     }
 
