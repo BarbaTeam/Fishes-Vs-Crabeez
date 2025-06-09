@@ -58,6 +58,11 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('playerDeparalysed', playerId);
     }
 
+    public onScoreUpdated(newScore: number) {
+        console.log(`[NOTIFIER] : new score for all players : ${newScore}`);
+        this.broadcast.emit('scoreUpdated', newScore);
+    }
+
     public onNewQuestionForPlayer(playerId: UserID, question: Question) {
         console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
         this.io.to(playerId).emit('newQuestion', question);
@@ -65,6 +70,6 @@ export class GameUpdatesNotifier {
 
     public onPlayerScoreUpdated(playerId: UserID, newScore: number) {
         console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
-        this.io.to(playerId).emit('scoreUpdated', newScore);
+        this.io.to(playerId).emit('playerScoreUpdated', newScore);
     }
 }

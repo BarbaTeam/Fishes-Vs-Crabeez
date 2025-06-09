@@ -18,7 +18,9 @@ export class GameEngine {
     private players: Map<UserID, Player>;
     private projectiles: Projectile[];
     private enemies: Enemy[];
-    private score: number;
+    private personalScore: number;
+    public $generalScore = new Subject<number>();
+    private generalScore: number;
     private gameLoopId: number | null = null;
     private subscriptions = new Subscription();
     private receivedStartup = false;
@@ -46,7 +48,8 @@ export class GameEngine {
 
         this.enemies = [];
         this.projectiles = [];
-        this.score = 0;
+        this.personalScore = 0;
+        this.generalScore = 0;
         this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
 
         this._startup();
@@ -119,8 +122,14 @@ export class GameEngine {
             })
         );
         this.subscriptions.add(
+            this.socket.on<number>('playerScoreUpdated').subscribe(score=>{
+                this.personalScore = score;
+            })
+        );
+        this.subscriptions.add(
             this.socket.on<number>('scoreUpdated').subscribe(score=>{
-                this.score = score;
+                this.generalScore = score;
+                this.$generalScore.next(this.generalScore);
             })
         );
         this.subscriptions.add(

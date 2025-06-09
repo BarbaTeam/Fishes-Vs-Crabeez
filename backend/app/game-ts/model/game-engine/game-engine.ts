@@ -17,7 +17,7 @@ export class GameEngine {
     public players: Record<UserID, Player> = {};
     public projectiles: Projectile[] = [];
     public enemies: Enemy[] = [];
-
+    private score = 0;
     private currWaveEventId?: EventID;
 
     constructor(
@@ -119,10 +119,10 @@ export class GameEngine {
                     this.kill(enemy);
                     projectile.destroy();
                     const player = projectile.player;
-                    player.score += enemy.score;
+                    this.score += enemy.score;
 
                     this.notifier.onEnemyKilled(projectile, enemy);
-                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
+                    this.notifier.onScoreUpdated(this.score);
                     return; 
                 }
             }
