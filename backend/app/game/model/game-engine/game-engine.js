@@ -16,9 +16,8 @@ class GameEngine {
             this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
     }
-    registerPlayer(playerId, color, num_lane) {
-        const player = new player_1.Player(playerId, color, variables_1.LANES[num_lane]);
-        player.id = playerId;
+    registerPlayer(playerId, color, laneIndex) {
+        const player = new player_1.Player(playerId, color, variables_1.LANES[laneIndex]);
         this.players[playerId] = player;
     }
     handleMove(playerId, direction) {
@@ -29,14 +28,12 @@ class GameEngine {
             player.moveUp();
         else if (direction === 'DOWN')
             player.moveDown();
-        console.log(`[MOVE] ${playerId} moved to lane ${player.lane.num}`);
         this.notifier.onPlayerChangedLane(playerId, player.lane.num, player.x, player.y);
         this.notifyAllLanes();
     }
     notifyAllLanes() {
         for (const lane of variables_1.LANES) {
-            const players = lane.getPlayers();
-            for (const player of players) {
+            for (const player of lane.getPlayers()) {
                 this.notifier.onPlayerChangedPosition(player.id, player.x, player.y);
             }
         }
@@ -54,64 +51,79 @@ class GameEngine {
         this.notifier.onEnemyAdded(enemy);
     }
     paralysePlayer(playerId) {
-        this.players[playerId].isParalysed = true;
+        const player = this.players[playerId];
+        if (!player)
+            return;
+        player.isParalysed = true;
         this.notifier.onPlayerParalysed(playerId);
     }
     deparalysePlayer(playerId) {
-        this.players[playerId].isParalysed = false;
+        const player = this.players[playerId];
+        if (!player)
+            return;
+        player.isParalysed = false;
         this.notifier.onPlayerDeparalysed(playerId);
     }
-    _checkCollision(obj1, obj2) {
-        if (!obj1 || !obj2)
-            return false;
-        if (typeof obj1.x !== 'number' || typeof obj1.y !== 'number')
-            return false;
-        if (typeof obj2.x !== 'number' || typeof obj2.y !== 'number')
-            return false;
-        const dx = obj1.x - obj2.x;
-        const dy = obj1.y - obj2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        return distance < (obj1.width / 2 + obj2.width / 2);
+    checkCollision(obj1, obj2) {
+        return !(obj1.x + obj1.width / 2 < obj2.x - obj2.width / 2 ||
+            obj1.x - obj1.width / 2 > obj2.x + obj2.width / 2 ||
+            obj1.y + obj1.height / 2 < obj2.y - obj2.height / 2 ||
+            obj1.y - obj1.height / 2 > obj2.y + obj2.height / 2);
+    }
+    processEnemy(enemy) {
+        enemy.update();
+        if (enemy.x < 10) {
+            this.kill(enemy);
+            this.notifier.onEnemyDespawned(enemy.id);
+        }
+    }
+    processProjectile(projectile) {
+        projectile.update();
+        if (projectile.x > variables_1.VIRTUAL_WIDTH) {
+            projectile.destroy();
+        }
+    }
+    detectCollisions() {
+        for (const projectile of this.projectiles) {
+            if (projectile.markedForDeletion)
+                continue;
+            for (const enemy of this.enemies) {
+                if (!enemy.alive)
+                    continue;
+                if (this.checkCollision(enemy, projectile)) {
+                    this.kill(enemy);
+                    projectile.destroy();
+                    const player = projectile.player;
+                    player.score += enemy.score;
+                    this.notifier.onEnemyKilled(projectile, enemy);
+                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
+                    return;
+                }
+            }
+        }
     }
     kill(enemy) {
         enemy.destroy();
-        const ennemyIdx = this.enemies.indexOf(enemy);
-        if (ennemyIdx === -1)
-            return; // Shouldn't happen
-        this.enemies.splice(ennemyIdx, 1);
     }
     getAllPlayers() {
         return Object.values(this.players).map(player => player.toJSON());
     }
     update() {
-        if (this.enemies.length === 0
-            && (this.currWaveEventId === undefined
-                || !this.model.eventsHandler.aliveEvents[this.currWaveEventId])) {
-            // TODO : Using dynamic difficulty
-            console.log("Spawning new wave event");
-            const PLACEHOLDER_DIFFICULTY = 10;
-            this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
-        }
-        this.enemies.forEach(enemy => {
-            enemy.update();
-            if (enemy.x < 10) {
-                this.kill(enemy);
-                this.notifier.onEnemyDespawned(enemy.id);
-            }
-            this.projectiles.forEach(projectile => {
-                projectile.update();
-                if (!projectile.markedForDeletion && this._checkCollision(enemy, projectile)) {
-                    const player = projectile.player;
-                    this.kill(enemy);
-                    projectile.destroy();
-                    player.score += enemy.score;
-                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
-                    this.notifier.onEnemyKilled(projectile, enemy);
-                }
-            });
-        });
+        this.spawnNextWaveIfNeeded();
+        this.enemies.forEach(enemy => this.processEnemy(enemy));
+        this.projectiles.forEach(projectile => this.processProjectile(projectile));
+        this.detectCollisions();
         this.projectiles = this.projectiles.filter(p => !p.markedForDeletion);
         this.enemies = this.enemies.filter(e => e.alive);
+    }
+    spawnNextWaveIfNeeded() {
+        const noMoreEnemies = this.enemies.length === 0;
+        const currentEventEnded = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
+        if (noMoreEnemies && currentEventEnded) {
+            const PLACEHOLDER_DIFFICULTY = 10;
+            this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
+            console.log("Spawning new wave event");
+        }
     }
 }
 exports.GameEngine = GameEngine;

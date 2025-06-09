@@ -33,7 +33,7 @@ export class Projectile {
     }
 
     public update(): void {
-        this.virtualX += 2;
+        this.virtualX += 5;
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {

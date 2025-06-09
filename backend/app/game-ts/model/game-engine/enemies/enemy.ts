@@ -1,3 +1,4 @@
+import { VIRTUAL_WIDTH } from "../../../../game/model/game-engine/variables";
 import { randint } from "../../../../shared/utils/random";
 import { Lane, LaneNumber } from "../lane";
 import { bandHeight, LANES } from "../variables";
@@ -8,6 +9,7 @@ export type EnemyID = `ennemy-${number}`;
 
 
 export class Enemy {
+    public static nextId = 0;
     public readonly id: EnemyID;
     public readonly lane: Lane;
     public x: number;
@@ -29,7 +31,7 @@ export class Enemy {
         x? : number,
         y? : number,
     ) {
-        this.id = `ennemy-${Date.now()}`;
+        this.id = `ennemy-${Enemy.nextId++}`;
 
         this.lane = LANES[
             laneNum !== undefined
@@ -56,7 +58,7 @@ export class Enemy {
             return providedX;
         }
 
-        return 100 + this.width;
+        return VIRTUAL_WIDTH + this.width;
     }
 
     private _computeInitialYPosition(
