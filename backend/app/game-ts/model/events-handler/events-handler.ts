@@ -1,6 +1,6 @@
 import { GameModel } from '..';
 
-import { QuestionNotion, UserID } from '../../../shared/types';
+import { UserID } from '../../../shared/types';
 
 import { Enemy } from '../game-engine/enemies/enemy';
 
@@ -32,6 +32,18 @@ export class EventsHandler implements IEventsHandler {
             };
             return acc;
         }, {} as Record<EventID, {kind: EventKind, affectedPlayerId: UserID}>);
+    }
+
+
+    public getEventsAffectingPlayer(playerId: UserID)
+        : Record<EventID, {kind: EventKind}>
+    {
+        return Object.entries(this.aliveEvents)
+            .filter(([id, ev]) => ev?.affectedPlayerId === playerId)
+            .reduce((acc, [id, ev]) => {
+                acc[id] = { kind: ev.kind };
+                return acc;
+            }, {} as Record<EventID, {kind: EventKind}>);
     }
 
 
@@ -83,8 +95,6 @@ export class EventsHandler implements IEventsHandler {
                     this.model.gameEngine.paralysePlayer(affectedPlayerId);
                 } else {
                     this.model.gameEngine.deparalysePlayer(affectedPlayerId);
-                    const notionMask = {...this.model.gameLobby.playersNotionsMask[affectedPlayerId], [QuestionNotion.ENCRYPTION]: false};
-                    this.model.quizHandler.sendQuestion(affectedPlayerId, notionMask);
                 }
                 break;
 
@@ -105,6 +115,7 @@ export class EventsHandler implements IEventsHandler {
                 event.onEventDeath()
                 continue;
             }
+            stillAliveEvents[event.id] = event;
             event.onEventUpdate();
         }
         this._aliveEvents = stillAliveEvents;

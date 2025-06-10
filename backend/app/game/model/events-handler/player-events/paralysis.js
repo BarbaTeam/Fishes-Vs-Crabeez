@@ -18,6 +18,7 @@ class ParalysisEvent extends player_event_1.PlayerEvent {
     }
     onEventKill() {
         super.onEventKill();
+        console.log("Paralysis on kill called");
         clearTimeout(this.timeOut);
         this.emit(false);
     }
