@@ -10,6 +10,7 @@ import { Projectile } from "./Projectile";
 import { Enemy } from "./ennemies/Enemy";
 import { Crab } from "./ennemies/Crab";
 import { scaleToCanvas } from "./utils";
+import { NumberFormatStyle } from "@angular/common";
 
 
 
@@ -19,19 +20,25 @@ export class GameEngine {
     private projectiles: Projectile[];
     private enemies: Enemy[];
     private personalScore: number;
-    public $generalScore = new Subject<number>();
+    public generalScore$ = new Subject<number>();
     private generalScore: number;
+    public health$ = new Subject<number>();
+    private health : number;
+    public waveCounter$ = new Subject<number>();
+    private waveCounter : number;
+    public hasEnded$ = new Subject<boolean>();
+    private hasEnded : boolean;
     private gameLoopId: number | null = null;
     private subscriptions = new Subscription();
     private receivedStartup = false;
 
-    public $localPlayerImageSrc = new Subject<string>();
+    public localPlayerImageSrc$ = new Subject<string>();
     public localPlayerImageSrc: string = '';
-    public $localPlayerPlayerParalysed = new Subject<boolean>();
+    public localPlayerPlayerParalysed$ = new Subject<boolean>();
     public localPlayerPlayerParalysed = false;
-    public $player1ImageSrc = new Subject<string>();
+    public player1ImageSrc$ = new Subject<string>();
     public player1ImageSrc?: string;
-    public $player2ImageSrc = new Subject<string>();
+    public player2ImageSrc$ = new Subject<string>();
     public player2ImageSrc?: string;
 
     constructor(
@@ -50,6 +57,9 @@ export class GameEngine {
         this.projectiles = [];
         this.personalScore = 0;
         this.generalScore = 0;
+        this.health = 10;
+        this.waveCounter = 0;
+        this.hasEnded = false;
         this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
 
         this._startup();
@@ -76,17 +86,17 @@ export class GameEngine {
                     this.players.set(player.id, newPlayer);
                     if (player.id === this.localPlayerId) {
                         this.localPlayerImageSrc = newPlayer.playerIconUrl;
-                        this.$localPlayerImageSrc.next(this.localPlayerImageSrc);
+                        this.localPlayerImageSrc$.next(this.localPlayerImageSrc);
                         console.log("[STARTUP] Local player image source set to: ", this.localPlayerImageSrc);
                     }
                     else if (!this.player1ImageSrc) {
                         this.player1ImageSrc = newPlayer.playerIconUrl;
-                        this.$player1ImageSrc.next(this.player1ImageSrc);
+                        this.player1ImageSrc$.next(this.player1ImageSrc);
                         console.log("[STARTUP] Player 1 image source set to: ", this.player1ImageSrc);
                     }
                     else if (!this.player2ImageSrc) {
                         this.player2ImageSrc = newPlayer.playerIconUrl;
-                        this.$player2ImageSrc.next(this.player2ImageSrc);
+                        this.player2ImageSrc$.next(this.player2ImageSrc);
                         console.log("[STARTUP] Player 2 image source set to: ", this.player2ImageSrc);
                     }
                 }
@@ -129,7 +139,25 @@ export class GameEngine {
         this.subscriptions.add(
             this.socket.on<number>('scoreUpdated').subscribe(score=>{
                 this.generalScore = score;
-                this.$generalScore.next(this.generalScore);
+                this.generalScore$.next(this.generalScore);
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<number>('healthUpdated').subscribe(health=>{
+                this.health = health;
+                this.health$.next(this.health);
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<number>('newWave').subscribe(waveCounter=>{
+                this.waveCounter = waveCounter;
+                this.waveCounter$.next(this.waveCounter);
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<boolean>('gameEnded').subscribe(() => {
+                this.hasEnded = true;
+                this.hasEnded$.next(this.hasEnded);
             })
         );
         this.subscriptions.add(
@@ -163,7 +191,7 @@ export class GameEngine {
             this.socket.on<UserID>('playerParalysed').subscribe(playerId => {
                 const player = this.players.get(playerId)!;
                 player.paralysed = true;
-                this.$localPlayerPlayerParalysed.next(player.paralysed);
+                this.localPlayerPlayerParalysed$.next(player.paralysed);
                 
             })
         );
@@ -171,7 +199,7 @@ export class GameEngine {
             this.socket.on<UserID>('playerDeparalysed').subscribe(playerId => {
                 const player = this.players.get(playerId)!;
                 player.paralysed = false;
-                this.$localPlayerPlayerParalysed.next(player.paralysed);
+                this.localPlayerPlayerParalysed$.next(player.paralysed);
             })
         );
     }

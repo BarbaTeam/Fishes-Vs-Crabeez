@@ -22,6 +22,7 @@ export class Enemy {
         public type : string,
         public health: number,
         public speed : number,
+        public damage: number,
         public readonly score: number,
 
         public readonly width : number,
@@ -49,6 +50,7 @@ export class Enemy {
         
         this.alive = true;
         this.score = score;
+        this.damage = damage;
     }
 
     private _computeInitialXPosition(

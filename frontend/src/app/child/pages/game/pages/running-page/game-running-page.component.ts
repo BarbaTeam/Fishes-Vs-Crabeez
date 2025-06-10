@@ -58,6 +58,9 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     public personalScore: number;
     public generalScore: number;
+    public health: number;
+    public waveCounter: number;
+    public hasEnded: boolean;
 
     private readonly normalAudio = new Audio('../../../../assets/sons/in-game-music.mp3');
     private readonly paralyzedAudio = new Audio('../../../../assets/sons/encrypted.mp3');
@@ -75,6 +78,9 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.cursorPosition = 0;
         this.personalScore = 0;
         this.generalScore = 0;
+        this.health = 10;
+        this.waveCounter = 0;
+        this.hasEnded = false;
     }
 
     ngOnInit(): void {
@@ -111,28 +117,44 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         const canvas = this.canvasRef.nativeElement;
         this.gameEngine = new GameEngine(canvas, this.socket, this.user.userId);
         this.subscriptions.add(
-            this.gameEngine.$localPlayerImageSrc.subscribe(url => {
+            this.gameEngine.localPlayerImageSrc$.subscribe(url => {
                 this.localPlayerIconUrl = url;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.$player1ImageSrc.subscribe(url => {
+            this.gameEngine.player1ImageSrc$.subscribe(url => {
                 this.player1IconUrl = url;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.$player2ImageSrc.subscribe(url => {
+            this.gameEngine.player2ImageSrc$.subscribe(url => {
                 this.player2IconUrl = url;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.$localPlayerPlayerParalysed.subscribe(bool => {
+            this.gameEngine.localPlayerPlayerParalysed$.subscribe(bool => {
                 this.isEncrypted = bool;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.$generalScore.subscribe(score => {
+            this.gameEngine.generalScore$.subscribe(score => {
                 this.generalScore = score;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.health$.subscribe(health => {
+                this.health = health;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.waveCounter$.subscribe(waveCounter => {
+                this.waveCounter = waveCounter;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.hasEnded$.subscribe(hasEnded => {
+                this.hasEnded = hasEnded;
+                console.log("hasEnded received:", hasEnded, typeof hasEnded);            
             })
         );
     }
@@ -143,6 +165,9 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.encryptAudio?.pause();
     }
 
+    public quit() {
+        this.router.navigate(['/child/games-list']);
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Getters :

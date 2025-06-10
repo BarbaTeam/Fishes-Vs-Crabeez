@@ -13,6 +13,8 @@ class GameEngine {
         this.projectiles = [];
         this.enemies = [];
         this.score = 0;
+        this.health = 10;
+        this.waveCounter = 0;
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
@@ -73,9 +75,14 @@ class GameEngine {
     }
     processEnemy(enemy) {
         enemy.update();
-        if (enemy.x < 10) {
+        if (enemy.x < 11) {
             this.kill(enemy);
+            if (this.health == 1) {
+                this.model.hasEnded = true;
+            }
+            this.health--;
             this.notifier.onEnemyDespawned(enemy.id);
+            this.notifier.onHealthUpdated(this.health);
         }
     }
     processProjectile(projectile) {
@@ -123,8 +130,10 @@ class GameEngine {
         if (noMoreEnemies && currentEventEnded) {
             const PLACEHOLDER_DIFFICULTY = 10;
             this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
-            console.log("Spawning new wave event");
+            this.waveCounter++;
+            this.notifier.onNewWave(this.waveCounter);
         }
     }
 }
 exports.GameEngine = GameEngine;
+

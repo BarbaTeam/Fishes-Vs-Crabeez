@@ -18,6 +18,8 @@ export class GameEngine {
     public projectiles: Projectile[] = [];
     public enemies: Enemy[] = [];
     private score = 0;
+    private health = 10;
+    private waveCounter = 0;
     private currWaveEventId?: EventID;
 
     constructor(
@@ -95,9 +97,14 @@ export class GameEngine {
 
     private processEnemy(enemy: Enemy): void {
         enemy.update();
-        if (enemy.x < 10) {
+        if (enemy.x < 11) {
             this.kill(enemy);
+            if(this.health == 1){
+                this.model.hasEnded = true;
+            }
+            this.health--;
             this.notifier.onEnemyDespawned(enemy.id);
+            this.notifier.onHealthUpdated(this.health);
         }
     }
 
@@ -155,8 +162,10 @@ export class GameEngine {
 
         if (noMoreEnemies && currentEventEnded) {
             const PLACEHOLDER_DIFFICULTY = 10;
+
             this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
-            console.log("Spawning new wave event");
+            this.waveCounter++;
+            this.notifier.onNewWave(this.waveCounter);
         }
     }
 }

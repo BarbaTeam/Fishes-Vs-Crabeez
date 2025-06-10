@@ -6,11 +6,14 @@ import { GameLogAccumulator } from './game-log-accumulator';
 import { GameEngine } from "./game-engine";
 import { QuizHandler } from './quiz-handler';
 import { EventsHandler } from './events-handler';
+import { GameRuntime } from '../../game/runtime';
 
 
 
 export class GameModel {
     private _accumulator: GameLogAccumulator;
+
+    public hasEnded = false;
 
     public readonly gameEngine: GameEngine;
     public readonly quizHandler: QuizHandler;
@@ -43,9 +46,5 @@ export class GameModel {
     public runOneFrame(): void {
         this.gameEngine.update();
         this.eventsHandler.updateEvents();
-    }
-
-    public onGameEnd(): void {
-        // TODO : ...
     }
 }
