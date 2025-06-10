@@ -5,37 +5,49 @@ const game_event_1 = require("./game-event");
 const event_types_1 = require("../event-types");
 const crab_1 = require("../../game-engine/enemies/crab");
 const random_1 = require("../../../../shared/utils/random");
-const math_1 = require("../../../../shared/utils/math");
+const variables_1 = require("../../../../game/model/game-engine/variables");
 class WaveEvent extends game_event_1.GameEvent {
     constructor(handler, difficulty) {
         super(handler, event_types_1.EventKind.WAVE);
-        this._ennemies = [];
         this._waveDifficulty = difficulty;
     }
     onEventBirth() {
+        var _a;
         super.onEventBirth();
-        // TODO : Populating `_ennemies` w/ other ennemies than simple `Crab`
-        const amountOfEnemies = (0, random_1.biasedRandint)(this._waveDifficulty, 4.5, // difficulty goes from 1 to 10 thus the midpoint is `4.5`
-        WaveEvent.MIN_AMOUNT_OF_ENNEMY, WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1);
-        for (let i = 0; i < amountOfEnemies; i++) {
-            this._ennemies.push(new crab_1.Crab((0, random_1.randint)(1, 4)));
+        const enemies = [];
+        const amount = (0, random_1.biasedRandint)(this._waveDifficulty, 4.5, WaveEvent.MIN_AMOUNT_OF_ENNEMY, WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1);
+        for (let i = 0; i < amount; i++) {
+            const lane = (0, random_1.randint)(1, WaveEvent.LANES_COUNT + 1);
+            const crab = new crab_1.Crab(lane);
+            enemies.push(crab);
         }
-    }
-    onEventUpdate() {
-        super.onEventUpdate();
-        if (this._ennemies.length === 0) {
-            this.die();
-            return;
+        const byLane = {};
+        for (const e of enemies) {
+            const lane = e.lane;
+            if (!byLane[lane.num - 1])
+                byLane[lane.num - 1] = [];
+            byLane[lane.num - 1].push(e);
         }
-        const amountOfEnemiesToSpawn = (0, random_1.biasedRandint)((0, math_1.halfHarmonic)(this._ennemies.length, this._waveDifficulty), 2.75, // here, halfHarmonic goes from 1 to 6 thus the midpoint is `2.75`
-        WaveEvent.MIN_AMOUNT_OF_ENNEMY_TO_SPAWN, Math.min(this._ennemies.length, WaveEvent.MAX_AMOUNT_OF_ENNEMY_TO_SPAWN) + 1);
-        for (let i = 0; i < amountOfEnemiesToSpawn; i++) {
-            this.emit(this._ennemies.pop());
+        for (let lane = 1; lane <= WaveEvent.LANES_COUNT; lane++) {
+            const laneEnemies = (_a = byLane[lane]) !== null && _a !== void 0 ? _a : [];
+            let nextX = variables_1.VIRTUAL_WIDTH + 10;
+            const laneY0 = variables_1.LANES[lane - 1].y;
+            for (const enemy of laneEnemies) {
+                const xSpacing = (0, random_1.randint)(enemy.width, enemy.width * 4);
+                enemy.x = nextX;
+                const laneHalfHeight = WaveEvent.LANE_HEIGHT / 2;
+                const enemyHalfHeight = enemy.height / 2;
+                const minY = laneY0 - laneHalfHeight + enemyHalfHeight;
+                const maxY = laneY0 + laneHalfHeight - enemyHalfHeight;
+                enemy.y = Math.random() * (maxY - minY) + minY;
+                nextX += xSpacing;
+            }
         }
+        this.emit(enemies);
     }
 }
 exports.WaveEvent = WaveEvent;
 WaveEvent.MIN_AMOUNT_OF_ENNEMY = 1;
 WaveEvent.MAX_AMOUNT_OF_ENNEMY = 15;
-WaveEvent.MIN_AMOUNT_OF_ENNEMY_TO_SPAWN = 1;
-WaveEvent.MAX_AMOUNT_OF_ENNEMY_TO_SPAWN = 5;
+WaveEvent.LANE_HEIGHT = 11.75;
+WaveEvent.LANES_COUNT = 3;

@@ -67,8 +67,9 @@ export class EventsHandler implements IEventsHandler {
     onEventEmission(fromKind: EventKind, emittedVal: any): void {
         switch (fromKind) {
             case EventKind.WAVE :
-                const enemy: Enemy = emittedVal;
-                this.model.gameEngine.spawnEnemy(enemy);
+                for (const enemy of emittedVal as Enemy[]) {
+                    this.model.gameEngine.spawnEnemy(enemy);
+                }
                 break;
 
             case EventKind.BOSS :
