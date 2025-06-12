@@ -1,5 +1,5 @@
 import { UserID } from "@app/shared/models/ids";
-import { scaleToCanvas } from "./scale-utils"; 
+import { scaleToCanvas } from "./utils"; 
 
 export class Player {
     private _id: UserID;
@@ -10,7 +10,8 @@ export class Player {
     private decryptedImage: HTMLImageElement;
     public playerIconUrl!: string;
     private encryptedImage: HTMLImageElement;
-
+    public paralysed: boolean = false;
+    public color!: string;
 
     private constructor(private canvas: HTMLCanvasElement, id: UserID) {
         this._id = id;
@@ -26,13 +27,14 @@ export class Player {
         const player = new Player(canvas, data.id);
         player.x = data.x;
         player.y = data.y;
+        player.color = data.color;
         if(data.id === localPlayerId) {
-            player.decryptedImage.src = `../../../../assets/images/game/player/${data.color}_fish_active.png`;
+            player.decryptedImage.src = `../../../../assets/images/game/player/${ player.color}_fish_active.png`;
         } else {
-            player.decryptedImage.src = `../../../../assets/images/game/player/${data.color}_fish.png`;
+            player.decryptedImage.src = `../../../../assets/images/game/player/${ player.color}_fish.png`;
         }
-        player.playerIconUrl = `../../../../assets/images/game/player/${data.color}_fish.png`;
-        player.encryptedImage.src =  `../../../../assets/images/game/player/${data.color}_fish_encrypted.png`;
+        player.playerIconUrl = `../../../../assets/images/game/player/${ player.color}_fish.png`;
+        player.encryptedImage.src =  `../../../../assets/images/game/player/${ player.color}_fish_encrypted.png`;
         return player;
     }
 
@@ -47,20 +49,21 @@ export class Player {
     public draw(ctx: CanvasRenderingContext2D): void {
         const now = performance.now();
         const oscillation = Math.sin(now / 300 + this.x) * 3; // pour que chaque poisson ai une oscillation différente
-
+        const playerImage = this.paralysed ? this.encryptedImage : this.decryptedImage;
+        
         const { x, y, width, height } = scaleToCanvas(
             this.x,
             this.y,
             this.virtualWidth,
             this.virtualHeight,
             this.canvas,
-            this.decryptedImage
+            playerImage,
         );
 
         ctx.save(); 
         ctx.translate(0, oscillation);
 
-        ctx.drawImage(this.decryptedImage, x, y, width, height);
+        ctx.drawImage(playerImage, x, y, width, height);
 
         ctx.restore(); 
     }

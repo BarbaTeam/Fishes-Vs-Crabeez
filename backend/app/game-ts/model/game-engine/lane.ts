@@ -1,11 +1,15 @@
+import { Enemy } from "./enemies/enemy";
 import { Player } from "./player";
 
-export class Lane  {
 
+export type LaneNumber = 1|2|3;
+
+
+export class Lane  {
     private players: Player[] = [];
-     
+
     constructor(
-        public num: number,
+        public num: LaneNumber,
         public x: number,
         public y: number
     ) {
@@ -51,7 +55,7 @@ export class Lane  {
                 for (let i = 0; i < 3; i++) {
                     const a = angle * i - Math.PI / 3; // -30°, 90°, 210° => base orientée à droite
                     this.players[i].x = this.x + (r + 2)* Math.cos(a); //un rayon plus grand
-                    this.players[i].y = this.y + (r + 2)* Math.sin(a); 
+                    this.players[i].y = this.y + (r + 2)* Math.sin(a);
                 }
                 break;
 

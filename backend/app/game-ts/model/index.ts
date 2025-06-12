@@ -2,23 +2,34 @@ import { GameLobby } from '../../shared/types';
 
 import { GameUpdatesNotifier } from '../runtime/game-updates-notifier';
 
+import { GameLogAccumulator } from './game-log-accumulator';
 import { GameEngine } from "./game-engine";
 import { QuizHandler } from './quiz-handler';
+import { EventsHandler } from './events-handler';
+
 
 
 export class GameModel {
+    private _accumulator: GameLogAccumulator;
+
     public readonly gameEngine: GameEngine;
     public readonly quizHandler: QuizHandler;
+    public readonly eventsHandler: EventsHandler;
 
     constructor (
         private notifier: GameUpdatesNotifier,
-        private gameLobby: GameLobby
+        public gameLobby: GameLobby
     ) {
+        this._accumulator = new GameLogAccumulator(gameLobby.playersId);
+
         this.gameEngine = new GameEngine(this, notifier, gameLobby.playersId);
-        this.quizHandler = new QuizHandler(this, notifier, gameLobby.playersNotionsMask);
+
+        this.quizHandler = new QuizHandler(this, notifier, gameLobby.playersNotionsMask, this._accumulator);
+
+        this.eventsHandler = new EventsHandler(this);
     }
 
-    public startup() {
+    public startup(): void {
         // TODO : Add more things in startup package :
         const startUpPackage: any = {
             players: this.gameEngine.getAllPlayers(),
@@ -29,7 +40,12 @@ export class GameModel {
         this.notifier.onStartup(startUpPackage)
     }
 
-    public runOneFrame() {
+    public runOneFrame(): void {
         this.gameEngine.update();
+        this.eventsHandler.updateEvents();
+    }
+
+    public onGameEnd(): void {
+        // TODO : ...
     }
 }

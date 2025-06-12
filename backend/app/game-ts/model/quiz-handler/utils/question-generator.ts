@@ -1,5 +1,5 @@
 import { Question, QuestionNotion } from '../../../../shared/types';
-
+import { randint } from '../../../../shared/utils/random';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -123,15 +123,6 @@ function num2words_fr(n:number): string {
 }
 
 
-/**
- * @param min The minimum included boundary.
- * @param max The maximum excluded boundary.
- * @reurn A random integer btwn 'min' and 'max'.
- */
-function randint(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Question Generator :
@@ -164,11 +155,10 @@ export class QuestionsGenerator {
         }
     }
 
-    private static _chooseOperands(operandsAmount: number = 2, minBound: number = 0, maxBound: number = 10): number[] {
+    private static _chooseOperands(minBound: number = 0, maxBound: number = 10): number[] {
         const operands: number[] = [];
-        for (let i = 0; i < operandsAmount; i++) {
-            operands.push(randint(minBound, maxBound));
-        }
+        operands.push(randint(minBound, maxBound));
+        operands.push(randint(Math.max(1, minBound), maxBound));
         return operands;
     }
 
@@ -211,8 +201,17 @@ export class QuestionsGenerator {
             [QuestionNotion.ENCRYPTION]    : false,
         }
     ): Question {
-        const notion = this._chooseNotion(notionMask);
+        let notion = this._chooseNotion(notionMask);
 
+        // TODO : Supporting equation one day
+        while (notion === QuestionNotion.EQUATION) {
+            notion = this._chooseNotion(notionMask);
+        }
+
+        return this.genQuestionOfNotion(notion);
+    }
+
+    public static genQuestionOfNotion(notion: QuestionNotion): Question {
         switch (notion) {
             case QuestionNotion.REWRITING:
                 const nb = randint(0, 50);
@@ -231,8 +230,8 @@ export class QuestionsGenerator {
                 };
 
             case QuestionNotion.EQUATION :
-                // TODO : One day
-                return this.genQuestion(notionMask);
+                // TODO : Supporting equation one day
+                throw new Error("Equation generation ain't currently supported");
 
             default:
                 const operator = this._convertNotionToOperator(notion);

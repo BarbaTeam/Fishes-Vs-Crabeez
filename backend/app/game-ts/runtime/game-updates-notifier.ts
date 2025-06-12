@@ -1,4 +1,4 @@
-import { Server, BroadcastOperator, Namespace } from 'socket.io';
+import { Server, BroadcastOperator } from 'socket.io';
 
 import { Question, UserID } from '../../shared/types';
 
@@ -9,20 +9,9 @@ import { Enemy } from '../model/game-engine/enemies/enemy';
 
 export class GameUpdatesNotifier {
     constructor(
-        //private io: Server|Namespace|BroadcastOperator<any, any>,
         private io: Server,
         private broadcast: BroadcastOperator<any, any>,
     ) {}
-    
-    public onNewQuestionForPlayer(playerId: UserID, question: Question) {
-        console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
-        this.io.to(playerId).emit('newQuestion', question);
-    }
-
-    public onPlayerScoreUpdated(playerId: UserID, newScore: number) {
-        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
-        this.io.to(playerId).emit('scoreUpdated', newScore);
-    }
 
     public onStartup(startupPackage: any) {
         console.log(`[NOTIFIER] : Sending startup package ${startupPackage}\n\n`);
@@ -54,13 +43,28 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('enemyKilled', {projectile: projectile.toJSON(), enemy: enemy.toJSON()});
     }
 
-    public onPlayerParalyzed(playerId: UserID) {
-        console.log(`[NOTIFIER] : Player ${playerId} is paralyzed !\n\n`);
-        this.broadcast.emit('playerParalyzed', playerId);
+    public onEnemyDespawned(enemyId: string) {
+        console.log(`[NOTIFIER] : An enemy has been despawned`);
+        this.broadcast.emit('enemyDespawned', enemyId);
+    }
+    
+    public onPlayerParalysed(playerId: UserID) {
+        console.log(`[NOTIFIER] : Player ${playerId} is paralysed !\n\n`);
+        this.broadcast.emit('playerParalysed', playerId);
     }
 
-    public onPlayerDeparalyzed(playerId: UserID) {
+    public onPlayerDeparalysed(playerId: UserID) {
         console.log(`[NOTIFIER] : Player ${playerId} freed himself !\n\n`);
-        this.broadcast.emit('playerDeparalyzed', playerId);
+        this.broadcast.emit('playerDeparalysed', playerId);
+    }
+
+    public onNewQuestionForPlayer(playerId: UserID, question: Question) {
+        console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
+        this.io.to(playerId).emit('newQuestion', question);
+    }
+
+    public onPlayerScoreUpdated(playerId: UserID, newScore: number) {
+        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
+        this.io.to(playerId).emit('scoreUpdated', newScore);
     }
 }

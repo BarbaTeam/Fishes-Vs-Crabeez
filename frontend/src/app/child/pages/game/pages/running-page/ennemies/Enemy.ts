@@ -1,43 +1,20 @@
 import { GameEngine } from "../game-engine";
+import { scaleToCanvas } from "../utils";
 
 export class Enemy {
-    protected _id: string;
-    protected x: number;
-    protected y: number;
-    protected lane: number;
-    protected width: number;
-    protected height: number;
-    protected speed!: number;
+    public _id: string;
+    public x!: number;
+    public y!: number;
+    public virtualWidth!: number;
+    public virtualHeight!: number;
+    public enemyImage!: HTMLImageElement;
+    public speed!: number;
 
     constructor(
         private canvas: HTMLCanvasElement,
         id : string,
-        lane: number,
-        x?: number,
-        y?: number,
     ) {
         this._id = id;
-        this.lane = lane;
-        switch (this.lane) {
-            case 1:
-                this.x = x ||  this.canvas.width;
-                this.y = y ||  (this.canvas.height  + 400) - (this.canvas.height / 4) *2;
-                break;
-            case 2:
-                this.x = x || this.canvas.width;
-                this.y = y || (this.canvas.height  + 400) - (this.canvas.height / 4) * 3;
-                break;
-            case 3:
-                this.x = x ||  this.canvas.width;
-                this.y = y ||  this.canvas.height  + 400 - (this.canvas.height / 4) * 4;
-                break;
-            default:
-                this.x = 0;
-                this.y = 0;
-                break
-        }
-        this.width = 150;
-        this.height = 150;
     }
     public get id(): string {
         return this._id;
@@ -47,6 +24,21 @@ export class Enemy {
         return {x: this.x, y: this.y};
     }
     
+    public draw(ctx: CanvasRenderingContext2D): void {
+        const { x, y, width, height } = scaleToCanvas(
+            this.x,
+            this.y,
+            this.virtualWidth,
+            this.virtualHeight,
+            this.canvas,
+            this.enemyImage,
+        );
+
+        console.log(`[DRAW] Drawing enemy ${this._id} at (${this.x}, ${this.y})`);
+        
+        ctx.drawImage(this.enemyImage, x, y, width, height); 
+    }
+
     public update(): void {
         this.x -= this.speed;
     }

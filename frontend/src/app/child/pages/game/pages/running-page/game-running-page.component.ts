@@ -41,6 +41,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     public localPlayerIconUrl: string = '';
     public player1IconUrl: string = '';
     public player2IconUrl: string = '';
+    public isEncrypted: boolean = false;
 
     private keydownHandler: (event: KeyboardEvent) => void;
 
@@ -100,28 +101,6 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
                 this.updateInputs();
             })
         );
-
-        this.subscriptions.add(
-            this.socket.on<UserID>('playerParalyzed').subscribe(paralyzedPlayerId => {
-                if (paralyzedPlayerId === this.user.userId) {
-                    this.playEncryptAudio();
-                } else {
-                    // TODO : Displaying correct player as paralyzed
-                    // NOTE : Might be managed by the game engine
-                }
-            })
-        );
-
-        this.subscriptions.add(
-            this.socket.on<UserID>('playerParalyzed').subscribe(paralyzedPlayerId => {
-                if (paralyzedPlayerId === this.user.userId) {
-                    this.stopEncryptAudio();
-                } else {
-                    // TODO : Displaying correct player as deparalyzed
-                    // NOTE : Might be managed by the game engine
-                }
-            })
-        );
     }
 
     ngAfterViewInit(): void {
@@ -130,18 +109,23 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         const canvas = this.canvasRef.nativeElement;
         this.gameEngine = new GameEngine(canvas, this.socket, this.user.userId);
         this.subscriptions.add(
-            this.gameEngine.localPlayerImageSrcChanged.subscribe(url => {
+            this.gameEngine.$localPlayerImageSrc.subscribe(url => {
                 this.localPlayerIconUrl = url;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.player1ImageSrcChanged.subscribe(url => {
+            this.gameEngine.$player1ImageSrc.subscribe(url => {
                 this.player1IconUrl = url;
             })
         );
         this.subscriptions.add(
-            this.gameEngine.player2ImageSrcChanged.subscribe(url => {
+            this.gameEngine.$player2ImageSrc.subscribe(url => {
                 this.player2IconUrl = url;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.$localPlayerPlayerParalysed.subscribe(bool => {
+                this.isEncrypted = bool;
             })
         );
     }

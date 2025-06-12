@@ -4,7 +4,8 @@ const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
 const { GameRuntime } = require('../../../game/runtime');
-const { RUNNING_GAMES } = require('../../../game/running-games');
+
+const { registerRunningGame } = require('../../../game-runner');
 
 const { GAMES, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
@@ -52,7 +53,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
             this.io.to(this._gameId).emit('startCountdown');
             setTimeout(() => {
                 this.io.to(this._gameId).except(ERGO_ROOM).emit('endCountdown', () => {
-                    RUNNING_GAMES[game.gameId] = new GameRuntime(this.io, game);
+                    registerRunningGame(game.gameId, new GameRuntime(this.io, game));
                 });
             }, 5000);
         });

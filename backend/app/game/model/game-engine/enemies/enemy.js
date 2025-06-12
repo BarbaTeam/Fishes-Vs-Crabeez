@@ -1,52 +1,62 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enemy = void 0;
+const random_1 = require("../../../../shared/utils/random");
+const variables_1 = require("../variables");
 class Enemy {
-    constructor(health, lane, x, y) {
+    constructor(type, health, speed, score, width, height, laneNum, x, y) {
+        this.type = type;
+        this.health = health;
+        this.speed = speed;
+        this.score = score;
+        this.width = width;
+        this.height = height;
         this.id = `ennemy-${Date.now()}`;
-        this.lane = lane !== undefined ? lane : Math.floor(Math.random() * 3) + 1;
-        this.x = x !== undefined ? x : 1000;
-        this.y = this._setInitialPosition(y);
-        this.width = 150;
-        this.height = 150;
+        this.lane = variables_1.LANES[laneNum !== undefined
+            ? laneNum - 1
+            : (0, random_1.randint)(0, 3)];
+        this.x = this._computeInitialXPosition(x);
+        this.y = this._computeInitialYPosition(y);
+        this.width = width;
+        this.height = height;
+        this.health = health;
+        this.speed = speed;
         this.alive = true;
-        this.speed = 0.2;
-        this.score = 10;
+        this.score = score;
     }
-    _setInitialPosition(providedY) {
-        if (providedY !== undefined)
+    _computeInitialXPosition(providedX) {
+        if (providedX !== undefined) {
+            return providedX;
+        }
+        return 100 + this.width;
+    }
+    _computeInitialYPosition(providedY) {
+        if (providedY !== undefined) {
             return providedY;
-        switch (this.lane) {
+        }
+        switch (this.lane.num) {
             case 1:
-                return 400;
+                return 49;
             case 2:
-                return 300;
+                return 33;
             case 3:
-                return 200;
+                return 17;
             default:
-                return 400;
+                return 17;
         }
     }
     destroy() {
         this.alive = false;
     }
     update() {
-        if (this.x > 100) {
-            this.x -= this.speed;
-        }
-        else {
-            this.alive = false;
-        }
+        this.x -= this.speed;
     }
     toJSON() {
         return {
-            lane: this.lane,
+            id: this.id,
+            type: this.type,
             x: this.x,
             y: this.y,
-            width: this.width,
-            height: this.height,
-            alive: this.alive,
-            health: this.health,
             speed: this.speed,
         };
     }
