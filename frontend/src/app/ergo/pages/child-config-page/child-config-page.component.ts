@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '@app/shared/services/user.service';
 import { NotifService } from '@app/shared/services/notif.service';
@@ -14,6 +15,7 @@ import { User } from '@app/shared/models/user.model';
     styleUrls: ['./child-config-page.component.scss']
 })
 export class ChildConfigPageComponent implements OnInit {
+    private subsriptions: Subscription = new Subscription();
 
     user!: User;
     private _userTemp!: User;
@@ -34,9 +36,11 @@ export class ChildConfigPageComponent implements OnInit {
     // Handler :
 
     ngOnInit(): void {
-        this.userService.selectedUser$.subscribe((user: User) => {
-          this.user = user;
-        });
+        this.subsriptions.add(
+            this.userService.selectedUser$.subscribe((user: User) => {
+                this.user = user;
+            })
+        );
     }
 
     private _validateUserForm(): void {
@@ -59,9 +63,15 @@ export class ChildConfigPageComponent implements OnInit {
         );
     }
 
-    onUserTempChanged(updatedUser: User): void {
+    public onUserTempChanged(updatedUser: User): void {
         this._userTemp = updatedUser;
         this._validateUserForm();
+    }
+
+    ngOnDestroy() {
+        this.notifService.forceCloseNotif();
+
+        this.subsriptions.unsubscribe();
     }
 
 
@@ -87,6 +97,7 @@ export class ChildConfigPageComponent implements OnInit {
     putSafety(): void {
         this.showDeleted = false;
     }
+
     async removeUser(): Promise<void> {
         if(!this.showDeleted) return;
         await this.userService.removeUserById(this.user.userId);
