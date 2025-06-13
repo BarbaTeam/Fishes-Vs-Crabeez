@@ -1,9 +1,11 @@
+import { last } from "rxjs";
 import { User } from "../models/user.model";
 
 export const MOCK_USER: User[] = [
     {
         userId:"u1",
-        name: "Eli KOPTER",
+        firstName:"Eli",
+        lastName: "KOPTER",
         age: 9,
         icon: "red_fish.png",
         config: {
@@ -25,7 +27,8 @@ export const MOCK_USER: User[] = [
         },
     }, {
         userId:"u2",
-        name: "patrick BATMAN",
+        firstName:"patrick",
+        lastName:"BATMAN",
         age: 9,
         icon: "yellow_fish.png",
         config: {
@@ -47,7 +50,8 @@ export const MOCK_USER: User[] = [
         },
     }, {
         userId:"u3",
-        name: "Petelo WAWAZI",
+        firstName: "Petelo",
+        lastName:"WAWAZI",
         age: 9,
         icon: "blue_fish.png",
         config: {
@@ -69,7 +73,8 @@ export const MOCK_USER: User[] = [
         },
     }, {
         userId:"u4",
-        name: "Camille RITELECU",
+        firstName: "Camille",
+        lastName: "RITELECU",
         age: 9,
         icon: "turtle.png",
         config: {

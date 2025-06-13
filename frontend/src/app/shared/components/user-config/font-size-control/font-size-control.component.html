@@ -1,0 +1,9 @@
+<div class="font-size-control">
+      <div class="control-buttons">
+        <button class="control-btn plus" (click)="increase()" [disabled]="value >= maxValue">+</button>
+        <button class="control-btn minus" (click)="decrease()" [disabled]="value <= minValue">–</button>
+      </div>
+      <div class="display-box" [style.font-size.rem]="getFontSize()">
+        A
+      </div>
+</div>

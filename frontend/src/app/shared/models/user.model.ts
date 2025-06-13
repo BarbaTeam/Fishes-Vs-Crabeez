@@ -20,7 +20,8 @@ export type UserConfig = {
 
 export type User = {
     userId: UserID;
-    name: string;
+    firstName: string;
+    lastName: string;
     age: number;
     icon: string;
     config: UserConfig;

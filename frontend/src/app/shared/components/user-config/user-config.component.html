@@ -4,12 +4,16 @@
         <h3>Informations utilisateur</h3>
 
         <span class="text-line" *ngIf="isInErgoPage">
-            <label for="name">Nom* :</label>
-            <input id="name" type="text" [(ngModel)]="localUserTemp.name" (ngModelChange)="onChange()" class="underline-input"/>
+            <label class="required" for="name">Nom<span class="asterisk">*</span>:</label>
+            <input id="name" type="text" [(ngModel)]="localUserTemp.lastName" (ngModelChange)="onChange()" class="underline-input"/>
+        </span>
+        <span class="text-line" *ngIf="isInErgoPage">
+            <label class="required" for="name">Prénom<span class="asterisk">*</span>:</label>
+            <input id="name" type="text" [(ngModel)]="localUserTemp.firstName" (ngModelChange)="onChange()" class="underline-input"/>
         </span>
 
         <span class="text-line" *ngIf="isInErgoPage">
-            <label for="age">Âge* :</label>
+            <label class="required" for="age">Âge<span class="asterisk">*</span>:</label>
             <input id="age" type="number" size="2" [(ngModel)]="localUserTemp.age" (ngModelChange)="onChange()" class="underline-input"/> ans
         </span>
 
@@ -29,11 +33,65 @@
             />
         </div>
     </div>
+    <div class="config-group">
+        <h3>Options</h3>
 
+        <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet d’afficher le classement des utilisateurs dans leurs statistiques. (Côté enfant)'"
+            ></app-info-tooltip>
+            Classement :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.config.leaderBoard"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span *ngIf="isInErgoPage">
+            <app-info-tooltip
+                [tooltipText]="'Permet d’afficher des statistiques détaillées sur les performances de l’utilisateur. (Côté enfant)'"
+            ></app-info-tooltip>
+            Statistiques avancées :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.config.advancedStats"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span *ngIf="isInErgoPage">
+            <app-info-tooltip
+                [tooltipText]="'Permet d’afficher les réponses aux questions posées. Afin de se concentrer sur la réécriture'"
+            ></app-info-tooltip>
+            Réponses affichées :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.config.showsAnswer"
+                (checkedChange)="onChange()"
+            />
+        </span>
+
+        <span *ngIf="isInErgoPage">
+            <app-info-tooltip
+                [tooltipText]="'Permet d\'écrire des chaines de caractères aléatoires pour les questions. Attention, difficile.'"
+            ></app-info-tooltip>
+            Questions cryptées :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.config.notionsMask.ENCRYPTION"
+                (checkedChange)="onChange()"
+            />
+        </span>
+    </div>
+</div>
+
+<div class="config-section-right">
+    
     <div *ngIf="isInErgoPage" class="config-group">
-        <h3>Mathématiques*</h3>
+        <h3 class="required">Mathématiques<span class="asterisk">*</span></h3>
 
         <span >
+            <app-info-tooltip
+                [tooltipText]="'Permet de réécrire les nombres sans opérations particulières.'"
+                
+            ></app-info-tooltip>
             Réécriture des nombres :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.REWRITING"
@@ -42,6 +100,9 @@
         </span>
 
         <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet de résoudre des problèmes d’addition.'"
+            ></app-info-tooltip>
             Addition :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.ADDITION"
@@ -50,6 +111,9 @@
         </span>
 
         <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet de résoudre des problèmes de soustraction.'"
+            ></app-info-tooltip>
             Soustraction :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.SUBSTRACTION"
@@ -58,6 +122,9 @@
         </span>
 
         <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet de résoudre des problèmes de multiplication.'"
+            ></app-info-tooltip>
             Multiplication :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.MULTIPLICATION"
@@ -66,6 +133,9 @@
         </span>
 
         <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet de résoudre des problèmes de division.'"
+            ></app-info-tooltip>
             Division :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.DIVISION"
@@ -82,76 +152,34 @@
             />
         </span>
         -->
-        </div>
-</div>
-
-<div class="config-section-right">
-
-    <div class="config-group">
-        <h3>Options</h3>
-
-        <span>
-            Classement :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.config.leaderBoard"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span *ngIf="isInErgoPage">
-            Statistiques avancées :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.config.advancedStats"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span *ngIf="isInErgoPage">
-            Aide à la lecture :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.config.readingAssistance"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span *ngIf="isInErgoPage">
-            Réponses affichées :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.config.showsAnswer"
-                (checkedChange)="onChange()"
-            />
-        </span>
-
-        <span *ngIf="isInErgoPage">
-            Questions cryptées :
-            <app-settings-toggle
-                [(checked)]="localUserTemp.config.notionsMask.ENCRYPTION"
-                (checkedChange)="onChange()"
-            />
-        </span>
     </div>
 
     <div class="config-group shrink-group">
-        <h3>Affichage</h3>
-
-        <span>
-            Taille de la police :
-            <span>
-                0<app-settings-slider
+        <h3>
+            Affichage
+        </h3>
+        <div class="affichage-group">
+            <span class="affichage-config-group">
+                <span> Taille de la police : <app-info-tooltip tooltipText="Ajustez la taille du texte affiché"></app-info-tooltip></span>
+                <app-font-size-control
                     [(value)]="localUserTemp.config.fontSize"
                     (valueChange)="onChange()"
-                />1
+                    [minValue]="1"
+                    [maxValue]="4"
+                    [step]="1">
+                </app-font-size-control>
             </span>
-        </span>
 
-        <span>
-            Son :
-            <span>
-                0<app-settings-slider
+            <span class="affichage-config-group">
+                <span>Son : <app-info-tooltip tooltipText="Réglez le volume des effets sonores"></app-info-tooltip></span>
+                <app-sound-control
                     [(value)]="localUserTemp.config.sound"
                     (valueChange)="onChange()"
-                />1
+                    [minValue]="0"
+                    [maxValue]="5"
+                    [step]="1">
+                </app-sound-control>
             </span>
-        </span>
+        </div>
     </div>
 </div>

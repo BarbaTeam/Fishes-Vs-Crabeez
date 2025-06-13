@@ -3,9 +3,9 @@
     <img
         class="avatar"
         [src]="'../../assets/images/child-pps/' + user.icon"
-        [alt]="'Icône de ' + user.name"
+        [alt]="'Icône de ' + user.firstName + ' ' + user.lastName"
     />
-    <span class="name">{{ user.name }}</span>
+    <span class="name">{{ user.firstName }} {{user.lastName}}</span>
     <button class="toggle-btn" aria-label="Toggle details">
         {{ isUnrolled() ? '－' : '＋' }}
     </button>

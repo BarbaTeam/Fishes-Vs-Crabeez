@@ -35,14 +35,16 @@ export class NewChildPageComponent {
             this.isValid = false;
         }
 
-        const containsValidName = this._userTemp.name.trim().length > 0;
+        const containsValidFirstName = this._userTemp.firstName.length > 0;
+        const containsValidLastName = this._userTemp.lastName.length > 0;
         const containsValidAge = this._userTemp.age > 0;
         const activatesAtLeastOneNotion = Object.values(
             this._userTemp.config.notionsMask
         ).some(n => n);
 
         this.isValid = (
-            containsValidName
+            containsValidFirstName
+            && containsValidLastName
             && containsValidAge
             && activatesAtLeastOneNotion
         );

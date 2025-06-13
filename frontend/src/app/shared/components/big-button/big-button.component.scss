@@ -107,6 +107,19 @@
   cursor: not-allowed;
 }
 
+/* ⚪ Grey Variant */
+:host(.grey:active) {
+  height: 7vh;
+  width: 22vw;
+  color: #010101;
+  background-color: var(--grey-color);
+  box-shadow:
+    0 8px 0 var(--grey-shadow),
+    0 12px 15px rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
+  transform: translateY(0px);
+}
+
 /* 🔚 End Game Button */
 :host(.endGameButton) {
   margin: 0;

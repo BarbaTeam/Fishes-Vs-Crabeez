@@ -5,6 +5,15 @@
   height: auto;
 }
 
+.required {
+  display: flex;
+}
+
+.asterisk {
+  margin-left: 0.25rem;
+  color: red;
+}
+
 /* === GRILLE SUPÉRIEURE : ligne haute fixe === */
 .config-section-left {
   display: grid;
@@ -97,6 +106,16 @@
   gap: 0.5rem;
   cursor: pointer;
   margin-top: 0.5rem;
+}
+
+.affichage-group{
+  display: flex;
+  justify-content: space-around;
+}
+
+.affichage-config-group{
+  display: flex;
+  flex-direction: column;
 }
 
 .icon-selector {

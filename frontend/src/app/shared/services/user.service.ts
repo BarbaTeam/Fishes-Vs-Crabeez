@@ -37,7 +37,8 @@ export class UserService{
 
     public EMPTY_USER: User = {
         userId:`u${Math.floor(Math.random() * 1000)}`,
-        name: "Ajouter joueur",
+        lastName: "Nom",
+        firstName: "Prénom",
         age: 0,
         icon: "unknown.png",
         config: {
