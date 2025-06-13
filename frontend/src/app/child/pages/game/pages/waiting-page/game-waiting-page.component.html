@@ -22,26 +22,27 @@
 
     <app-body>
         @if (!inCountdown) {
-            <app-inner-box class="main-box transparent little">
-                <img class="tuto" src="../../../../assets/images/icons/tuto1.png">
-                <img class="tuto" src="../../../../assets/images/icons/tuto2.png">
-            </app-inner-box>
+            <div class="lobby">
+                <div class="tuto-box-1">
+                    <img class="tuto" src="../../../../assets/images/icons/tuto1.png">
+                    <img class="tuto" src="../../../../assets/images/icons/tuto2.png">
+                </div>
 
-            <app-inner-box class="main-box blue little">
-                <p class="title">Joueurs en attente</p>
-                @for (playerId of waitingGame.playersId; track playerId) {
-                    <app-user-card
-                        [userId]="playerId"
-                        class="horizontal lobby unclickable"
-                    />
-                }
-            </app-inner-box>
+                <app-inner-box class="blue little">
+                    <p class="title">Joueurs en attente</p>
+                    @for (playerId of waitingGame.playersId; track playerId) {
+                        <app-user-card
+                            [userId]="playerId"
+                            class="horizontal lobby unclickable"
+                        />
+                    }
+                </app-inner-box>
 
-            <app-inner-box class="main-box transparent little">
-                <img class="tuto" src="../../../../assets/images/icons/tuto3.png">
-                <img class="tuto" src="../../../../assets/images/icons/tuto4.png">
-            </app-inner-box>
-
+                <div class="tuto-box-2">
+                    <img class="tuto" src="../../../../assets/images/icons/tuto3.png">
+                    <img class="tuto" src="../../../../assets/images/icons/tuto4.png">
+                </div>
+            </div>
         } @else {
             <div class="countdown-container">
                 @if (countdown > 0) {
