@@ -47,37 +47,40 @@
 
             <p>HISTORIQUE</p>
 
-            <ng-container *ngIf="gamesInfos?.length">
-                <ng-container *ngFor="let info of gamesInfos; let idx = index">
-                <app-small-button
-                    [routerLink]="[]"
-                    [queryParams]="{ section: idx+1 }"
-                    [class.active]="currSection === idx+1"
-                    style="width:100%"
-                    *ngIf="info?.date"
-                >
-                    {{ info.date | date:'dd/MM/yyyy' }}
-                </app-small-button>
-                </ng-container>
-            </ng-container>
+            @if (gamesInfos.length) {
+                @for (info of gamesInfos; let idx = $index; track idx) {
+                    @if (info?.date) {
+                        <app-small-button
+                            [routerLink]="[]"
+                            [queryParams]="{ section: idx + 1 }"
+                            [class.active]="currSection === idx + 1"
+                            style="width:100%"
+                        >
+                            {{ info.date | date: 'dd/MM/yyyy' }}
+                        </app-small-button>
+                    }
+                }
+            }
         </app-side-box>
 
 
         <!-- Invalid Section : -->
-        <app-inner-box *ngIf="isInInvalidSection()" class="blue medium">
-            <p>Contenu Inexistant</p>
-        </app-inner-box>
-
-        <!-- Badges Setion :-->
-        <app-inner-box *ngIf="isInInvalidSection()" class="blue medium">
-            <p>Contenu Inexistant</p>
-        </app-inner-box>
+         @if (isInInvalidSection()) {
+            <app-inner-box class="blue medium">
+                <p>Contenu Inexistant</p>
+            </app-inner-box>
+            <!-- Badges Setion :-->
+            <app-inner-box class="blue medium">
+                <p>Contenu Inexistant</p>
+            </app-inner-box>
+         }
 
 
         <!-- Statistic Section : -->
-        <app-inner-box *ngIf="isInStatsSection()" class="blue medium scrollable">
-            <div class="badge-group">
-                <h3>Badges</h3>
+        @if (isInStatsSection()) {
+            <app-inner-box class="blue medium scrollable">
+                <h3 class="title">Badges</h3>
+                <div class="badge-group">
                 <span class="badge-list">
                     <img class="badge" src="../../../../assets/images//icons/crab_killer_trophy.png" alt="Eliminer 200 crabes" title="Eliminer 200 crabes">
                     <img class="badge" src="../../../../assets/images//icons/defender_trophy.png" alt="Vous avez atteint un score de plus de 1000 points" title="Vous avez atteint un score de plus de 1000 points">
@@ -87,12 +90,78 @@
 
             <h3 class="title">Statistiques générales</h3>
 
-            <ng-container *ngIf="sectionData.playerStats as ps; else loadingStatistics">
-                <ng-container *ngIf="ps.statistics.globalGrading.grade !== 'XF'; else noStatistics">
+            @if (sectionData.playerStats; as ps) {
+                @if (ps.statistics.globalGrading.grade !== "XF") {
                     <app-stat-line
                         [title]="'Note'"
                         [value]="ps.statistics.globalGrading"
                         [improvement]="ps.statistics.globalAccuracyImprovement"
+                        [withAdvancedStats]="user.config.advancedStats"
+                        />
+
+                        <app-rollable-box
+                            *ngIf="notionGradings.length > 0"
+                            [title]="'Détails par notions'"
+                        >
+                            <app-stat-line
+                                *ngFor="let n of notionGradings"
+                                [title]="n.key"
+                                [value]="n.grading"
+                                [improvement]="n.improvement"
+                                [withAdvancedStats]="user.config.advancedStats"
+                            />
+                        </app-rollable-box>
+
+                        <app-stat-line
+                            [title]="'Mots par minutes'"
+                            [value]="ps.statistics.wordsPerMinute"
+                            [improvement]="ps.statistics.wordsPerMinuteImprovement"
+                            [withAdvancedStats]="user.config.advancedStats"
+                        />
+                    } @else {
+                        <p>Statistiques Indisponibles</p>
+                        <p>L'utilisateur n'a pas encore été évalué.</p>
+                    }
+                } @else {
+                    <p>Chargement des statistiques...</p>
+                }
+            </app-inner-box>
+
+            @if (user.config.leaderBoard) {
+                <app-inner-box class="blue little">
+                    <h1 class="title">Classement</h1>
+
+                    @if (sectionData.leaderboard === undefined) {
+                        <p>Classement Indisponible</p>
+                    }
+
+                    @if (sectionData.leaderboard; as leaderboard) {
+                        @for (lbuserId of leaderboard.ranking; let i = $index; track lbuserId) {
+                            <app-player-in-leaderboard
+                                [userId]="lbuserId"
+                                [grading]="leaderboard.gradingPerPlayer[i]"
+                                class="horizontal classement"
+                            />
+                        }
+
+                    } @else {
+                        <p>Chargement du classement...</p>
+                    }
+                </app-inner-box>
+            }
+
+        }
+
+
+        <!-- History Sections : -->
+        @if (isInHistorySections()) {
+            <app-inner-box class="blue medium scrollable">
+                @if (sectionData.playerResults; as pr) {
+                    <h1 class="title">Partie du {{ sectionData.gameInfo.date | date:'dd/MM/yyyy HH:mm' }}</h1>
+
+                    <app-stat-line
+                        [title]="'Note'"
+                        [value]="sectionData.playerResults.results.globalGrading"
                         [withAdvancedStats]="user.config.advancedStats"
                     />
 
@@ -100,115 +169,59 @@
                         *ngIf="notionGradings.length > 0"
                         [title]="'Détails par notions'"
                     >
-                        <app-stat-line
-                            *ngFor="let n of notionGradings"
-                            [title]="n.key"
-                            [value]="n.grading"
-                            [improvement]="n.improvement"
-                            [withAdvancedStats]="user.config.advancedStats"
-                        />
+                        @for (n of notionGradings; track n.key) {
+                            <app-stat-line
+                                [title]="n.key"
+                                [value]="n.grading"
+                                [withAdvancedStats]="user.config.advancedStats"
+                            />
+                        }
                     </app-rollable-box>
 
                     <app-stat-line
                         [title]="'Mots par minutes'"
-                        [value]="ps.statistics.wordsPerMinute"
-                        [improvement]="ps.statistics.wordsPerMinuteImprovement"
+                        [value]="sectionData.playerResults.results.wordsPerMinute"
                         [withAdvancedStats]="user.config.advancedStats"
                     />
-                </ng-container>
 
-                <ng-template #noStatistics>
-                    <p>Statistiques Indisponibles</p>
-                    <p>L'utilisateur n'a pas encore été évalué.</p>
-                </ng-template>
-            </ng-container>
-            <ng-template #loadingStatistics>
-                <p>Chargement des statistiques...</p>
-            </ng-template>
-        </app-inner-box>
+                    <div class="badge-group">
+                        <h3>Récompenses acquises :</h3>
 
-        <app-inner-box *ngIf="isInStatsSection() && user.config.leaderBoard" class="blue little">
-            <h1 class="title">Classement</h1>
+                        <!-- TODO : Supporting dynamic badges -->
 
-            <ng-template *ngIf="sectionData.leaderboard === undefined">
-                <p>Classement Indisponible</p>
-            </ng-template>
+                        <span class="badge-list">
+                            <img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
+                            <img class="badge" src="../../../../assets/images//icons/silver_trophy.png" alt="Vous avez eu un très bon score" title="Vous avez eu un très bon score">
+                            <img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez fait de votre mieux" title="Tout le monde à le droit à une petite récompense">
+                        </span>
+                    </div>
+                } @else {
+                    <p>Chargement des résultats...</p>
+                }
+            </app-inner-box>
 
-            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
-                <app-user-card
-                    *ngFor="let lbuserId of leaderboard.ranking"
-                    [userId]="lbuserId"
-                    class="horizontal unclickable classement"
-                />
-            </ng-container>
-            <ng-template #loadingLeaderboar>
-                <p>Chargement du classement...</p>
-            </ng-template>
-        </app-inner-box>
+            @if (user.config.leaderBoard) {
+                <app-inner-box class="main-box blue little">
+                    <h1 class="title">Classement</h1>
 
+                    @if(sectionData.leaderboard === undefined) {
+                        <p>Classement Indisponible</p>
+                    }
 
-        <!-- History Sections : -->
-        <app-inner-box *ngIf="isInHistorySections()" class="blue medium scrollable">
-            <ng-container *ngIf="sectionData.playerResults as pr; else loadingResults">
-                <h1 class="title">Partie du {{ sectionData.gameInfo.date | date:'dd/MM/yyyy HH:mm' }}</h1>
-
-                <app-stat-line
-                    [title]="'Note'"
-                    [value]="sectionData.playerResults.results.globalGrading"
-                    [withAdvancedStats]="user.config.advancedStats"
-                />
-
-                <app-rollable-box
-                    *ngIf="notionGradings.length > 0"
-                    [title]="'Détails par notions'"
-                >
-                    <app-stat-line
-                        *ngFor="let n of notionGradings"
-                        [title]="n.key"
-                        [value]="n.grading"
-                        [withAdvancedStats]="user.config.advancedStats"
-                    />
-                </app-rollable-box>
-
-                <app-stat-line
-                    [title]="'Mots par minutes'"
-                    [value]="sectionData.playerResults.results.wordsPerMinute"
-                    [withAdvancedStats]="user.config.advancedStats"
-                />
-
-                <div class="badge-group">
-                    <h3>Récompenses acquises :</h3>
-
-                    <span class="badge-list">
-                        <img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
-                        <img class="badge" src="../../../../assets/images//icons/silver_trophy.png" alt="Vous avez eu un très bon score" title="Vous avez eu un très bon score">
-                        <img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez fait de votre mieux" title="Tout le monde à le droit à une petite récompense">
-                    </span>
-                </div>
-            </ng-container>
-            <ng-template #loadingResults>
-                <p>Chargement des résultats...</p>
-            </ng-template>
-        </app-inner-box>
-
-        <app-inner-box *ngIf="isInHistorySections() && user.config.leaderBoard" class="main-box blue little">
-            <h1 class="title">Classement</h1>
-
-            <ng-template *ngIf="sectionData.leaderboard === undefined">
-                <p>Classement Indisponible</p>
-            </ng-template>
-
-            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
-                <app-user-card
-                    *ngFor="let lbuserId of leaderboard.ranking"
-                    [userId]="lbuserId"
-                    class="horizontal unclickable classement"
-                />
-            </ng-container>
-            <ng-template #loadingLeaderboar>
-                <p>Chargement du classement...</p>
-            </ng-template>
-        </app-inner-box>
+                    @if (sectionData.leaderboard; as leaderboard) {
+                        @for (lbuserId of leaderboard.ranking; let i = $index; track lbuserId) {
+                            <app-player-in-leaderboard
+                                [userId]="lbuserId"
+                                [grading]="leaderboard.gradingPerPlayer[i]"
+                                class="horizontal classement"
+                            />
+                        }
+                    } @else {
+                        <p>Chargement du classement...</p>
+                    }
+                </app-inner-box>
+            }
+        }
     </app-body>
 
 </app-template>
