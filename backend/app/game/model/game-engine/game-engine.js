@@ -5,6 +5,8 @@ const events_handler_1 = require("../events-handler");
 const player_1 = require("./player");
 const projectile_1 = require("./projectile");
 const variables_1 = require("./variables");
+const drone_1 = require("./enemies/drone");
+const enemies_stats_1 = require("./enemies/enemies-stats");
 class GameEngine {
     constructor(model, notifier, playersId) {
         this.model = model;
@@ -76,7 +78,7 @@ class GameEngine {
     processEnemy(enemy) {
         enemy.update();
         if (enemy.x < 11) {
-            this.kill(enemy);
+            enemy.destroy();
             if (this.health == 1) {
                 this.model.hasEnded = true;
             }
@@ -99,19 +101,31 @@ class GameEngine {
                 if (!enemy.alive)
                     continue;
                 if (this.checkCollision(enemy, projectile)) {
-                    this.kill(enemy);
+                    this.hit(enemy);
                     projectile.destroy();
-                    const player = projectile.player;
-                    this.score += enemy.score;
-                    this.notifier.onEnemyKilled(projectile, enemy);
-                    this.notifier.onScoreUpdated(this.score);
+                    if (!enemy.alive) {
+                        this.score += enemy.score;
+                        this.notifier.onEnemyKilled(projectile, enemy);
+                        this.notifier.onScoreUpdated(this.score);
+                    }
                     return;
                 }
             }
         }
     }
-    kill(enemy) {
-        enemy.destroy();
+    hit(enemy) {
+        enemy.hit();
+        if (!enemy.alive) {
+            switch (enemy.type) {
+                case "hive-crab":
+                    this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x - (enemies_stats_1.DRONE_WIDTH / 2), enemy.y + (enemies_stats_1.DRONE_HEIGHT / 2)));
+                    this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x, enemy.y - (enemies_stats_1.DRONE_HEIGHT / 2)));
+                    this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x + (enemies_stats_1.DRONE_WIDTH / 2), enemy.y + (enemies_stats_1.DRONE_HEIGHT / 2)));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     getAllPlayers() {
         return Object.values(this.players).map(player => player.toJSON());
@@ -136,4 +150,3 @@ class GameEngine {
     }
 }
 exports.GameEngine = GameEngine;
-

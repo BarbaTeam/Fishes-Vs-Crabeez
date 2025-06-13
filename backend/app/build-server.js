@@ -23,7 +23,7 @@ module.exports = (cb) => {
 
     const server = http.createServer(app);
 
-    server.listen(process.env.PORT || 9428, '0.0.0.0', () => {
+    server.listen(process.env.PORT || 9428, () => {
         if (cb) cb(server);
         console.log(`[SERVER] Listening on port ${process.env.PORT || 9428}`);
     });

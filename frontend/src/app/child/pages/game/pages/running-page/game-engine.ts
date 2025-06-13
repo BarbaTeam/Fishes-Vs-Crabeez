@@ -11,6 +11,8 @@ import { Enemy } from "./ennemies/Enemy";
 import { Crab } from "./ennemies/Crab";
 import { scaleToCanvas } from "./utils";
 import { NumberFormatStyle } from "@angular/common";
+import { HiveCrab } from "./ennemies/HiveCrab";
+import { Drone } from "./ennemies/Drone";
 
 
 
@@ -167,7 +169,16 @@ export class GameEngine {
                         const crab = Crab.fromJson(enemy, this.canvas);
                         this.enemies.push(crab);
                         console.log(`New Crab received: ${crab.id}, position: (${crab.x}, ${crab.y})`);
-
+                        break;
+                    case 'hive-crab':
+                        const hiveCrab = HiveCrab.fromJson(enemy, this.canvas);
+                        this.enemies.push(hiveCrab);
+                        console.log(`New Hive Crab received: ${hiveCrab.id}, position: (${hiveCrab.x}, ${hiveCrab.y})`);
+                        break;
+                    case 'drone':
+                        const drone = Drone.fromJson(enemy, this.canvas);
+                        this.enemies.push(drone);
+                        console.log(`New Drone received: ${drone.id}, position: (${drone.x}, ${drone.y})`);
                         break;
                     default:
                         console.warn(`Unknown enemy type: ${enemy.type}`);

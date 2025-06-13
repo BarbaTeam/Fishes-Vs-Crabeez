@@ -1,10 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CRAB_WIDTH = exports.CRAB_HEIGHT = exports.CRAB_SCORE = exports.CRAB_DAMAGE = exports.CRAB_SPEED = exports.CRAB_HEALTH = void 0;
+exports.DRONE_WIDTH = exports.DRONE_HEIGHT = exports.DRONE_SCORE = exports.DRONE_DAMAGE = exports.DRONE_SPEED = exports.DRONE_HEALTH = exports.HIVECRAB_WIDTH = exports.HIVECRAB_HEIGHT = exports.HIVECRAB_SCORE = exports.HIVECRAB_DAMAGE = exports.HIVECRAB_SPEED = exports.HIVECRAB_HEALTH = exports.CRAB_WIDTH = exports.CRAB_HEIGHT = exports.CRAB_SCORE = exports.CRAB_DAMAGE = exports.CRAB_SPEED = exports.CRAB_HEALTH = void 0;
 exports.CRAB_HEALTH = 1;
 exports.CRAB_SPEED = 0.1;
 exports.CRAB_DAMAGE = 1;
 exports.CRAB_SCORE = 10;
-exports.CRAB_HEIGHT = 4;
-exports.CRAB_WIDTH = 4;
-
+exports.CRAB_HEIGHT = 5;
+exports.CRAB_WIDTH = 5;
+exports.HIVECRAB_HEALTH = 3;
+exports.HIVECRAB_SPEED = 0.01;
+exports.HIVECRAB_DAMAGE = 3;
+exports.HIVECRAB_SCORE = 50;
+exports.HIVECRAB_HEIGHT = 8;
+exports.HIVECRAB_WIDTH = 8;
+exports.DRONE_HEALTH = 1;
+exports.DRONE_SPEED = 0.11;
+exports.DRONE_DAMAGE = 0.5;
+exports.DRONE_SCORE = 5;
+exports.DRONE_HEIGHT = 5;
+exports.DRONE_WIDTH = 5;

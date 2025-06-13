@@ -10,6 +10,8 @@ import { Player } from "./player";
 import { Projectile } from "./projectile";
 
 import { LANES, PLAYER_COLORS, VIRTUAL_WIDTH } from "./variables";
+import { Drone } from "./enemies/drone";
+import { DRONE_HEIGHT, DRONE_WIDTH } from "./enemies/enemies-stats";
 
 
 
@@ -98,7 +100,7 @@ export class GameEngine {
     private processEnemy(enemy: Enemy): void {
         enemy.update();
         if (enemy.x < 11) {
-            this.kill(enemy);
+            enemy.destroy();
             if(this.health == 1){
                 this.model.hasEnded = true;
             }
@@ -123,21 +125,32 @@ export class GameEngine {
                 if (!enemy.alive) continue;
 
                 if (this.checkCollision(enemy, projectile)) {
-                    this.kill(enemy);
+                    this.hit(enemy);
                     projectile.destroy();
-                    const player = projectile.player;
-                    this.score += enemy.score;
-
-                    this.notifier.onEnemyKilled(projectile, enemy);
-                    this.notifier.onScoreUpdated(this.score);
+                    if(!enemy.alive){
+                        this.score += enemy.score;
+                        this.notifier.onEnemyKilled(projectile, enemy);
+                        this.notifier.onScoreUpdated(this.score);
+                    }
                     return; 
                 }
             }
         }
     }
 
-    public kill(enemy: Enemy): void {
-        enemy.destroy();
+    public hit(enemy: Enemy): void {
+        enemy.hit();
+        if (!enemy.alive) {
+            switch (enemy.type) {
+                case "hive-crab":
+                    this.spawnEnemy(new Drone(enemy.lane.num, enemy.x-(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
+                    this.spawnEnemy(new Drone(enemy.lane.num, enemy.x, enemy.y-(DRONE_HEIGHT/2)));
+                    this.spawnEnemy(new Drone(enemy.lane.num, enemy.x+(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     public getAllPlayers(): Player[] {

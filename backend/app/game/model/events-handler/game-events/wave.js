@@ -6,6 +6,7 @@ const event_types_1 = require("../event-types");
 const crab_1 = require("../../game-engine/enemies/crab");
 const random_1 = require("../../../../shared/utils/random");
 const variables_1 = require("../../../../game/model/game-engine/variables");
+const hive_crab_1 = require("../../../../game/model/game-engine/enemies/hive-crab");
 class WaveEvent extends game_event_1.GameEvent {
     constructor(handler, difficulty) {
         super(handler, event_types_1.EventKind.WAVE);
@@ -18,8 +19,8 @@ class WaveEvent extends game_event_1.GameEvent {
         const amount = (0, random_1.biasedRandint)(this._waveDifficulty, 4.5, WaveEvent.MIN_AMOUNT_OF_ENNEMY, WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1);
         for (let i = 0; i < amount; i++) {
             const lane = (0, random_1.randint)(1, WaveEvent.LANES_COUNT + 1);
-            const crab = new crab_1.Crab(lane);
-            enemies.push(crab);
+            const enemy = Math.random() > 0.3 ? new crab_1.Crab(lane) : new hive_crab_1.HiveCrab(lane);
+            enemies.push(enemy);
         }
         const byLane = {};
         for (const e of enemies) {

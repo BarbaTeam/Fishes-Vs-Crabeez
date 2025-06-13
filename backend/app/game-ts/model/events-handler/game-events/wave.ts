@@ -9,10 +9,11 @@ import { Crab } from '../../game-engine/enemies/crab';
 
 import { biasedRandint, randint } from '../../../../shared/utils/random';
 import { LANES, VIRTUAL_WIDTH } from '../../../../game/model/game-engine/variables';
+import { HiveCrab } from '../../../../game/model/game-engine/enemies/hive-crab';
 
 
 
-export class WaveEvent extends GameEvent<Enemy[]> {
+export class WaveEvent extends GameEvent<any[]> {
     private static readonly MIN_AMOUNT_OF_ENNEMY: number = 1;
     private static readonly MAX_AMOUNT_OF_ENNEMY: number = 15;
 
@@ -32,7 +33,7 @@ export class WaveEvent extends GameEvent<Enemy[]> {
     onEventBirth(): void {
         super.onEventBirth();
 
-        const enemies: Enemy[] = [];
+        const enemies: any[] = [];
         const amount = biasedRandint(
             this._waveDifficulty,
             4.5,
@@ -42,11 +43,11 @@ export class WaveEvent extends GameEvent<Enemy[]> {
 
         for (let i = 0; i < amount; i++) {
             const lane = randint(1, WaveEvent.LANES_COUNT + 1) as LaneNumber;
-            const crab = new Crab(lane);
-            enemies.push(crab);
+            const enemy = Math.random() > 0.3 ? new Crab(lane) : new HiveCrab(lane);
+            enemies.push(enemy);
         }
 
-        const byLane: Record<number, Enemy[]> = {};
+        const byLane: Record<number, any[]> = {};
         for (const e of enemies) {
             const lane = e.lane;
             if (!byLane[lane.num-1]) byLane[lane.num-1] = [];

@@ -1,32 +1,30 @@
-/*
 import { Enemy } from "./Enemy";
-import { GameEngine } from "./game-engine";
 
 export class HiveCrab extends Enemy {
 
-    private image: HTMLImageElement;
+    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number ) {
+        super(canvas, id);
 
-    constructor(gameEngine: GameEngine,  canvas: HTMLCanvasElement) {
-        super(gameEngine, canvas);
+        this.enemyImage = new Image();
+        this.enemyImage.src = 'assets/images/game/enemy/hiveCrab_64x64.png';
 
-        this.image = new Image();
-        this.image.src = "../../../../assets/images/game/enemy/hiveCrab_64x64.png";
-        this.speed *= 0.2;
-        this.score *= 2;
+        this.virtualWidth = 8;
+        this.virtualHeight = 8;
+        
+        this.x = x;
+        this.y = y;
+
+        this.speed = speed
     }
 
-    public draw(ctx: CanvasRenderingContext2D): void {
-        const scale = 1.5;
-        const scaledWidth = this.width * scale;
-        const scaledHeight = this.height * scale;
-
-        ctx.drawImage(
-            this.image,
-            this.x - scaledWidth / 2,
-            this.y - scaledHeight / 2,
-            scaledWidth,
-            scaledHeight
+    public static fromJson(data: any, canvas : HTMLCanvasElement): HiveCrab {
+        const crab = new HiveCrab(
+            canvas,
+            data.id, 
+            data.x, 
+            data.y, 
+            data.speed
         );
+        return crab;
     }
 }
-*/
