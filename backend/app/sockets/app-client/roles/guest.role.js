@@ -116,6 +116,7 @@ class GuestRole_Impl extends AppClientRole_Impl {
     connectAsChild(userId) {
         console.log(`[DEBUG :: AppClient::connectAsChild] Client {id=${this.socket.id} ; role=${this.role}} transitionning to CHILD ...`);
 
+        this._cleanListeners();
         this.socket.leave(GUEST_ROOM);
         this.socket.join(CHILD_ROOM);
         this.socket.join(userId);
@@ -129,6 +130,7 @@ class GuestRole_Impl extends AppClientRole_Impl {
     connectAsErgo() {
         console.log(`[DEBUG :: AppClient::connectAsErgo] Client {id=${this.socket.id} ; role=${this.role}} transitionning to ERGO ...`);
 
+        this._cleanListeners();
         this.socket.leave(GUEST_ROOM);
         this.socket.join(ERGO_ROOM);
 

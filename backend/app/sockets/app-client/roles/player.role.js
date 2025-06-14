@@ -143,6 +143,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
     leaveGame() {
         console.log(`[DEBUG :: AppClient::leaveGame] Client {id=${this.socket.id} ; role=${this.role}} transitionning to CHILD ...`);
 
+        this._cleanListeners();
         this.socket.leave(this._gameId);
 
         this.changeRole(new (require("./child.role")).ChildRole_Impl(

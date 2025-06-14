@@ -114,6 +114,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
     spyGame(gameId) {
         console.log(`[DEBUG :: AppClient::spyGame] Client {id=${this.socket.id} ; role=${this.role}} transitionning to GAME_MASTER ...`);
 
+        this._cleanListeners();
         this.socket.join(gameId);
 
         this.changeRole(new (require("./game-master.role")).GameMasterRole_Impl(
@@ -135,6 +136,8 @@ class ErgoRole_Impl extends AppClientRole_Impl {
                 this.socket.leave(room);
             }
         }
+
+        this._cleanListeners();
         this.socket.join(GUEST_ROOM);
 
         this.changeRole(new (require("./guest.role")).GuestRole_Impl(

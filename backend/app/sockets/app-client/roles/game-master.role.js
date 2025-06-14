@@ -117,7 +117,8 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
      */
     unspyGame() {
         console.log(`[DEBUG :: AppClient::unspyGame] Client {id=${this.socket.id} ; role=${this.role}} transitionning to ERGO ...`);
-
+        
+        this._cleanListeners();
         this.socket.leave(this._gameId);
 
         this.changeRole(new (require("./ergo.role")).ErgoRole_Impl(

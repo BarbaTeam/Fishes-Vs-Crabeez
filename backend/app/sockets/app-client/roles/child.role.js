@@ -129,6 +129,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
     joinGame(gameId) {
         console.log(`[DEBUG :: AppClient::joinGame] Client {id=${this.socket.id} ; role=${this.role}} transitionning to PLAYER ...`);
 
+        this._cleanListeners();
         this.socket.join(gameId);
 
         this.changeRole(new (require("./player.role")).PlayerRole_Impl(
@@ -151,6 +152,8 @@ class ChildRole_Impl extends AppClientRole_Impl {
                 this.socket.leave(room);
             }
         }
+
+        this._cleanListeners();
         this.socket.join(GUEST_ROOM);
 
         this.changeRole(new (require("./guest.role")).GuestRole_Impl(this.io, this.socket, this.changeRole));
