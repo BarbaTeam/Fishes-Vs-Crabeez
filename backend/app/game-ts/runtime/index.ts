@@ -4,20 +4,26 @@ import { GameLobby } from '../../shared/types';
 
 import { GameActionsReceiver } from './game-actions-receiver';
 import { GameUpdatesNotifier } from './game-updates-notifier';
+import { GameLogAccumulator } from '../model/game-log-accumulator';
 import { GameModel } from '../model';
 
 import { stopRunningGame } from '../../game-runner'
 
+import { processGameLog } from '../../stats';
+
+
+
 export class GameRuntime {
-    public readonly notifier : GameUpdatesNotifier;
-    public readonly model    : GameModel;
-    public readonly receiver : GameActionsReceiver;
+    public readonly notifier   : GameUpdatesNotifier;
+    public readonly model      : GameModel;
+    public readonly receiver   : GameActionsReceiver;
+    public readonly accumulator: GameLogAccumulator;
 
     constructor (io: Server, gameLobby: GameLobby) {
-        //this.notifier = new GameUpdatesNotifier(io.to(gameLobby.gameId));
-        this.notifier = new GameUpdatesNotifier(io, io.to(gameLobby.gameId));
-        this.model    = new GameModel(this.notifier, gameLobby);
-        this.receiver = new GameActionsReceiver(this.model);
+        this.notifier    = new GameUpdatesNotifier(io, io.to(gameLobby.gameId));
+        this.accumulator = new GameLogAccumulator(gameLobby);
+        this.model       = new GameModel(this.notifier, gameLobby, this.accumulator);
+        this.receiver    = new GameActionsReceiver(this.model);
     }
 
     public runOneFrame() {
@@ -29,8 +35,9 @@ export class GameRuntime {
     }
 
     public onGameEnd(){
-        //TODO : enhanced game end
+        // TODO : enhanced game end
         this.notifier.onGameEnd();
+        processGameLog(this.accumulator.gamelog);
         stopRunningGame(this.model.gameLobby.gameId);
     }
 }

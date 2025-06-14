@@ -394,10 +394,12 @@ function applyUpdate(obj, update) {
         const updatedValue = update[key];
         const currentValue = ret[key];
 
-        if (
-            updatedValue !== undefined &&
-            typeof currentValue === 'object' && currentValue !== null &&
-            typeof updatedValue === 'object' && updatedValue !== null
+        if (Array.isArray(updatedValue)) {
+            ret[key] = updatedValue;
+        } else if (
+            updatedValue !== undefined
+            && typeof currentValue === 'object' && currentValue !== null && !Array.isArray(currentValue)
+            && typeof updatedValue === 'object' && updatedValue !== null && !Array.isArray(updatedValue)
         ) {
             // Recursive Merge :
             ret[key] = applyUpdate(currentValue, updatedValue);

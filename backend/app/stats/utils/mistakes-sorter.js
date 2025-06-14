@@ -232,7 +232,7 @@ class MistakesSorter {
         const threshold = Math.max(1, Math.ceil(candidates[0].length * 0.2));
         if (bestDist > threshold) return [];
 
-        return Array.from(new Set(candidates.map(w => map[w] * sign)));
+        return [...Array.from(new Set(candidates.map(w => map[w] * sign)))];
     }
 }
 

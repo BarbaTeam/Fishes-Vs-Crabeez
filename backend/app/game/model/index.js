@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModel = void 0;
-const game_log_accumulator_1 = require("./game-log-accumulator");
 const game_engine_1 = require("./game-engine");
 const quiz_handler_1 = require("./quiz-handler");
 const events_handler_1 = require("./events-handler");
 class GameModel {
-    constructor(notifier, gameLobby) {
+    constructor(notifier, gameLobby, accumulator) {
         this.notifier = notifier;
         this.gameLobby = gameLobby;
         this.hasEnded = false;
-        this._accumulator = new game_log_accumulator_1.GameLogAccumulator(gameLobby.playersId);
         this.gameEngine = new game_engine_1.GameEngine(this, notifier, gameLobby.playersId);
-        this.quizHandler = new quiz_handler_1.QuizHandler(this, notifier, gameLobby.playersNotionsMask, this._accumulator);
+        this.quizHandler = new quiz_handler_1.QuizHandler(this, notifier, gameLobby.playersNotionsMask, accumulator);
         this.eventsHandler = new events_handler_1.EventsHandler(this);
     }
     startup() {
@@ -29,4 +27,3 @@ class GameModel {
     }
 }
 exports.GameModel = GameModel;
-
