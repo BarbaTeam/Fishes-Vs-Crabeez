@@ -6,7 +6,6 @@ const { UserID, GameID } = require("../../../shared/types");
 const { CONNECTED_USERS_ID, GAMES_LOBBY, GUEST_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
-const { AppClientRole_Impl } = require('./app-client.role');
 const { ChildRole_Impl } = require('./child.role');
 
 const { RUNNING_GAMES } = require('../../../game-runner');
@@ -44,7 +43,9 @@ class PlayerRole_Impl extends ChildRole_Impl {
         super.setUpListeners(); // Set up child listeners
 
         this._registerListener('requestStartup', () => {
+            console.log(GAMES_LOBBY[this._gameId].playersId);
             if (RUNNING_GAMES[this._gameId] === undefined) {
+                console.log(GAMES_LOBBY[this._gameId].playersId);
                 console.log("[CLIENT Warn] Startup package request denied as all player aren't yet connected");
                 return;
             }

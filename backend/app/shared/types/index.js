@@ -201,7 +201,8 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 /**
  * @typedef {Object} User
  * @property {UserID} userId
- * @property {string} name
+ * @property {string} firstName
+ * @property {string} lastName
  * @property {number} age
  * @property {string} icon
  * @property {UserConfig} config
