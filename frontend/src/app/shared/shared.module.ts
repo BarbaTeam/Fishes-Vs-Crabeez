@@ -47,10 +47,9 @@ import { UserConfigComponent } from './components/user-config/user-config.compon
 import { GameCardComponent } from './components/game-card/game-card.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ChoiceButtonComponent } from './components/choice-button/choice-button.component';
-import { ExpandableButtonComponent } from './components/expandable-button/expandable-button.component';
 import { InfoTooltipComponent } from './components/info-tooltip/info-tooltip.component';
-import { FontSizeControlComponent } from './components/user-config/font-size-control/font-size-control.component';
-import { SoundControlComponent } from './components/user-config/sound-control/sound-control.component';
+import { FontSizeControlComponent } from './components/font-size-control/font-size-control.component';
+import { SoundControlComponent } from './components/sound-control/sound-control.component';
 
 ////////////////////////////////////////////////////////////////////////////////
 // SharedModule :
@@ -103,9 +102,7 @@ const SHARED_COMPONENTS = [
     PlayerInLobbyComponent,
     UserConfigComponent,
     GameCardComponent,
-    ChoiceButtonComponent,
-    ExpandableButtonComponent,
-    
+    ChoiceButtonComponent,    
 ];
 
 

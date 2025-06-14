@@ -16,7 +16,7 @@
             [routerLink]="['/child/games-list']"
             routerLinkActive="active"
         >
-            Jouer
+            Liste des parties
         </app-navbar-button>
 
         <app-navbar-button
@@ -34,27 +34,17 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-       <div class="game-mode" [class.expanded]="selected">
-            <h2>Choisissez votre mode de jeu !</h2>
-
-            @if (selected) {
-                <app-expandable-button
-                    class="card-wrapper expanded-card"
-                    [title]="selected === 'solo' ? 'Solo' : 'Équipe'"
-                    subtitle="Les règles du jeu"
-                    [mode]="selected"
-                    [expanded]="true"
-                    imageUrl="'../../assets/images/icons/ergo_choice.png'"
-                    [description]="
-                        selected === 'solo'
-                        ? '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position des hordes qui arrivent\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'
-                        : '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position et vos alliés\n\n⚔️ Mettez vous face à l\'ennemi pour pouvoir l\'éliminer\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'
-                    "
-                    (expand)="onExpand($event)"
-                >
-                @if (waitingGames.length !== 0 && selected !== "solo") {
-                    <p class="title">Liste des parties</p>
-                    <p class="sub-title">Cliquez pour rejoindre</p>
+        <div class="game-modes-container">
+            <div class="solo-conteneur">
+                <p class="title">Jouer seul</p>
+                <app-big-button style="width: 20rem; height: 5rem;">
+                    Jouer
+                </app-big-button>
+            </div>
+            <div class="multi-conteneur">
+                <p class="sub-title">Ou à plusieurs</p>
+                @if (waitingGames.length !== 0) {
+                    <p>Cliquez pour rejoindre</p>
                     <div class="game-list">
                         @for (waitingGame of waitingGames; track waitingGame.gameId) {
                             <app-game-card
@@ -63,59 +53,92 @@
                             />
                         }
                     </div>
-                } @else if (selected !== "solo") {
-                    <p>En attente de parties...</p>
+                } @else {
+                    <p class="waiting">En attente de parties...</p>
                 }
-                </app-expandable-button>
-            } @else {
-                <ng-container *ngIf="!selected">
-                    <app-expandable-button
-                        class="card-wrapper"
-                        title="Solo"
-                        imageUrl="../../assets/images/icons/solo.png"
-                        description="Vous affronterez une horde de crabe, seul, mais déterminé(e), arriveriez vous à les repousser ?"
-                        mode="solo"
-                        [expanded]="false"
-                        (expand)="onExpand($event)"
-                    ></app-expandable-button>
-
-                    <app-expandable-button
-                        class="card-wrapper"
-                        title="Équipe"
-                        imageUrl="../../assets/images/icons/multi.png"
-                        description="Les crabes n'ont pas peur d'une bande d'enfant comme vous, montrez leur le contraire !"
-                        mode="multi"
-                        [expanded]="false"
-                        (expand)="onExpand($event)"
-                    ></app-expandable-button>
-                </ng-container>
-            }
+            </div>
         </div>
 
-        <div class="back-button-container" *ngIf="selected">
-            <div class="back-button" (click)="selected = null">Retour</div>
+        <div class="options-container">
+            <div class="option-item" (click)="openSettings()">
+                <svg class="option-icon" viewBox="0 0 24 24">
+                    <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11.03L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.22,8.95 2.27,9.22 2.46,9.37L4.57,11.03C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.22,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.68 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/>
+                </svg>
+                <span class="option-label">Paramètres</span>
+            </div>
+
+            <div class="option-item rules-tooltip" (mouseenter)="showRules = true" (mouseleave)="showRules = false">
+                <svg class="option-icon" viewBox="0 0 24 24">
+                    <path d="M11,18H13V16H11V18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,6A4,4 0 0,0 8,10H10A2,2 0 0,1 12,8A2,2 0 0,1 14,10C14,12 11,11.75 11,15H13C13,12.75 16,12.5 16,10A4,4 0 0,0 12,6Z"/>
+                </svg>
+                <span class="option-label">Règles</span>
+                <div class="tooltip-content" [class.show]="showRules">
+                    <strong>Règles du jeu :</strong><br>
+                    • Objectif : Ecrivez au clavier pour survivre<br>
+                    • Chaque lettre correcte devient verte<br>
+                    • Les lettres mal placées deviennent rouges<br>
+                    • Chaque bonne réponse fait tirer votre personnage<br>
+                    • Utilisez les flèches directionnelles pour changer de ligne<br>
+                    • Défendez vos alliés !
+                </div>
+            </div>
         </div>
 
-        <!--
-        @if (waitingGames.length !== 0) {
-            <p class="title">Liste des parties</p>
-            <p class="sub-title">Cliquez pour rejoindre</p>
-            <app-inner-box
-                class="scrollable column no-background medium center-content"
-                style="width: 35vw;"
-            >
-                @for (waitingGame of waitingGames; track waitingGame.gameId) {
-                    <app-game-card
-                        [gameLobby]="waitingGame"
-                        (click)="joinGame(waitingGame.gameId)"
-                    />
-                }
-            </app-inner-box>
-        } @else {
-            <p>En attente de parties...</p>
+        @if (showSettings) {
+            <div class="settings-popup" (click)="closeSettings($event)">
+                <div class="settings-form" (click)="$event.stopPropagation()">
+                    <div class="form-header">
+                        <h2>Paramètres</h2>
+                        <button class="close-btn" (click)="closeSettings()">&times;</button>
+                    </div>
+                    
+                    <div class="form-content">
+                        <div class="form-group">
+                            <div class="icon-selector">
+                                <span *ngIf="!showIconSelector" 
+                                    (click)="showIconSelector = !showIconSelector" 
+                                    class="icon-select-trigger">
+                                    Icône :
+                                    <img [src]="'../../assets/images/child-pps/' + userTemp.icon" 
+                                        alt="Icône" 
+                                        height="30" />
+                                </span>
+
+                                <div *ngIf="showIconSelector" class="icon-grid">
+                                    <img
+                                        *ngFor="let icon of availableIcons"
+                                        [src]="'../../assets/images/child-pps/' + icon"
+                                        [alt]="icon"
+                                        class="icon-option"
+                                        (click)="selectIcon(icon)"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group controls-row">
+                            <app-font-size-control
+                                [(value)]="userTemp.config.fontSize"
+                                [minValue]="1"
+                                [maxValue]="4"
+                                [step]="1">
+                            </app-font-size-control>
+                            
+                            <app-sound-control
+                                [(value)]="userTemp.config.sound"
+                                [minValue]="0"
+                                [maxValue]="5"
+                                [step]="1">
+                            </app-sound-control>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="save-btn" (click)="saveSettings()">Sauvegarder</button>
+                    </div>
+                </div>
+            </div>
         }
-        -->
-
     </app-body>
 
 </app-template>
