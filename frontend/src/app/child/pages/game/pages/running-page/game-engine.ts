@@ -20,7 +20,7 @@ export class GameEngine {
     private ctx: CanvasRenderingContext2D;
     private players: Map<UserID, Player>;
     private projectiles: Projectile[];
-    private enemies: Enemy[];
+    private enemies: Map<string, Enemy>;
     private personalScore: number;
     public generalScore$ = new Subject<number>();
     private generalScore: number;
@@ -54,8 +54,7 @@ export class GameEngine {
         window.addEventListener('resize', () => this.resizeCanvas());
 
         this.players = new Map();
-
-        this.enemies = [];
+        this.enemies = new Map();
         this.projectiles = [];
         this.personalScore = 0;
         this.generalScore = 0;
@@ -167,17 +166,17 @@ export class GameEngine {
                 switch (enemy.type) {
                     case 'crab':
                         const crab = Crab.fromJson(enemy, this.canvas);
-                        this.enemies.push(crab);
+                        this.enemies.set(crab._id ,crab);
                         console.log(`New Crab received: ${crab.id}, position: (${crab.x}, ${crab.y})`);
                         break;
                     case 'hive-crab':
                         const hiveCrab = HiveCrab.fromJson(enemy, this.canvas);
-                        this.enemies.push(hiveCrab);
+                        this.enemies.set(hiveCrab._id, hiveCrab);
                         console.log(`New Hive Crab received: ${hiveCrab.id}, position: (${hiveCrab.x}, ${hiveCrab.y})`);
                         break;
                     case 'drone':
                         const drone = Drone.fromJson(enemy, this.canvas);
-                        this.enemies.push(drone);
+                        this.enemies.set(drone._id, drone);
                         console.log(`New Drone received: ${drone.id}, position: (${drone.x}, ${drone.y})`);
                         break;
                     default:
@@ -186,15 +185,28 @@ export class GameEngine {
             })
         );
         this.subscriptions.add(
-            this.socket.on<{projectile: Projectile, enemy: Enemy}>('enemyKilled').subscribe(({projectile : projectile, enemy : enemy})=>{
+            this.socket.on<{projectile: Projectile, enemyId: string}>('enemyKilled').subscribe(({projectile : projectile, enemyId : enemyId})=>{
                 this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
-                this.enemies = this.enemies.filter(e => e.id != enemy.id);
+                this.enemies.delete(enemyId);
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<{projectile: Projectile, enemyId: string}>('enemyHit').subscribe(({projectile : projectile, enemyId : enemyId})=>{
+                this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
+                const enemy = this.enemies.get(enemyId);
+                if(enemy){
+                    enemy.enemyImage.src = enemy.enemyHitUrl!;
+                    setTimeout(() => {
+                        enemy.enemyImage.src = enemy.enemyUrl!;
+                    }, 100)
+                }
             })
         );
 
         this.subscriptions.add(
             this.socket.on<string>('enemyDespawned').subscribe(enemyId => {
-                this.enemies = this.enemies.filter(enemy => enemy.id !== enemyId);
+                this.enemies.delete(enemyId);
             })
         );
         
@@ -223,7 +235,7 @@ export class GameEngine {
     }
 
     private update(): void {
-        for (const enemy of this.enemies) {
+        for (const [, enemy] of this.enemies) {
             enemy.update();
         }
         for (const projectile of this.projectiles) {
@@ -241,7 +253,7 @@ export class GameEngine {
         });
 
         this.enemies.forEach(enemy => {
-            if(enemy instanceof Crab){
+            if(enemy){
                 enemy.draw(ctx);
             }
         });

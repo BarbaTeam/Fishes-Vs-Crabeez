@@ -6,7 +6,7 @@ export const CRAB_HEIGHT = 5;
 export const CRAB_WIDTH = 5;
 
 export const HIVECRAB_HEALTH = 3;
-export const HIVECRAB_SPEED = 0.01;
+export const HIVECRAB_SPEED = 0.05;
 export const HIVECRAB_DAMAGE = 3;
 export const HIVECRAB_SCORE = 50;
 export const HIVECRAB_HEIGHT = 8;

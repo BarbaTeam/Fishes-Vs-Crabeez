@@ -101,10 +101,10 @@ export class GameEngine {
         enemy.update();
         if (enemy.x < 11) {
             enemy.destroy();
-            if(this.health == 1){
+            if(this.health <= 1){
                 this.model.hasEnded = true;
             }
-            this.health--;
+            this.health -= enemy.maxHealth;
             this.notifier.onEnemyDespawned(enemy.id);
             this.notifier.onHealthUpdated(this.health);
         }
@@ -112,7 +112,7 @@ export class GameEngine {
 
     private processProjectile(projectile: Projectile): void {
         projectile.update();
-        if (projectile.x > VIRTUAL_WIDTH) {
+        if (projectile.x > VIRTUAL_WIDTH+10) {
             projectile.destroy();
         }
     }
@@ -127,9 +127,12 @@ export class GameEngine {
                 if (this.checkCollision(enemy, projectile)) {
                     this.hit(enemy);
                     projectile.destroy();
-                    if(!enemy.alive){
+                    if(enemy.alive){
+                        this.notifier.onEnemyHit(projectile, enemy.id);
+                    }
+                    else{
                         this.score += enemy.score;
-                        this.notifier.onEnemyKilled(projectile, enemy);
+                        this.notifier.onEnemyKilled(projectile, enemy.id);
                         this.notifier.onScoreUpdated(this.score);
                     }
                     return; 
@@ -171,14 +174,16 @@ export class GameEngine {
 
     private spawnNextWaveIfNeeded(): void {
         const noMoreEnemies = this.enemies.length === 0;
-        const currentEventEnded = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
-
-        if (noMoreEnemies && currentEventEnded) {
-            const PLACEHOLDER_DIFFICULTY = 10;
-
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
+        const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
+        
+        if (noMoreEnemies && noCurrentWave) {
+            const difficulty = this.waveCounter;
+            
+            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, difficulty);
             this.waveCounter++;
             this.notifier.onNewWave(this.waveCounter);
+            
+            console.log(`Spawning wave ${this.waveCounter} with difficulty ${difficulty}`); 
         }
     }
 }

@@ -10,6 +10,7 @@ export type EnemyID = `ennemy-${number}`;
 
 export class Enemy {
     public static nextId = 0;
+    public maxHealth : number;
     public readonly id: EnemyID;
     public readonly lane: Lane;
     public x: number;
@@ -45,6 +46,7 @@ export class Enemy {
         this.width = width;
         this.height = height;
         
+        this.maxHealth = health;
         this.health = health;
         this.speed = speed;
         

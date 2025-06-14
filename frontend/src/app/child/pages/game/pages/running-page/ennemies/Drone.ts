@@ -6,8 +6,8 @@ export class Drone extends Enemy {
         super(canvas, id);
 
         this.enemyImage = new Image();
-        this.enemyImage.src = 'assets/images/game/enemy/drone_32x32.png';
-
+        this.enemyUrl = 'assets/images/game/enemy/drone_32x32.png';
+        this.enemyImage.src = this.enemyUrl;
         this.virtualWidth = 4;
         this.virtualHeight = 4;
         

@@ -8,6 +8,8 @@ export class Enemy {
     public virtualWidth!: number;
     public virtualHeight!: number;
     public enemyImage!: HTMLImageElement;
+    public enemyHitUrl?: string;
+    public enemyUrl!: string;
     public speed!: number;
 
     constructor(
