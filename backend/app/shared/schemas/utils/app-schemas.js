@@ -48,6 +48,7 @@ const GameConfigSchema = objectSchema({
     maxDuration: unionSchema(numberSchema, stringSchema.valid('inf')).required(),
     minNbPlayers: numberSchema.valid(1, 2, 3).required(),
     maxNbPlayers: numberSchema.valid(1, 2, 3).required(),
+    monstersSpeedCoeff: numberSchema.required(),
     monstersSpawnRate: numberSchema.required(),
     encrypted: booleanSchema.required(),
 });

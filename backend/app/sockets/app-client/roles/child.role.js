@@ -4,7 +4,7 @@ const { UserTable } = require('../../../shared/tables/user.table');
 const { UserID, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
-const { CONNECTED_USERS_ID, GAMES, gameLocks, GUEST_ROOM, CHILD_ROOM } = require('../app-client.helpers');
+const { CONNECTED_USERS_ID, GAMES_LOBBY, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM } = require('../app-client.helpers');
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
@@ -43,7 +43,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
         this._cleanListeners();
 
         this._registerListener('requestAllGames', () => {
-            this.socket.emit('allGames', [...GAMES.values()]);
+            this.socket.emit('allGames', [...Object.values(GAMES_LOBBY)]);
         });
 
         this._registerListener('tryJoinGame', (gameId) => {
@@ -55,7 +55,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
             gameLocks.set(gameId, true);
 
             try {
-                const game = GAMES.get(gameId);
+                const game = GAMES_LOBBY[gameId];
                 const canJoinGame = (
                     !!game                                    // Child can only join existing game
                     && game.state !== GameLobbyState.RUNNING  // Child can only join waiting game
@@ -90,7 +90,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
             }
             CONNECTED_USERS_ID.splice(userToRemoveIdx, 1);
 
-            this.io.to(GUEST_ROOM).emit('userDisconnected', oldUserId);
+            this.io.to(GUEST_ROOM).to(ERGO_ROOM).emit('userDisconnected', oldUserId);
         });
     }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Subscription, combineLatest } from 'rxjs';
+import { filter, first, map } from 'rxjs/operators';
 
 import { SocketService } from '@app/shared/services/socket.service';
 import { UserService } from '@app/shared/services/user.service';
@@ -40,17 +40,6 @@ export class ChildsListPageComponent implements OnInit {
         this._startup();
 
         this.subscriptions.add(
-            this.userService.users$.subscribe((users: User[]) => {
-                const usersId = users.map(u => u.userId);
-                this._connectedUsersId = usersId.filter(
-                    userId => !this._disconnectedUsersId.includes(userId)
-                );
-
-                this._updateUsers();
-            })
-        );
-
-        this.subscriptions.add(
             this.socket.on<UserID>('userConnected').subscribe((userId) => {
                 this._connectedUsersId.push(userId);
                 this._disconnectedUsersId.splice(this._disconnectedUsersId.indexOf(userId), 1);
@@ -69,14 +58,43 @@ export class ChildsListPageComponent implements OnInit {
         );
     }
 
+
     private _startup(): void {
+        // Before having true list
+        this.subscriptions.add(
+            this.userService.users$.subscribe(users => {
+                this._disconnectedUsersId = users.map(u => u.userId);
+
+                this._updateUsers();
+            })
+        );
+
+
         this.socket.onReady(() => {
-            this.socket.sendMessage('requestAvailableUsersId', {});
+            this.socket.sendMessage('requestConnectedUsersId', {});
+            this.socket.sendMessage('requestDisconnectedUsersId', {});
         });
-        this.socket.on<UserID[]>('availableUsersId')
+
+        this.socket.on<UserID[]>('connectedUsersId')
             .pipe(first()) // <-- one time subscription
-            .subscribe((availableUsersId) => {
-                this._disconnectedUsersId = availableUsersId;
+            .subscribe(connectedUsersId => {
+                this._connectedUsersId = connectedUsersId;
+                this._disconnectedUsersId = this._disconnectedUsersId.filter(
+                    userId => !connectedUsersId.includes(userId)
+                );
+
+                this._updateUsers();
+            });
+
+        this.socket.on<UserID[]>('disconnectedUsersId')
+            .pipe(first()) // <-- one time subscription
+            .subscribe(disconnectedUsersId => {
+                this._connectedUsersId = this._connectedUsersId.filter(
+                    userId => !disconnectedUsersId.includes(userId)
+                );
+                this._disconnectedUsersId = disconnectedUsersId;
+
+                this._updateUsers();
             });
     }
 

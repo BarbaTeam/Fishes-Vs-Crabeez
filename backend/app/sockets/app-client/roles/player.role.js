@@ -3,7 +3,7 @@ const { Server, Socket } = require('socket.io');
 const { UserID, GameID } = require("../../../shared/types");
 
 
-const { CONNECTED_USERS_ID, GAMES, GUEST_ROOM } = require("../app-client.helpers");
+const { CONNECTED_USERS_ID, GAMES_LOBBY, GUEST_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
@@ -78,7 +78,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
             const leftGameId = this._gameId;
             this.leaveGame();
 
-            const gameToLeave = GAMES.get(leftGameId);
+            const gameToLeave = GAMES_LOBBY[leftGameId];
             if (!gameToLeave) {
                 return;
             }
@@ -100,7 +100,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
      */
     disconnect() {
         // Remove from lobby
-        const game = GAMES.get(this._gameId);
+        const game = GAMES_LOBBY[this._gameId];
         if (!game) {
             console.warn(`[WARN :: AppClient::_handleDisconnectAsPlayer] No game found for gameId ${this._gameId}`);
             return;

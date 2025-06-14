@@ -21,8 +21,11 @@ exports.GameInfoTable = new DatabaseTable(
         config: {
             maxDuration: 0,
             minNbPlayers: 1,
-            maxNbPlayers: 1,
-            monstersSpawnRate: 0,
+            maxNbPlayers: 3,
+
+            monstersSpeedCoeff: 1,
+            monstersSpawnRate: 1,
+
             encrypted: false,
         },
     }),

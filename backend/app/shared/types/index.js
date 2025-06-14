@@ -55,8 +55,21 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @property {number | "inf"} maxDuration - Maximum game duration in seconds or "inf" for unlimited.
  * @property {1 | 2 | 3} minNbPlayers - Minimum number of players (1 to 3).
  * @property {1 | 2 | 3} maxNbPlayers - Maximum number of players (1 to 3).
+ * @property {number} monstersSpeedCoeff - Speed coefficient influencing how fast monsters moves
  * @property {number} monstersSpawnRate - Rate at which monsters appear.
  * @property {boolean} encrypted - Whether the game uses encryption for questions.
+ *
+ * @memberof types
+ */
+
+/**
+ * @typedef {Object} GameLobby
+ * @property {GameID} gameId
+ * @property {string} name
+ * @property {UserID[]} playersId
+ * @property {GameLobbyState} state
+ * @property {Record<UserID, UserQuestionNotionsMask>} playersNotionsMask
+ * @property {string|null} [masterId]   // socket.id of the GAME_MASTER, or null if none
  *
  * @memberof types
  */
@@ -192,19 +205,6 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @property {number} age
  * @property {string} icon
  * @property {UserConfig} config
- *
- * @memberof types
- */
-
-
-/**
- * @typedef {Object} GameLobby
- * @property {GameID} gameId
- * @property {string} name
- * @property {UserID[]} playersId
- * @property {GameLobbyState} state
- * @property {Record<UserID, UserQuestionNotionsMask>} playersNotionsMask
- * @property {string|null} [masterId]   // socket.id of the GAME_MASTER, or null if none
  *
  * @memberof types
  */
