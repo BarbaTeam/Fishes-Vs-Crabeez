@@ -38,8 +38,6 @@ export class PlayerInLeaderboardComponent implements OnInit {
         if (this.userId) {
             this.user = this.userService.getUserById(this.userId)!;
         }
-
-        this.splitName()
     }
 
 
@@ -50,19 +48,6 @@ export class PlayerInLeaderboardComponent implements OnInit {
 
     public toogle(): void {
         this._isUnrolled = !this._isUnrolled;
-    }
-
-    private splitName(): void {
-        if (!this.user?.name) return;
-
-        const parts = this.user.name.trim().split(' ');
-        if (parts.length === 1) {
-            this.firstName = parts[0];
-            this.lastName = '';
-        } else {
-            this.firstName = parts.slice(0, -1).join(' ');
-            this.lastName = parts[parts.length - 1];
-        }
     }
 
     public get gradeIcon(): string {

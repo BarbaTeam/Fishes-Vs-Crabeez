@@ -1,0 +1,173 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //justify-content: center;
+    position: relative; /* 🔥 Ajouté pour permettre le positionnement de la croix */
+
+    width: 8.3rem;
+    height: 10rem;
+
+    background: linear-gradient(135deg, #e0f7fa, #ecfcff);
+    color: #01579b;
+
+    border: 0.125rem solid #b0c4de;
+
+    margin: 0.5rem;
+    box-sizing: border-box;
+    transition: background-color 0.3s, transform 0.2s;
+    image-rendering: pixelated;
+
+    overflow: visible; /* 🔥 Modifié pour permettre l'affichage de la croix */
+
+    &:hover {
+        cursor: pointer;
+        background-color: #d0d9f5;
+        transform: translateY(-2px);
+    }
+}
+
+
+.status-indicator {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+
+    &.connected {
+        background-color: #28a745; /* Rond vert pour connecté */
+        box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+    }
+
+    &.disconnected {
+        background-color: #6c757d; /* Rond gris pour déconnecté */
+        box-shadow: 0 0 0 2px rgba(108, 117, 125, 0.2);
+    }
+}
+
+
+/* Styles existants pour les icônes et noms */
+.icon {
+    margin: 0.5rem;
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+}
+
+
+.name {
+    .first-name {
+        font-size: 0.9rem;
+        font-weight: 500;
+    }
+
+    .last-name {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-top: 0.1rem;
+    }
+}
+
+
+/* 🔥 NOUVEAU : Bouton de déconnexion */
+.disconnect-btn {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+
+    width: 1.5rem;
+    height: 1.5rem;
+
+    background: #dc3545;
+    color: white;
+    border: 2px solid white;
+    border-radius: 50%;
+
+    font-size: 0.8rem;
+    font-weight: bold;
+    line-height: 1;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s ease;
+
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+
+    &:hover {
+        background: #c82333;
+        transform: scale(1);
+    }
+
+    &:active {
+        transform: scale(0.9);
+    }
+}
+
+/* 🔥 Affichage de la croix au survol de la carte connectée */
+:host:hover .disconnect-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+
+/* === RESPONSIVE === */
+@media (max-width: 48rem) {
+    :host {
+        width: 6rem;
+        height: 7rem;
+
+        .name {
+            .first-name {
+                font-size: 0.8rem;
+            }
+
+            .last-name {
+                font-size: 0.85rem;
+            }
+        }
+
+        /* 🔥 Ajustement de la croix en responsive */
+        .disconnect-btn {
+            width: 1.2rem;
+            height: 1.2rem;
+            font-size: 0.7rem;
+            top: -0.4rem;
+            right: -0.4rem;
+        }
+    }
+}
+
+@media (max-width: 30rem) {
+    :host {
+        width: 5.5rem;
+        height: 6.5rem;
+
+        .name {
+            .first-name {
+                font-size: 0.75rem;
+            }
+
+            .last-name {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* 🔥 Ajustement de la croix en très petit écran */
+        .disconnect-btn {
+            width: 1rem;
+            height: 1rem;
+            font-size: 0.6rem;
+            top: -0.3rem;
+            right: -0.3rem;
+        }
+    }
+}

@@ -49,4 +49,12 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
         this.socket.sendMessage('closeGame');
         this.subscriptions.unsubscribe();
     }
+
+    public onGameConfigUpdate(): void {
+        // ...
+    }
+
+    public onGameLobbyUpdate(): void {
+        // ...
+    }
 }

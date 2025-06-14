@@ -1,0 +1,20 @@
+<img class="icon" [src]="'../../assets/images/child-pps/' + user.icon" [alt]="'Icône de ' + user.lastName + ' ' + user.firstName">
+
+<div class="name">
+    <p class="first-name">{{ user.firstName }}</p>
+    <p class="last-name">{{ user.lastName }}</p>
+</div>
+
+<div
+    class="status-indicator"
+    [ngClass]="{'connected': state === 'Connected', 'disconnected': state === 'Disconnected'}"
+    [title]="state === 'Connected' ? 'Connecté' : 'Déconnecté'"
+></div>
+
+@if (state === 'Connected') {
+    <button
+        class="disconnect-btn"
+        title="Déconnecter l'utilisateur"
+        (click)="disconnectUser()"
+    > ✕ </button>
+}

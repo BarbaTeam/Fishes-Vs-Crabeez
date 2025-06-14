@@ -1,0 +1,82 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 8.3rem;
+    height: 10rem;
+
+    background: linear-gradient(135deg, #e0f7fa, #ecfcff);
+    color: #01579b;
+
+    border: 2px solid #b0c4de;
+
+    margin: 0.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
+    transition: background-color 0.3s, transform 0.2s;
+    image-rendering: pixelated;
+
+    &.hoverable:hover {
+        cursor: pointer;
+        background-color: #d0d9f5;
+        transform: translateY(-2px);
+    }
+
+    .icon {
+        width: 5rem;
+        height: 5rem;
+        margin-bottom: 0.5rem;
+        background: none;
+        box-shadow: none;
+        flex-shrink: 0;
+        object-fit: contain;
+        image-rendering: pixelated;
+        display: block;
+    }
+
+    .name {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    :host {
+        width: 6rem;
+        height: 7rem;
+
+        .name {
+            .first-name {
+                font-size: 0.8rem;
+            }
+
+            .last-name {
+                font-size: 0.85rem;
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    :host {
+        width: 5.5rem;
+        height: 6.5rem;
+
+        .name {
+            .first-name {
+                font-size: 0.75rem;
+            }
+
+            .last-name {
+                font-size: 0.8rem;
+            }
+        }
+    }
+}

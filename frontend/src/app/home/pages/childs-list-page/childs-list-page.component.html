@@ -16,14 +16,12 @@
 
     <app-body>
         @if (availableUsers.length !== 0) {
-            <div class="container">
-                <app-inner-box class="main-box blue scrollable" style="width: 47.5vw;">
-                    <app-user-list
-                        [users]="availableUsers"
-                        (userClick)="onUserClick($event)"
-                    />
-                </app-inner-box>
-            </div>
+            <app-inner-box class="main-box blue scrollable" style="width: 50rem;">
+                <app-user-list
+                    [users]="availableUsers"
+                    (userClick)="onUserClick($event)"
+                />
+            </app-inner-box>
         } @else {
             <p>Aucun profil n'a été créé</p>
         }
