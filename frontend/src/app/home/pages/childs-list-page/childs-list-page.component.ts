@@ -54,6 +54,18 @@ export class ChildsListPageComponent {
                 this.availableUsersId.push(userId);
             })
         );
+
+        this.subscriptions.add(
+            this.socket.on<void>('tryForceDisconnection_FAILURE').subscribe(() => {
+                console.log("Failed to disconnect user...");
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<void>('tryForceDisconnection_SUCCESS').subscribe(() => {
+                console.log("User has been disconnected !");
+            })
+        )
     }
 
     private _startup(): void {
