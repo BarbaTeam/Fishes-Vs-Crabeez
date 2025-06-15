@@ -4,6 +4,9 @@ const { UserTable } = require('../../../shared/tables/user.table');
 const { UserID, GameID } = require("../../../shared/types");
 const { GameState } = require("../../../shared/types/enums/game-state.enum");
 
+const { registerRunningGame } = require('../../../game-runner');
+const { GameRuntime } = require('../../../game/runtime');
+
 const { CONNECTED_USERS_ID, GAMES, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM } = require('../app-client.helpers');
 
 const { AppClientRole } = require('./app-client-role.enum');
@@ -59,6 +62,31 @@ class ChildRole_Impl extends AppClientRole_Impl {
 
         this._registerListener('requestAllGames', () => {
             this.socket.emit('allGames', [...Object.values(GAMES)]);
+        });
+
+        this._registerListener('openGame', () => {
+            /** @type {GameLobby} */
+            const newGame = {
+                gameId: `g${Date.now()}`,
+                name: "",
+                playersId: [],
+                state: GameLobbyState.WAITING,
+                playersNotionsMask: {},
+            };
+            GAMES_LOBBY[newGame.gameId] = newGame;
+
+            this.socket.emit('openGame_SUCCESS', newGame.gameId);
+            
+            this.joinGame(newGame.gameId);
+
+            newGame.playersId.push(this._userId);
+            const user = UserTable.getByKey({ userId: this._userId });
+            newGame.playersNotionsMask[this._userId] = user.config.notionsMask;
+
+            newGame.state = GameLobbyState.RUNNING;
+
+            this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId);
+            registerRunningGame(newGame.gameId, new GameRuntime(this.io, newGame));
         });
 
         this._registerListener('tryJoinGame', (gameId) => {
