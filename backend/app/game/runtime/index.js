@@ -9,7 +9,6 @@ const game_runner_1 = require("../../game-runner");
 const stats_1 = require("../../stats");
 class GameRuntime {
     constructor(io, game) {
-        console.log("running game : ", game);
         this.notifier = new game_updates_notifier_1.GameUpdatesNotifier(io, io.to(game.gameId));
         this.accumulator = new game_log_accumulator_1.GameLogAccumulator(game);
         this.model = new model_1.GameModel(this.notifier, game, this.accumulator);
@@ -20,7 +19,7 @@ class GameRuntime {
         }
     }
     runOneFrame() {
-        if (this.model.hasEnded) {
+        if (this.model.hasEnded || this.model.game.playersId.length === 0) {
             this.onGameEnd();
             return;
         }
@@ -30,14 +29,14 @@ class GameRuntime {
         if (this === null || this === void 0 ? void 0 : this.timeout)
             this.timeout.close();
         this.notifier.onGameEnd();
-        stats_1.processGameLog(this.accumulator.gamelog);
-        game_runner_1.stopRunningGame(this.model.game.gameId);
+        (0, stats_1.processGameLog)(this.accumulator.gamelog);
+        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
     }
     onForcedGameEnd() {
         if (this === null || this === void 0 ? void 0 : this.timeout)
             this.timeout.close();
         this.notifier.onGameEnd();
-        game_runner_1.stopRunningGame(this.model.game.gameId);
+        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
     }
 }
 exports.GameRuntime = GameRuntime;

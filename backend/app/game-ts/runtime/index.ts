@@ -37,7 +37,7 @@ export class GameRuntime {
     }
 
     public runOneFrame(): void {
-        if(this.model.hasEnded){
+        if(this.model.hasEnded || this.model.game.playersId.length === 0){
             this.onGameEnd();
             return;
         }

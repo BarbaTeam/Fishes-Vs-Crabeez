@@ -20,10 +20,10 @@ export class QuizHandler implements IQuizHandler {
         private accumulator: GameLogAccumulator,
     ) {
         this._playersNotionsMask = playersNotionsMask;
-        for(const [playerId, playerMask] of Object.entries(playersNotionsMask)){
-            const notionMask = {...playerMask, [QuestionNotion.ENCRYPTION]: false};
-            this.sendQuestion(playerId as UserID, notionMask);
-        }
+    }
+
+    public get playersNotionMask() : Record<UserID, UserQuestionNotionsMask> {
+        return this._playersNotionsMask;
     }
 
     public receiveAnswer(playerId: UserID, ans: AnsweredQuestion): void {
