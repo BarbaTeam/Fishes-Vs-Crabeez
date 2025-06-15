@@ -5,6 +5,7 @@ import { SocketService } from '@app/shared/services/socket.service';
 import { GamesService } from '@app/shared/services/games.service';
 
 import { Game, GameState } from '@app/shared/models/game.model';
+import { Router } from '@angular/router';
 
 
 
@@ -22,6 +23,7 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
     constructor(
         private socket: SocketService,
         private gamesService: GamesService,
+        private router : Router
     ) {}
 
     ngOnInit(): void {
@@ -45,8 +47,13 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
         this.socket.sendMessage('startGame');
     }
 
-    ngOnDestroy(): void {
+    public deleteLobby(): void{
         this.socket.sendMessage('closeGame');
+        this.router.navigate(['/ergo/games-manager']);
+    }
+
+    ngOnDestroy(): void {
+        this.socket.sendMessage('unspyGame')
         this.subscriptions.unsubscribe();
     }
 

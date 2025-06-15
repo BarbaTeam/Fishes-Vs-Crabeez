@@ -3,15 +3,13 @@ const { Server, Socket } = require('socket.io');
 const { UserID, GameID } = require("../../../shared/types");
 
 
-const { CONNECTED_USERS_ID, GAMES, GUEST_ROOM } = require("../app-client.helpers");
+const { CONNECTED_USERS_ID, GAMES, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
 const { ChildRole_Impl } = require('./child.role');
 
 const { RUNNING_GAMES } = require('../../../game-runner');
-
-
 
 /**
  * Concrete state for Players (inherits from Child)
@@ -93,7 +91,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
             gameToLeave.playersId.splice(playerToRemoveIdx, 1);
             delete gameToLeave.playersConfig[this._userId];
 
-            this.io.to(leftGameId).to(this.socket.id).emit('gameUpdated', gameToLeave);
+            this.io.to(leftGameId).to(ERGO_ROOM).to(CHILD_ROOM).emit('gameUpdated', gameToLeave);
         });
     }
 

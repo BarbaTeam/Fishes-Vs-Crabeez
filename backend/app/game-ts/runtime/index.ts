@@ -45,10 +45,15 @@ export class GameRuntime {
     }
 
     public onGameEnd(): void {
-        // TODO : enhanced game end
         if (this?.timeout) this.timeout.close();
         this.notifier.onGameEnd();
         processGameLog(this.accumulator.gamelog);
+        stopRunningGame(this.model.game.gameId);
+    }
+
+    public onForcedGameEnd(): void {
+        if (this?.timeout) this.timeout.close();
+        this.notifier.onGameEnd();
         stopRunningGame(this.model.game.gameId);
     }
 }

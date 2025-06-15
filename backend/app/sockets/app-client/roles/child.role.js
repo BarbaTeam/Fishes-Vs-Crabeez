@@ -9,7 +9,22 @@ const { CONNECTED_USERS_ID, GAMES, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
 
+/**
+ * The child must need to receive at all time :
+ *  - All the already created games
+ *  - A game has been created
+ *  - A game has been deleted
+ *  - A game has changed its state
+ *  - A game has changed its name
+ *  - A player has joined a game
+ *  - A player has left a game
+ */
 
+/**
+ * The child must need to send at all time :
+ *  - Joined a game
+ *  - goBackHome
+ */
 
 /**
  * Concrete state for Children
@@ -74,7 +89,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
                 game.playersConfig[this._userId] = {
                     notionsMask: user.config.notionsMask,
                 }
-                this.io.to(gameId).emit('gameUpdated', game);
+                this.io.to(gameId).to(ERGO_ROOM).to(CHILD_ROOM).emit('gameUpdated', game);
             } finally {
                 // Release lock
                 gameLocks.delete(gameId);

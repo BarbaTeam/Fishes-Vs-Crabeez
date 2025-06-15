@@ -37,12 +37,14 @@
     <app-body>
         <app-inner-box class="blue little column scrollable">
             @if (inWaitingGame) {
-                <p class="title">Joueurs en attente</p>
-
+                <p class="title">Joueurs en attente : {{game.playersId.length}}/{{game.gameConfig.maxNbPlayers}}</p>
                 @if (game.playersId.length === 0) {
                     <p> En attente de joueurs... </p>
-                } @else {
-                    @for (playerId of game.playersId; track playerId) {
+                } 
+            } @else if (inRunningGame) {
+                <p>La partie est en cours !</p>
+            }
+             @for (playerId of game.playersId; track playerId) {
                         <app-player-in-lobby
                             [userId]="playerId"
                             [notionsMask]="game.playersConfig[playerId].notionsMask"
@@ -54,11 +56,6 @@
                             "
                         />
                     }
-                }
-
-            } @else if (inRunningGame) {
-                <p>La partie est en cours !</p>
-            }
         </app-inner-box>
 
         <app-inner-box class="blue medium">
@@ -93,6 +90,10 @@
                 />
             </span>
 
+            <app-big-button class="red"
+            (click)="deleteLobby()">
+                Supprimer
+            </app-big-button>
             <!-- TODO : To support
                 <span class="text-line">
                     <label for="minNbPlayers">Nombre minimal de joueurs :</label>
