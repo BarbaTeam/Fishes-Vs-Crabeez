@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom } from "rxjs";
-import { from } from "rxjs";
+import { BehaviorSubject, Observable, firstValueFrom, from } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { HTTP_API } from '@app/app-settings';
 
@@ -66,8 +66,8 @@ export class UserService{
 
     constructor(
         private http: HttpClient,
-        private localStorageService : LocalStorageService,
-        private socket: SocketService
+        private socket: SocketService,
+        private localStorageService: LocalStorageService,
     ) {
         // Users :
         from(this._fetchUsers()).subscribe((users) => {
@@ -257,7 +257,20 @@ export class UserService{
         }
     }
 
+
+    ////////////////////////////////////////////////////////////////////////////
+    // Sub-Observables :
+
+    /**
+    * @deprecated This method should not be used. Use `getUserById$()`.
+    */
     public getUserById(userId: UserID): User | undefined {
         return this._users.find(user => user.userId == userId);
+    }
+
+    public getUserById$(userId: UserID): Observable<User | undefined> {
+        return this.users$.pipe(map(
+            users => users.find(user => user.userId == userId)
+        ));
     }
 }

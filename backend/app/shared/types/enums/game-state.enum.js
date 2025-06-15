@@ -1,7 +1,7 @@
 /**
  * @enum {string}
  */
-exports.GameLobbyState = {
+exports.GameState = {
     WAITING: "WAITING",
     RUNNING: "RUNNING",
 };

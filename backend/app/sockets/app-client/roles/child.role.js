@@ -2,9 +2,9 @@ const { Server, Socket } = require('socket.io');
 
 const { UserTable } = require('../../../shared/tables/user.table');
 const { UserID, GameID } = require("../../../shared/types");
-const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
+const { GameState } = require("../../../shared/types/enums/game-state.enum");
 
-const { CONNECTED_USERS_ID, GAMES_LOBBY, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM } = require('../app-client.helpers');
+const { CONNECTED_USERS_ID, GAMES, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM } = require('../app-client.helpers');
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
@@ -43,7 +43,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
         this._cleanListeners();
 
         this._registerListener('requestAllGames', () => {
-            this.socket.emit('allGames', [...Object.values(GAMES_LOBBY)]);
+            this.socket.emit('allGames', [...Object.values(GAMES)]);
         });
 
         this._registerListener('tryJoinGame', (gameId) => {
@@ -55,10 +55,10 @@ class ChildRole_Impl extends AppClientRole_Impl {
             gameLocks.set(gameId, true);
 
             try {
-                const game = GAMES_LOBBY[gameId];
+                const game = GAMES[gameId];
                 const canJoinGame = (
                     !!game                                    // Child can only join existing game
-                    && game.state !== GameLobbyState.RUNNING  // Child can only join waiting game
+                    && game.state !== GameState.RUNNING  // Child can only join waiting game
                     && game.playersId.length < 3              // Child can only join waiting game with enough room
                 );
                 if (!canJoinGame) {
@@ -71,7 +71,9 @@ class ChildRole_Impl extends AppClientRole_Impl {
 
                 game.playersId.push(this._userId);
                 const user = UserTable.getByKey({ userId: this._userId });
-                game.playersNotionsMask[this._userId] = user.config.notionsMask;
+                game.playersConfig[this._userId] = {
+                    notionsMask: user.config.notionsMask,
+                }
                 this.io.to(gameId).emit('gameUpdated', game);
             } finally {
                 // Release lock

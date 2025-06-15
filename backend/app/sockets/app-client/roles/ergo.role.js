@@ -2,10 +2,10 @@ const { Server, Socket } = require('socket.io');
 
 const { UserTable } = require('../../../shared/tables/user.table');
 
-const { GameLobby, GameID } = require("../../../shared/types");
-const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
+const { Game, GameID } = require("../../../shared/types");
+const { GameState } = require("../../../shared/types/enums/game-state.enum");
 
-const { GAMES_LOBBY, gameLocks, userLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM, CONNECTED_USERS_ID } = require("../app-client.helpers");
+const { GAMES, gameLocks, CONNECTED_USERS_ID, userLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require("./app-client.role");
@@ -35,7 +35,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
         this._cleanListeners();
 
         this._registerListener('requestAllGames', () => {
-            this.socket.emit('allGames', [...Object.values(GAMES_LOBBY)]);
+            this.socket.emit('allGames', [...Object.values(GAMES)]);
         });
 
         this._registerListener('requestConnectedUsersId', () => {
@@ -51,16 +51,26 @@ class ErgoRole_Impl extends AppClientRole_Impl {
         });
 
         this._registerListener('openGame', () => {
-            /** @type {GameLobby} */
+            /** @type {Game} */
             const newGame = {
                 gameId: `g${Date.now()}`,
                 name: "",
                 playersId: [],
-                state: GameLobbyState.WAITING,
-                playersNotionsMask: {},
+                state: GameState.WAITING,
+                gameConfig: {
+                    maxDuration: "inf",
+
+                    minNbPlayers: 1,
+                    maxNbPlayers: 3,
+
+                    monstersSpeedCoeff: 1,
+                    monstersSpawnRate: 1,
+                    encrypted: false,
+                },
+                playersConfig: {},
                 masterId: this.socket.id,
             };
-            GAMES_LOBBY[newGame.gameId] = newGame;
+            GAMES[newGame.gameId] = newGame;
 
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameOpened', newGame);
             this.socket.emit('openGame_SUCCESS', newGame.gameId);
@@ -77,7 +87,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
             gameLocks.set(gameId, true);
 
             try {
-                const game = GAMES_LOBBY[gameId];
+                const game = GAMES[gameId];
                 const canSpyGame = (
                     !game                      // Ergo can't spy a game that doesn't exist
                     || game.masterId !== null  // Ergo can't spy a game that already has a game master
@@ -107,8 +117,8 @@ class ErgoRole_Impl extends AppClientRole_Impl {
                 console.log(CONNECTED_USERS_ID);
                 console.log(UserTable.getAll());
                 const canForceDisconnection = (
-                    CONNECTED_USERS_ID.includes(userId)  
-                    && UserTable.existsByKey({ userId })  
+                    CONNECTED_USERS_ID.includes(userId)
+                    && UserTable.existsByKey({ userId })
                 );
                 console.log("[SERVEUR] : disconnection request received", userId);
                 if (!canForceDisconnection) {

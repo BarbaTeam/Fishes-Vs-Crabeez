@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { first } from 'rxjs';
 
 import { SocketService } from '@app/shared/services/socket.service';
-import { GamesLobbyService } from '@app/shared/services/games-lobby.service';
+import { GamesService } from '@app/shared/services/games.service';
+
 import { GameID } from '@app/shared/models/ids';
 
 
@@ -16,7 +17,7 @@ import { GameID } from '@app/shared/models/ids';
 export class GamesManagerPageComponent {
     constructor(
         private socket: SocketService,
-        private gamesLobbyService: GamesLobbyService,
+        private gamesService: GamesService,
         private router: Router,
     ) {}
 
@@ -24,7 +25,7 @@ export class GamesManagerPageComponent {
         this.socket.on<GameID>('openGame_SUCCESS')
             .pipe(first()) // <-- one time subscription
             .subscribe((gameId) => {
-                this.gamesLobbyService.selectGameLobby(gameId);
+                this.gamesService.selectGame(gameId);
                 this.router.navigateByUrl('/ergo/game-lobby');
             });
 

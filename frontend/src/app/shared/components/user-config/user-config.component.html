@@ -83,14 +83,13 @@
 </div>
 
 <div class="config-section-right">
-    
+
     <div *ngIf="isInErgoPage" class="config-group">
         <h3 class="required">Mathématiques<span class="asterisk">*</span></h3>
 
         <span >
             <app-info-tooltip
                 [tooltipText]="'Permet de réécrire les nombres sans opérations particulières.'"
-                
             ></app-info-tooltip>
             Réécriture des nombres :
             <app-settings-toggle
@@ -145,6 +144,9 @@
 
         <!--
         <span>
+            <app-info-tooltip
+                [tooltipText]="'Permet de résoudre des équations.'"
+            ></app-info-tooltip>
             Equation :
             <app-settings-toggle
                 [(checked)]="localUserTemp.config.notionsMask.EQUATION"

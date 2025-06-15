@@ -3,9 +3,10 @@ const { Server, Socket } = require('socket.io');
 const { UserID, GameID } = require("../../../shared/types");
 
 
-const { CONNECTED_USERS_ID, GAMES_LOBBY, GUEST_ROOM } = require("../app-client.helpers");
+const { CONNECTED_USERS_ID, GAMES, GUEST_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
+const { AppClientRole_Impl } = require('./app-client.role');
 const { ChildRole_Impl } = require('./child.role');
 
 const { RUNNING_GAMES } = require('../../../game-runner');
@@ -19,7 +20,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
     /**
      * @param {Server} io
      * @param {Socket} socket
-     * @param {(AppClientRole_Impl) => void} changeRole
+     * @param {(role: AppClientRole_Impl) => void} changeRole
      * @param {UserID} userId
      * @param {GameID} gameId
      */
@@ -43,9 +44,9 @@ class PlayerRole_Impl extends ChildRole_Impl {
         super.setUpListeners(); // Set up child listeners
 
         this._registerListener('requestStartup', () => {
-            console.log(GAMES_LOBBY[this._gameId].playersId);
+            console.log(GAMES[this._gameId].playersId);
             if (RUNNING_GAMES[this._gameId] === undefined) {
-                console.log(GAMES_LOBBY[this._gameId].playersId);
+                console.log(GAMES[this._gameId].playersId);
                 console.log("[CLIENT Warn] Startup package request denied as all player aren't yet connected");
                 return;
             }
@@ -79,18 +80,18 @@ class PlayerRole_Impl extends ChildRole_Impl {
             const leftGameId = this._gameId;
             this.leaveGame();
 
-            const gameToLeave = GAMES_LOBBY[leftGameId];
+            const gameToLeave = GAMES[leftGameId];
             if (!gameToLeave) {
                 return;
             }
 
             let playerToRemoveIdx = gameToLeave.playersId.indexOf(this._userId);
             if (playerToRemoveIdx === -1) {
-                // TODO : Preventing users to do dumb shit OR finding a way recover from it.
+                // TODO : Preventing users to do dumb shit OR finding a way to recover from it.
                 throw new Error("Should never happen if the user act normally");
             }
             gameToLeave.playersId.splice(playerToRemoveIdx, 1);
-            delete gameToLeave.playersNotionsMask[this._userId];
+            delete gameToLeave.playersConfig[this._userId];
 
             this.io.to(leftGameId).to(this.socket.id).emit('gameUpdated', gameToLeave);
         });
@@ -101,17 +102,19 @@ class PlayerRole_Impl extends ChildRole_Impl {
      */
     disconnect() {
         // Remove from lobby
-        const game = GAMES_LOBBY[this._gameId];
+        const game = GAMES[this._gameId];
         if (!game) {
             console.warn(`[WARN :: AppClient::_handleDisconnectAsPlayer] No game found for gameId ${this._gameId}`);
             return;
         }
 
         let idx = game.playersId.indexOf(this._userId);
-        if (idx !== -1) {
-            game.playersId.splice(idx, 1);
+        if (idx === -1) {
+            // TODO : Preventing users to do dumb shit OR finding a way to recover from it.
+            throw new Error("Should never happen if the user act normally");
         }
-        delete game.playersNotionsMask[this._userId];
+        game.playersId.splice(idx, 1);
+        delete game.playersConfig[this._userId];
 
         this.io.to(this._gameId).emit('gameUpdated', game);
 

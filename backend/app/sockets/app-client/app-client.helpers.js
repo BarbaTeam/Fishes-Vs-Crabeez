@@ -1,4 +1,4 @@
-const { UserID, GameID, GameLobby } = require("../../shared/types");
+const { UserID, GameID, Game } = require("../../shared/types");
 
 
 
@@ -12,10 +12,8 @@ const userLocks = new Map();
 
 // TODO : Introducing a `GamesManager` to ease the manipulation of games
 
-/** @type {Record<GameID, GameLobby>} */
-const GAMES_LOBBY = {};
-/** @type {Record<GameID, GameConfig>} */
-const GAMES_CONFIG = {};
+/** @type {Record<GameID, Game>} */
+const GAMES = {};
 /** @type {Map<GameID, boolean>} */
 const gameLocks = new Map();
 
@@ -30,8 +28,7 @@ module.exports = {
     CONNECTED_USERS_ID,
     userLocks,
 
-    GAMES_LOBBY,
-    GAMES_CONFIG,
+    GAMES,
     gameLocks,
 
     GUEST_ROOM,

@@ -1,4 +1,4 @@
-import { GameInfo } from "../models/game-log.model";
+import { GameInfo } from "../models/game-info.model";
 
 
 export const MOCK_GAMES_INFO: GameInfo[] = [
@@ -15,6 +15,7 @@ export const MOCK_GAMES_INFO: GameInfo[] = [
             maxDuration: 15,
             minNbPlayers: 3,
             maxNbPlayers: 3,
+            monstersSpeedCoeff: 1,
             monstersSpawnRate: 1,
             encrypted: false,
         },
@@ -33,6 +34,7 @@ export const MOCK_GAMES_INFO: GameInfo[] = [
             maxDuration: 10,
             minNbPlayers: 3,
             maxNbPlayers: 3,
+            monstersSpeedCoeff: 1,
             monstersSpawnRate: 1,
             encrypted: true,
         },

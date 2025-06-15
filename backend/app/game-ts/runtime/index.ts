@@ -1,6 +1,6 @@
 import { Server } from 'socket.io';
 
-import { GameLobby } from '../../shared/types';
+import { Game } from '../../shared/types';
 
 import { GameActionsReceiver } from './game-actions-receiver';
 import { GameUpdatesNotifier } from './game-updates-notifier';
@@ -19,10 +19,10 @@ export class GameRuntime {
     public readonly receiver   : GameActionsReceiver;
     public readonly accumulator: GameLogAccumulator;
 
-    constructor (io: Server, gameLobby: GameLobby) {
-        this.notifier    = new GameUpdatesNotifier(io, io.to(gameLobby.gameId));
-        this.accumulator = new GameLogAccumulator(gameLobby);
-        this.model       = new GameModel(this.notifier, gameLobby, this.accumulator);
+    constructor (io: Server, game: Game) {
+        this.notifier    = new GameUpdatesNotifier(io, io.to(game.gameId));
+        this.accumulator = new GameLogAccumulator(game);
+        this.model       = new GameModel(this.notifier, game, this.accumulator);
         this.receiver    = new GameActionsReceiver(this.model);
     }
 
@@ -38,6 +38,6 @@ export class GameRuntime {
         // TODO : enhanced game end
         this.notifier.onGameEnd();
         processGameLog(this.accumulator.gamelog);
-        stopRunningGame(this.model.gameLobby.gameId);
+        stopRunningGame(this.model.game.gameId);
     }
 }

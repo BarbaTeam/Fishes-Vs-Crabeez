@@ -15,3 +15,18 @@ span {
     font-size: clamp(10px, 5vw, 17px);
     padding-bottom: 2rem;
 }
+
+.underline-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: inherit;
+    padding: 4px 0;
+}
+
+.underline-input:focus {
+    outline: none;
+    border-bottom-color: #ffae00;
+}

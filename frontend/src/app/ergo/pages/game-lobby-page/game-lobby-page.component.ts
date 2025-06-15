@@ -2,9 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { SocketService } from '@app/shared/services/socket.service';
-import { GamesLobbyService } from '@app/shared/services/games-lobby.service';
+import { GamesService } from '@app/shared/services/games.service';
 
-import { GameLobby, GameLobbyState } from '@app/shared/models/game-lobby.model';
+import { Game, GameState } from '@app/shared/models/game.model';
 
 
 
@@ -16,28 +16,28 @@ import { GameLobby, GameLobbyState } from '@app/shared/models/game-lobby.model';
 export class GameLobbyPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
 
-    public gameLobby!: GameLobby;
+    public game!: Game;
 
 
     constructor(
         private socket: SocketService,
-        private gamesLobbyService: GamesLobbyService,
+        private gamesService: GamesService,
     ) {}
 
     ngOnInit(): void {
         this.subscriptions.add(
-            this.gamesLobbyService.selectedGameLobby$.subscribe(
-                (gameLobby) => { this.gameLobby = gameLobby; }
+            this.gamesService.selectedGame$.subscribe(
+                (game) => { this.game = game; }
             )
         );
     }
 
     public get inRunningGame(): boolean {
-        return this.gameLobby.state === GameLobbyState.RUNNING;
+        return this.game.state === GameState.RUNNING;
     }
 
     public get inWaitingGame(): boolean {
-        return this.gameLobby.state === GameLobbyState.WAITING;
+        return this.game.state === GameState.WAITING;
     }
 
 
@@ -50,11 +50,9 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
         this.subscriptions.unsubscribe();
     }
 
-    public onGameConfigUpdate(): void {
-        // ...
-    }
-
-    public onGameLobbyUpdate(): void {
-        // ...
+    public onGameUpdate(): void {
+        this.socket.sendMessage(
+            'updateGame', this.game
+        );
     }
 }

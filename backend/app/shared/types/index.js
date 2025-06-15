@@ -5,7 +5,7 @@
 const { Grade } = require('./enums/grade.enum');
 const { MistakeCategory } = require('./enums/mistake-category.enum');
 const { QuestionNotion } = require('./enums/question-notion.enum');
-const { GameLobbyState } = require('./enums/game-lobby-state.enum');
+const { GameState } = require('./enums/game-state.enum');
 
 
 
@@ -45,31 +45,6 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @property {string} expected_answer
  * @property {string} proposed_answer
  * @property {QuestionNotion} notion - One of QuestionNotion
- *
- * @memberof types
- */
-
-
-/**
- * @typedef {Object} GameConfig
- * @property {number | "inf"} maxDuration - Maximum game duration in seconds or "inf" for unlimited.
- * @property {1 | 2 | 3} minNbPlayers - Minimum number of players (1 to 3).
- * @property {1 | 2 | 3} maxNbPlayers - Maximum number of players (1 to 3).
- * @property {number} monstersSpeedCoeff - Speed coefficient influencing how fast monsters moves
- * @property {number} monstersSpawnRate - Rate at which monsters appear.
- * @property {boolean} encrypted - Whether the game uses encryption for questions.
- *
- * @memberof types
- */
-
-/**
- * @typedef {Object} GameLobby
- * @property {GameID} gameId
- * @property {string} name
- * @property {UserID[]} playersId
- * @property {GameLobbyState} state
- * @property {Record<UserID, UserQuestionNotionsMask>} playersNotionsMask
- * @property {string|null} [masterId]   // socket.id of the GAME_MASTER, or null if none
  *
  * @memberof types
  */
@@ -180,6 +155,13 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @memberof types
  */
 
+/**
+ * @typedef {Object} PlayerConfig
+ * @property {UserQuestionNotionsMask} notionsMask
+ *
+ * @memberof types
+ */
+
 
 /**
  * @typedef {Object} UserConfig
@@ -211,10 +193,53 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  */
 
 
+/**
+ * @typedef {Object} GameLobby
+ * @property {GameID} gameId            - The id of the game.
+ * @property {string} name              - The name of the game.
+ * @property {GameState} state          - The state of the game (waiting or running).
+ * @property {UserID[]} playersId       - The list of all connected players' IDs.
+ *
+ * @memberof types
+ */
+
+/**
+ * @typedef {Object} GameConfig
+ * @property {GameID} gameId                       - The id of the game.
+ * @property {number|"inf"} maxDuration            - The maximum duration of a game (in minutes) or "inf".
+ * @property {1|2|3} minNbPlayers                  - The minimum number of players needed to start.
+ * @property {1|2|3} maxNbPlayers                  - The maximum number of players allowed.
+ * @property {number} monstersSpeedCoeff           - Coefficient for monster speed.
+ * @property {number} monstersSpawnRate            - The rate at which monsters spawn (1 = normal).
+ * @property {boolean} encrypted                   - Whether encryption is enabled.
+ *
+ * @memberof types
+ */
+
+/**
+ * @typedef {Object} Game
+ * @property {GameID} gameId            - The id of the game.
+ * @property {string} name              - The name of the game.
+ * @property {GameState} state          - The state of the game.
+ * @property {UserID[]} playersId       - The list of connected player IDs.
+ * @property {Object} gameConfig
+ * @property {number|"inf"} gameConfig.maxDuration
+ * @property {1|2|3} gameConfig.minNbPlayers
+ * @property {1|2|3} gameConfig.maxNbPlayers
+ * @property {number} gameConfig.monstersSpeedCoeff
+ * @property {number} gameConfig.monstersSpawnRate
+ * @property {boolean} gameConfig.encrypted
+ * @property {Record<UserID, PlayerConfig>} playersConfig - Mapping from user ID to their configuration.
+ * @property {string} [masterId] 
+ *
+ * @memberof types
+ */
+
+
 
 module.exports = {
     Grade,
-    GameLobbyState,
+    GameState,
     MistakeCategory,
     QuestionNotion,
 };
