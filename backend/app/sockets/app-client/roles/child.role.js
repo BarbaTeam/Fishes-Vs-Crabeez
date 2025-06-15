@@ -70,10 +70,19 @@ class ChildRole_Impl extends AppClientRole_Impl {
                 gameId: `g${Date.now()}`,
                 name: "",
                 playersId: [],
-                state: GameLobbyState.WAITING,
-                playersNotionsMask: {},
+                state: GameState.WAITING,
+                gameConfig: {
+                    maxDuration: "inf",
+
+                    minNbPlayers: 1,
+                    maxNbPlayers: 1,
+
+                    monstersSpeedCoeff: 1,
+                    monstersSpawnRate: 1,
+                    encrypted: false,
+                },
+                playersConfig: {},
             };
-            GAMES_LOBBY[newGame.gameId] = newGame;
 
             this.socket.emit('openGame_SUCCESS', newGame.gameId);
             
@@ -81,9 +90,13 @@ class ChildRole_Impl extends AppClientRole_Impl {
 
             newGame.playersId.push(this._userId);
             const user = UserTable.getByKey({ userId: this._userId });
-            newGame.playersNotionsMask[this._userId] = user.config.notionsMask;
+            newGame.playersConfig[this._userId] = {
+                notionsMask: user.config.notionsMask,
+            }
 
-            newGame.state = GameLobbyState.RUNNING;
+            newGame.state = GameState.RUNNING;
+            
+            GAMES[newGame.gameId] = newGame;
 
             this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId);
             registerRunningGame(newGame.gameId, new GameRuntime(this.io, newGame));
