@@ -30,14 +30,14 @@ class GameRuntime {
         if (this === null || this === void 0 ? void 0 : this.timeout)
             this.timeout.close();
         this.notifier.onGameEnd();
-        (0, stats_1.processGameLog)(this.accumulator.gamelog);
-        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
+        stats_1.processGameLog(this.accumulator.gamelog);
+        game_runner_1.stopRunningGame(this.model.game.gameId);
     }
     onForcedGameEnd() {
         if (this === null || this === void 0 ? void 0 : this.timeout)
             this.timeout.close();
         this.notifier.onGameEnd();
-        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
+        game_runner_1.stopRunningGame(this.model.game.gameId);
     }
 }
 exports.GameRuntime = GameRuntime;
