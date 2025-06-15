@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameEngine = void 0;
 const events_handler_1 = require("../events-handler");
+const drone_1 = require("./enemies/drone");
 const player_1 = require("./player");
 const projectile_1 = require("./projectile");
 const variables_1 = require("./variables");
-const drone_1 = require("./enemies/drone");
 const enemies_stats_1 = require("./enemies/enemies-stats");
 const papa_1 = require("./enemies/papa");
 class GameEngine {
@@ -17,8 +17,11 @@ class GameEngine {
         this.enemies = [];
         this.score = 0;
         this.health = 10;
-        this.waveCounter = 0;
-        this.boss = false;
+        this.difficulty = {
+            level: 0,
+            waveCount: 0,
+            harshness: this.model.game.playersId.length,
+        };
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
@@ -154,11 +157,11 @@ class GameEngine {
         const noMoreEnemies = this.enemies.length === 0;
         const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
         if (noMoreEnemies && noCurrentWave) {
-            const difficulty = this.waveCounter;
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, difficulty);
-            this.waveCounter++;
-            this.notifier.onNewWave(this.waveCounter);
-            console.log(`Spawning wave ${this.waveCounter} with difficulty ${difficulty}`);
+            this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, this.difficulty);
+            this.difficulty.waveCount++;
+            this.notifier.onNewWave(this.difficulty.waveCount++);
+            console.log(`Spawning wave ${this.difficulty.waveCount++} with difficulty :`);
+            console.log(this.difficulty);
         }
     }
 }

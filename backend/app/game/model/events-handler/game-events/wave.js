@@ -3,10 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WaveEvent = void 0;
 const game_event_1 = require("./game-event");
 const event_types_1 = require("../event-types");
-const crab_1 = require("../../game-engine/enemies/crab");
 const random_1 = require("../../../../shared/utils/random");
-const variables_1 = require("../../../../game/model/game-engine/variables");
-const hive_crab_1 = require("../../../../game/model/game-engine/enemies/hive-crab");
+const variables_1 = require("../../game-engine/variables");
+const variables_2 = require("../../../../game/model/game-engine/variables");
 class WaveEvent extends game_event_1.GameEvent {
     constructor(handler, difficulty) {
         super(handler, event_types_1.EventKind.WAVE);
@@ -15,11 +14,12 @@ class WaveEvent extends game_event_1.GameEvent {
     onEventBirth() {
         var _a;
         super.onEventBirth();
+        const amount = (0, random_1.biasedRandint)(this._waveDifficulty.waveCount, 4.5, WaveEvent.MIN_AMOUNT_OF_ENNEMY, WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1, 3 * this._waveDifficulty.harshness);
+        const enemiesCrate = variables_1.ENEMIES_CRATES_PER_LEVEL[this._waveDifficulty.level];
         const enemies = [];
-        const amount = (0, random_1.biasedRandint)(this._waveDifficulty, 4.5, WaveEvent.MIN_AMOUNT_OF_ENNEMY, WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1);
         for (let i = 0; i < amount; i++) {
             const lane = (0, random_1.randint)(1, WaveEvent.LANES_COUNT + 1);
-            const enemy = Math.random() > 0.3 ? new crab_1.Crab(lane) : new hive_crab_1.HiveCrab(lane);
+            const enemy = enemiesCrate.genEnemy(Math.random(), lane);
             enemies.push(enemy);
         }
         const byLane = {};
@@ -31,8 +31,8 @@ class WaveEvent extends game_event_1.GameEvent {
         }
         for (let lane = 1; lane <= WaveEvent.LANES_COUNT; lane++) {
             const laneEnemies = (_a = byLane[lane]) !== null && _a !== void 0 ? _a : [];
-            let nextX = variables_1.VIRTUAL_WIDTH + 10;
-            const laneY0 = variables_1.LANES[lane - 1].y;
+            let nextX = variables_2.VIRTUAL_WIDTH + 10;
+            const laneY0 = variables_2.LANES[lane - 1].y;
             for (const enemy of laneEnemies) {
                 const xSpacing = (0, random_1.randint)(enemy.width, enemy.width * 4);
                 enemy.x = nextX;
