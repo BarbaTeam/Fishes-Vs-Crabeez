@@ -1,8 +1,7 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.ENEMIES_CRATES_PER_LEVEL = exports.PLAYER_COLORS = exports.LANES = exports.bandHeight = exports.VIRTUAL_HEIGHT = exports.VIRTUAL_WIDTH = void 0;
-const enemies_per_level_1 = require("./enemies/enemies-per-level");
-Object.defineProperty(exports, "ENEMIES_CRATES_PER_LEVEL", { enumerable: true, get: function () { return enemies_per_level_1.ENEMIES_CRATES_PER_LEVEL; } });
+const enemies_crates_1 = require("./enemies/enemies-crates");
+Object.defineProperty(exports, "ENEMIES_CRATES_PER_LEVEL", { enumerable: true, get: function () { return enemies_crates_1.ENEMIES_CRATES_PER_LEVEL; } });
 const lane_1 = require("./lane");
 exports.VIRTUAL_WIDTH = 100;
 exports.VIRTUAL_HEIGHT = exports.VIRTUAL_WIDTH * 9 / 16;

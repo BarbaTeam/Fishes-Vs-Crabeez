@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.PAPA_WIDTH = exports.PAPA_HEIGHT = exports.PAPA_SCORE = exports.PAPA_DAMAGE = exports.PAPA_SPEED = exports.PAPA_HEALTH = exports.DRONE_WIDTH = exports.DRONE_HEIGHT = exports.DRONE_SCORE = exports.DRONE_DAMAGE = exports.DRONE_SPEED = exports.DRONE_HEALTH = exports.HIVECRAB_WIDTH = exports.HIVECRAB_HEIGHT = exports.HIVECRAB_SCORE = exports.HIVECRAB_DAMAGE = exports.HIVECRAB_SPEED = exports.HIVECRAB_HEALTH = exports.CRAB_WIDTH = exports.CRAB_HEIGHT = exports.CRAB_SCORE = exports.CRAB_DAMAGE = exports.CRAB_SPEED = exports.CRAB_HEALTH = void 0;
 exports.CRAB_HEALTH = 1;
 exports.CRAB_SPEED = 0.1;

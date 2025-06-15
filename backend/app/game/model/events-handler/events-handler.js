@@ -1,8 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventsHandler = void 0;
 const event_types_1 = require("./event-types");
 const wave_1 = require("./game-events/wave");
+const boss_wave_1 = require("./game-events/boss-wave");
 const paralysis_1 = require("./player-events/paralysis");
 const frenzy_1 = require("./player-events/frenzy");
 class EventsHandler {
@@ -34,8 +34,8 @@ class EventsHandler {
             case event_types_1.EventKind.WAVE:
                 event = new wave_1.WaveEvent(this, args[0]);
                 break;
-            case event_types_1.EventKind.BOSS:
-                // TODO : ...
+            case event_types_1.EventKind.BOSS_WAVE:
+                event = new boss_wave_1.BossWaveEvent(this, args[0]);
                 break;
             case event_types_1.EventKind.PARALYSIS:
                 event = new paralysis_1.ParalysisEvent(this, args[0], args[1]);
@@ -57,8 +57,10 @@ class EventsHandler {
                     this.model.gameEngine.spawnEnemy(enemy);
                 }
                 break;
-            case event_types_1.EventKind.BOSS:
-                // TODO : ...
+            case event_types_1.EventKind.BOSS_WAVE:
+                for (const enemy of emittedVal) {
+                    this.model.gameEngine.spawnEnemy(enemy);
+                }
                 break;
             case event_types_1.EventKind.PARALYSIS:
                 const paralysed = emittedVal.data;

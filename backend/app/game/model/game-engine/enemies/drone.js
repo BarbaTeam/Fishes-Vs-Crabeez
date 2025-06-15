@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.Drone = void 0;
 const enemies_stats_1 = require("./enemies-stats");
 const enemy_1 = require("./enemy");

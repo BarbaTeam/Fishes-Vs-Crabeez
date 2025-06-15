@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameLogAccumulator = void 0;
 class GameLogAccumulator {
     constructor(gameLobby) {

@@ -5,6 +5,7 @@ import { EventKind } from '../event-types';
 
 import { LaneNumber } from '../../game-engine/lane';
 import { Enemy } from '../../game-engine/enemies/enemy';
+import { Papa } from '../../game-engine/enemies/papa';
 
 import { biasedRandint, randint } from '../../../../shared/utils/random';
 import { Difficulty } from '../../game-engine/difficulty';
@@ -14,7 +15,7 @@ import { LANES, VIRTUAL_WIDTH } from '../../../../game/model/game-engine/variabl
 
 
 
-export class WaveEvent extends GameEvent<any[]> {
+export class BossWaveEvent extends GameEvent<any[]> {
     private static readonly MIN_AMOUNT_OF_ENNEMY: number = 1;
     private static readonly MAX_AMOUNT_OF_ENNEMY: number = 15;
 
@@ -38,16 +39,17 @@ export class WaveEvent extends GameEvent<any[]> {
         const amount = biasedRandint(
             this._waveDifficulty.waveCount,
             4.5,
-            WaveEvent.MIN_AMOUNT_OF_ENNEMY,
-            WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1,
+            BossWaveEvent.MIN_AMOUNT_OF_ENNEMY,
+            BossWaveEvent.MAX_AMOUNT_OF_ENNEMY + 1,
             1 + this._waveDifficulty.harshness,
         );
 
+        const papa = new Papa(2);
         const enemiesCrate = ENEMIES_CRATES_PER_LEVEL[this._waveDifficulty.level];
 
         const enemies: Enemy[] = [];
         for (let i = 0; i < amount; i++) {
-            const lane = randint(1, WaveEvent.LANES_COUNT + 1) as LaneNumber;
+            const lane = randint(1, BossWaveEvent.LANES_COUNT + 1) as LaneNumber;
             const enemy = enemiesCrate.genEnemy(Math.random(), lane);
             enemies.push(enemy);
         }
@@ -59,7 +61,7 @@ export class WaveEvent extends GameEvent<any[]> {
             byLane[lane.num].push(e);
         }
 
-        for (let lane = 1; lane <= WaveEvent.LANES_COUNT; lane++) {
+        for (let lane = 1; lane <= BossWaveEvent.LANES_COUNT; lane++) {
             const laneEnemies = byLane[lane] ?? [];
             let nextX = VIRTUAL_WIDTH + 10;
             const laneY0 = LANES[lane-1].y;
@@ -69,7 +71,7 @@ export class WaveEvent extends GameEvent<any[]> {
 
                 enemy.x = nextX;
 
-                const laneHalfHeight = WaveEvent.LANE_HEIGHT / 2;
+                const laneHalfHeight = BossWaveEvent.LANE_HEIGHT / 2;
                 const enemyHalfHeight = enemy.height / 2;
 
                 const minY = laneY0 - laneHalfHeight + enemyHalfHeight;
@@ -80,6 +82,8 @@ export class WaveEvent extends GameEvent<any[]> {
                 nextX += xSpacing;
             }
         }
+
+        enemies.push(papa);
 
         this.emit(enemies);
         this.die();

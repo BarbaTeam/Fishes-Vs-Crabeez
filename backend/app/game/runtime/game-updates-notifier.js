@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameUpdatesNotifier = void 0;
 class GameUpdatesNotifier {
     constructor(io, broadcast) {

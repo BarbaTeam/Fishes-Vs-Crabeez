@@ -19,11 +19,12 @@ import { Difficulty } from "./difficulty";
 
 
 export class GameEngine {
+    private score = 0;
+    private health = 10;
+
     public players: Record<UserID, Player> = {};
     public projectiles: Projectile[] = [];
     public enemies: Enemy[] = [];
-    private score = 0;
-    private health = 10;
     private currWaveEventId?: EventID;
 
     private difficulty: Difficulty;
@@ -163,6 +164,7 @@ export class GameEngine {
                     break;
                 case "papa":
                     this.notifier.onBossKilled("papa");
+                    this.difficulty.level++;
                 default:
                     break;
             }
@@ -173,14 +175,7 @@ export class GameEngine {
         return Object.values(this.players).map(player => player.toJSON());
     }
 
-    public boss = false;
     public update(): void {
-        if(!this.boss){
-            this.notifier.onBossWave("papa");
-            this.spawnEnemy(new Papa(2));
-            this.boss = true;
-        }
-
         this.spawnNextWaveIfNeeded();
 
         this.enemies.forEach(enemy => this.processEnemy(enemy));
@@ -197,12 +192,17 @@ export class GameEngine {
         const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
 
         if (noMoreEnemies && noCurrentWave) {
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, this.difficulty);
             this.difficulty.waveCount++;
 
-            this.notifier.onNewWave(this.difficulty.waveCount++);
+            if (this.difficulty.waveCount !== 0 && this.difficulty.waveCount % 10 === 0) {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.BOSS_WAVE, this.difficulty);
+                this.notifier.onBossWave("papa");
+            } else {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, this.difficulty);
+                this.notifier.onNewWave(this.difficulty.waveCount);
+            }
 
-            console.log(`Spawning wave ${this.difficulty.waveCount++} with difficulty :`);
+            console.log(`Spawning wave ${this.difficulty.waveCount} with difficulty :`);
             console.log(this.difficulty);
         }
     }

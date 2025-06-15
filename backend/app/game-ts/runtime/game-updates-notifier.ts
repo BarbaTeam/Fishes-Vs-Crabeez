@@ -52,7 +52,7 @@ export class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : An enemy has been despawned`);
         this.broadcast.emit('enemyDespawned', enemyId);
     }
-    
+
     public onPlayerParalysed(playerId: UserID) {
         console.log(`[NOTIFIER] : Player ${playerId} is paralysed !\n\n`);
         this.broadcast.emit('playerParalysed', playerId);
