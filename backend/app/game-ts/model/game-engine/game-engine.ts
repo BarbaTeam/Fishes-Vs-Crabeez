@@ -12,6 +12,7 @@ import { Projectile } from "./projectile";
 import { LANES, PLAYER_COLORS, VIRTUAL_WIDTH } from "./variables";
 import { Drone } from "./enemies/drone";
 import { DRONE_HEIGHT, DRONE_WIDTH } from "./enemies/enemies-stats";
+import { Papa } from "./enemies/papa";
 
 
 
@@ -101,10 +102,10 @@ export class GameEngine {
         enemy.update();
         if (enemy.x < 11) {
             enemy.destroy();
+            this.health = Math.max(0, this.health - enemy.maxHealth);
             if(this.health <= 1){
                 this.model.hasEnded = true;
             }
-            this.health -= enemy.maxHealth;
             this.notifier.onEnemyDespawned(enemy.id);
             this.notifier.onHealthUpdated(this.health);
         }
@@ -128,7 +129,7 @@ export class GameEngine {
                     this.hit(enemy);
                     projectile.destroy();
                     if(enemy.alive){
-                        this.notifier.onEnemyHit(projectile, enemy.id);
+                        this.notifier.onEnemyHit(projectile, enemy.id, enemy.health);
                     }
                     else{
                         this.score += enemy.score;
@@ -160,7 +161,15 @@ export class GameEngine {
         return Object.values(this.players).map(player => player.toJSON());
     }
 
+    public boss = false;
+
     public update(): void {
+        if(!this.boss){
+            this.notifier.onBossWave("papa");
+            this.spawnEnemy(new Papa(2));
+            this.boss = true;
+        }
+
         this.spawnNextWaveIfNeeded();
 
         this.enemies.forEach(enemy => this.processEnemy(enemy));

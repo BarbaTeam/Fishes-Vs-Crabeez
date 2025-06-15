@@ -60,11 +60,8 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     public generalScore: number;
     public health: number;
     public waveCounter: number;
+    public bossWave: boolean;
     public hasEnded: boolean;
-
-    private readonly normalAudio = new Audio('../../../../assets/sons/in-game-music.mp3');
-    private readonly paralyzedAudio = new Audio('../../../../assets/sons/encrypted.mp3');
-
 
     ////////////////////////////////////////////////////////////////////////////
     // Constructors & Destructors :
@@ -80,6 +77,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.generalScore = 0;
         this.health = 10;
         this.waveCounter = 0;
+        this.bossWave = false;
         this.hasEnded = false;
     }
 
@@ -149,6 +147,11 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.gameEngine.waveCounter$.subscribe(waveCounter => {
                 this.waveCounter = waveCounter;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.bossWave$.subscribe(bossWave => {
+                this.bossWave = bossWave;
             })
         );
         this.subscriptions.add(

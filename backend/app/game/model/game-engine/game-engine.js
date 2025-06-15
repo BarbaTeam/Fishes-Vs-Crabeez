@@ -7,6 +7,7 @@ const projectile_1 = require("./projectile");
 const variables_1 = require("./variables");
 const drone_1 = require("./enemies/drone");
 const enemies_stats_1 = require("./enemies/enemies-stats");
+const papa_1 = require("./enemies/papa");
 class GameEngine {
     constructor(model, notifier, playersId) {
         this.model = model;
@@ -17,6 +18,7 @@ class GameEngine {
         this.score = 0;
         this.health = 10;
         this.waveCounter = 0;
+        this.boss = false;
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
@@ -79,10 +81,10 @@ class GameEngine {
         enemy.update();
         if (enemy.x < 11) {
             enemy.destroy();
+            this.health = Math.max(0, this.health - enemy.maxHealth);
             if (this.health <= 1) {
                 this.model.hasEnded = true;
             }
-            this.health -= enemy.maxHealth;
             this.notifier.onEnemyDespawned(enemy.id);
             this.notifier.onHealthUpdated(this.health);
         }
@@ -104,7 +106,7 @@ class GameEngine {
                     this.hit(enemy);
                     projectile.destroy();
                     if (enemy.alive) {
-                        this.notifier.onEnemyHit(projectile, enemy.id);
+                        this.notifier.onEnemyHit(projectile, enemy.id, enemy.health);
                     }
                     else {
                         this.score += enemy.score;
@@ -134,6 +136,11 @@ class GameEngine {
         return Object.values(this.players).map(player => player.toJSON());
     }
     update() {
+        if (!this.boss) {
+            this.notifier.onBossWave("papa");
+            this.spawnEnemy(new papa_1.Papa(2));
+            this.boss = true;
+        }
         this.spawnNextWaveIfNeeded();
         this.enemies.forEach(enemy => this.processEnemy(enemy));
         this.projectiles.forEach(projectile => this.processProjectile(projectile));

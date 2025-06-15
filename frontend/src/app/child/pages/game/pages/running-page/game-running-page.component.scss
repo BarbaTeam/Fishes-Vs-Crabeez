@@ -235,6 +235,15 @@
     letter-spacing: 1px;
 }
 
+.boss-text {
+    color: #ff0000;
+    font-size: 30px;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 .wave-number {
     color: #4fc3f7;
     font-size: 32px;
@@ -633,6 +642,12 @@
     
     .wave-number {
         font-size: 24px;
+    }
+
+    .boss-icon {
+        height: 50%;
+        width: 50%;
+        object-fit: cover;
     }
     
     .score-container {

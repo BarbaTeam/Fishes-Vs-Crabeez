@@ -43,8 +43,13 @@
 
 <div class="wave-counter-container">
   <div class="wave-counter">
-    <span class="wave-text">Vague</span>
-    <span class="wave-number">{{ waveCounter }}</span>
+    @if (!bossWave) {
+      <span class="wave-text">Vague</span>
+      <span class="wave-number">{{ waveCounter }}</span>
+    } @else {
+      <span class="boss-text">BOSS</span>
+      <img id="bossIcon" src="../../../../assets/images/icons/bossIcon.png">
+    }
   </div>
 </div>
 

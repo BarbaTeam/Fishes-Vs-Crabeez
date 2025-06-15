@@ -18,3 +18,10 @@ export const DRONE_DAMAGE = 0.5;
 export const DRONE_SCORE = 5;
 export const DRONE_HEIGHT = 5;
 export const DRONE_WIDTH = 5;
+
+export const PAPA_HEALTH = 20;
+export const PAPA_SPEED = 0.025;
+export const PAPA_DAMAGE = 10;
+export const PAPA_SCORE = 200;
+export const PAPA_HEIGHT = 35;
+export const PAPA_WIDTH = 35;
