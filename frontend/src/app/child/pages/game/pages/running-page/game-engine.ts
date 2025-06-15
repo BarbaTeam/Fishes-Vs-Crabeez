@@ -214,15 +214,18 @@ export class GameEngine {
             this.socket.on<UserID>('playerParalysed').subscribe(playerId => {
                 const player = this.players.get(playerId)!;
                 player.paralysed = true;
-                this.localPlayerPlayerParalysed$.next(player.paralysed);
-                
+                if(player.id == this.localPlayerId){
+                    this.localPlayerPlayerParalysed$.next(player.paralysed);
+                }
             })
         );
         this.subscriptions.add(
             this.socket.on<UserID>('playerDeparalysed').subscribe(playerId => {
                 const player = this.players.get(playerId)!;
                 player.paralysed = false;
-                this.localPlayerPlayerParalysed$.next(player.paralysed);
+                if(player.id == this.localPlayerId){
+                    this.localPlayerPlayerParalysed$.next(player.paralysed);
+                }
             })
         );
     }
