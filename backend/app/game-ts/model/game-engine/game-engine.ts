@@ -151,6 +151,8 @@ export class GameEngine {
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x, enemy.y-(DRONE_HEIGHT/2)));
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x+(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
                     break;
+                case "papa":
+                    this.notifier.onBossKilled("papa");
                 default:
                     break;
             }

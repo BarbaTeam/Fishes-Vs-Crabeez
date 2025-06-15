@@ -84,3 +84,7 @@
 
 
 <div class="encrypt-overlay" [class.visible]="isEncrypted"></div>
+<div class="lowhealth-overlay" 
+     [class.visible]="health < 3" 
+     [class.critical]="health === 1">
+</div>
