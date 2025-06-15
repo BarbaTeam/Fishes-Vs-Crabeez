@@ -29,7 +29,6 @@ export class GameModel {
             (acc, [playerId, config]) => {
                 acc[playerId] = config.notionsMask;
                 if (game.gameConfig.encrypted) {
-                    console.log("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
                     acc[playerId].ENCRYPTION = true;
                 }
                 return acc;

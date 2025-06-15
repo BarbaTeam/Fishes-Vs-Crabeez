@@ -13,6 +13,12 @@ class GameRuntime {
         this.accumulator = new game_log_accumulator_1.GameLogAccumulator(game);
         this.model = new model_1.GameModel(this.notifier, game, this.accumulator);
         this.receiver = new game_actions_receiver_1.GameActionsReceiver(this.model);
+        const maxDurationInMin = game.gameConfig.maxDuration;
+        if (maxDurationInMin !== "inf") {
+            this.timeout = setTimeout(() => {
+                this.onGameEnd();
+            }, maxDurationInMin * 60000);
+        }
     }
     runOneFrame() {
         if (this.model.hasEnded) {
@@ -23,6 +29,8 @@ class GameRuntime {
     }
     onGameEnd() {
         // TODO : enhanced game end
+        if (this === null || this === void 0 ? void 0 : this.timeout)
+            this.timeout.close();
         this.notifier.onGameEnd();
         (0, stats_1.processGameLog)(this.accumulator.gamelog);
         (0, game_runner_1.stopRunningGame)(this.model.game.gameId);

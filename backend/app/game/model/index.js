@@ -14,7 +14,6 @@ class GameModel {
         const playersNotionsMask = playersConfigEntries.reduce((acc, [playerId, config]) => {
             acc[playerId] = config.notionsMask;
             if (game.gameConfig.encrypted) {
-                console.log("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
                 acc[playerId].ENCRYPTION = true;
             }
             return acc;

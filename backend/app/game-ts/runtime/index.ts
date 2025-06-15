@@ -19,14 +19,24 @@ export class GameRuntime {
     public readonly receiver   : GameActionsReceiver;
     public readonly accumulator: GameLogAccumulator;
 
+    private timeout?: NodeJS.Timeout;
+
     constructor (io: Server, game: Game) {
         this.notifier    = new GameUpdatesNotifier(io, io.to(game.gameId));
         this.accumulator = new GameLogAccumulator(game);
         this.model       = new GameModel(this.notifier, game, this.accumulator);
         this.receiver    = new GameActionsReceiver(this.model);
+
+        const maxDurationInMin: number|"inf" = game.gameConfig.maxDuration;
+        if (maxDurationInMin !== "inf") {
+            this.timeout = setTimeout(
+                () => this.onGameEnd(),
+                maxDurationInMin * 60000, // 1 min = 60000 ms
+            )
+        }
     }
 
-    public runOneFrame() {
+    public runOneFrame(): void {
         if(this.model.hasEnded){
             this.onGameEnd();
             return;
@@ -34,8 +44,9 @@ export class GameRuntime {
         this.model.runOneFrame();
     }
 
-    public onGameEnd(){
+    public onGameEnd(): void {
         // TODO : enhanced game end
+        if (this?.timeout) this.timeout.close();
         this.notifier.onGameEnd();
         processGameLog(this.accumulator.gamelog);
         stopRunningGame(this.model.game.gameId);
