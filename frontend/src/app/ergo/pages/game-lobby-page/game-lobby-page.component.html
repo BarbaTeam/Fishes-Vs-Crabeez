@@ -35,6 +35,20 @@
     --------------------------------------------------------------------------->
 
     <app-body>
+
+        @if (hasEnded) {
+            <div class="end-game-overlay">
+                <div class="end-game-notification">
+                    <h2 class="end-title">🏁 PARTIE TERMINÉE</h2>
+                    <div class="end-message">
+                        <p>La partie s'est achevée avec succès !</p>
+                        <p class="participants-count">{{game.playersId.length}} participant(s) ont terminé la session</p>
+                    </div>
+                    <button class="return-button" (click)="deleteLobby()">Retour</button>
+                </div>
+            </div>
+        }
+
         <app-inner-box class="blue little column scrollable">
             @if (inWaitingGame) {
                 <p class="title">Joueurs en attente : {{game.playersId.length}}/{{game.gameConfig.maxNbPlayers}}</p>
@@ -91,8 +105,8 @@
             </span>
 
             <app-big-button class="red"
-            (click)="deleteLobby()">
-                Supprimer
+                (click)="deleteLobby()">
+                    Supprimer
             </app-big-button>
             <!-- TODO : To support
                 <span class="text-line">
