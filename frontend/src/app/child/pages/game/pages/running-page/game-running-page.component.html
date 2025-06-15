@@ -53,6 +53,25 @@
   </div>
 </div>
 
+
+<div class="boss-health-bar-container" 
+     [class.visible]="bossWave && bossHealth > 0"
+     [class.appearing]="bossWave && bossHealth > 0">
+  
+  <div class="boss-health-bar">
+    <img id="bossIcon" src="../../../../assets/images/icons/bossIcon.png" alt="Boss">
+    
+    <div class="boss-health-bar-background">
+      <div class="boss-health-bar-fill"
+           [style.width.%]="(bossHealth / 20) * 100">
+      </div>
+    </div>
+    
+    <span class="boss-health-text">{{ bossHealth }}/20</span>
+  </div>
+</div>
+
+
 <div class="health-bar-container">
   <div class="health-bar">
     <div class="health-bar-background">
