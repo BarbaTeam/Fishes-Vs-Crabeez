@@ -135,6 +135,13 @@ class PlayerRole_Impl extends ChildRole_Impl {
     get role() {
         return AppClientRole.PLAYER;
     }
+    /**
+     * @override
+     * @returns {string}
+     */
+    get gameId() {
+        return this._gameId;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Transitions :

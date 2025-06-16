@@ -113,6 +113,13 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
     get role() {
         return AppClientRole.GAME_MASTER;
     }
+    /**
+     * @override
+     * @returns {string}
+     */
+    get gameId() {
+        return this._gameId;
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Transitions :

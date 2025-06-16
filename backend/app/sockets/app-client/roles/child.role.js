@@ -89,7 +89,18 @@ class ChildRole_Impl extends AppClientRole_Impl {
             this.joinGame(newGame.gameId);
 
             newGame.playersId.push(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
+            console.log(this._userId);
             const user = UserTable.getByKey({ userId: this._userId });
+
             newGame.playersConfig[this._userId] = {
                 notionsMask: user.config.notionsMask,
             }
@@ -176,6 +187,14 @@ class ChildRole_Impl extends AppClientRole_Impl {
      */
     get role() {
         return AppClientRole.CHILD;
+    }
+
+    /**
+     * @override
+     * @returns {string}
+     */
+    get userId() {
+        return this._userId;
     }
 
     ////////////////////////////////////////////////////////////////////////////
