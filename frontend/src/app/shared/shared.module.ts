@@ -59,8 +59,9 @@ import { SoundControlComponent } from './components/sound-control/sound-control.
 // SharedModule :
 ////////////////////////////////////////////////////////////////////////////////
 
+import { HOST } from '@app/app-settings';
 const socketConfig: SocketIoConfig = {
-    url: "http://localhost:9428",
+    url: `http://${HOST}`,
     options: {
         transports: ['websocket'],
     },
