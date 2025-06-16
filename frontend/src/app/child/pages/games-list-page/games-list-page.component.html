@@ -92,16 +92,16 @@
                         <h2>Paramètres</h2>
                         <button class="close-btn" (click)="closeSettings()">&times;</button>
                     </div>
-                    
+
                     <div class="form-content">
                         <div class="form-group">
                             <div class="icon-selector">
-                                <span *ngIf="!showIconSelector" 
-                                    (click)="showIconSelector = !showIconSelector" 
+                                <span *ngIf="!showIconSelector"
+                                    (click)="showIconSelector = !showIconSelector"
                                     class="icon-select-trigger">
                                     Icône :
-                                    <img [src]="'../../assets/images/child-pps/' + userTemp.icon" 
-                                        alt="Icône" 
+                                    <img [src]="'../../assets/images/child-pps/' + userTemp.icon"
+                                        alt="Icône"
                                         height="30" />
                                 </span>
 
@@ -116,7 +116,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="form-group controls-row">
                             <app-font-size-control
                                 [(value)]="userTemp.config.fontSize"
@@ -124,7 +124,7 @@
                                 [maxValue]="4"
                                 [step]="1">
                             </app-font-size-control>
-                            
+
                             <app-sound-control
                                 [(value)]="userTemp.config.sound"
                                 [minValue]="0"
@@ -133,7 +133,7 @@
                             </app-sound-control>
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button class="save-btn" (click)="saveSettings()">Sauvegarder</button>
                     </div>

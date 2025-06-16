@@ -21,10 +21,10 @@ const LIMIT = 5; // Number of results with coeff non null used to compute a stat
 exports.processGameLog = (gameLog) => {
     console.log(`Processing statistics for game ${gameLog.gameId}`);
 
-    const nbPlayers = gameLog.info.playersId.length
-
     const gameId = gameLog.gameId;
     const playersId = gameLog.info.playersId;
+    const nbPlayers = playersId.length;
+
 
     GameInfoTable.insert({
         gameId: gameLog.gameId,
@@ -38,9 +38,15 @@ exports.processGameLog = (gameLog) => {
         PlayerResultsTable.insert({
             playerId: playersId[i],
             gameId: gameId,
-            results: {score: gameLog.score, kills: gameLog.playersKills[i], ...processPlayerAnswers(gameLog.playersAnswers[i], gameLog.info.duration)},
+            results: {
+                score: gameLog.score,
+                kills: gameLog.playersKills[i],
+                ...processPlayerAnswers(gameLog.playersAnswers[i], gameLog.info.duration),
+            },
             answersShown: UserTable.getByKey({userId: playersId[i]}).config.showsAnswer,
         });
+
+        console.log(`[STATS PROCESSOR] New PlayerResults inserted`);
     }
 
     // Step 2 : Updating player's statistics of all players :
@@ -83,5 +89,7 @@ exports.processGameLog = (gameLog) => {
                 statistics: genStatisticsFromHistory(playerHistory),
             });
         }
+
+        console.log(`[STATS PROCESSOR] New PlayerStatistics inserted`);
     }
 }

@@ -8,6 +8,7 @@ class GameLogAccumulator {
         this._ansAcc = {};
         this._killAcc = {};
         this._scoreAcc = 0;
+        this._initialPlayersId = [];
         const playersId = gameLobby.playersId;
         for (let playerId of playersId) {
             this._ansAcc[playerId] = [];
@@ -16,6 +17,9 @@ class GameLogAccumulator {
                 return acc;
             }, {});
         }
+        this._initialPlayersId = [...playersId];
+
+        console.log(`Game Log initialised : { ${this.gameLobby.gameId} ; ${this._initialPlayersId} }`)
     }
     accumulateAnswer(playerId, ans) {
         this._ansAcc[playerId].push(ans);
@@ -31,7 +35,7 @@ class GameLogAccumulator {
         return {
             gameId: this.gameLobby.gameId,
             info: {
-                playersId: this.gameLobby.playersId,
+                playersId: this._initialPlayersId,
                 date: new Date(Date.now()),
                 // TODO : Compute duration of game
                 duration: 6,
@@ -49,6 +53,10 @@ class GameLogAccumulator {
             playersKills: Object.values(this._killAcc),
         };
     }
+    isEmpty() {
+        return (
+            Object.values(this._ansAcc).every(playersAnswers => playersAnswers.length === 0)
+        );
+    }
 }
 exports.GameLogAccumulator = GameLogAccumulator;
-

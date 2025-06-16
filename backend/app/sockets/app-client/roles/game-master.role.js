@@ -82,7 +82,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
             delete GAMES[oldGameId];
             const currGame = RUNNING_GAMES[oldGameId];
             if (currGame) {
-                currGame.onForcedGameEnd();
+                currGame.onGameEnd();
             }
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', oldGameId);
         });
