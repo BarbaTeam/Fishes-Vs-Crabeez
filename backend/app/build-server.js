@@ -35,8 +35,34 @@ module.exports = (cb) => {
         }
     });
 
+    const connectedClients = new Map();
+
     io.on('connection', (socket) => {
-        const client = new AppClient(io, socket);
-        socket.on("disconnect", () => client.disconnect());
+        console.log(`[DEBUG :: Server] New socket connection: ${socket.id}`);
+        
+        // Récupérer le token depuis l'auth (envoyé lors de la connexion)
+        const existingToken = socket.handshake.auth?.token;
+        
+        const appClient = new AppClient(io, socket, existingToken);
+        
+        connectedClients.set(socket.id, appClient);
+        
+        socket.on('disconnect', (reason) => {
+            console.log(`[DEBUG :: Server] Socket ${socket.id} disconnected: ${reason}`);
+            
+            const client = connectedClients.get(socket.id);
+            if (client) {
+                client.disconnect();
+                connectedClients.delete(socket.id);
+            }
+        });
+        
+        socket.on('error', (error) => {
+            console.error(`[DEBUG :: Server] Socket ${socket.id} error:`, error);
+        });
     });
+
+    setInterval(() => {
+        console.log(`[DEBUG :: Server] Active connections: ${connectedClients.size}`);
+    }, 30000);
 };
