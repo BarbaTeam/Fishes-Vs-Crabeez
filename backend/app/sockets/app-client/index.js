@@ -45,6 +45,10 @@ class AppClient {
         this.socket = socket;
         this.token = null;
 
+        this.socket.on('tryReconnect', (data) => {
+            this.handleReconnection(data.token);
+        });
+
         if (existingToken && this.validateAndRestoreFromToken(existingToken)) {
             console.log(`[DEBUG :: AppClient::constructor] Client reconnected with token ${existingToken}`);
             this.socket.emit('reconnection_success', { 

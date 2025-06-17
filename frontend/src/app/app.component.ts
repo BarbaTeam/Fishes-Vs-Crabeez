@@ -69,6 +69,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.socket.on('connect').subscribe(() => {
             console.log(`[DEBUG :: AppComponent] Socket connected`);
+            if (this.isReconnecting) {
+                this.attemptReconnection();
+            }
         });
     }
 
@@ -99,5 +102,16 @@ export class AppComponent implements OnInit, OnDestroy {
                 this.isReconnecting = true;
             }
         }, 1000);
+    }
+
+    private attemptReconnection(): void {
+        const token = this.localStorage.getToken();
+        if (token) {
+            console.log(`[DEBUG :: AppComponent] Attempting reconnection with token: ${token}`);
+            this.socket.sendMessage('tryReconnect', { token });
+        } else {
+            console.log(`[DEBUG :: AppComponent] No token available for reconnection`);
+            this.isReconnecting = false;
+        }
     }
 }

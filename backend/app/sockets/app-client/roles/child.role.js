@@ -89,16 +89,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
             this.joinGame(newGame.gameId);
 
             newGame.playersId.push(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
-            console.log(this._userId);
+           
             const user = UserTable.getByKey({ userId: this._userId });
 
             newGame.playersConfig[this._userId] = {
