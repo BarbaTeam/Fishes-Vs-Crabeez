@@ -20,10 +20,15 @@ class GameRuntime {
     }
     runOneFrame() {
         if (this.model.hasEnded || this.model.game.playersId.length === 0) {
-            if (process.env.TEST_E2E) {
+            if (this.model.game.playersId.length === 0) {
+                setTimeout(() => {
+                    if (this.model.game.playersId.length === 0) {
+                        this.onGameEnd();
+                    }
+                }, 10000);
+            } else if (process.env.TEST_E2E) {
                 this.onGameEnd();
-            }
-            else {
+            } else {
                 this.onForcedGameEnd();
             }
             return;
