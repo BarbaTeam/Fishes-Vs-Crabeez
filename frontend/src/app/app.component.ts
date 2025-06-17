@@ -16,7 +16,6 @@ import { LocalStorageService } from './shared/services/local-storage.service';
     styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, OnDestroy {
-    
     public isReconnecting = false;
     private reconnectionTimeout: any;
 
@@ -77,18 +76,18 @@ export class AppComponent implements OnInit, OnDestroy {
 
     private connectWithToken(): void {
         const existingToken = this.localStorage.getToken();
-        
+
         if (existingToken) {
             console.log(`[DEBUG :: AppComponent] Attempting connection with existing token: ${existingToken}`);
             this.isReconnecting = true;
-            
+
             this.reconnectionTimeout = setTimeout(() => {
                 console.log(`[DEBUG :: AppComponent] Reconnection timeout, connecting as new client`);
                 this.localStorage.removeToken();
                 this.isReconnecting = false;
                 this.socket.connect();
             }, 5000);
-            
+
             this.socket.connect(existingToken);
         } else {
             console.log(`[DEBUG :: AppComponent] No existing token, connecting as new client`);

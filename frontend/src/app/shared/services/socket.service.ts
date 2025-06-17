@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+import { Socket } from 'ngx-socket-io';
 
 import { User } from '@app/shared/models/user.model';
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -42,23 +44,19 @@ export class SocketService {
         }
     }
 
-    
     connect(token?: string): void {
         if (this.socket.ioSocket.connected) {
             console.log('[DEBUG :: SocketService] Already connected');
             return;
         }
-
         console.log(`[DEBUG :: SocketService] Connecting${token ? ' with token: ' + token : ' as new client'}`);
-        
+
         if (token) {
             this.socket.ioSocket.auth = { token };
         }
-
         this.socket.connect();
     }
 
-    
     disconnect(): void {
         if (this.socket.ioSocket.connected) {
             console.log('[DEBUG :: SocketService] Disconnecting from server');
@@ -66,12 +64,10 @@ export class SocketService {
         }
     }
 
-    
     get connected(): boolean {
         return this.socket.ioSocket.connected;
     }
 
-   
     emit(event: string, data?: any): void {
         this.sendMessage(event, data);
     }
