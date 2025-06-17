@@ -12,6 +12,8 @@ const { CONNECTED_USERS_ID, GAMES, gameLocks, GUEST_ROOM, CHILD_ROOM, ERGO_ROOM 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
 
+
+
 /**
  * The child must need to receive at all time :
  *  - All the already created games
@@ -51,6 +53,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
         this.setUpListeners();
     }
 
+
     ////////////////////////////////////////////////////////////////////////////
     // Implementation :
 
@@ -85,21 +88,17 @@ class ChildRole_Impl extends AppClientRole_Impl {
             };
 
             this.socket.emit('openGame_SUCCESS', newGame.gameId);
-            
+
             this.joinGame(newGame.gameId);
 
             newGame.playersId.push(this._userId);
-           
             const user = UserTable.getByKey({ userId: this._userId });
-
             newGame.playersConfig[this._userId] = {
                 notionsMask: user.config.notionsMask,
             }
-
             newGame.state = GameState.RUNNING;
-            
-            GAMES[newGame.gameId] = newGame;
 
+            GAMES[newGame.gameId] = newGame;
             this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId, () =>
                 registerRunningGame(newGame.gameId, new GameRuntime(this.io, newGame))
             );
@@ -116,9 +115,9 @@ class ChildRole_Impl extends AppClientRole_Impl {
             try {
                 const game = GAMES[gameId];
                 const canJoinGame = (
-                    !!game                                    // Child can only join existing game
+                    !!game                               // Child can only join existing game
                     && game.state !== GameState.RUNNING  // Child can only join waiting game
-                    && game.playersId.length < 3              // Child can only join waiting game with enough room
+                    && game.playersId.length < 3         // Child can only join waiting game with enough room
                 );
                 if (!canJoinGame) {
                     this.socket.emit('tryJoinGame_FAILURE');
@@ -187,6 +186,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
     get userId() {
         return this._userId;
     }
+
 
     ////////////////////////////////////////////////////////////////////////////
     // Transitions :
