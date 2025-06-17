@@ -27,7 +27,7 @@ export class QuizHandler implements IQuizHandler {
     }
 
     public receiveAnswer(playerId: UserID, ans: AnsweredQuestion): void {
-        this.accumulator.accumulate(playerId, ans);
+        this.accumulator.accumulateAnswer(playerId, ans);
 
         const answeredCorrectly = AnswerChecker.checkAnswer(ans);
         const answeredToEncryptedQuestion = ans.notion === QuestionNotion.ENCRYPTION;

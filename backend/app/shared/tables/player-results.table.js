@@ -31,6 +31,13 @@ exports.PlayerResultsTable = new DatabaseTable(
                 spelling: [],
                 calculation: [],
             },
+            score: 0,
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            }
         },
         answersShown: false,
     })

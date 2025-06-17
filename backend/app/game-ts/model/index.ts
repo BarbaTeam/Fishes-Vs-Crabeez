@@ -22,7 +22,7 @@ export class GameModel {
         accumulator: GameLogAccumulator,
     ) {
 
-        this.gameEngine = new GameEngine(this, notifier, game.playersId);
+        this.gameEngine = new GameEngine(this, accumulator, notifier, game.playersId);
 
         const playersConfigEntries = Object.entries(game.playersConfig) as [UserID, PlayerConfig][];
         const playersNotionsMask = playersConfigEntries.reduce(

@@ -67,6 +67,8 @@ const { GameState } = require('./enums/game-state.enum');
  * @property {GameID} gameId - Unique identifier for the game.
  * @property {Omit<GameInfo, "gameId">} info - Metadata about the game, without redundant gameId.
  * @property {AnsweredQuestion[][]} playersAnswers - Lists of answers given by players.
+ * @property {Record<EnemyKind, number>[]} playersKills
+ * @property {number} score
  *
  * @memberof types
  */
@@ -112,6 +114,8 @@ const { GameState } = require('./enums/game-state.enum');
  * @property {{[notion: string]: number}} accuracyImprovementPerNotion
  * @property {{[category: string]: [MediaStreamTrackEvent, number]}} mostCommonMistakes
  * @property {{[category: string]: [MediaStreamTrackEvent, Date]}} mostRecentMistakes
+ * @property {Record<EnemyKind, number>} globalKills
+ * @property {number} globalScore
  *
  * @memberof types
  */

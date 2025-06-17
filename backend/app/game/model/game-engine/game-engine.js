@@ -7,9 +7,11 @@ const player_1 = require("./player");
 const projectile_1 = require("./projectile");
 const variables_1 = require("./variables");
 const enemies_stats_1 = require("./enemies/enemies-stats");
+const enemy_kind_1 = require("./enemies/enemy-kind");
 class GameEngine {
-    constructor(model, notifier, playersId) {
+    constructor(model, accumulator, notifier, playersId) {
         this.model = model;
+        this.accumulator = accumulator;
         this.notifier = notifier;
         this.score = 0;
         this.health = 10;
@@ -105,13 +107,14 @@ class GameEngine {
                 if (!enemy.alive)
                     continue;
                 if (this.checkCollision(enemy, projectile)) {
-                    this.hit(enemy);
+                    this.hit(enemy, projectile.player.id);
                     projectile.destroy();
                     if (enemy.alive) {
                         this.notifier.onEnemyHit(projectile, enemy.id, enemy.health);
                     }
                     else {
                         this.score += enemy.score;
+                        this.accumulator.accumulateScore(enemy.score);
                         this.notifier.onEnemyKilled(projectile, enemy.id);
                         this.notifier.onScoreUpdated(this.score);
                     }
@@ -120,21 +123,22 @@ class GameEngine {
             }
         }
     }
-    hit(enemy) {
+    hit(enemy, playerId) {
         enemy.hit();
         if (!enemy.alive) {
             switch (enemy.type) {
-                case "hive-crab":
+                case enemy_kind_1.EnemyKind.HIVECRAB:
                     this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x - (enemies_stats_1.DRONE_WIDTH / 2), enemy.y + (enemies_stats_1.DRONE_HEIGHT / 2)));
                     this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x, enemy.y - (enemies_stats_1.DRONE_HEIGHT / 2)));
                     this.spawnEnemy(new drone_1.Drone(enemy.lane.num, enemy.x + (enemies_stats_1.DRONE_WIDTH / 2), enemy.y + (enemies_stats_1.DRONE_HEIGHT / 2)));
                     break;
-                case "papa":
+                case enemy_kind_1.EnemyKind.PAPA:
                     this.notifier.onBossKilled("papa");
                     this.difficulty.level++;
                 default:
                     break;
             }
+            this.accumulator.accumulateKill(playerId, enemy.type);
         }
     }
     getAllPlayers() {

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModel = void 0;
 const game_engine_1 = require("./game-engine");
 const quiz_handler_1 = require("./quiz-handler");
@@ -8,7 +9,7 @@ class GameModel {
         this.notifier = notifier;
         this.game = game;
         this.hasEnded = false;
-        this.gameEngine = new game_engine_1.GameEngine(this, notifier, game.playersId);
+        this.gameEngine = new game_engine_1.GameEngine(this, accumulator, notifier, game.playersId);
         const playersConfigEntries = Object.entries(game.playersConfig);
         const playersNotionsMask = playersConfigEntries.reduce((acc, [playerId, config]) => {
             acc[playerId] = config.notionsMask;
@@ -34,3 +35,4 @@ class GameModel {
     }
 }
 exports.GameModel = GameModel;
+

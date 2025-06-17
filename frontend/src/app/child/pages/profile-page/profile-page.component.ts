@@ -20,6 +20,8 @@ import { QuestionNotion } from '@app/shared/models/question.model';
 import { Grading } from '@app/shared/models/results.model';
 import { GameLeaderboard, GlobalLeaderboard, Leaderboard } from '@app/shared/models/leaderboard.model';
 import { GameInfo } from '@app/shared/models/game-info.model';
+import { Enemy } from '../game/pages/running-page/ennemies/Enemy';
+import { EnemyKind } from '@app/shared/models/enemy-kind.model';
 
 
 
@@ -50,7 +52,20 @@ type HistorySectionData = {
     leaderboard: Leaderboard | undefined,
 };
 
+const THRESHOLD = 200;
+const Acquisition = {
+    obtained : "obtained",
+    not_obtained : "not_obtained",
+} as const;
+type Acquisition = typeof Acquisition[keyof typeof Acquisition];
 
+type Badge = {
+    enemy: EnemyKind,
+    name: string,
+    description: string,
+    counter: number;
+    acquisition: Acquisition,
+}
 
 @Component({
     selector: 'app-profile-page',
@@ -66,6 +81,29 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     // Statistics Section Data :
     private _playerStatistics!: PlayerStatistics;
     private _globalLeaderboard!: GlobalLeaderboard;
+    public badges = [
+        {
+            enemy: EnemyKind.CRAB,
+            name: "crab_killer_trophy",
+            description: "Tuer 200 crabes",
+            counter: 0,
+            acquisition: "not_obtained",
+        },
+        {
+            enemy: EnemyKind.HIVECRAB,
+            name: "hiveCrab_killer_trophy",
+            description: "Tuer 200 hiveCrabes",
+            counter: 0,
+            acquisition: "not_obtained",
+        },
+        {
+            enemy: EnemyKind.DRONE,
+            name: "drone_killer_trophy",
+            description: "Tuer 200 drones",
+            counter: 0,
+            acquisition: "not_obtained",
+        },
+    ];
 
     // History Sections Data :
     private _playerResultsList!: PlayerResults[];
@@ -78,7 +116,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     constructor(
         private userService: UserService,
-        private playerStatisticsService :PlayerStatisticsService,
+        private playerStatisticsService: PlayerStatisticsService,
         private playerResultsService: PlayerResultsService,
         private gameInfoService: GameInfoService,
         private leaderboardService: LeaderboardService,
@@ -94,7 +132,10 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.playerStatisticsService.playerStatistics$.subscribe(
             (playerStatistics: PlayerStatistics|null) => {
-                if (playerStatistics) this._playerStatistics = playerStatistics;
+                if (playerStatistics) {
+                    this._playerStatistics = playerStatistics;
+                    this._updateSectionData();
+                }
             })
         );
 
@@ -202,6 +243,14 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             this.sectionData = {
                 playerStats: this._playerStatistics,
                 leaderboard: this._globalLeaderboard,
+            }
+            if (!this._playerStatistics) return;
+            for(let [key, kills] of Object.entries(this._playerStatistics.statistics.globalKills)){
+                const badge = this.badges.find(b => b.enemy == key)!
+                badge.counter = kills;
+                if(kills >= THRESHOLD) {
+                    badge.acquisition = Acquisition.obtained;
+                }
             }
             return;
         }

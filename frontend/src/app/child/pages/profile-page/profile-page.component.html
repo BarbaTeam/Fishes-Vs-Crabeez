@@ -82,9 +82,14 @@
                 <h3 class="title">Badges</h3>
                 <div class="badge-group">
                 <span class="badge-list">
-                    <img class="badge" src="../../../../assets/images//icons/crab_killer_trophy.png" alt="Eliminer 200 crabes" title="Eliminer 200 crabes">
-                    <img class="badge" src="../../../../assets/images//icons/defender_trophy.png" alt="Vous avez atteint un score de plus de 1000 points" title="Vous avez atteint un score de plus de 1000 points">
-                    <img class="badge" src="../../../../assets/images//icons/zap_trophy.png" alt="Vous êtes sorti de l'état électrique 50 fois" title="Vous êtes sorti de l'état électrique 50 fois">
+                    @for(badge of badges; let i = $index; track i){
+                        <img
+                            class="badge"
+                            [src]="'../../../../assets/images/icons/' + badge.name + '_' + badge.acquisition + '.png'"
+                            [alt]="badge.description"
+                            [title]="'Vous avez tué ' +badge.counter + '/200'"
+                        >                    
+                    }
                 </span>
             </div>
 

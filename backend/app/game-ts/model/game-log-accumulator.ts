@@ -1,21 +1,36 @@
 import { AnsweredQuestion, Game, GameLog, UserID } from '../../shared/types';
+import { EnemyKind } from './game-engine/enemies/enemy-kind';
 
 
 
 export class GameLogAccumulator {
-    private _acc: Record<UserID, AnsweredQuestion[]> = {} as Record<UserID, AnsweredQuestion[]>;
+    private _ansAcc: Record<UserID, AnsweredQuestion[]> = {};
+    private _killAcc : Record<UserID, Record<EnemyKind, number>> = {};
+    private _scoreAcc : number = 0;
 
     constructor(
         private readonly gameLobby: Game,
     ) {
         const playersId = gameLobby.playersId;
         for (let playerId of playersId) {
-            this._acc[playerId] = [];
+            this._ansAcc[playerId] = [];
+            this._killAcc[playerId] = Object.values(EnemyKind).reduce((acc, k) => {
+                acc[k] = 0;
+                return acc;
+            }, {} as Record<EnemyKind, number>);
         }
     }
 
-    public accumulate(playerId: UserID, ans: AnsweredQuestion): void {
-        this._acc[playerId]!.push(ans);
+    public accumulateAnswer(playerId: UserID, ans: AnsweredQuestion): void {
+        this._ansAcc[playerId]!.push(ans);
+    }
+
+    public accumulateKill(playerId: UserID, enemyKind: EnemyKind): void {
+        this._killAcc[playerId][enemyKind]++;
+    }
+
+    public accumulateScore(score: number): void {
+        this._scoreAcc += score;
     }
 
     public get gamelog(): GameLog {
@@ -38,7 +53,9 @@ export class GameLogAccumulator {
                     encrypted: false,
                 },
             },
-            playersAnswers: Object.values(this._acc),
+            score: this._scoreAcc,
+            playersAnswers: Object.values(this._ansAcc),
+            playersKills: Object.values(this._killAcc),
         } as GameLog;
     }
 }

@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enemy = void 0;
 const variables_1 = require("../../../../game/model/game-engine/variables");
 const random_1 = require("../../../../shared/utils/random");
@@ -74,3 +75,4 @@ class Enemy {
 }
 exports.Enemy = Enemy;
 Enemy.nextId = 0;
+

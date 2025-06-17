@@ -15,6 +15,8 @@ import { DRONE_HEIGHT, DRONE_WIDTH } from "./enemies/enemies-stats";
 import { Papa } from "./enemies/papa";
 
 import { Difficulty } from "./difficulty";
+import { GameLogAccumulator } from "../game-log-accumulator";
+import { EnemyKind } from "./enemies/enemy-kind";
 
 
 
@@ -32,6 +34,7 @@ export class GameEngine {
 
     constructor(
         private model: GameModel,
+        private accumulator: GameLogAccumulator,
         public notifier: GameUpdatesNotifier,
         playersId: UserID[],
     ) {
@@ -137,13 +140,14 @@ export class GameEngine {
                 if (!enemy.alive) continue;
 
                 if (this.checkCollision(enemy, projectile)) {
-                    this.hit(enemy);
+                    this.hit(enemy, projectile.player.id);
                     projectile.destroy();
                     if(enemy.alive){
                         this.notifier.onEnemyHit(projectile, enemy.id, enemy.health);
                     }
                     else{
                         this.score += enemy.score;
+                        this.accumulator.accumulateScore(enemy.score);
                         this.notifier.onEnemyKilled(projectile, enemy.id);
                         this.notifier.onScoreUpdated(this.score);
                     }
@@ -153,21 +157,22 @@ export class GameEngine {
         }
     }
 
-    public hit(enemy: Enemy): void {
+    public hit(enemy: Enemy, playerId: UserID): void {
         enemy.hit();
         if (!enemy.alive) {
             switch (enemy.type) {
-                case "hive-crab":
+                case EnemyKind.HIVECRAB:
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x-(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x, enemy.y-(DRONE_HEIGHT/2)));
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x+(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
                     break;
-                case "papa":
+                case EnemyKind.PAPA:
                     this.notifier.onBossKilled("papa");
                     this.difficulty.level++;
                 default:
                     break;
             }
+            this.accumulator.accumulateKill(playerId, enemy.type);
         }
     }
 

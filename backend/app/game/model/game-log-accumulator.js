@@ -1,16 +1,30 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameLogAccumulator = void 0;
+const enemy_kind_1 = require("./game-engine/enemies/enemy-kind");
 class GameLogAccumulator {
     constructor(gameLobby) {
         this.gameLobby = gameLobby;
-        this._acc = {};
+        this._ansAcc = {};
+        this._killAcc = {};
+        this._scoreAcc = 0;
         const playersId = gameLobby.playersId;
         for (let playerId of playersId) {
-            this._acc[playerId] = [];
+            this._ansAcc[playerId] = [];
+            this._killAcc[playerId] = Object.values(enemy_kind_1.EnemyKind).reduce((acc, k) => {
+                acc[k] = 0;
+                return acc;
+            }, {});
         }
     }
-    accumulate(playerId, ans) {
-        this._acc[playerId].push(ans);
+    accumulateAnswer(playerId, ans) {
+        this._ansAcc[playerId].push(ans);
+    }
+    accumulateKill(playerId, enemyKind) {
+        this._killAcc[playerId][enemyKind]++;
+    }
+    accumulateScore(score) {
+        this._scoreAcc += score;
     }
     get gamelog() {
         console.log(this.gameLobby.playersId);
@@ -30,8 +44,11 @@ class GameLogAccumulator {
                     encrypted: false,
                 },
             },
-            playersAnswers: Object.values(this._acc),
+            score: this._scoreAcc,
+            playersAnswers: Object.values(this._ansAcc),
+            playersKills: Object.values(this._killAcc),
         };
     }
 }
 exports.GameLogAccumulator = GameLogAccumulator;
+
