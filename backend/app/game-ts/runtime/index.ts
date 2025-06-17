@@ -37,10 +37,19 @@ export class GameRuntime {
     }
 
     public runOneFrame(): void {
-        if(this.model.hasEnded || this.model.game.playersId.length === 0){
-            this.onGameEnd();
+        if (this.model.hasEnded) {
+            if (this.model.game.playersId.length === 0) {
+                setTimeout(() => {
+                    if (this.model.game.playersId.length === 0) {
+                        this.onGameEnd();
+                    }
+                }, 10000);
+            } else {
+                this.onGameEnd();
+            }
             return;
         }
+
         this.model.runOneFrame();
     }
 
