@@ -23,7 +23,7 @@ import { ChildHostComponent } from './child-host.component';
 // Pages :
 
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
-import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
+import { BestiaryPageComponent } from './pages/bestiary-page/bestiary-page.component';
 import { GamesListPageComponent } from './pages/games-list-page/games-list-page.component';
 
 
@@ -33,7 +33,7 @@ import { GamesListPageComponent } from './pages/games-list-page/games-list-page.
 
 const PAGES_COMPONENTS = [
     ProfilePageComponent,
-    SettingsPageComponent,
+    BestiaryPageComponent,
     GamesListPageComponent,
 ];
 

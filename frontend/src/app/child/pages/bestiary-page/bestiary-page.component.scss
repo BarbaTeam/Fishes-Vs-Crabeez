@@ -1,0 +1,423 @@
+// Variables
+$primary-color: #4a90e2;
+$secondary-color: #7b68ee;
+$success-color: #5cb85c;
+$warning-color: #f0ad4e;
+$danger-color: #d9534f;
+$dark-color: #333;
+$light-color: #f8f9fa;
+$border-color: #dee2e6;
+$shadow: 0 2px 4px rgba(0,0,0,0.1);
+$shadow-hover: 0 4px 8px rgba(0,0,0,0.15);
+
+// Sidebar styles
+.bestiary-stats {
+  background: $light-color;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid $border-color;
+  box-shadow: $shadow;
+
+  h3 {
+    margin: 0 0 1rem 0;
+    color: $dark-color;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  .stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .stat-label {
+      font-weight: 500;
+      color: #666;
+    }
+
+    .stat-value {
+      font-weight: 600;
+      color: $primary-color;
+    }
+  }
+}
+
+.monster-list {
+  h3 {
+    margin: 0 0 1rem 0;
+    color: $dark-color;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+
+  app-small-button {
+    margin-bottom: 0.5rem;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &.active {
+      box-shadow: $shadow-hover;
+      transform: translateX(2px);
+    }
+
+    &.boss {
+      background: linear-gradient(45deg, #ffd700, #ffed4e);
+      border: 2px solid #ffd700;
+      
+      &:hover {
+        background: linear-gradient(45deg, #ffed4e, #ffd700);
+      }
+    }
+
+    &.undiscovered {
+      opacity: 0.6;
+      background: #e9ecef;
+      
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .monster-button-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+
+    .monster-icon-small {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+    }
+
+    .mystery-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #6c757d;
+      border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .monster-name {
+      flex: 1;
+      text-align: left;
+    }
+
+    .boss-indicator {
+      font-size: 16px;
+    }
+  }
+}
+
+// Main content styles
+.monster-details {
+  .monster-header {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 12px;
+    border: 1px solid $border-color;
+
+    .monster-icon-large {
+      width: 100px;
+      height: 100px;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: $shadow;
+    }
+
+    .monster-title {
+      flex: 1;
+
+      h1 {
+        margin: 0 0 0.5rem 0;
+        color: $dark-color;
+        font-size: 2rem;
+        font-weight: 700;
+      }
+
+      .boss-badge {
+        display: inline-block;
+        background: linear-gradient(45deg, #ffd700, #ffed4e);
+        color: #b8860b;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-left: 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: $shadow;
+      }
+
+      .monster-score {
+        color: $primary-color;
+        font-weight: 600;
+        font-size: 1.1rem;
+        margin-top: 0.5rem;
+      }
+    }
+  }
+
+  .monster-content {
+    display: grid;
+    gap: 2rem;
+
+    .monster-description,
+    .monster-tips {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid $border-color;
+      box-shadow: $shadow;
+
+      h2 {
+        margin: 0 0 1rem 0;
+        color: $dark-color;
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+
+      p {
+        margin: 0;
+        line-height: 1.6;
+        color: #555;
+      }
+    }
+
+    .monster-tips {
+      background: #f8f9fa;
+      border-left: 4px solid $warning-color;
+    }
+
+    .monster-stats {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid $border-color;
+      box-shadow: $shadow;
+
+      h2 {
+        margin: 0 0 1.5rem 0;
+        color: $dark-color;
+        font-size: 1.3rem;
+        font-weight: 600;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+
+        .stat-card {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+          padding: 1rem;
+          border-radius: 8px;
+          border: 1px solid $border-color;
+          transition: all 0.3s ease;
+
+          &:hover {
+            transform: translateY(-2px);
+            box-shadow: $shadow-hover;
+          }
+
+          &.hp {
+            background: linear-gradient(135deg, #ffebee, #ffcdd2);
+            border-color: #e57373;
+          }
+
+          &.attack {
+            background: linear-gradient(135deg, #fff3e0, #ffcc80);
+            border-color: #ff9800;
+          }
+
+          &.speed {
+            background: linear-gradient(135deg, #e8f5e8, #c8e6c9);
+            border-color: #4caf50;
+          }
+
+          .stat-icon {
+            font-size: 1.5rem;
+          }
+
+          .stat-info {
+            display: flex;
+            flex-direction: column;
+
+            .stat-name {
+              font-size: 0.9rem;
+              color: #666;
+              margin-bottom: 0.25rem;
+            }
+
+            .stat-number {
+              font-size: 1.5rem;
+              font-weight: 700;
+              color: $dark-color;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.monster-undiscovered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+
+  .mystery-container {
+    text-align: center;
+    padding: 2rem;
+
+    .mystery-icon-large {
+      width: 120px;
+      height: 120px;
+      background: #6c757d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      color: white;
+      font-weight: bold;
+      margin: 0 auto 2rem auto;
+      box-shadow: $shadow;
+    }
+
+    h2 {
+      color: $dark-color;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    p {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+
+      &.hint {
+        color: $primary-color;
+        font-weight: 500;
+        font-style: italic;
+      }
+    }
+  }
+}
+
+.no-selection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+
+  .welcome-container {
+    text-align: center;
+    max-width: 500px;
+    padding: 2rem;
+
+    h1 {
+      color: $dark-color;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+    }
+
+    .welcome-text {
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+    }
+
+    .progress-overview {
+      background: $light-color;
+      padding: 1.5rem;
+      border-radius: 8px;
+      border: 1px solid $border-color;
+      margin-bottom: 2rem;
+
+      h3 {
+        margin: 0 0 1rem 0;
+        color: $dark-color;
+        font-size: 1.2rem;
+      }
+
+      .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #e9ecef;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 1rem;
+
+        .progress-fill {
+          height: 100%;
+          background: linear-gradient(90deg, $primary-color, $secondary-color);
+          transition: width 0.3s ease;
+        }
+      }
+
+      p {
+        margin: 0;
+        color: #666;
+        font-weight: 500;
+      }
+    }
+
+    .instruction {
+      color: $primary-color;
+      font-weight: 500;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .monster-details {
+    .monster-header {
+      flex-direction: column;
+      text-align: center;
+      gap: 1rem;
+
+      .monster-title h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    .monster-content .monster-stats .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .monster-list .monster-button-content {
+    .monster-icon-small,
+    .mystery-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 12px;
+    }
+  }
+}
