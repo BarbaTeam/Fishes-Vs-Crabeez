@@ -3,7 +3,7 @@ import { testUrl } from 'e2e/e2e.config';
 
 
 
-test.describe('...', () => {
+test.describe('Ergo change config of game lobby and child watch changes', () => {
     test.setTimeout(120_000);
 
     let childPage: Page;
