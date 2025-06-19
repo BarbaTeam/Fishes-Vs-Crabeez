@@ -1,0 +1,67 @@
+services:
+    backend:
+        build:
+            context: ../backend/
+            dockerfile: Dockerfile.backend
+            args:
+                - COMMAND=start:e2e
+        ports:
+            - "8081:9428"
+
+        image: "barbamaths-backend-e2e"
+
+        environment:
+            - DB_FOLDER="database/e2e"
+        volumes:
+            - database:/home/node/database/e2e
+        healthcheck:
+            test: [ "CMD-SHELL", "curl -f http://localhost:9428/api/status || exit 1" ]
+            interval: 1m30s
+            timeout: 5s
+            retries: 3
+            start_period: 5s
+
+    frontend:
+        build:
+            context: ../frontend/
+            dockerfile: Dockerfile.frontend
+            args:
+                - FRONTEND_DOMAIN=frontend
+                - BACKEND_DOMAIN=backend
+                - BACKEND_PORT=9428
+                - BUILD_CONFIG=docker-e2e
+        ports:
+            - "8080:80"
+
+        image: "barbamaths-frontend-e2e"
+
+        depends_on:
+            backend:
+                condition: service_healthy
+        healthcheck:
+            test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
+            interval: 1m30s
+            timeout: 5s
+            retries: 3
+            start_period: 5s
+
+    playwright:
+        build:
+            context: ../frontend/
+            dockerfile: Dockerfile.playwright
+        image: "test_playwright"
+        depends_on:
+            frontend:
+                condition: service_healthy
+            backend:
+                condition: service_healthy
+        environment:
+            - FRONT_URL=http://frontend
+        volumes:
+            - ../ops/e2e-results/tests-results:/e2e-results/tests-results:rw
+            - ../ops/e2e-results/playwright-report:/e2e-results/playwright-report:rw
+
+volumes:
+    database:
+    test_results:
+    test_reports:
