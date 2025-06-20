@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.ParalysisEvent = void 0;
 const event_types_1 = require("../event-types");
 const player_event_1 = require("./player-event");

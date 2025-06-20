@@ -69,8 +69,10 @@ class Enemy {
             x: this.x,
             y: this.y,
             speed: this.speed,
+            health: this.health,
         };
     }
 }
 exports.Enemy = Enemy;
 Enemy.nextId = 0;
+

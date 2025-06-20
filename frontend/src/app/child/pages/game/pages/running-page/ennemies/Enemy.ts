@@ -3,6 +3,7 @@ import { scaleToCanvas } from "../utils";
 
 export class Enemy {
     public _id: string;
+    public type!: string;
     public x!: number;
     public y!: number;
     public virtualWidth!: number;
@@ -11,7 +12,8 @@ export class Enemy {
     public enemyHitUrl?: string;
     public enemyUrl!: string;
     public speed!: number;
-
+    public health! : number;
+    
     constructor(
         private canvas: HTMLCanvasElement,
         id : string,

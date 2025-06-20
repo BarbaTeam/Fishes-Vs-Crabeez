@@ -38,9 +38,9 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('enemyAdded', enemy.toJSON());
     }
 
-    public onEnemyHit(projectile : Projectile, enemyId: string) {
+    public onEnemyHit(projectile : Projectile, enemyId: string, enemyHealth: number) {
         console.log(`[NOTIFIER] : An enemy has been hit`);
-        this.broadcast.emit('enemyHit', {projectile: projectile.toJSON(), enemyId: enemyId});
+        this.broadcast.emit('enemyHit', {projectile: projectile.toJSON(), enemyId: enemyId, enemyHealth: enemyHealth});
     }
 
     public onEnemyKilled(projectile : Projectile, enemyId: string) {
@@ -52,7 +52,7 @@ export class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : An enemy has been despawned`);
         this.broadcast.emit('enemyDespawned', enemyId);
     }
-    
+
     public onPlayerParalysed(playerId: UserID) {
         console.log(`[NOTIFIER] : Player ${playerId} is paralysed !\n\n`);
         this.broadcast.emit('playerParalysed', playerId);
@@ -76,6 +76,16 @@ export class GameUpdatesNotifier {
     public onNewWave(waveCounter: number) {
         console.log(`[NOTIFIER] : New wave incoming ! n°${waveCounter}`);
         this.broadcast.emit('newWave', waveCounter);
+    }
+
+    public onBossWave(bossName: string) {
+        console.log(`[NOTIFIER] : BOSS wave incoming ! It's ${bossName}`);
+        this.broadcast.emit('bossWave', bossName);
+    }
+
+    public onBossKilled(bossName: string) {
+        console.log(`[NOTIFIER] : ${bossName} IS DEAAAAD !`);
+        this.broadcast.emit('bossKilled', bossName);
     }
 
     public onGameEnd(){

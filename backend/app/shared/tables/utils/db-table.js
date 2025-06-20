@@ -126,7 +126,7 @@ class DatabaseTable {
             throw new ValidationError(`Constructor Error: initializer's return value does not match schema`, error);
         }
 
-        this._filePath = path.resolve(__dirname, `${DB_PATH}/${this.name.toLowerCase()}.data.json`);
+        this._filePath = path.resolve(__dirname, `${DB_PATH}/${process.env.DB_FOLDER ?? ''}${this.name.toLowerCase()}.data.json`);
 
         this._records = [];
         this._load();
@@ -307,7 +307,7 @@ class DatabaseSingletonTable {
         this.schema = schema;
         this.initializer = initializer;
 
-        this._filePath = path.resolve(__dirname, `${DB_PATH}/${this.name.toLowerCase()}.data.json`);
+        this._filePath = path.resolve(__dirname, `${DB_PATH}/${process.env.DB_FOLDER ?? ''}${this.name.toLowerCase()}.data.json`);
 
         this._record = this.initializer();
         const { error } = this.schema.validate(this._record);

@@ -15,7 +15,7 @@ class QuizHandler {
         return this._playersNotionsMask;
     }
     receiveAnswer(playerId, ans) {
-        this.accumulator.accumulate(playerId, ans);
+        this.accumulator.accumulateAnswer(playerId, ans);
         const answeredCorrectly = utils_1.AnswerChecker.checkAnswer(ans);
         const answeredToEncryptedQuestion = ans.notion === types_1.QuestionNotion.ENCRYPTION;
         if (answeredToEncryptedQuestion) {
@@ -53,3 +53,4 @@ class QuizHandler {
     }
 }
 exports.QuizHandler = QuizHandler;
+

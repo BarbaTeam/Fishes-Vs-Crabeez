@@ -9,7 +9,7 @@ class GameModel {
         this.notifier = notifier;
         this.game = game;
         this.hasEnded = false;
-        this.gameEngine = new game_engine_1.GameEngine(this, notifier, game.playersId);
+        this.gameEngine = new game_engine_1.GameEngine(this, accumulator, notifier, game.playersId);
         const playersConfigEntries = Object.entries(game.playersConfig);
         const playersNotionsMask = playersConfigEntries.reduce((acc, [playerId, config]) => {
             acc[playerId] = config.notionsMask;
@@ -35,3 +35,4 @@ class GameModel {
     }
 }
 exports.GameModel = GameModel;
+

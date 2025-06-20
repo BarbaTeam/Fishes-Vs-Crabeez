@@ -1,0 +1,13 @@
+FROM mcr.microsoft.com/playwright:v1.44.1
+
+RUN mkdir -p /e2e-results/tests-results /e2e-results/playwright-report && chown -R pwuser:pwuser /e2e-results
+
+USER pwuser
+
+WORKDIR /home/pwuser/app
+
+COPY  --chown=pwuser:pwuser package*.json .
+RUN npm install
+
+COPY --chown=pwuser:pwuser . .
+CMD ["npx", "playwright", "test", "--config", "./playwright.config-docker.ts"]

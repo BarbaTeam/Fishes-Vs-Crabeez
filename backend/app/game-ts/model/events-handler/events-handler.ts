@@ -7,10 +7,13 @@ import { Enemy } from '../game-engine/enemies/enemy';
 import { Event } from './event';
 import { EventID, EventKind } from './event-types';
 import { WaveEvent } from './game-events/wave';
+import { BossWaveEvent } from './game-events/boss-wave';
+
 import { ParalysisEvent } from './player-events/paralysis';
 import { FrenzyEvent } from './player-events/frenzy';
 
 import { IEventsHandler } from './events-handler.interface';
+import { Difficulty } from '../game-engine/difficulty';
 
 
 
@@ -51,11 +54,11 @@ export class EventsHandler implements IEventsHandler {
         let event: Event<unknown>;
         switch (kind) {
             case EventKind.WAVE :
-                event = new WaveEvent(this, args[0] as number);
+                event = new WaveEvent(this, args[0] as Difficulty);
                 break;
 
-            case EventKind.BOSS :
-                // TODO : ...
+            case EventKind.BOSS_WAVE :
+                event = new BossWaveEvent(this, args[0] as Difficulty);
                 break;
 
             case EventKind.PARALYSIS :
@@ -84,8 +87,10 @@ export class EventsHandler implements IEventsHandler {
                 }
                 break;
 
-            case EventKind.BOSS :
-                // TODO : ...
+            case EventKind.BOSS_WAVE :
+                for (const enemy of emittedVal as Enemy[]) {
+                    this.model.gameEngine.spawnEnemy(enemy);
+                }
                 break;
 
             case EventKind.PARALYSIS :

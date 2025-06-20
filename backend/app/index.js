@@ -7,5 +7,9 @@ buildServer((server) => logger.info(
     `Server is listening on port ${server.address().port}`
 ));
 
-// TODO : Remove once mocks are no more needed
-populateTables();
+if (process.env.TEST_E2E) {
+    populateTables();
+} else {
+    // TODO : Remove once mocks are no more needed
+    populateTables();
+}

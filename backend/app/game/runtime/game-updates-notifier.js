@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameUpdatesNotifier = void 0;
 class GameUpdatesNotifier {
     constructor(io, broadcast) {
@@ -26,9 +25,9 @@ class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : A new enemy spawned\n\n`);
         this.broadcast.emit('enemyAdded', enemy.toJSON());
     }
-    onEnemyHit(projectile, enemyId) {
+    onEnemyHit(projectile, enemyId, enemyHealth) {
         console.log(`[NOTIFIER] : An enemy has been hit`);
-        this.broadcast.emit('enemyHit', { projectile: projectile.toJSON(), enemyId: enemyId });
+        this.broadcast.emit('enemyHit', { projectile: projectile.toJSON(), enemyId: enemyId, enemyHealth: enemyHealth });
     }
     onEnemyKilled(projectile, enemyId) {
         console.log(`[NOTIFIER] : An enemy has been slain`);
@@ -57,6 +56,14 @@ class GameUpdatesNotifier {
     onNewWave(waveCounter) {
         console.log(`[NOTIFIER] : New wave incoming ! n°${waveCounter}`);
         this.broadcast.emit('newWave', waveCounter);
+    }
+    onBossWave(bossName) {
+        console.log(`[NOTIFIER] : BOSS wave incoming ! It's ${bossName}`);
+        this.broadcast.emit('bossWave', bossName);
+    }
+    onBossKilled(bossName) {
+        console.log(`[NOTIFIER] : ${bossName} IS DEAAAAD !`);
+        this.broadcast.emit('bossKilled', bossName);
     }
     onGameEnd() {
         console.log(`[NOTIFIER] : Game ended !`);

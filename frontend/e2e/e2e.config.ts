@@ -1,2 +1,1 @@
-
-export const testUrl = 'http://localhost:4200';
+export const testUrl = process.env["FRONT_URL"] || "localhost:4200";

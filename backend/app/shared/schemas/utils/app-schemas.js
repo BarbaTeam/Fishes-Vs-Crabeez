@@ -58,7 +58,8 @@ const AnsweredQuestionSchema = objectSchema({
     expected_answer: stringSchema.required(),
     proposed_answer: stringSchema.required(),
     notion: QuestionNotionSchema.required(),
-})
+});
+
 
 const ResultsSchema = objectSchema({
     wordsPerMinute: numberSchema.required(),
@@ -67,6 +68,15 @@ const ResultsSchema = objectSchema({
     mistakes: objectSchema({
         spelling: arraySchema(AnsweredQuestionSchema).required(),
         calculation: arraySchema(AnsweredQuestionSchema).required(),
+    }).required(),
+
+    score: numberSchema.required(),
+
+    kills: objectSchema({
+        CRAB: numberSchema.required(),
+        HIVECRAB: numberSchema.required(),
+        DRONE: numberSchema.required(),
+        PAPA: numberSchema.required(),
     }).required(),
 });
 
@@ -88,6 +98,15 @@ const StatisticsSchema = objectSchema({
         spelling: arraySchema(tupleSchema(AnsweredQuestionSchema, DateSchema)).required(),     // mistake-date pairs
         calculation: arraySchema(tupleSchema(AnsweredQuestionSchema, DateSchema)).required(),
     },
+
+    globalScore: numberSchema.required(),
+
+    globalKills: objectSchema({
+        CRAB: numberSchema.required(),
+        HIVECRAB: numberSchema.required(),
+        DRONE: numberSchema.required(),
+        PAPA: numberSchema.required(),
+    }).required(),
 });
 
 

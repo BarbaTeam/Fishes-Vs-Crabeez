@@ -6,29 +6,44 @@ import { GameModel } from "..";
 import { EventID, EventKind } from "../events-handler";
 
 import { Enemy } from "./enemies/enemy";
+import { Drone } from "./enemies/drone";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 
 import { LANES, PLAYER_COLORS, VIRTUAL_WIDTH } from "./variables";
-import { Drone } from "./enemies/drone";
 import { DRONE_HEIGHT, DRONE_WIDTH } from "./enemies/enemies-stats";
+import { Papa } from "./enemies/papa";
+
+import { Difficulty } from "./difficulty";
+import { GameLogAccumulator } from "../game-log-accumulator";
+import { EnemyKind } from "./enemies/enemy-kind";
 
 
 
 export class GameEngine {
+    private score = 0;
+    private health = 10;
+
     public players: Record<UserID, Player> = {};
     public projectiles: Projectile[] = [];
     public enemies: Enemy[] = [];
-    private score = 0;
-    private health = 10;
-    private waveCounter = 0;
     private currWaveEventId?: EventID;
+
+    private difficulty: Difficulty;
+
 
     constructor(
         private model: GameModel,
+        private accumulator: GameLogAccumulator,
         public notifier: GameUpdatesNotifier,
         playersId: UserID[],
     ) {
+        this.difficulty = {
+            level: 0,
+            waveCount: 0,
+            harshness: this.model.game.playersId.length,
+        };
+
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, PLAYER_COLORS[i], i);
         }
@@ -101,10 +116,10 @@ export class GameEngine {
         enemy.update();
         if (enemy.x < 11) {
             enemy.destroy();
-            if(this.health <= 1){
+            this.health = Math.max(0, this.health - enemy.maxHealth);
+            if(this.health == 0){
                 this.model.hasEnded = true;
             }
-            this.health -= enemy.maxHealth;
             this.notifier.onEnemyDespawned(enemy.id);
             this.notifier.onHealthUpdated(this.health);
         }
@@ -125,34 +140,39 @@ export class GameEngine {
                 if (!enemy.alive) continue;
 
                 if (this.checkCollision(enemy, projectile)) {
-                    this.hit(enemy);
+                    this.hit(enemy, projectile.player.id);
                     projectile.destroy();
                     if(enemy.alive){
-                        this.notifier.onEnemyHit(projectile, enemy.id);
+                        this.notifier.onEnemyHit(projectile, enemy.id, enemy.health);
                     }
                     else{
                         this.score += enemy.score;
+                        this.accumulator.accumulateScore(enemy.score);
                         this.notifier.onEnemyKilled(projectile, enemy.id);
                         this.notifier.onScoreUpdated(this.score);
                     }
-                    return; 
+                    return;
                 }
             }
         }
     }
 
-    public hit(enemy: Enemy): void {
+    public hit(enemy: Enemy, playerId: UserID): void {
         enemy.hit();
         if (!enemy.alive) {
             switch (enemy.type) {
-                case "hive-crab":
+                case EnemyKind.HIVECRAB:
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x-(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x, enemy.y-(DRONE_HEIGHT/2)));
                     this.spawnEnemy(new Drone(enemy.lane.num, enemy.x+(DRONE_WIDTH/2), enemy.y+(DRONE_HEIGHT/2)));
                     break;
+                case EnemyKind.PAPA:
+                    this.notifier.onBossKilled("papa");
+                    this.difficulty.level++;
                 default:
                     break;
             }
+            this.accumulator.accumulateKill(playerId, enemy.type);
         }
     }
 
@@ -175,15 +195,20 @@ export class GameEngine {
     private spawnNextWaveIfNeeded(): void {
         const noMoreEnemies = this.enemies.length === 0;
         const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
-        
+
         if (noMoreEnemies && noCurrentWave) {
-            const difficulty = this.waveCounter;
-            
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, difficulty);
-            this.waveCounter++;
-            this.notifier.onNewWave(this.waveCounter);
-            
-            console.log(`Spawning wave ${this.waveCounter} with difficulty ${difficulty}`); 
+            this.difficulty.waveCount++;
+
+            if (this.difficulty.waveCount !== 0 && this.difficulty.waveCount % 10 === 0) {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.BOSS_WAVE, this.difficulty);
+                this.notifier.onBossWave("papa");
+            } else {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, this.difficulty);
+                this.notifier.onNewWave(this.difficulty.waveCount);
+            }
+
+            console.log(`Spawning wave ${this.difficulty.waveCount} with difficulty :`);
+            console.log(this.difficulty);
         }
     }
 }
