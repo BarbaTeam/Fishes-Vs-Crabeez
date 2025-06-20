@@ -13,7 +13,7 @@ import { RunningGamePageFixture } from '@e2e/pages-fixtures/child/running-game-p
 // Test :
 ////////////////////////////////////////////////////////////////////////////////
 
-test.describe('Child play a game in solo and see its updated stats', () => {
+test.describe("Child's profile stats update after a game", () => {
     test.setTimeout(120_000);
 
     let choicePage: ChoicePageFixture;
@@ -33,7 +33,7 @@ test.describe('Child play a game in solo and see its updated stats', () => {
     let initialStats: PlayerStats = {};
     let finalStats: PlayerStats = {};
 
-    test('Child connect and play solo game', async ({ page }) => {
+    test("Child play a game in solo and see its updated stats", async ({ page }) => {
         await test.step("Child go to childs list", async () => {
             await page.goto(testUrl);
             await expect(page).toHaveURL(/.*\/home/);
