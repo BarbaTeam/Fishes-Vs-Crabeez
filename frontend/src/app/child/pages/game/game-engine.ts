@@ -4,6 +4,9 @@ import { Player } from "./Player";
 import { Projectile } from "./Projectile";
 import { Enemy } from "./Enemy";
 import { Crab } from "./Crab";
+import { Socket } from "ngx-socket-io";
+import { SocketService } from "@app/shared/services/socket.service";
+import { Subscription } from "rxjs";
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
@@ -13,8 +16,10 @@ export class GameEngine {
     private enemies: Enemy[];
     private score: number;
     private gameLoopId: number | null = null;
+    private subscriptions = new Subscription();
 
-    constructor(private canvas: HTMLCanvasElement) {
+    constructor(private canvas: HTMLCanvasElement, private socket: SocketService) {
+        this.initSocket();
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvasResolution();
         this.background = new Background(this, canvas);
@@ -23,11 +28,40 @@ export class GameEngine {
         this.enemies = [];
         this.projectiles = [];
         this.score = 0;
-        this.init();
+        this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
     }
 
-    init() {
-        this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
+    private initSocket(){
+        this.subscriptions.add(
+            this.socket.on<{playerId : UserID, lane : number}>('playerChangedLane').subscribe(({playerId : playerId, lane : lane})=>{
+                const player = this.players.get(playerId);
+                if(player){
+                    player.lane = lane;
+                    player.update()
+                }
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<Projectile>('newProjectile').subscribe(projectile=>{
+                this.projectiles.push(projectile);
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<number>('scoreUpdated').subscribe(score=>{
+                this.score = score;
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<Enemy>('enemyAdded').subscribe(enemy=>{
+                this.enemies.push(enemy);
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<{projectile: Projectile, enemy: Enemy}>('enemyKilled').subscribe(({projectile : projectile, enemy : enemy})=>{
+                this.projectiles.filter(p => p.id != projectile.id);
+                this.enemies.filter(e => e.id != enemy.id);
+            })
+        );
     }
 
     stop() {
@@ -47,9 +81,6 @@ export class GameEngine {
         for (const projectile of this.projectiles) {
             projectile.update();
         }
-
-        this.projectiles = this.projectiles.filter(p => !p.markedForDeletion);
-        this.enemies = this.enemies.filter(e => e.alive);
     }
 
     private draw(ctx: CanvasRenderingContext2D): void {

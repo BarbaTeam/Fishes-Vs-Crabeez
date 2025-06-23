@@ -96,7 +96,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.setupFontSize(`${3 * this.user.config.fontSize}rem`);
 
         const canvas = this.canvasRef.nativeElement;
-        this.gameEngine = new GameEngine(canvas);
+        this.gameEngine = new GameEngine(canvas, this.socket);
     }
 
     ngOnDestroy(): void {

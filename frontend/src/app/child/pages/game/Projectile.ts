@@ -2,7 +2,7 @@ import { GameEngine } from "./game-engine";
 import { Player } from "./Player";
 
 export class Projectile {
-
+    private _id: string;
     private x: number;
     private y: number;
     private width: number;
@@ -10,8 +10,10 @@ export class Projectile {
     private image: HTMLImageElement;
 
     constructor(
-        private player: Player
+        private player: Player,
+        id: string,
     ) {
+        this._id = id;
         this.player = player;
         this.x = this.player.position.x;
         this.y = this.player.position.y;
@@ -23,10 +25,14 @@ export class Projectile {
     }
 
     public static fromJson(data: any, player: Player): Projectile {
-        const projectile = new Projectile(player);
+        const projectile = new Projectile(player, data.id);
         projectile.x = data.x;
         projectile.y = data.y;
         return projectile;
+    }
+
+    public get id(): string {
+        return this._id;
     }
 
     public update() : void {

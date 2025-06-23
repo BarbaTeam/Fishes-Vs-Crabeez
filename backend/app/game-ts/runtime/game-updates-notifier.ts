@@ -13,7 +13,7 @@ export class GameUpdatesNotifier {
     ) {}
 
     public onPlayerChangedLane(playerId: UserID, lane: number) {
-        this.io.to(playerId).emit('playerChangedLane', lane);
+        this.io.emit('playerChangedLane', playerId, lane);
     }
 
     public onPlayerShot(playerId: UserID, projectile: Projectile) {

@@ -1,19 +1,24 @@
+import { UserID } from "@app/shared/models/ids";
+
 export class Player {
 
+    private _id: UserID;
     private x: number;
     private y: number;
 
     private width: number;
     private height: number;
-    private lane!: number;
+    private _lane!: number;
     private hasChangedLane: boolean;
 
     private decryptedImage: HTMLImageElement;
     private encryptedImage: HTMLImageElement;
 
     private constructor(
-        private canvas: HTMLCanvasElement
+        private canvas: HTMLCanvasElement,
+        id : UserID,
     ) {
+        this._id = id;
         this.x = this.canvas.width / 2 - 100;
         this.y = this.canvas.height - 200 - 100;
         this.width = 150;
@@ -29,13 +34,21 @@ export class Player {
     }
 
     public static fromJson(data: any, canvas : HTMLCanvasElement): Player {
-        const player = new Player(canvas);
+        const player = new Player(canvas, data.id);
         player.lane = data.lane;
         return player;
     }
 
+    public get id(): UserID {
+        return this._id;
+    }
+
     public get position() : { x: number, y: number } {
         return { x : this.x, y : this.y }
+    }
+
+    public set lane(value : number) {
+        this._lane = value;
     }
 
     public update(): void {
