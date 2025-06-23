@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuizHandler = void 0;
 const types_1 = require("../../../shared/types");
 const events_handler_1 = require("../events-handler");
@@ -14,7 +15,7 @@ class QuizHandler {
         return this._playersNotionsMask;
     }
     receiveAnswer(playerId, ans) {
-        this.accumulator.accumulate(playerId, ans);
+        this.accumulator.accumulateAnswer(playerId, ans);
         const answeredCorrectly = utils_1.AnswerChecker.checkAnswer(ans);
         const answeredToEncryptedQuestion = ans.notion === types_1.QuestionNotion.ENCRYPTION;
         if (answeredToEncryptedQuestion) {
@@ -52,3 +53,4 @@ class QuizHandler {
     }
 }
 exports.QuizHandler = QuizHandler;
+

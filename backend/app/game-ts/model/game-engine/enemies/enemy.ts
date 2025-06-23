@@ -2,6 +2,7 @@ import { VIRTUAL_WIDTH } from "../../../../game/model/game-engine/variables";
 import { randint } from "../../../../shared/utils/random";
 import { Lane, LaneNumber } from "../lane";
 import { bandHeight, LANES } from "../variables";
+import { EnemyKind } from "./enemy-kind";
 
 
 export type EnemyID = `ennemy-${number}`;
@@ -20,7 +21,7 @@ export class Enemy {
 
 
     constructor(
-        public type : string,
+        public type : EnemyKind,
         public health: number,
         public speed : number,
         public damage: number,

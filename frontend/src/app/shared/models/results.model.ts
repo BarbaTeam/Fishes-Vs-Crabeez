@@ -1,3 +1,4 @@
+import { EnemyKind } from "./enemy-kind.model";
 import { AnsweredQuestion, QuestionNotion } from "./question.model";
 
 
@@ -33,6 +34,10 @@ export type Results = {
         spelling: AnsweredQuestion[],
         calculation: AnsweredQuestion[],
     },
+
+    score : number;
+
+    kills: { [key in EnemyKind]: number }
 };
 
 
@@ -59,4 +64,8 @@ export type Statistics = {
         spelling: [AnsweredQuestion, Date][], // mistake-date pairs
         calculation: [AnsweredQuestion, Date][],
     },
+    
+    globalScore : number,
+
+    globalKills: { [key in EnemyKind]: number },
 };

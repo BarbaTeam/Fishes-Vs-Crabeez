@@ -13,6 +13,7 @@ import { HiveCrab } from "./ennemies/HiveCrab";
 import { Drone } from "./ennemies/Drone";
 import { Papa } from "./ennemies/Papa";
 import { SoundBoard } from "./SoundBoard";
+import { EnemyKind } from "@app/shared/models/enemy-kind.model";
 
 
 
@@ -188,22 +189,22 @@ export class GameEngine {
         this.subscriptions.add(
             this.socket.on<any>('enemyAdded').subscribe(enemy=>{
                 switch (enemy.type) {
-                    case 'crab':
+                    case EnemyKind.CRAB:
                         const crab = Crab.fromJson(enemy, this.canvas);
                         this.enemies.set(crab._id ,crab);
                         console.log(`New Crab received: ${crab.id}, position: (${crab.x}, ${crab.y})`);
                         break;
-                    case 'hive-crab':
+                    case EnemyKind.HIVECRAB:
                         const hiveCrab = HiveCrab.fromJson(enemy, this.canvas);
                         this.enemies.set(hiveCrab._id, hiveCrab);
                         console.log(`New Hive Crab received: ${hiveCrab.id}, position: (${hiveCrab.x}, ${hiveCrab.y})`);
                         break;
-                    case 'drone':
+                    case EnemyKind.DRONE:
                         const drone = Drone.fromJson(enemy, this.canvas);
                         this.enemies.set(drone._id, drone);
                         console.log(`New Drone received: ${drone.id}, position: (${drone.x}, ${drone.y})`);
                         break;
-                    case 'papa':
+                    case EnemyKind.PAPA:
                         const papa = Papa.fromJson(enemy, this.canvas);
                         this.enemies.set(papa._id, papa);
                         console.log(`ATTENTION NEW PAPA SPAWNED IN THE SEA : ${papa.id}, position: (${papa.x}, ${papa.y})`);

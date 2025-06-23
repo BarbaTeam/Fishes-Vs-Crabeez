@@ -49,6 +49,15 @@ exports.PlayerStatisticsTable = new DatabaseTable(
                 spelling: [],
                 calculation: [],
             },
+
+            globalScore: 0,
+
+            globalKills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            }
         },
     })
 );

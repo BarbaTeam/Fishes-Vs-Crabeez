@@ -38,6 +38,14 @@ const MOCK_PLAYER_STATISTICS_PLACEHOLDERS = [
                 spelling   : [],
                 calculation: [],
             },
+            globalScore: 0,
+
+            globalKills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -76,6 +84,14 @@ const MOCK_PLAYER_STATISTICS_PLACEHOLDERS = [
                 spelling   : [],
                 calculation: [],
             },
+            globalScore: 0,
+
+            globalKills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -113,6 +129,14 @@ const MOCK_PLAYER_STATISTICS_PLACEHOLDERS = [
                 spelling   : [],
                 calculation: [],
             },
+            globalScore: 0,
+
+            globalKills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -149,6 +173,14 @@ const MOCK_PLAYER_STATISTICS_PLACEHOLDERS = [
             mostRecentMistakes: {
                 spelling   : [],
                 calculation: [],
+            },
+            globalScore: 0,
+
+            globalKills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
             },
         },
     },

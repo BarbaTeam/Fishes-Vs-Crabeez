@@ -71,6 +71,15 @@ const MOCK_PLAYERS_RESULTS = [
                     },
                 ],
             },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -127,6 +136,15 @@ const MOCK_PLAYERS_RESULTS = [
                     },
                 ],
             },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -177,6 +195,15 @@ const MOCK_PLAYERS_RESULTS = [
                         notion: "ADDITION",
                     },
                 ],
+            },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
             },
         },
     },
@@ -244,6 +271,15 @@ const MOCK_PLAYERS_RESULTS = [
                     },
                 ],
             },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
+            },
         },
     },
 
@@ -304,6 +340,15 @@ const MOCK_PLAYERS_RESULTS = [
                         notion: "MULTIPLICATION",
                     },
                 ],
+            },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
             },
         },
     },
@@ -380,6 +425,15 @@ const MOCK_PLAYERS_RESULTS = [
                         notion: "MULTIPLICATION",
                     },
                 ],
+            },
+
+            score: 0,
+
+            kills: {
+                CRAB: 0,
+                HIVECRAB: 0,
+                DRONE: 0,
+                PAPA: 0,
             },
         },
     },
