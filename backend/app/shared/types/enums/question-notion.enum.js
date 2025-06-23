@@ -1,0 +1,12 @@
+/**
+ * @enum {string}
+ */
+exports.QuestionNotion = {
+    ADDITION: "ADDITION",
+    SUBSTRACTION: "SUBSTRACTION",
+    MULTIPLICATION: "MULTIPLICATION",
+    DIVISION: "DIVISION",
+    EQUATION: "EQUATION",
+    REWRITING: "REWRITING",
+    ENCRYPTION: "ENCRYPTION"
+};
