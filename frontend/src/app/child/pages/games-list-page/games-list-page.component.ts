@@ -30,8 +30,6 @@ export class GamesListPageComponent implements OnDestroy {
     }
 
     private initSocket(): void {
-        this.socket.connect();
-
         this.subscriptions.add(this.socket.on<User[]>('lobbyState').subscribe(players => {
             console.log('Lobby state received:', players);
             this.players = players;
@@ -67,7 +65,6 @@ export class GamesListPageComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.socket.sendMessage('playerDisconnected', this.user);
-        this.socket.disconnect();
         this.subscriptions.unsubscribe();
     }
 }
