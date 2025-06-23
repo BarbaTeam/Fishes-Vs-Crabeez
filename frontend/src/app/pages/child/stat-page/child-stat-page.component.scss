@@ -12,3 +12,25 @@
     position: relative;
     left: 3rem;
 }
+
+.badge-group {
+    flex: 1 1 300px;
+    display: column;
+    flex-direction: row;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    min-width: 280px;
+}
+
+.badge-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.badge{
+    height: 4rem;
+    width: 4rem;
+}
