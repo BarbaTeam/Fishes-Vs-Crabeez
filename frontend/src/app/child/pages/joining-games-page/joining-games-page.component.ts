@@ -14,62 +14,84 @@ import { Subscription } from 'rxjs';
 export class JoiningGamesPageComponent implements OnInit, OnDestroy {
     user!: User;
     lobbies: LobbyInfo[] = [];
-    subscriptions = new Subscription();
+    private subscriptions = new Subscription();
 
     constructor(
         private userService: UserService,
         private router: Router,
         private socket: SocketService
     ) {
-        this.userService.selectedUser$.subscribe((user: User) => {
-            this.user = user;
-        });
+        this.subscriptions.add(
+            this.userService.selectedUser$.subscribe(user => this.user = user)
+        );
     }
 
     ngOnInit(): void {
         this.initSocket();
-    }
-    
-    private initSocket(){
-        this.subscriptions.add(
-            this.socket.on<any>('lobbyCreated').subscribe((lobbyId)=>{
-                const newLobby : LobbyInfo = {lobbyId, players : []};
-                this.lobbies.push(newLobby);
-            })
-        )
 
-        this.subscriptions.add(
-            this.socket.on<any>('lobbyClosed').subscribe((lobbyId) => {
-                this.lobbies = this.lobbies.filter(lobby => lobby.lobbyId != lobbyId)
-            })
-        )
-
-        this.subscriptions.add(
-            this.socket.on<any>('playerConnected').subscribe(({lobbyId, player}) => {
-                this.lobbies.forEach((lobby) => {
-                    if(lobby.lobbyId == lobbyId){
-                        lobby.players.push(player);
-                    }
-                })
-            })
-        )
-
-        this.subscriptions.add(
-            this.socket.on<any>('playerDisconnected').subscribe(({lobbyId, player}) => {
-                this.lobbies.forEach((lobby) => {
-                    if(lobby.lobbyId == lobbyId){
-                        lobby.players = lobby.players.filter(p => p.userId != player.userId);
-                    }
-                })
-            })
-        )
-
+        this.socket.onReady(() => {
+            this.socket.sendMessage('requestLobbies', {});
+        });
     }
 
-    joinLobby(lobbyId: number): void {
-        this.router.navigate(['/child/games-list'], { queryParams: { id: lobbyId } });
+    private initSocket(): void {
+        this.subscriptions.add(
+            this.socket.on<string>('lobbyCreated').subscribe((roomId) => {
+                const exists = this.lobbies.some(l => l.lobbyId === roomId);
+                if (!exists) {
+                    this.lobbies.push({ lobbyId: roomId, players: [] });
+                }
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<string>('lobbyClosed').subscribe((roomId) => {
+                this.lobbies = this.lobbies.filter(l => l.lobbyId !== roomId);
+                this.socket.sendMessage('requestLobbies', {});
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<any>('playerConnected').subscribe(({ lobbyId, player }) => {
+                const lobby = this.lobbies.find(l => l.lobbyId === lobbyId);
+                if (lobby && !lobby.players.some(p => p.userId === player.userId)) {
+                    lobby.players.push(player);
+                }
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<any>('playerDisconnected').subscribe(({ lobbyId, player }) => {
+                const lobby = this.lobbies.find(l => l.lobbyId === lobbyId);
+                if (lobby) {
+                    lobby.players = lobby.players.filter(p => p.userId !== player.userId);
+                }
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<string[]>('lobbies').subscribe((lobbyIds) => {
+                this.lobbies = lobbyIds.map(id => {
+                    const existing = this.lobbies.find(l => l.lobbyId === id);
+                    return { lobbyId: id, players: existing?.players ?? [] };
+                });
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<LobbyInfo[]>('lobbiesUpdated').subscribe((updates) => {
+                this.lobbies = updates.map(update => ({
+                    lobbyId: update.lobbyId,
+                    players: Array.isArray(update.players) ? update.players : []
+                }));
+            })
+        );
     }
-    
+
+    joinLobby(roomId: string): void {
+        this.router.navigate(['/child/games-list'], { queryParams: { id: roomId } });
+    }
+
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
     }

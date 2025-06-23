@@ -29,6 +29,16 @@
   justify-content: center;
 }
 
+:host(.column){
+  flex-wrap: nowrap;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+:host(.no-background){
+  background-color: transparent;
+}
+
 /* 🧱 Tailles */
 :host(.big) {
   width: 50vw;
