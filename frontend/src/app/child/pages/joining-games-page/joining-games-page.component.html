@@ -9,9 +9,7 @@
             [routerLink]="['/child/profile']"
             routerLinkActive="active"
         >
-            <p class="name">
-                <app-user-card [user]="user" class="horizontal navbar"/>
-            </p>
+            <app-user-card [user]="user" class="horizontal navbar"/>
         </app-navbar-button>
 
         <app-navbar-button
@@ -44,6 +42,7 @@
             >
             </app-lobby-card>
         </app-inner-box>
+        <p *ngIf="!lobbies || !lobbies.length">En attente de parties...</p>
     </app-body>
 
 </app-template>

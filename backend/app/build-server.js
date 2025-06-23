@@ -11,7 +11,7 @@ module.exports = (cb) => {
     app.disable('x-powered-by');
     app.use(cors());
     app.use(bodyParser.json());
-    app.use(morgan('[:date[iso]] :method :url :status :response-time ms')) // Allégé
+    app.use(morgan('[:date[iso]] :method :url :status :response-time ms'));
 
     app.use('/api', api);
     app.use('*', (req, res) => res.status(404).end());
@@ -24,7 +24,7 @@ module.exports = (cb) => {
         }
     });
 
-    const roomPlayers = new Map(); // lobbyId => [players]
+    const roomPlayers = new Map(); // lobbyId => { creatorSocketId, players, lastActive }
 
     io.on('connection', (socket) => {
         let currentPlayer = null;
@@ -34,7 +34,12 @@ module.exports = (cb) => {
 
         socket.on('createLobby', () => {
             const lobbyId = `lobby-${Date.now()}`;
-            roomPlayers.set(lobbyId, []);
+            roomPlayers.set(lobbyId, {
+                creatorSocketId: socket.id,
+                players: [],
+                lastActive: Date.now()
+            });
+
             socket.join(lobbyId);
             io.emit('lobbyCreated', lobbyId);
         });
@@ -44,11 +49,14 @@ module.exports = (cb) => {
             currentRoom = lobbyId;
             socket.join(lobbyId);
 
-            if (!roomPlayers.has(lobbyId)) roomPlayers.set(lobbyId, []);
-            const players = roomPlayers.get(lobbyId);
-            if (!players.some(p => p.userId === player.userId)) {
-                players.push(player);
+            if (!roomPlayers.has(lobbyId)) return;
+
+            const lobby = roomPlayers.get(lobbyId);
+            if (!lobby.players.some(p => p.userId === player.userId)) {
+                lobby.players.push(player);
             }
+
+            lobby.lastActive = Date.now();
 
             io.to(lobbyId).emit('playerConnected', { lobbyId, player });
             broadcastLobbiesUpdate();
@@ -57,8 +65,9 @@ module.exports = (cb) => {
         socket.on('leaveLobby', ({ lobbyId, player }) => {
             if (!roomPlayers.has(lobbyId)) return;
 
-            const players = roomPlayers.get(lobbyId);
-            roomPlayers.set(lobbyId, players.filter(p => p.userId !== player.userId));
+            const lobby = roomPlayers.get(lobbyId);
+            lobby.players = lobby.players.filter(p => p.userId !== player.userId);
+            lobby.lastActive = Date.now();
 
             socket.leave(lobbyId);
             io.to(lobbyId).emit('playerDisconnected', { lobbyId, player });
@@ -68,23 +77,23 @@ module.exports = (cb) => {
         socket.on('closeLobby', (lobbyId) => {
             roomPlayers.delete(lobbyId);
             io.emit('lobbyClosed', lobbyId);
-            io.to(lobbyId).emit('leaveLobby', lobbyId); // Optionnel
+            io.to(lobbyId).emit('leaveLobby', lobbyId);
             broadcastLobbiesUpdate();
         });
 
         socket.on('requestLobbies', () => {
-            const lobbyList = Array.from(roomPlayers.keys());
-            const detailedLobbies = Array.from(roomPlayers.entries()).map(([lobbyId, players]) => ({
+            const detailedLobbies = Array.from(roomPlayers.entries()).map(([lobbyId, lobby]) => ({
                 lobbyId,
-                players
+                players: lobby.players
             }));
 
-            socket.emit('lobbies', lobbyList);
+            socket.emit('lobbies', detailedLobbies.map(l => l.lobbyId));
             socket.emit('lobbiesUpdated', detailedLobbies);
         });
 
         socket.on('requestLobbyState', (lobbyId) => {
-            const players = roomPlayers.get(lobbyId) || [];
+            const lobby = roomPlayers.get(lobbyId);
+            const players = lobby?.players || [];
             socket.emit('lobbyState', { lobbyId, players });
         });
 
@@ -95,18 +104,26 @@ module.exports = (cb) => {
         });
 
         socket.on('disconnect', () => {
-            if (currentPlayer && currentRoom) {
-                const players = roomPlayers.get(currentRoom) || [];
-                roomPlayers.set(currentRoom, players.filter(p => p.userId !== currentPlayer.userId));
-                io.to(currentRoom).emit('playerDisconnected', { lobbyId: currentRoom, player: currentPlayer });
-                broadcastLobbiesUpdate();
+            for (const [lobbyId, lobby] of roomPlayers.entries()) {
+                if (lobby.creatorSocketId === socket.id) {
+                    roomPlayers.delete(lobbyId);
+                    io.emit('lobbyClosed', lobbyId);
+                }
             }
+
+            if (currentPlayer && currentRoom && roomPlayers.has(currentRoom)) {
+                const lobby = roomPlayers.get(currentRoom);
+                lobby.players = lobby.players.filter(p => p.userId !== currentPlayer.userId);
+                io.to(currentRoom).emit('playerDisconnected', { lobbyId: currentRoom, player: currentPlayer });
+            }
+
+            broadcastLobbiesUpdate();
         });
 
         function broadcastLobbiesUpdate() {
-            const lobbyList = Array.from(roomPlayers.entries()).map(([lobbyId, players]) => ({
+            const lobbyList = Array.from(roomPlayers.entries()).map(([lobbyId, lobby]) => ({
                 lobbyId,
-                players
+                players: lobby.players
             }));
             io.emit('lobbiesUpdated', lobbyList);
         }

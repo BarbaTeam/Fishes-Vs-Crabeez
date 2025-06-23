@@ -36,7 +36,7 @@
 
     <app-body>
         <app-inner-box class="main-box blue little scrollable">
-            <p> Joueurs en attentes :</p>
+            <p class="title">Joueurs en attente</p>
             <ng-container *ngIf="players.length !== 0 ; else waitingForPlayers">
                 <app-player-in-lobby
                     *ngFor="let player of players"
@@ -56,7 +56,7 @@
 
         <app-inner-box class="main-box blue medium">
             <span>
-                Encyrptage des questions :
+                Encryptage des questions :
                 <app-settings-toggle/>
             </span>
             <span>

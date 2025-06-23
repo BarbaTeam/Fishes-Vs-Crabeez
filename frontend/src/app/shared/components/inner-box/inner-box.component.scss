@@ -1,87 +1,122 @@
 :host {
+  /* 🎨 Couleurs CSS vars avec fallback */
   --background-default: #ffffff;
   --background-blue: #E0E7FA;
   --text-default: #000000;
 
+  /* 🧱 Layout principal */
   display: flex;
   flex-wrap: wrap;
+  flex-direction: row;
   align-content: flex-start;
   justify-content: flex-start;
-  overflow-y: hidden;
-  overflow-x: auto;
+
+  /* 📐 Dimensions principales */
   height: 70vh;
   width: 77vh;
   padding: 1%;
   margin: 1%;
   border-radius: 20px;
-  background-color: var(--background-default);
-  color: var(--text-default);
+
+  /* 🎨 Apparence */
+  background-color: var(--background-default, #fff);
+  color: var(--text-default, #000);
+  box-sizing: border-box;
   transition: all 0.3s ease-in-out;
+
+  /* 🌪️ Overflow */
+  overflow-y: hidden;
+  overflow-x: auto;
 }
+
+/* === VARIANTS === */
 
 /* 🎨 Couleur bleue */
 :host(.blue) {
-  background-color: var(--background-blue);
+  background-color: var(--background-blue, #E0E7FA);
 }
 
-/* 🧩 Contenu centré */
+/* 🧩 Contenu centré horizontalement */
 :host(.center-content) {
   justify-content: center;
 }
 
-:host(.column){
-  flex-wrap: nowrap;
+/* ⬇️ Colonne simple */
+:host(.column) {
   flex-direction: column;
+  flex-wrap: nowrap;
   gap: 1rem;
 }
 
-:host(.no-background){
+/* ❌ Sans fond */
+:host(.no-background) {
   background-color: transparent;
 }
 
-/* 🧱 Tailles */
+/* === SIZES === */
+
+/* 📦 Grands conteneurs */
 :host(.big) {
-  width: 50vw;
+  width: clamp(40vw, 50vw, 60vw);
 }
 
+/* 📦 Taille moyenne */
 :host(.medium) {
-  width: 45vw;
+  width: clamp(35vw, 45vw, 55vw);
   overflow-x: hidden;
 }
 
+/* 📦 Petite largeur */
 :host(.small) {
-  width: 25vw;
+  width: clamp(20vw, 25vw, 30vw);
 }
 
+/* 📦 Très petit + colonne */
 :host(.little) {
-  width: 40vh;
+  width: clamp(25vh, 40vh, 50vh);
+
+  display: flex;
   flex-direction: column;
+
+  /* Centrage */
   align-items: center;
-  align-content: flex-start;
+  justify-content: flex-start;   
+
+  /* Reset potentiels héritages */
+  align-content: center;
+  text-align: center;
+
   overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.5rem;
+  gap: 0.75rem;
+  box-sizing: border-box;
 }
 
-/* 📏 Hauteurs */
+
+/* === HEIGHTS === */
+
 :host(.short) {
-  height: 35vh;
+  height: clamp(30vh, 35vh, 40vh);
 }
 
 :host(.shorter) {
-  height: 20vh;
+  height: clamp(15vh, 20vh, 25vh);
 }
 
-/* 🧮 Liste de boutons verticale */
+/* 🎛️ Liste verticale typée boutons */
 :host(.button-list) {
   flex-direction: column;
   align-items: center;
+  width: clamp(15vh, 20vh, 25vh);
   height: 70vh;
-  width: 20vh;
   font-size: 1rem;
   font-weight: bold;
   overflow-x: hidden;
 }
 
-/* 🧻 Scroll amélioré */
+/* === SCROLLABLE === */
+
 :host(.scrollable) {
   overflow-y: auto;
   scrollbar-width: thin;
@@ -96,6 +131,7 @@
 
 :host(.scrollable)::-webkit-scrollbar {
   width: 4px;
+  height: 4px;
 }
 
 :host(.scrollable)::-webkit-scrollbar-thumb {

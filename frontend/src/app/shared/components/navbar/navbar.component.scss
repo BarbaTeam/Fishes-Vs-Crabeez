@@ -19,7 +19,6 @@
   padding: 1rem;
 }
 
-/* 🎯 Title Banner Variant */
 :host(.title) h1 {
   font-size: clamp(2.5rem, 8vw, 100px);
   position: relative;
@@ -30,7 +29,6 @@
   margin: 0;
 }
 
-/* 🪶 Subtitle Banner Variant */
 :host(.subtitle) h1 {
   font-size: clamp(1.5rem, 4vw, 50px);
   position: relative;

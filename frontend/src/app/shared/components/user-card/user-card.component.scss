@@ -44,16 +44,28 @@
   .name {
     margin-top: 0.5rem;
     text-align: center;
-    font-size: 0.85rem;
     font-weight: 600;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.2;
+
+    .first-name {
+      font-size: 0.85rem;
+    }
+
+    .last-name {
+      font-size: 0.9rem;
+    }
   }
 }
 
+/* === HORIZONTAL === */
 :host(.horizontal) {
   flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
   background: none;
   border: none;
   box-shadow: none;
@@ -71,22 +83,32 @@
   }
 
   .name {
-    font-size: 1rem;
-    font-weight: 500;
-    color: #222;
     text-align: left;
+    align-items: flex-start;
+
+    .first-name {
+      font-size: 0.95rem;
+    }
+
+    .last-name {
+      font-size: 1rem;
+    }
   }
 }
 
+/* === NAVBAR === */
 :host(.navbar) {
-  width: 20vw;
-  height: 5rem;
+  width: 100%;
+  height: 100%;
   background: none;
   border: none;
   position: relative;
-  right: 40%;
   pointer-events: none;
   transform: translateY(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 
   .icon {
     width: 6rem;
@@ -94,26 +116,49 @@
     background: none;
     box-shadow: none;
     margin-right: 0.5rem;
+    flex-shrink: 0;
   }
 
   .name {
-    font-size: 1.5rem;
-    color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     text-align: left;
+
+    .first-name {
+      font-size: clamp(1rem, 2vw, 1.8rem);
+      font-weight: 600;
+    }
+
+    .last-name {
+      font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+      font-weight: 700;
+      color: #041833;
+    }
   }
 }
 
-:host(.lobby) {
+
+/* === LOBBY === */
+:host(.lobby, .classement) {
+  display: flex;
   flex-direction: row;
   align-items: center;
-  width: auto;
+  justify-content: flex-start;
+
+  width: 100%;
   height: 4.5rem;
-  padding: 0.5rem 1rem;
+  padding-left: 1rem; /* 👈 évite que l’icône colle au bord */
+
   background-color: #f7fbff;
   border-radius: 1rem;
-  gap: 1rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   box-sizing: border-box;
+  overflow: hidden;
 
   .icon {
     width: 3.5rem;
@@ -121,16 +166,30 @@
     background-color: #fff;
     box-shadow: inset 0 0 0 1px #cce4ff;
     flex-shrink: 0;
+    border-radius: 50%; /* 👌 rond plus élégant */
   }
 
   .name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: #1e2e4a;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+
+    .first-name {
+      font-size: clamp(0.9rem, 1.5vw, 1rem);
+    }
+
+    .last-name {
+      font-size: clamp(1rem, 1.8vw, 1.1rem);
+      font-weight: 600;
+      color: #1e2e4a;
+    }
   }
 }
 
+/* === UNCLICKABLE === */
 :host(.unclickable) {
   pointer-events: none;
   cursor: default;
@@ -140,5 +199,121 @@
   &:active {
     background-color: inherit;
     transform: none;
+  }
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+  :host {
+    width: 6rem;
+    height: 7rem;
+
+    .name {
+      .first-name {
+        font-size: 0.8rem;
+      }
+
+      .last-name {
+        font-size: 0.85rem;
+      }
+    }
+  }
+
+  :host(.navbar) {
+    width: 40vw;
+    height: 4rem;
+    right: 30%;
+
+    .icon {
+      width: 2.8rem;
+      height: 2.8rem;
+    }
+
+    .name {
+      .first-name {
+        font-size: 1rem;
+      }
+
+      .last-name {
+        font-size: 1.1rem;
+      }
+    }
+  }
+
+  :host(.lobby) {
+    height: 4rem;
+
+    .icon {
+      width: 3rem;
+      height: 3rem;
+    }
+
+    .name {
+      .first-name {
+        font-size: 0.9rem;
+      }
+
+      .last-name {
+        font-size: 0.95rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  :host {
+    width: 5.5rem;
+    height: 6.5rem;
+
+    .name {
+      .first-name {
+        font-size: 0.75rem;
+      }
+
+      .last-name {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  :host(.navbar) {
+    width: 60vw;
+    height: 3.5rem;
+    right: 20%;
+
+    .icon {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+
+    .name {
+      .first-name {
+        font-size: 0.95rem;
+      }
+
+      .last-name {
+        font-size: 1rem;
+      }
+    }
+  }
+
+  :host(.lobby) {
+    height: 3.5rem;
+    gap: 0.75rem;
+
+    .icon {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+
+    .name {
+      .first-name {
+        font-size: 0.85rem;
+      }
+
+      .last-name {
+        font-size: 0.9rem;
+      }
+    }
   }
 }
