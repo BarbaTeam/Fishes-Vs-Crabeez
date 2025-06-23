@@ -18,7 +18,7 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
 
     public game!: Game;
-
+    public hasEnded = false;
 
     constructor(
         private socket: SocketService,
@@ -31,6 +31,12 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
             this.gamesService.selectedGame$.subscribe(
                 (game) => { this.game = game; }
             )
+        );
+
+        this.subscriptions.add(
+            this.socket.on<boolean>('gameEnded').subscribe(() => {
+                this.hasEnded = true;
+            })
         );
     }
 
@@ -46,7 +52,7 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
     public startGame(): void {
         this.socket.sendMessage('startGame');
     }
-
+    
     public deleteLobby(): void{
         this.socket.sendMessage('closeGame');
         this.router.navigate(['/ergo/games-manager']);

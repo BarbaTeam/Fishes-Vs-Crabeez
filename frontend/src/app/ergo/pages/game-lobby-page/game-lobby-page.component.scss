@@ -1,5 +1,5 @@
-app-inner-box{
-    margin:0.5rem;
+app-inner-box {
+    margin: 0.5rem;
 }
 
 span {
@@ -16,6 +16,39 @@ span {
     padding-bottom: 2rem;
 }
 
+
+.return-button {
+  background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  cursor: pointer;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 15px rgba(74, 144, 226, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.return-button:hover {
+  background: linear-gradient(135deg, #5ba0f2 0%, #4a90e2 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(74, 144, 226, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+.return-button:active {
+  transform: translateY(0);
+  box-shadow: 
+    0 2px 10px rgba(74, 144, 226, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+}
+
 .underline-input {
     background: transparent;
     border: none;
@@ -29,4 +62,70 @@ span {
 .underline-input:focus {
     outline: none;
     border-bottom-color: #ffae00;
+}
+
+.underline-input:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Styles pour l'affichage de fin de partie */
+.end-game-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.end-game-notification {
+    text-align: center;
+    padding: 2rem;
+    background: #E0E7FA;
+    color: #01579b;
+    border: 2px solid #b0c4de;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px rgba(1, 87, 155, 0.3);
+    max-width: 400px;
+    width: 90%;
+}
+
+.end-title {
+    font-size: clamp(16px, 6vw, 24px);
+    font-family: 'Press Start 2P', monospace;
+    margin-bottom: 1rem;
+    color: #01579b;
+    text-shadow: none;
+    animation: pulse 2s infinite;
+}
+
+.end-message {
+    margin-bottom: 1.5rem;
+    font-size: 14px;
+    color: #01579b;
+}
+
+.end-message p {
+    margin: 0.5rem 0;
+}
+
+.participants-count {
+    font-weight: bold;
+    font-size: 16px;
+    margin-top: 1rem;
+    color: #01579b;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
 }
