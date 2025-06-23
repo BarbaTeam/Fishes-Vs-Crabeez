@@ -14,13 +14,11 @@ export const ergoDeactivateGuard: CanDeactivateFn<any> = (
 ): Observable<boolean> | Promise<boolean> | boolean => {
     const socket = inject(SocketService);
 
-    /*
     const goingBackHome = (nextState?.url ?? '').startsWith('/home');
     if (goingBackHome) {
-        socket.on<void>('goBackHome');
+        socket.sendMessage('goBackHome');
         return true;
     }
-    */
 
     socket.disconnect();
     return true;
