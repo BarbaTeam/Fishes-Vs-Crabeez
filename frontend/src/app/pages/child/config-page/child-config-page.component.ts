@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { UserService } from 'src/app/shared/services/user.service';
-import { User } from 'src/app/shared/models/user.model';
 import { Router } from '@angular/router';
+
+import { UserService } from 'src/app/shared/services/user.service';
+
+import { User } from 'src/app/shared/models/user.model';
 
 
 

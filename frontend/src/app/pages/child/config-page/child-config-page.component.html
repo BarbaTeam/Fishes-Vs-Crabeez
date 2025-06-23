@@ -4,15 +4,31 @@
     ---                              NAVBAR                                  ---
     --------------------------------------------------------------------------->
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active" (click)="saveChanges()"><p class="name">
-        <app-user-card [user]="user" class="horizontal navbar"/>
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-stats']"
+        routerLinkActive="active"
+        (click)="saveChanges()"
+    >
+        <p class="name">
+            <app-user-card [user]="user" class="horizontal navbar"/>
+        </p>
     </app-medium-button>
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active" (click)="saveChanges()">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-play']"
+        routerLinkActive="active"
+        (click)="saveChanges()"
+    >
         Jouer
     </app-medium-button>
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-config']"
+        routerLinkActive="active"
+    >
         Options
     </app-medium-button>
 

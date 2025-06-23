@@ -4,17 +4,28 @@
     ---                              NAVBAR                                  ---
     --------------------------------------------------------------------------->
 
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-stat-selected']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-stat-selected']"
+        routerLinkActive="active"
+    >
         <p class="name">
             <app-user-card [user]="user" class="horizontal navbar"/>
         </p>
     </app-medium-button>
 
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-config-selected']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-config-selected']"
+        routerLinkActive="active"
+    >
         Configuration
     </app-medium-button>
 
-    <app-medium-button class="navbar-button red" (click)="back()">
+    <app-medium-button
+        class="navbar-button red"
+        (click)="back()"
+    >
         Retour
     </app-medium-button>
 

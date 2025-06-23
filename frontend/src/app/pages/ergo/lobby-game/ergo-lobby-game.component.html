@@ -1,10 +1,35 @@
 <app-template>
-    <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button red" [routerLink]="['/ergo-play']" routerLinkActive="active">Retour</app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-lobby']" routerLinkActive="active"> Gestionnaire de parties </app-medium-button>
-    <app-medium-button class="navbar-button green"> Démarrer </app-medium-button>
 
-    <!--Zone du main -->
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-medium-button
+        class="navbar-button red"
+        [routerLink]="['/ergo-play']"
+        routerLinkActive="active"
+    >
+        Retour
+    </app-medium-button>
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-lobby']"
+        routerLinkActive="active"
+    >
+        Gestionnaire de parties
+    </app-medium-button>
+
+    <app-medium-button class="navbar-button green">
+        Démarrer
+    </app-medium-button>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
     <app-inner-box class="main-box blue little scrollable">
         <p> Joueurs en attentes :</p>
         <app-player-in-lobby
@@ -15,16 +40,9 @@
                 --lobby-padding: 0rem;
             "
         />
+
         <app-player-in-lobby
             [userId]="'u4'"
-            style="
-                --lobby-icon-size: 2rem;
-                --lobby-font-size: 0.8rem;
-                --lobby-padding: 0rem;
-            "
-        />
-        <app-player-in-lobby
-            [userId]="'u3'"
             style="
                 --lobby-icon-size: 2rem;
                 --lobby-font-size: 0.8rem;
@@ -32,36 +50,36 @@
             "
         />
 
-        <!-- <app-player-in-lobby
-            [userId]="'u1'"
-        />
-        <app-player-in-lobby
-            [userId]="'u4'"
-        />
         <app-player-in-lobby
             [userId]="'u3'"
-        /> -->
+            style="
+                --lobby-icon-size: 2rem;
+                --lobby-font-size: 0.8rem;
+                --lobby-padding: 0rem;
+            "
+        />
     </app-inner-box>
 
     <app-inner-box class="main-box blue medium">
-            <span>
-                Encyrptage des questions :
-                <app-settings-toggle></app-settings-toggle>
-            </span>
-            <span>
-                Temps de la partie : 20min
-            </span>
-            <span>
-                Fréquence d'apparition des méduses :
-                <app-settings-slider></app-settings-slider>
-            </span>
-            <span>
-                Fréquence d'apparition des crabes :
-                <app-settings-slider></app-settings-slider>
-            </span>
-            <span>
-                Vitesse des crabes :
-                <app-settings-slider></app-settings-slider>
-            </span>
+        <span>
+            Encyrptage des questions :
+            <app-settings-toggle/>
+        </span>
+        <span>
+            Temps de la partie : 20min
+        </span>
+        <span>
+            Fréquence d'apparition des méduses :
+            <app-settings-slider/>
+        </span>
+        <span>
+            Fréquence d'apparition des crabes :
+            <app-settings-slider/>
+        </span>
+        <span>
+            Vitesse des crabes :
+            <app-settings-slider/>
+        </span>
     </app-inner-box>
+
 </app-template>

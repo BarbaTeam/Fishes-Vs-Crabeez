@@ -1,13 +1,44 @@
 <app-template>
-    <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-list']" routerLinkActive="active">Liste des joueurs</app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-play']" routerLinkActive="active"> Gestionnaire de parties </app-medium-button>
-    <app-medium-button class="navbar-button" [routerLink]="['/']">Lobby</app-medium-button>
 
-    <!--Zone du main -->
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-list']"
+        routerLinkActive="active"
+    >
+        Liste des joueurs
+    </app-medium-button>
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-play']"
+        routerLinkActive="active"
+    >
+        Gestionnaire de parties
+    </app-medium-button>
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/']"
+    >
+        Lobby
+    </app-medium-button>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
     <app-inner-box class="main-box blue scrollable" style="width: 47.5vw">
-        <app-user-list></app-user-list>
-        <app-user-card [user]="userBlank" (click)="addNewUser()"/>
+        <app-user-list/>
+        <app-user-card
+            [user]="userBlank"
+            (click)="addNewUser()"
+        />
     </app-inner-box>
 
 </app-template>

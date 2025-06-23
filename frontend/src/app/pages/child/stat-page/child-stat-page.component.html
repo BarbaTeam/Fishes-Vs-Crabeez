@@ -4,17 +4,29 @@
     ---                              NAVBAR                                  ---
     --------------------------------------------------------------------------->
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-stats']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-stats']"
+        routerLinkActive="active"
+    >
         <p class="name">
             <app-user-card [user]="user" class="horizontal navbar"/>
         </p>
     </app-medium-button>
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-play']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-play']"
+        routerLinkActive="active"
+    >
         Jouer
     </app-medium-button>
 
-    <app-medium-button class="navbar-button" [routerLink]="['/child-config']" routerLinkActive="active">
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/child-config']"
+        routerLinkActive="active"
+    >
         Options
     </app-medium-button>
 
@@ -98,7 +110,7 @@
 
         <div class="badge-group">
             <h3>Badges acquis :</h3>
-        
+
             <span class="badge-list">
                 <img class="badge" src="../../../../assets/images//icons/crab_killer_trophy.png" alt="Eliminer 200 crabes" title="Eliminer 200 crabes">
                 <img class="badge" src="../../../../assets/images//icons/defender_trophy.png" alt="Vous avez atteint un score de plus de 1000 points" title="Vous avez atteint un score de plus de 1000 points">
@@ -153,7 +165,7 @@
 
         <div class="badge-group">
             <h3>Récompenses acquises :</h3>
-        
+
             <span class="badge-list">
                 <img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
                 <img class="badge" src="../../../../assets/images//icons/silver_trophy.png" alt="Vous avez eu un très bon score" title="Vous avez eu un très bon score">

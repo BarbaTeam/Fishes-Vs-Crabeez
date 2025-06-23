@@ -1,25 +1,42 @@
 <app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
     <app-medium-button class="navbar-button red"
         (click)="back()"
-        >Retour
+    >
+        Retour
     </app-medium-button>
+
     <app-medium-button class="navbar-button"
         [routerLink]="['/ergo-config-form']"
         routerLinkActive="active"
-        >Configuration
+    >
+        Configuration
     </app-medium-button>
+
     <app-medium-button
         class="navbar-button"
         [class.green]="isValid"
         [class.grey]="!isValid"
         (click)="createUser()"
-        >Créer
+    >
+        Créer
     </app-medium-button>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
 
     <app-inner-box class="main-box blue scrollable">
         <app-user-config
             [user]="userBlank"
-            (userTemp)="onUserTempChanged($event)">
-        </app-user-config>
+            (userTemp)="onUserTempChanged($event)"
+        />
     </app-inner-box>
+
 </app-template>

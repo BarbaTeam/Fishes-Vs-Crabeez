@@ -1,14 +1,26 @@
 <app-template>
-    <!--Zone de la navbar -->
-    <app-medium-button class="navbar-button" [routerLink]="['/ergo-stat-selected']" routerLinkActive="active"><p class="name">
-        <app-user-card [user]="user" class="horizontal navbar"/>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-medium-button
+        class="navbar-button"
+        [routerLink]="['/ergo-stat-selected']"
+        routerLinkActive="active"
+    >
+        <p class="name">
+            <app-user-card [user]="user" class="horizontal navbar"/>
+        </p>
     </app-medium-button>
+
     <app-medium-button class="navbar-button"
         [routerLink]="['/ergo-config-selected']"
         routerLinkActive="active"
     >
         Configuration
     </app-medium-button>
+
     <app-medium-button
         class="navbar-button red"
         (click)="back()"
@@ -17,7 +29,11 @@
     </app-medium-button>
 
 
-    <!--Zone du main -->
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
     <app-inner-box class="main-box blue center-content scrollable">
         <app-user-config
             [user]="user"
@@ -47,12 +63,14 @@
             />
 
             <app-big-button class="save"
-                class="navbar-button" 
+                class="navbar-button"
                 [class.green]="isValid"
                 [class.grey]="!isValid"
                 (click)="saveChanges()"
-                >Sauvegarder
+            >
+                Sauvegarder
             </app-big-button>
+
             <img
                 src="../../../../assets/images/icons/valid.png"
                 alt="Validé"
@@ -61,4 +79,5 @@
             />
         </div>
     </app-inner-box>
+
 </app-template>

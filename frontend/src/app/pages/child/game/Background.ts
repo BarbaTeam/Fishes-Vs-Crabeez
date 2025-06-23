@@ -6,12 +6,15 @@ export class Background{
     private layer1: Layer;
     private layers: Layer[];
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement) {
+    constructor(
+        private gameEngine: GameEngine,
+        private canvas: HTMLCanvasElement
+    ) {
         this.gameEngine = gameEngine;
         this.image1 = document.getElementById("layer1") as HTMLImageElement;
         this.layer1 = new Layer(gameEngine, canvas, this.image1, 0.5);
         this.layers = [this.layer1];
-    }   
+    }
 
     update(): void {
         this.layers.forEach(layer => {

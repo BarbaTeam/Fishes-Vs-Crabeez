@@ -22,7 +22,10 @@ export class GameEngine {
     private enemies: Enemy[];
     private speed: number;
 
-    constructor(private gameComponent: GameComponent, private canvas: HTMLCanvasElement) {
+    constructor(
+        private gameComponent: GameComponent,
+        private canvas: HTMLCanvasElement
+    ) {
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvaResolution();
         this.background = new Background(this, canvas);
@@ -86,11 +89,11 @@ export class GameEngine {
     private checkCollision(obj1: any, obj2: any): boolean {
         if (!obj1 || !obj2) return false;
         if (!obj1.position || !obj2.position) return false;
-    
+
         const dx = obj1.position.x - obj2.position.x;
         const dy = obj1.position.y - obj2.position.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-    
+
         return distance < obj1.width / 2 + obj2.width / 2;
     }
 
@@ -142,15 +145,15 @@ export class GameEngine {
             if (enemy instanceof Crab) {
                 enemy.draw(ctx);
             } else if (enemy instanceof HiveCrab) {
-                enemy.draw(ctx);  
+                enemy.draw(ctx);
             } else if (enemy instanceof Drone) {
-                enemy.draw(ctx);  
-            }              
+                enemy.draw(ctx);
+            }
         });
     }
-    
+
     private adjustCanvaResolution(): void {
-        const scale = window.devicePixelRatio; 
+        const scale = window.devicePixelRatio;
         this.canvas.width = this.canvas.clientWidth * scale;
         this.canvas.height = this.canvas.clientHeight * scale;
     }
@@ -165,4 +168,3 @@ export class GameEngine {
         loop();
     }
   }
-  

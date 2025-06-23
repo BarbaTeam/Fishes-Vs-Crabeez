@@ -16,18 +16,20 @@
 <img id="layer1" src="../../../../assets/images/game/world/bottombackgroundbigv2.png">
 
 
-<div *ngIf="hasEnded" class="voile">
-</div>
+<div *ngIf="hasEnded" class="voile"></div>
 <div *ngIf="hasEnded" class="end-game-box">
     <p class="title">🎉 Bravo !</p>
     <p class="message">Vous avez réussi à défendre le cristal !</p>
     <p class="score">Votre score : <strong>100</strong></p>
+
     <div class="badge-row">
         <p>x2</p><img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
         <p>x1</p><img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
     </div>
+
     <app-big-button class="endGameButton"
         (click)="back()"
-        >Retour
+    >
+        Retour
     </app-big-button>
 </div>

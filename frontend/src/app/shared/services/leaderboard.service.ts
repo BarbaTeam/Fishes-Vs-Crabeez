@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, from } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { LocalStorageService } from './localStorage.service';
+import { LocalStorageService } from './local-storage.service';
 
 import { GameLeaderboard, GlobalLeaderboard } from '../models/leaderboard.model';
 import { GameID } from '../models/ids';
@@ -50,8 +50,6 @@ export class LeaderboardService {
 
 
         // Game Leaderboards :
-        this._gameLeaderboardMap = new Map();
-
         const savedGameLeaderboardMap = this.localStorage.getData(
             LeaderboardService.LocalStorageKey.GAME_LEADERBOARD_MAP
         );
@@ -112,8 +110,11 @@ export class LeaderboardService {
     // Sub-services :
 
     /**
-     * Récupère (lazy) un leaderboard par gameId.
-     * Met à jour cache, localStorage et émet.
+     * @return An Observable that will emit the leaderboard corresponding
+     * to the gameId once it has been fetched.
+     *
+     * @implNote It caches the leaderboard in the localStorage to not have
+     * to always fetch.
      */
     public getLeaderboard$(gameId: GameID)
         : Observable<GameLeaderboard|undefined>
