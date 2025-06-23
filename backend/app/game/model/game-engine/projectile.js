@@ -26,6 +26,7 @@ class Projectile {
             width: this.width,
             height: this.height,
             speed: this.speed,
+            playerId: this.player.id,
         };
     }
 }

@@ -83,6 +83,11 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('bossWave', bossName);
     }
 
+    public onBossKilled(bossName: string) {
+        console.log(`[NOTIFIER] : ${bossName} IS DEAAAAD !`);
+        this.broadcast.emit('bossKilled', bossName);
+    }
+
     public onGameEnd(){
         console.log(`[NOTIFIER] : Game ended !`);
         this.broadcast.emit('gameEnded');

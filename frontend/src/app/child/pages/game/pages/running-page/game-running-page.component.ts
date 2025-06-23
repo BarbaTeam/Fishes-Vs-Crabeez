@@ -89,7 +89,6 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         );
 
         this.initSocket();
-        this.setupAudio();
         document.addEventListener("keydown", this.keydownHandler);
         this.updateInputs();
     }
@@ -164,8 +163,6 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         document.removeEventListener("keydown", this.keydownHandler);
-        this.stopAudio();
-        this.encryptAudio?.pause();
     }
 
     public quit() {
@@ -280,43 +277,6 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.proposed_answerInputs.splice(
             this.cursorPosition++, 0, c
         );
-    }
-
-    private audio: HTMLAudioElement | null = null;
-
-    private setupAudio(): void {
-        if (!this.audio) {
-            this.audio = new Audio('../../../../assets/sons/in-game-music.mp3');
-            this.audio.loop = true;
-            this.audio.volume = 0.5 * this.user.config.sound;
-        }
-        this.audio.play();
-    }
-
-    public stopAudio(): void {
-        if (this.audio) {
-            this.audio.pause();
-            this.audio.currentTime = 0;
-        }
-    }
-
-    public encryptAudio: HTMLAudioElement | null = null;
-    private playEncryptAudio(): void {
-        if (!this.encryptAudio) {
-            this.encryptAudio = new Audio('../../../../assets/sons/encrypted.mp3');
-            this.encryptAudio.loop = true;
-            this.encryptAudio.volume = 0.5 * this.user.config.sound;
-        }
-        this.encryptAudio.play();
-    }
-    public stopEncryptAudio(): void {
-        if (this.encryptAudio) {
-            this.encryptAudio.pause();
-            this.encryptAudio.currentTime = 0;
-            let decryptAudio = new Audio('../../../../assets/sons/decrypted.mp3');
-            decryptAudio.volume = 0.5 * this.user.config.sound;
-            decryptAudio.play();
-        }
     }
 
     private setupFontSize(size: string): void {
