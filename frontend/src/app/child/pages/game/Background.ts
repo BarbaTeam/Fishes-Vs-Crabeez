@@ -16,11 +16,6 @@ export class Background{
         this.layers = [this.layer1];
     }
 
-    update(): void {
-        this.layers.forEach(layer => {
-            layer.update();
-        });
-    }
     draw(ctx: CanvasRenderingContext2D): void {
         this.layers.forEach(layer => {
             layer.draw(ctx);
