@@ -10,8 +10,11 @@
  */
 export type GameConfig = {
     maxDuration: number | "inf",
+
     minNbPlayers: 1|2|3,
     maxNbPlayers: 1|2|3,
+
+    monstersSpeedCoeff: number,
     monstersSpawnRate: number,
     encrypted: boolean,
 };

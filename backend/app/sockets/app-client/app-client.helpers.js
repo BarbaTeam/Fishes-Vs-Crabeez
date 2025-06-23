@@ -12,8 +12,10 @@ const userLocks = new Map();
 
 // TODO : Introducing a `GamesManager` to ease the manipulation of games
 
-/** @type {Map<GameID, GameLobby>} */
-const GAMES = new Map();
+/** @type {Record<GameID, GameLobby>} */
+const GAMES_LOBBY = {};
+/** @type {Record<GameID, GameConfig>} */
+const GAMES_CONFIG = {};
 /** @type {Map<GameID, boolean>} */
 const gameLocks = new Map();
 
@@ -28,7 +30,8 @@ module.exports = {
     CONNECTED_USERS_ID,
     userLocks,
 
-    GAMES,
+    GAMES_LOBBY,
+    GAMES_CONFIG,
     gameLocks,
 
     GUEST_ROOM,

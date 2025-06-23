@@ -1,9 +1,11 @@
 const { Server, Socket } = require('socket.io');
 
+const { UserTable } = require('../../../shared/tables/user.table');
+
 const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
-const { GAMES, gameLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
+const { GAMES_LOBBY, gameLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM, CONNECTED_USERS_ID } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require("./app-client.role");
@@ -33,7 +35,19 @@ class ErgoRole_Impl extends AppClientRole_Impl {
         this._cleanListeners();
 
         this._registerListener('requestAllGames', () => {
-            this.socket.emit('allGames', [...GAMES.values()]);
+            this.socket.emit('allGames', [...Object.values(GAMES_LOBBY)]);
+        });
+
+        this._registerListener('requestConnectedUsersId', () => {
+            const connectedUsersId = CONNECTED_USERS_ID;
+            this.socket.emit('connectedUsersId', connectedUsersId);
+        });
+
+        this._registerListener('requestDisconnectedUsersId', () => {
+            const disconnectedUsersId = UserTable.getAll()
+                    .map(user => user.userId)
+                    .filter(userId => !CONNECTED_USERS_ID.includes(userId));
+            this.socket.emit('disconnectedUsersId', disconnectedUsersId);
         });
 
         this._registerListener('openGame', () => {
@@ -46,7 +60,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
                 playersNotionsMask: {},
                 masterId: this.socket.id,
             };
-            GAMES.set(newGame.gameId, newGame);
+            GAMES_LOBBY[newGame.gameId] = newGame;
 
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameOpened', newGame);
             this.socket.emit('openGame_SUCCESS', newGame.gameId);
@@ -63,7 +77,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
             gameLocks.set(gameId, true);
 
             try {
-                const game = GAMES.get(gameId);
+                const game = GAMES_LOBBY[gameId];
                 const canSpyGame = (
                     !game                      // Ergo can't spy a game that doesn't exist
                     || game.masterId !== null  // Ergo can't spy a game that already has a game master

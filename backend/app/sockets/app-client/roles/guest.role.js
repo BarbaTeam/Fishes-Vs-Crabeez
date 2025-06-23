@@ -32,6 +32,14 @@ class GuestRole_Impl extends AppClientRole_Impl {
     setUpListeners() {
         this._cleanListeners();
 
+        this._registerListener('requestAvailableUsersId', () => {
+            this.socket.emit('availableUsersId',
+                UserTable.getAll()
+                    .map(user => user.userId)
+                    .filter(userId => !CONNECTED_USERS_ID.includes(userId))
+            );
+        });
+
         this._registerListener('tryConnectAsErgo', () => {
             // TODO : Adding verif with password
             const canConnectAsErgo = true;
@@ -41,23 +49,6 @@ class GuestRole_Impl extends AppClientRole_Impl {
             }
             this.connectAsErgo();
             this.socket.emit("tryConnectAsErgo_SUCCESS");
-        });
-
-        this._registerListener('requestAvailableUsersId', () => {
-            // DEBUG ::
-            console.log("Received : 'requestAvailableUsersId'");
-            console.log("Sending :");
-            console.log(
-                UserTable.getAll()
-                    .map(user => user.userId)
-                    .filter(userId => !CONNECTED_USERS_ID.includes(userId))
-            );
-
-            this.socket.emit('availableUsersId',
-                UserTable.getAll()
-                    .map(user => user.userId)
-                    .filter(userId => !CONNECTED_USERS_ID.includes(userId))
-            );
         });
 
         this._registerListener('tryConnectAsChild', (userId) => {
@@ -82,7 +73,7 @@ class GuestRole_Impl extends AppClientRole_Impl {
                 this.socket.emit('tryConnectAsChild_SUCCESS');
 
                 CONNECTED_USERS_ID.push(userId);
-                this.io.to(GUEST_ROOM).emit('userConnected', userId);
+                this.io.to(GUEST_ROOM).to(ERGO_ROOM).emit('userConnected', userId);
             } finally {
                 // Release lock
                 userLocks.delete(userId);

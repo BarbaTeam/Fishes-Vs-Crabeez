@@ -7,7 +7,7 @@ const { GameRuntime } = require('../../../game/runtime');
 
 const { registerRunningGame } = require('../../../game-runner');
 
-const { GAMES, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
+const { GAMES_LOBBY, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { ErgoRole_Impl } = require("./ergo.role");
@@ -45,7 +45,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         super.setUpListeners(); // Set up Ergo listeners
 
         this._registerListener('startGame', () => {
-            const game = GAMES.get(this._gameId);
+            const game = GAMES_LOBBY[this._gameId];
             game.state = GameLobbyState.RUNNING;
 
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).except(this._gameId).emit('gameStarted', game.gameId);
@@ -61,7 +61,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         this._registerListener('updateGame', (update) => {
             // TODO : Enabling game master to update game
 
-            const game = GAMES.get(this._gameId);
+            const game = GAMES_LOBBY[this._gameId];
             if (game.state === GameLobbyState.WAITING) {
                 // ...
                 return;
@@ -77,7 +77,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         this._registerListener('closeGame', () => {
             const oldGameId = this._gameId;
             this.unspyGame();
-            GAMES.delete(oldGameId);
+            delete GAMES_LOBBY[oldGameId];
             this.io.to(oldGameId).emit('forcedGameLeave');
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', oldGameId);
         });
@@ -87,12 +87,12 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
      * @override
      */
     disconnect() {
-        const game = GAMES.get(this._gameId);
+        const game = GAMES_LOBBY[this._gameId];
         if (game) {
             // 1) Notify players to leave the game
             this.io.to(this._gameId).emit('leaveGame');
             // 2) Remove the game from our map
-            GAMES.delete(this._gameId);
+            delete GAMES_LOBBY[this._gameId];
             // 3) Broadcast to all ergos/children that the game is closed
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', this._gameId);
         }
