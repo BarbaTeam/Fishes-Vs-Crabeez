@@ -38,7 +38,7 @@ import { SettingsToggleComponent } from './components/settings-toggle/settings-t
 import { GradingLineComponent } from './components/grading-line/grading-line.component';
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
-
+import { LobbyCardComponent } from './components/lobby-card/lobby-card.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 
@@ -80,6 +80,7 @@ const SHARED_COMPONENTS = [
     MistakesBoxesComponent,
     PlayerInLobbyComponent,
     UserConfigComponent,
+    LobbyCardComponent
 ];
 
 
