@@ -45,7 +45,8 @@ export class StatefulUserCardComponent implements OnInit {
         }
     }
 
-    public disconnectUser(): void {
-        this.socket.sendMessage('forceDisconnection', this.user.userId);
+    public disconnectUser(event : Event): void {
+        event.stopPropagation();
+        this.socket.sendMessage('tryForceDisconnection', this.user.userId);
     }
 }

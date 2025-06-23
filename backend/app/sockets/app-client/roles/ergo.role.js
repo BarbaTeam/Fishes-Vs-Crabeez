@@ -5,7 +5,7 @@ const { UserTable } = require('../../../shared/tables/user.table');
 const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
-const { GAMES_LOBBY, gameLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM, CONNECTED_USERS_ID } = require("../app-client.helpers");
+const { GAMES_LOBBY, gameLocks, userLocks, GUEST_ROOM, ERGO_ROOM, CHILD_ROOM, CONNECTED_USERS_ID } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require("./app-client.role");
@@ -94,6 +94,35 @@ class ErgoRole_Impl extends AppClientRole_Impl {
             } finally {
                 // Release lock
                 gameLocks.delete(gameId);
+            }
+        });
+
+         this._registerListener('tryForceDisconnection', (userId) => {
+            if (userLocks.get(userId)) {
+                this.socket.emit('tryForceDisconnection_FAILURE');
+                return;
+            }
+            userLocks.set(userId, true);
+            try {
+                console.log(CONNECTED_USERS_ID);
+                console.log(UserTable.getAll());
+                const canForceDisconnection = (
+                    CONNECTED_USERS_ID.includes(userId)  
+                    && UserTable.existsByKey({ userId })  
+                );
+                console.log("[SERVEUR] : disconnection request received", userId);
+                if (!canForceDisconnection) {
+                    this.socket.emit('tryForceDisconnection_FAILURE');
+                    return;
+                }
+
+                this.socket.emit('tryForceDisconnection_SUCCESS');
+                console.log("[SERVEUR] : disconnection approved")
+                delete CONNECTED_USERS_ID[userId];
+                this.io.to(userId).emit('goBackHome');
+            } finally {
+                // Release lock
+                userLocks.delete(userId);
             }
         });
 
