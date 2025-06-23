@@ -7,6 +7,7 @@
     <!--Zone du main -->
     <app-inner-box class="main-box blue">
         <app-user-list></app-user-list>
+        <app-user-card [user]="userBlank" (click)="addNewUser()"/>
     </app-inner-box>
     
 </app-template>

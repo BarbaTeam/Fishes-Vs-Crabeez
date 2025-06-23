@@ -1,55 +1,87 @@
 :host {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 7rem;
-    height: 8rem;
-    background-color: #b8defe;
-    border-radius: 0.5rem;
-    margin: 0.5rem;
-}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  height: 8rem;
+  background-color: #b8defe;
+  border-radius: 0.5rem;
+  margin: 0.5rem;
+  transition: background-color 0.3s, transform 0.3s;
+  cursor: pointer;
 
-:host:hover {
+  &:hover {
     background-color: #b3d7ff;
-    cursor: pointer;
-}
+    transform: translateY(-3px);
+  }
 
-:host:active {
+  &:active {
     background-color: #92c3ff;
+    transform: scale(0.98);
+  }
+
+  .icon {
+    width: 60%;
+    height: auto;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  .name {
+    text-align: center;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: #333;
+  }
 }
 
 :host(.horizontal) {
-    flex-direction: row;
-    align-items: center;
-    background-color: transparent;
-    width: 100%;
-    height: 5rem;
-    border-radius: 0%;
-    margin: 0rem;
-    font-size: 20px;
-    justify-content: flex-start;
-    margin-top: 0%;
-}
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 5rem;
+  background-color: transparent;
+  border-radius: 0;
+  margin: 0;
+  padding: 0 1rem;
 
-:host(.horizontal) .name {
-    margin-top: 0%;
-    padding-left: 5%;
-}
+  .icon {
+    width: 3rem;
+    height: 3rem;
 
-:host(.navbar){
-    position: relative;
-    right: 60%;
-    width: 20vw;
-}
+    img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
 
-:host(.navbar) .name{
-    font-size: 30px;
+  .name {
+    font-size: 1.25rem;
+    margin-left: 1rem;
+    margin-top: 0;
     text-align: left;
+    color: #222;
+  }
 }
 
-:host .name{
-    text-align: center;
-    font-size: 15px;
-    margin-top: 10%;
+:host(.navbar) {
+  width: 20vw;
+  position: relative;
+  right: 60%;
+  background: none;
+  border: none;
+  height: 5rem;
+
+  .name {
+    font-size: 1.5rem;
+    text-align: left;
+  }
 }

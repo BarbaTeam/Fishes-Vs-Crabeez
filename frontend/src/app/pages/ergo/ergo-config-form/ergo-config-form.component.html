@@ -1,0 +1,19 @@
+<app-template>
+    <app-medium-button class="navbar-button red"
+        (click)="back()"
+        >Retour 
+    </app-medium-button>
+    <app-medium-button class="navbar-button"
+        [routerLink]="['/ergo-config-form']"
+        routerLinkActive="active"
+        >Configuration 
+    </app-medium-button>
+    <app-medium-button class="navbar-button green" 
+        (click)="createUser()"
+        >Créer
+    </app-medium-button>
+
+    <app-inner-box class="main-box blue">
+        
+    </app-inner-box>
+</app-template>

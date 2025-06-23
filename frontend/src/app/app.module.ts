@@ -20,6 +20,7 @@ import { WelcomePageComponent } from './pages/welcome-page/welcome-page.componen
 import { ErgoPlayPageComponent } from './pages/ergo/play-page/ergo-play-page.component';
 import { ErgoListPageComponent } from './pages/ergo/list-page/ergo-list-page.component';
 import { ErgoLobbyGameComponent } from './pages/ergo/lobby-game/ergo-lobby-game.component';
+import { ErgoConfigFormComponent } from './pages/ergo/ergo-config-form/ergo-config-form.component';
 import { ErgoConfigSelectedPageComponent} from './pages/ergo/config-selected-page/ergo-config-selected-page.component';
 import { ErgoStatSelectedPageComponent } from './pages/ergo/stat-selected-page/ergo-stat-selected-page.component';
 
@@ -78,6 +79,7 @@ import { GradingLineComponent } from './shared/components/grading-line/grading-l
         ErgoPlayPageComponent,
         ErgoListPageComponent,
         ErgoLobbyGameComponent,
+        ErgoConfigFormComponent,
         ErgoConfigSelectedPageComponent,
         ErgoStatSelectedPageComponent,
 

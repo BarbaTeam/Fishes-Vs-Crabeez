@@ -13,15 +13,20 @@
     font-size: clamp(1rem, 1.8vw, 2rem);
     font-weight: bold;
     padding-bottom: 2%;
+    transition: transform 0.3s;
+
 }
 
 :host:hover{
     cursor: pointer;
+    transform: translateY(-3px);
+    transform: scale(0.95);
 }
 
 :host(.active){
     cursor: default;
     padding-bottom: 0%;
+    transform: scale(1);
 
     color: #041833;
     background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
@@ -36,7 +41,6 @@
 }
 :host(.green){
     background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
-
 }
 
 :host(.orange){

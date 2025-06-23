@@ -45,6 +45,11 @@ export class UserService{
         }
     }
 
+    public createUser(user: User) {
+        this.users.push(user);
+        this.users$.next(this.users);
+    }
+    
     public saveChanges(changedUser: User): void {
         if (changedUser) {
             const userIdx = this.users.findIndex(
