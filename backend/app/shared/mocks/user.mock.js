@@ -8,81 +8,91 @@ const MOCK_USER = [
         name: "Eli KOPTER",
         age: 9,
         icon: "red_fish.png",
-        userConfig: {
+        config: {
             showsAnswer: true,
             readingAssistance: false,
             advancedStats: true,
             leaderBoard: true,
             fontSize: 0.5,
             sound: 0.5,
-            numberRewrite: true,
-            addition: true,
-            soustraction: true,
-            multiplication: true,
-            division: true,
-            encryption: true,
-            equation: false,
-        }
+            notionsMask: {
+                REWRITING: true,
+                ADDITION: true,
+                SUBSTRACTION: true,
+                MULTIPLICATION: true,
+                DIVISION: true,
+                EQUATION: false,
+                ENCRYPTION: true,
+            },
+        },
     }, {
         userId:"u2",
         name: "patrick BATMAN",
         age: 9,
         icon: "yellow_fish.png",
-        userConfig: {
+        config: {
             showsAnswer: false,
             readingAssistance: false,
             advancedStats: false,
             leaderBoard: false,
             fontSize: 0.6,
             sound: 0,
-            numberRewrite: true,
-            addition: true,
-            soustraction: false,
-            multiplication: false,
-            division: false,
-            encryption: false,
-            equation: false,}
+            notionsMask: {
+                REWRITING: true,
+                ADDITION: true,
+                SUBSTRACTION: false,
+                MULTIPLICATION: false,
+                DIVISION: false,
+                EQUATION: false,
+                ENCRYPTION: false,
+            },
+        },
     }, {
         userId:"u3",
         name: "Petelo WAWAZI",
         age: 9,
         icon: "blue_fish.png",
-        userConfig: {
+        config: {
             showsAnswer: true,
             readingAssistance: false,
             advancedStats: true,
             leaderBoard: true,
             fontSize: 0.3,
             sound: 1,
-            numberRewrite: true,
-            addition: true,
-            soustraction: true,
-            multiplication: true,
-            division: true,
-            encryption: true,
-            equation: false,}
+            notionsMask: {
+                REWRITING: true,
+                ADDITION: true,
+                SUBSTRACTION: true,
+                MULTIPLICATION: true,
+                DIVISION: true,
+                EQUATION: false,
+                ENCRYPTION: true,
+            },
+        },
     }, {
-
         userId:"u4",
         name: "Camille RITELECU",
         age: 9,
         icon: "turtle.png",
-        userConfig: {
+        config: {
             showsAnswer: true,
             readingAssistance: false,
             advancedStats: true,
             leaderBoard: true,
             fontSize: 0.8,
             sound: 0.9,
-            numberRewrite: true,
-            addition: true,
-            soustraction: true,
-            multiplication: true,
-            division: true,
-            encryption: true,
-            equation: false,}
-    }
-]
+            notionsMask: {
+                REWRITING: true,
+                ADDITION: true,
+                SUBSTRACTION: true,
+                MULTIPLICATION: true,
+                DIVISION: true,
+                EQUATION: false,
+                ENCRYPTION: true,
+            },
+        },
+    },
+];
 
 
 

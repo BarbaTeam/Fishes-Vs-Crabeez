@@ -1,10 +1,14 @@
+const { PlayerStatistics } = require('../types');
+const { PlayerStatisticsSchema } = require('../schemas/player-statistics.schema');
+
 const { DatabaseTable } = require('./utils/db-table')
 const { genPlayerKey } = require('./utils/key-generators');
 
-const { PlayerStatisticsSchema } = require('../schemas/player-statistics.schema');
 
 
-
+/**
+ * @type {DatabaseTable<PlayerStatistics>}
+ */
 exports.PlayerStatisticsTable = new DatabaseTable(
     "PlayerStatistics",
     PlayerStatisticsSchema,

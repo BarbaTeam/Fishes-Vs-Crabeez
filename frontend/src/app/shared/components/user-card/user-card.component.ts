@@ -20,7 +20,6 @@ export class UserCardComponent implements OnInit {
     @Input()
     userId?: UserID
 
-    
     firstName: string = '';
     lastName: string = '';
 
@@ -35,7 +34,7 @@ export class UserCardComponent implements OnInit {
         this.splitName();
     }
 
-    
+
     private splitName(): void {
         if (!this.user?.name) return;
 

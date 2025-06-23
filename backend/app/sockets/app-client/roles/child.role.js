@@ -71,15 +71,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
 
                 game.playersId.push(this._userId);
                 const user = UserTable.getByKey({ userId: this._userId });
-                game.playersTempConfig[this._userId] = {
-                    addition: user.addition,
-                    soustraction: user.soustraction,
-                    multiplication: user.multiplication,
-                    division: user.division,
-                    equation: user.equation,
-                    numberRewrite: user.numberRewrite,
-                    encryption: user.encryption,
-                };
+                game.playersNotionsMask[this._userId] = user.config.notionsMask;
                 this.io.to(gameId).emit('gameUpdated', game);
             } finally {
                 // Release lock

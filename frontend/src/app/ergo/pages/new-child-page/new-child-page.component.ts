@@ -37,15 +37,9 @@ export class NewChildPageComponent {
 
         const containsValidName = this._userTemp.name.trim().length > 0;
         const containsValidAge = this._userTemp.age > 0;
-        const activatesAtLeastOneNotion = [
-            this._userTemp.userConfig.numberRewrite,
-            this._userTemp.userConfig.addition,
-            this._userTemp.userConfig.soustraction,
-            this._userTemp.userConfig.multiplication,
-            this._userTemp.userConfig.division,
-            this._userTemp.userConfig.encryption,
-            this._userTemp.userConfig.equation,
-        ].some(n => n);
+        const activatesAtLeastOneNotion = Object.values(
+            this._userTemp.config.notionsMask
+        ).some(n => n);
 
         this.isValid = (
             containsValidName

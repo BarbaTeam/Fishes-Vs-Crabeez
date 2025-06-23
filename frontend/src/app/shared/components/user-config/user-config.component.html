@@ -36,7 +36,7 @@
         <span >
             Réécriture des nombres :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.numberRewrite"
+                [(checked)]="localUserTemp.config.notionsMask.REWRITING"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -44,7 +44,7 @@
         <span>
             Addition :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.addition"
+                [(checked)]="localUserTemp.config.notionsMask.ADDITION"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -52,7 +52,7 @@
         <span>
             Soustraction :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.soustraction"
+                [(checked)]="localUserTemp.config.notionsMask.SUBSTRACTION"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -60,7 +60,7 @@
         <span>
             Multiplication :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.multiplication"
+                [(checked)]="localUserTemp.config.notionsMask.MULTIPLICATION"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -68,11 +68,21 @@
         <span>
             Division :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.division"
+                [(checked)]="localUserTemp.config.notionsMask.DIVISION"
                 (checkedChange)="onChange()"
             />
         </span>
-    </div>
+
+        <!--
+        <span>
+            Equation :
+            <app-settings-toggle
+                [(checked)]="localUserTemp.config.notionsMask.EQUATION"
+                (checkedChange)="onChange()"
+            />
+        </span>
+        -->
+        </div>
 </div>
 
 <div class="config-section-right">
@@ -83,7 +93,7 @@
         <span>
             Classement :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.leaderBoard"
+                [(checked)]="localUserTemp.config.leaderBoard"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -91,7 +101,7 @@
         <span *ngIf="isInErgoPage">
             Statistiques avancées :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.advancedStats"
+                [(checked)]="localUserTemp.config.advancedStats"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -99,7 +109,7 @@
         <span *ngIf="isInErgoPage">
             Aide à la lecture :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.readingAssistance"
+                [(checked)]="localUserTemp.config.readingAssistance"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -107,7 +117,7 @@
         <span *ngIf="isInErgoPage">
             Réponses affichées :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.showsAnswer"
+                [(checked)]="localUserTemp.config.showsAnswer"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -115,7 +125,7 @@
         <span *ngIf="isInErgoPage">
             Questions cryptées :
             <app-settings-toggle
-                [(checked)]="localUserTemp.userConfig.encryption"
+                [(checked)]="localUserTemp.config.notionsMask.ENCRYPTION"
                 (checkedChange)="onChange()"
             />
         </span>
@@ -128,7 +138,7 @@
             Taille de la police :
             <span>
                 0<app-settings-slider
-                    [(value)]="localUserTemp.userConfig.fontSize"
+                    [(value)]="localUserTemp.config.fontSize"
                     (valueChange)="onChange()"
                 />1
             </span>
@@ -138,7 +148,7 @@
             Son :
             <span>
                 0<app-settings-slider
-                    [(value)]="localUserTemp.userConfig.sound"
+                    [(value)]="localUserTemp.config.sound"
                     (valueChange)="onChange()"
                 />1
             </span>

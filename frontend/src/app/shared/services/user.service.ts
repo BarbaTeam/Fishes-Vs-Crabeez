@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
+import { BehaviorSubject, firstValueFrom } from "rxjs";
 import { from } from "rxjs";
 
 import { HTTP_API } from '@app/app-settings';
@@ -40,21 +40,26 @@ export class UserService{
         name: "Ajouter joueur",
         age: 0,
         icon: "unknown.png",
-        userConfig: {
-            showsAnswer: false,
-            readingAssistance: false,
+        config: {
             advancedStats: false,
             leaderBoard: false,
+
             fontSize: 0.5,
             sound: 0.5,
-            numberRewrite: false,
-            addition: false,
-            soustraction: false,
-            multiplication: false,
-            division: false,
-            encryption: false,
-            equation: false,
-        }
+
+            showsAnswer: false,
+            readingAssistance: false,
+
+            notionsMask: {
+                REWRITING: false,
+                ADDITION: false,
+                SUBSTRACTION: false,
+                MULTIPLICATION: false,
+                DIVISION: false,
+                EQUATION: false,
+                ENCRYPTION: false,
+            },
+        },
     };
 
 

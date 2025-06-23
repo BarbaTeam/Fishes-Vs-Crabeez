@@ -1,10 +1,14 @@
+const { GameLeaderboard } = require('../types');
+const { GameLeaderboardSchema } = require('../schemas/game-leaderboard.schema');
+
 const { DatabaseTable } = require('./utils/db-table')
 const { genGameKey } = require('./utils/key-generators');
 
-const { GameLeaderboardSchema } = require('../schemas/game-leaderboard.schema');
 
 
-
+/**
+ * @type {DatabaseTable<GameLeaderboard>}
+ */
 exports.GameLeaderboardTable = new DatabaseTable(
     "GameLeaderboard",
     GameLeaderboardSchema,

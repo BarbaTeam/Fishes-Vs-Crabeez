@@ -39,7 +39,7 @@ export class UserConfigComponent implements OnInit {
     ngOnInit(): void {
         this.localUserTemp = {
             ...this.user,
-            userConfig: { ...this.user.userConfig }
+            config: { ...this.user.config }
         };
 
         this.userTemp.emit(this.localUserTemp);
