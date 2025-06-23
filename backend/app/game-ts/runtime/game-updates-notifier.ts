@@ -63,6 +63,21 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('scoreUpdated', newScore);
     }
 
+    public onHealthUpdated(newHealth: number) {
+        console.log(`[NOTIFIER] : Players took damage, there is the new health ${newHealth}`);
+        this.broadcast.emit('healthUpdated', newHealth);
+    }
+
+    public onNewWave(waveCounter: number) {
+        console.log(`[NOTIFIER] : New wave incoming ! n°${waveCounter}`);
+        this.broadcast.emit('newWave', waveCounter);
+    }
+
+    public onGameEnd(){
+        console.log(`[NOTIFIER] : Game ended !`);
+        this.broadcast.emit('gameEnded');
+    }
+
     public onNewQuestionForPlayer(playerId: UserID, question: Question) {
         console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
         this.io.to(playerId).emit('newQuestion', question);

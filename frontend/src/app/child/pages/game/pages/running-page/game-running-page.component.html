@@ -1,43 +1,81 @@
-
 @if (question) {
-    <div #headerRef class="header">
-        <div class="question-container">
-            <div class="question">
-                <p>{{ question.prompt }}</p>
-            </div>
-            <div class="answer">
-                <span
-                    *ngFor="let input of inputs; let i = index"
-                    [ngClass]="[input.status, i === cursorPosition ? 'cursor' : '']"
-                >
-                    {{ input.letter }}
-                </span>
-            </div>
-        </div>
+  <div #headerRef class="header">
+    <div class="question-container">
+      <div class="question">
+        <p>{{ question.prompt }}</p>
+      </div>
+      <div class="answer">
+        <span
+          *ngFor="let input of inputs; let i = index"
+          [ngClass]="[input.status, i === cursorPosition ? 'cursor' : '']"
+        >
+          {{ input.letter }}
+        </span>
+      </div>
     </div>
+  </div>
 } @else {
-    <div #headerRef class="header">
-        <div class="question-container">
-            <div class="question">
-                <p>Chargement de la question ...</p>
-            </div>
-            <div class="answer"></div>
-        </div>
+  <div #headerRef class="header">
+    <div class="question-container">
+      <div class="question">
+        <p>Chargement de la question ...</p>
+      </div>
+      <div class="answer"></div>
     </div>
+  </div>
 }
 
-
 <div class="score-container">
-    <p>Score : {{ generalScore }}</p>
+  <div class="score-display">
+    <span class="score-text">Score</span>
+    <span class="score-number">{{ generalScore }}</span>
+  </div>
 </div>
 
 <canvas #gameCanvas class="game"></canvas>
 <img id="background" src="../../../../assets/images/game/world/background.png">
 
 <div class="player-icon-container">
-    <img id="player-icon" [src]="localPlayerIconUrl" *ngIf="localPlayerIconUrl">
-    <img id="ally1-icon" [src]="player1IconUrl" *ngIf="player1IconUrl">
-    <img id="ally2-icon" [src]="player2IconUrl" *ngIf="player2IconUrl">
+  <img id="player-icon" [src]="localPlayerIconUrl" *ngIf="localPlayerIconUrl">
+  <img id="ally1-icon" [src]="player1IconUrl" *ngIf="player1IconUrl">
+  <img id="ally2-icon" [src]="player2IconUrl" *ngIf="player2IconUrl">
 </div>
+
+<div class="wave-counter-container">
+  <div class="wave-counter">
+    <span class="wave-text">Vague</span>
+    <span class="wave-number">{{ waveCounter }}</span>
+  </div>
+</div>
+
+<div class="health-bar-container">
+  <div class="health-bar">
+    <div class="health-bar-background">
+      <div class="health-bar-fill"
+           [style.width.%]="(health / 10) * 100">
+      </div>
+    </div>
+    <span class="health-text">{{ health }}/10</span>
+  </div>
+</div>
+
+@if (hasEnded) {
+  <div class="voile">
+    <div class="end-game-box">
+      <div class="title">Fin de la partie !</div>
+      <div class="message">
+        Vous avez survécu à {{ waveCounter }} vagues
+      </div>
+      <div class="score">
+        Score final :<br> {{ generalScore }}
+      </div>
+      <div class="badge-row">
+         <!--TODO-->
+      </div>
+      <button class="return-button" (click)="quit()">Retour</button>
+    </div>
+  </div>
+}
+
 
 <div class="encrypt-overlay" [class.visible]="isEncrypted"></div>

@@ -9,6 +9,7 @@ class GameModel {
     constructor(notifier, gameLobby) {
         this.notifier = notifier;
         this.gameLobby = gameLobby;
+        this.hasEnded = false;
         this._accumulator = new game_log_accumulator_1.GameLogAccumulator(gameLobby.playersId);
         this.gameEngine = new game_engine_1.GameEngine(this, notifier, gameLobby.playersId);
         this.quizHandler = new quiz_handler_1.QuizHandler(this, notifier, gameLobby.playersNotionsMask, this._accumulator);
@@ -26,8 +27,6 @@ class GameModel {
         this.gameEngine.update();
         this.eventsHandler.updateEvents();
     }
-    onGameEnd() {
-        // TODO : ...
-    }
 }
 exports.GameModel = GameModel;
+

@@ -46,6 +46,18 @@ class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : new score for all players : ${newScore}`);
         this.broadcast.emit('scoreUpdated', newScore);
     }
+    onHealthUpdated(newHealth) {
+        console.log(`[NOTIFIER] : Players took damage, there is the new health ${newHealth}`);
+        this.broadcast.emit('healthUpdated', newHealth);
+    }
+    onNewWave(waveCounter) {
+        console.log(`[NOTIFIER] : New wave incoming ! n°${waveCounter}`);
+        this.broadcast.emit('newWave', waveCounter);
+    }
+    onGameEnd() {
+        console.log(`[NOTIFIER] : Game ended !`);
+        this.broadcast.emit('gameEnded');
+    }
     onNewQuestionForPlayer(playerId, question) {
         console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
         this.io.to(playerId).emit('newQuestion', question);
@@ -56,3 +68,4 @@ class GameUpdatesNotifier {
     }
 }
 exports.GameUpdatesNotifier = GameUpdatesNotifier;
+

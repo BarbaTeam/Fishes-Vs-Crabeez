@@ -5,10 +5,11 @@ const variables_1 = require("../../../../game/model/game-engine/variables");
 const random_1 = require("../../../../shared/utils/random");
 const variables_2 = require("../variables");
 class Enemy {
-    constructor(type, health, speed, score, width, height, laneNum, x, y) {
+    constructor(type, health, speed, damage, score, width, height, laneNum, x, y) {
         this.type = type;
         this.health = health;
         this.speed = speed;
+        this.damage = damage;
         this.score = score;
         this.width = width;
         this.height = height;
@@ -24,6 +25,7 @@ class Enemy {
         this.speed = speed;
         this.alive = true;
         this.score = score;
+        this.damage = damage;
     }
     _computeInitialXPosition(providedX) {
         if (providedX !== undefined) {
@@ -64,3 +66,4 @@ class Enemy {
 }
 exports.Enemy = Enemy;
 Enemy.nextId = 0;
+

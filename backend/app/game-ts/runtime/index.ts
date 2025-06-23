@@ -6,6 +6,7 @@ import { GameActionsReceiver } from './game-actions-receiver';
 import { GameUpdatesNotifier } from './game-updates-notifier';
 import { GameModel } from '../model';
 
+import { stopRunningGame } from '../../game-runner'
 
 export class GameRuntime {
     public readonly notifier : GameUpdatesNotifier;
@@ -20,7 +21,16 @@ export class GameRuntime {
     }
 
     public runOneFrame() {
-        // TODO : Supporting game's ending
+        if(this.model.hasEnded){
+            this.onGameEnd();
+            return;
+        }
         this.model.runOneFrame();
+    }
+
+    public onGameEnd(){
+        //TODO : enhanced game end
+        this.notifier.onGameEnd();
+        stopRunningGame(this.model.gameLobby.gameId);
     }
 }

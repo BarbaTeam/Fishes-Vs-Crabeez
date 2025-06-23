@@ -55,7 +55,7 @@ import { ExpandableButtonComponent } from './components/expandable-button/expand
 ////////////////////////////////////////////////////////////////////////////////
 
 const socketConfig: SocketIoConfig = {
-  url: 'http://localhost:9428',
+  url: 'http://192.168.126.235:9428',
   options: {
     transports: ['websocket'],
   },
