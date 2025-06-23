@@ -36,7 +36,7 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-big-button [routerLink]="['/child/games-list']">
+        <app-big-button (click)="findGame()" [routerLink]="['/child/games-list']">
             Trouver une partie
         </app-big-button>
     </app-body>

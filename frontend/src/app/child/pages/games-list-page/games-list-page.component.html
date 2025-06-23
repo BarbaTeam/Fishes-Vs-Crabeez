@@ -22,7 +22,11 @@
 
     <app-body>
         <app-inner-box class="main-box blue little">
-            <app-small-button [routerLink]="['/child/game']">Jeu ici</app-small-button>
+            <app-user-card
+                *ngFor="let player of players"
+                [user]="player"
+                class="horizontal"
+            ></app-user-card>
         </app-inner-box>
     </app-body>
 

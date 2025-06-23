@@ -39,11 +39,19 @@ import { GradingLineComponent } from './components/grading-line/grading-line.com
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
 
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // SharedModule :
 ////////////////////////////////////////////////////////////////////////////////
+
+const socketConfig: SocketIoConfig = {
+  url: 'http://localhost:9428',
+  options: {
+    transports: ['websocket'],
+  },
+};
 
 const SHARED_COMPONENTS = [
     // Pages Template :
@@ -83,9 +91,11 @@ const SHARED_COMPONENTS = [
     imports: [
         CommonModule,
         FormsModule,
+        SocketIoModule.forRoot(socketConfig)
     ],
     exports: [
         ...SHARED_COMPONENTS,
+        SocketIoModule
     ],
 })
 export class SharedModule {}
