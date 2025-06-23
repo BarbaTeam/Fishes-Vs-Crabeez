@@ -12,7 +12,7 @@ import { childDeactivateGuard } from './guards/child-deactivate.guard';
 // Pages :
 
 import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
-import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
+import { BestiaryPageComponent } from './pages/bestiary-page/bestiary-page.component';
 import { GamesListPageComponent } from './pages/games-list-page/games-list-page.component';
 
 
@@ -30,7 +30,7 @@ export const ROUTES: Routes = [
             { path: '', redirectTo: 'games-list', pathMatch: 'full' },
 
             { path: 'profile', component: ProfilePageComponent },
-            { path: 'settings', component: SettingsPageComponent },
+            { path: 'bestiary', component: BestiaryPageComponent },
 
             { path: 'games-list', component: GamesListPageComponent },
 

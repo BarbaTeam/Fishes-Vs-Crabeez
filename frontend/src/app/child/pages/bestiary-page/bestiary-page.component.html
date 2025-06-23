@@ -1,0 +1,168 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            [routerLink]="['/child/profile']"
+            routerLinkActive="active"
+        >
+            <app-user-card [user]="user" class="horizontal navbar"/>
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/games-list']"
+            routerLinkActive="active"
+        >
+            Liste des parties
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/bestiary']"
+            routerLinkActive="active"
+        >
+            Bestiaire
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-side-box class="button-list">
+            <div class="bestiary-stats">
+                <h3>Statistiques</h3>
+                <div class="stat-item">
+                    <span class="stat-label">Découvertes:</span>
+                    <span class="stat-value">{{ totalDiscovered }}/{{ totalMonsters }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Boss:</span>
+                    <span class="stat-value">{{ totalBosses }}</span>
+                </div>
+            </div>
+
+            <div class="monster-list">
+                <h3>Créatures</h3>
+                @for (monster of monsters; track monster.id) {
+                    <app-small-button
+                        [routerLink]="[]"
+                        [queryParams]="{ 'monster': monster.id}"
+                        [class.active]="selectedMonster === monster.id"
+                        [class.undiscovered]="!monster.discovered"
+                        [class.boss]="monster.isBoss"
+                        style="width:100%"
+                    >
+                        <span class="monster-button-content">
+                            @if (monster.discovered) {
+                                <img [src]="monster.icon" [alt]="monster.name" class="monster-icon-small">
+                            } @else {
+                                <span class="mystery-icon">?</span>
+                            }
+                            <span class="monster-name">
+                                {{ monster.discovered ? monster.name : '???' }}
+                            </span>
+                            @if (monster.isBoss) {
+                                <span class="boss-indicator">👑</span>
+                            }
+                        </span>
+                    </app-small-button>
+                }
+            </div>
+        </app-side-box>
+
+        <app-inner-box class="scrollable">
+            @if (getCurrentMonster(); as currentMonster) {
+                @if (currentMonster.discovered) {
+                    <div class="monster-details">
+                        <div class="monster-header">
+                            <img [src]="currentMonster.icon" [alt]="currentMonster.name" class="monster-icon-large">
+                            <div class="monster-title">
+                                <h1>{{ currentMonster.name }}</h1>
+                                @if (currentMonster.isBoss) {
+                                    <span class="boss-badge">BOSS</span>
+                                }
+                                <div class="monster-score">Score: {{ currentMonster.score }} pts</div>
+                            </div>
+                        </div>
+
+                        <div class="monster-content">
+                            <div class="monster-description">
+                                <h2>Description</h2>
+                                <p>{{ currentMonster.description }}</p>
+                            </div>
+
+                            <div class="monster-tips">
+                                <h2>Conseils</h2>
+                                <p>{{ currentMonster.tips }}</p>
+                            </div>
+
+                            <div class="monster-stats">
+                                <h2>Statistiques</h2>
+                                <div class="stats-grid">
+                                    <div class="stat-card hp">
+                                        <div class="stat-icon">❤️</div>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Points de Vie</span>
+                                            <span class="stat-number">{{ currentMonster.stats.hp }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card attack">
+                                        <div class="stat-icon">⚔️</div>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Attaque</span>
+                                            <span class="stat-number">{{ currentMonster.stats.attack }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="stat-card speed">
+                                        <div class="stat-icon">⚡</div>
+                                        <div class="stat-info">
+                                            <span class="stat-name">Vitesse</span>
+                                            <span class="stat-number">{{ currentMonster.stats.speed }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="monster-undiscovered">
+                        <div class="mystery-container">
+                            <div class="mystery-icon-large">?</div>
+                            <h2>Créature Non Découverte</h2>
+                            <p>Cette créature n'a pas encore été rencontrée dans vos aventures.</p>
+                            <p class="hint">Continuez à jouer pour découvrir de nouvelles créatures !</p>
+                        </div>
+                    </div>
+                }
+            } @else {
+                <div class="no-selection">
+                    <div class="welcome-container">
+                        <h1>Bienvenue dans le Bestiaire</h1>
+                        <p class="welcome-text">
+                            Découvrez toutes les créatures que vous avez rencontrées lors de vos aventures.
+                        </p>
+                        <div class="progress-overview">
+                            <h3>Votre Progression</h3>
+                            <div class="progress-bar">
+                                <div
+                                    class="progress-fill"
+                                    [style.width.%]="(totalDiscovered / totalMonsters) * 100"
+                                ></div>
+                            </div>
+                            <p>{{ totalDiscovered }} sur {{ totalMonsters }} créatures découvertes</p>
+                        </div>
+                        <p class="instruction">👈 Sélectionnez une créature dans la liste pour voir ses détails</p>
+                    </div>
+                </div>
+            }
+        </app-inner-box>
+
+    </app-body>
+
+</app-template>
