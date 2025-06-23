@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { UserService } from '@app/shared/services/user.service';
+import { NotifService } from '@app/shared/services/notif.service';
 
 import { User } from '@app/shared/models/user.model';
 
@@ -24,7 +25,8 @@ export class ChildConfigPageComponent implements OnInit {
 
     constructor(
         private userService: UserService,
-        private router: Router
+        private router: Router,
+        private notifService: NotifService,
     ) {}
 
 
@@ -73,10 +75,9 @@ export class ChildConfigPageComponent implements OnInit {
     async saveChanges(): Promise<void> {
         if (this._userTemp && this.isValid) {
             await this.userService.saveChanges(this._userTemp);
-            this.showSuccess = true;
-            setTimeout(() => {
-                this.showSuccess = false;
-            }, 2000);
+            this.notifService.triggerNotif(
+                "Success", "Configuration mise à jour"
+            );
         }
     }
 

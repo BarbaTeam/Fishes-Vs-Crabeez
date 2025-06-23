@@ -1,0 +1,7 @@
+<ng-container *ngIf="notif">
+    <app-notif
+        [kind]="notif.kind"
+        [content]="notif.content"
+        (closed)="close()"
+    />
+</ng-container>

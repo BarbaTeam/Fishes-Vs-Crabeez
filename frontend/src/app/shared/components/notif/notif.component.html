@@ -1,0 +1,18 @@
+<div [@slideInOut] class="notif-container" [ngClass]="kind">
+    <span class="icon">
+        <ng-container [ngSwitch]="kind">
+            <span *ngSwitchCase="'Success'">✔️</span>
+            <span *ngSwitchCase="'Warning'">⚠️</span>
+            <span *ngSwitchCase="'Error'">❌</span>
+        </ng-container>
+    </span>
+    <span class="text">
+        @switch(kind) {
+            @case('Success') { <strong>Succès :</strong> }
+            @case('Warning') { <strong>Attention :</strong> }
+            @case('Error')   { <strong>Erreur :</strong> }
+        }
+        {{ content }}
+    </span>
+    <button class="close-btn" (click)="close()">×</button>
+</div>

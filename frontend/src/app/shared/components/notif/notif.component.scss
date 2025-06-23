@@ -1,0 +1,59 @@
+.notif-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    width: 25vw;
+
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-family: sans-serif;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    opacity: 0.95;
+    transition: transform 0.5s ease;
+}
+
+.icon {
+    font-size: 20px;
+    margin-right: 12px;
+}
+
+.text {
+    font-size: 16px;
+}
+
+.Success {
+    background-color: #d4f5e0;
+    color: #2c7a4e;
+}
+
+.Warning {
+    background-color: #ffe3b3;
+    color: #975a16;
+}
+
+.Error {
+    background-color: #fcd3d3;
+    color: #b91c1c;
+}
+
+.close-btn {
+    margin-left: auto;           // pousse le bouton tout à droite
+    padding: 0;                  // enlève le padding par défaut
+    border: none;                // pas de bordure
+    background-color: inherit;   // même fond que la notif
+    color: inherit;              // même couleur de texte/icone
+    font-weight: bold;           // texte en gras
+    font-size: 1.25rem;          // un peu plus gros (optionnel)
+    line-height: 1;              // pour un bouton carré
+    cursor: pointer;             // main au survol
+
+    // facultatif : un petit effet visuel au hover
+    &:hover {
+      opacity: 0.8;
+    }
+}
