@@ -2,19 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameUpdatesNotifier = void 0;
 class GameUpdatesNotifier {
-    constructor(
-    //private io: Server|Namespace|BroadcastOperator<any, any>,
-    io, broadcast) {
+    constructor(io, broadcast) {
         this.io = io;
         this.broadcast = broadcast;
-    }
-    onNewQuestionForPlayer(playerId, question) {
-        console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
-        this.io.to(playerId).emit('newQuestion', question);
-    }
-    onPlayerScoreUpdated(playerId, newScore) {
-        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
-        this.io.to(playerId).emit('scoreUpdated', newScore);
     }
     onStartup(startupPackage) {
         console.log(`[NOTIFIER] : Sending startup package ${startupPackage}\n\n`);
@@ -40,13 +30,25 @@ class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : An enemy has been slain`);
         this.broadcast.emit('enemyKilled', { projectile: projectile.toJSON(), enemy: enemy.toJSON() });
     }
-    onPlayerParalyzed(playerId) {
-        console.log(`[NOTIFIER] : Player ${playerId} is paralyzed !\n\n`);
-        this.broadcast.emit('playerParalyzed', playerId);
+    onEnemyDespawned(enemyId) {
+        console.log(`[NOTIFIER] : An enemy has been despawned`);
+        this.broadcast.emit('enemyDespawned', enemyId);
     }
-    onPlayerDeparalyzed(playerId) {
+    onPlayerParalysed(playerId) {
+        console.log(`[NOTIFIER] : Player ${playerId} is paralysed !\n\n`);
+        this.broadcast.emit('playerParalysed', playerId);
+    }
+    onPlayerDeparalysed(playerId) {
         console.log(`[NOTIFIER] : Player ${playerId} freed himself !\n\n`);
-        this.broadcast.emit('playerDeparalyzed', playerId);
+        this.broadcast.emit('playerDeparalysed', playerId);
+    }
+    onNewQuestionForPlayer(playerId, question) {
+        console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
+        this.io.to(playerId).emit('newQuestion', question);
+    }
+    onPlayerScoreUpdated(playerId, newScore) {
+        console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
+        this.io.to(playerId).emit('scoreUpdated', newScore);
     }
 }
 exports.GameUpdatesNotifier = GameUpdatesNotifier;

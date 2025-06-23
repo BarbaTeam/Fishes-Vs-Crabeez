@@ -12,7 +12,6 @@ class GameRuntime {
         this.receiver = new game_actions_receiver_1.GameActionsReceiver(this.model);
     }
     runOneFrame() {
-        // TODO : Supporting game's ending
         this.model.runOneFrame();
     }
 }

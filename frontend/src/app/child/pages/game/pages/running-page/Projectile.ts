@@ -1,5 +1,5 @@
 import { Player } from "./Player";
-import { scaleToCanvas } from "./scale-utils";
+import { scaleToCanvas } from "./utils";
 
 export class Projectile {
     private _id: string;

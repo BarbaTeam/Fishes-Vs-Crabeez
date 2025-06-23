@@ -1,0 +1,13 @@
+import { UserID } from "../../../shared/types";
+
+import { EventID, EventKind } from "./event-types";
+
+
+
+export interface IEventsHandler {
+    readonly aliveEvents: Record<EventID, {kind: EventKind, affectedPlayerId?: UserID}>;
+
+    spawnEvent(kind: EventKind, ...args: any[]): void;
+    killEvent(id: EventID): void;
+    onEventEmission(fromKind: EventKind, data: any): void;
+}

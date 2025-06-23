@@ -22,11 +22,13 @@ export class GameEngine {
     private subscriptions = new Subscription();
     private receivedStartup = false;
 
-    public localPlayerImageSrcChanged = new Subject<string>();
+    public $localPlayerImageSrc = new Subject<string>();
     public localPlayerImageSrc: string = '';
-    public player1ImageSrcChanged = new Subject<string>();
+    public $localPlayerPlayerParalysed = new Subject<boolean>();
+    public localPlayerPlayerParalysed = false;
+    public $player1ImageSrc = new Subject<string>();
     public player1ImageSrc?: string;
-    public player2ImageSrcChanged = new Subject<string>();
+    public $player2ImageSrc = new Subject<string>();
     public player2ImageSrc?: string;
 
     constructor(
@@ -70,17 +72,17 @@ export class GameEngine {
                     this.players.set(player.id, newPlayer);
                     if (player.id === this.localPlayerId) {
                         this.localPlayerImageSrc = newPlayer.playerIconUrl;
-                        this.localPlayerImageSrcChanged.next(this.localPlayerImageSrc);
+                        this.$localPlayerImageSrc.next(this.localPlayerImageSrc);
                         console.log("[STARTUP] Local player image source set to: ", this.localPlayerImageSrc);
                     }
                     else if (!this.player1ImageSrc) {
                         this.player1ImageSrc = newPlayer.playerIconUrl;
-                        this.player1ImageSrcChanged.next(this.player1ImageSrc);
+                        this.$player1ImageSrc.next(this.player1ImageSrc);
                         console.log("[STARTUP] Player 1 image source set to: ", this.player1ImageSrc);
                     }
                     else if (!this.player2ImageSrc) {
                         this.player2ImageSrc = newPlayer.playerIconUrl;
-                        this.player2ImageSrcChanged.next(this.player2ImageSrc);
+                        this.$player2ImageSrc.next(this.player2ImageSrc);
                         console.log("[STARTUP] Player 2 image source set to: ", this.player2ImageSrc);
                     }
                 }
@@ -121,14 +123,45 @@ export class GameEngine {
             })
         );
         this.subscriptions.add(
-            this.socket.on<Enemy>('enemyAdded').subscribe(enemy=>{
-                this.enemies.push(enemy);
+            this.socket.on<any>('enemyAdded').subscribe(enemy=>{
+                switch (enemy.type) {
+                    case 'crab':
+                        const crab = Crab.fromJson(enemy, this.canvas);
+                        this.enemies.push(crab);
+                        console.log(`New Crab received: ${crab.id}, position: (${crab.x}, ${crab.y})`);
+
+                        break;
+                    default:
+                        console.warn(`Unknown enemy type: ${enemy.type}`);
+                }
             })
         );
         this.subscriptions.add(
             this.socket.on<{projectile: Projectile, enemy: Enemy}>('enemyKilled').subscribe(({projectile : projectile, enemy : enemy})=>{
                 this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
                 this.enemies = this.enemies.filter(e => e.id != enemy.id);
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<string>('enemyDespawned').subscribe(enemyId => {
+                this.enemies = this.enemies.filter(enemy => enemy.id !== enemyId);
+            })
+        );
+        
+        this.subscriptions.add(
+            this.socket.on<UserID>('playerParalysed').subscribe(playerId => {
+                const player = this.players.get(playerId)!;
+                player.paralysed = true;
+                this.$localPlayerPlayerParalysed.next(player.paralysed);
+                
+            })
+        );
+        this.subscriptions.add(
+            this.socket.on<UserID>('playerDeparalysed').subscribe(playerId => {
+                const player = this.players.get(playerId)!;
+                player.paralysed = false;
+                this.$localPlayerPlayerParalysed.next(player.paralysed);
             })
         );
     }

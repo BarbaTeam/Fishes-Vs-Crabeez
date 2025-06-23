@@ -9,7 +9,7 @@ const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
 const { ChildRole_Impl } = require('./child.role');
 
-const { RUNNING_GAMES } = require('../../../game/running-games');
+const { RUNNING_GAMES } = require('../../../game-runner');
 
 
 

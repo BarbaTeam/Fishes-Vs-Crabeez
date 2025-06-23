@@ -12,6 +12,7 @@ export class Player {
     public hasChangedLane: boolean = false;
     public score: number = 0;
     public color: "yellow" | "blue" | "red";
+    public isParalysed: boolean = false;
 
     constructor(id: UserID, color: "yellow" | "blue" | "red", lane: Lane) {
         this.id = id;
@@ -46,8 +47,6 @@ export class Player {
             id: this.id,
             x: this.x,
             y: this.y,
-            width: this.width,
-            height: this.height,
             color: this.color,
         };
     }

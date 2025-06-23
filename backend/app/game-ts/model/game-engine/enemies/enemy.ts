@@ -1,46 +1,80 @@
+import { randint } from "../../../../shared/utils/random";
+import { Lane, LaneNumber } from "../lane";
+import { LANES } from "../variables";
+
+
 export type EnemyID = `ennemy-${number}`;
+
 
 
 export class Enemy {
     public readonly id: EnemyID;
+    public readonly lane: Lane;
+    public x: number;
+    public y: number;
 
-    public health: number;
-    public lane : 1 | 2 | 3;
-    public x : number;
-    public y : number;
-    public width : number;
-    public height : number;
-    public alive : boolean;
-    public speed : number;
-    public score : number;
+    public alive: boolean;
 
-    constructor(health: number, lane? : 1|2|3, x? : number, y? : number) {
+
+    constructor(
+        public type : string,
+        public health: number,
+        public speed : number,
+        public readonly score: number,
+
+        public readonly width : number,
+        public readonly height : number,
+
+        laneNum? : LaneNumber,
+        x? : number,
+        y? : number,
+    ) {
         this.id = `ennemy-${Date.now()}`;
 
-        this.lane = lane !== undefined ? lane : Math.floor(Math.random() * 3) + 1 as  1 | 2 | 3;
-        this.x = x !== undefined ? x : 1000;
+        this.lane = LANES[
+            laneNum !== undefined
+            ? laneNum - 1
+            : randint(0, 3)
+        ];
+        this.x = this._computeInitialXPosition(x);
+        this.y = this._computeInitialYPosition(y);
 
-        this.y = this._setInitialPosition(y);
-
-        this.width = 150;
-        this.height = 150;
+        this.width = width;
+        this.height = height;
+        
+        this.health = health;
+        this.speed = speed;
+        
         this.alive = true;
-        this.speed = 0.2;
-        this.score = 10;
+        this.score = score;
     }
 
-    private _setInitialPosition(providedY : number | undefined) {
-        if (providedY !== undefined) return providedY;
+    private _computeInitialXPosition(
+        providedX : number | undefined
+    ) {
+        if (providedX !== undefined) {
+            return providedX;
+        }
 
-        switch (this.lane) {
+        return 100 + this.width;
+    }
+
+    private _computeInitialYPosition(
+        providedY : number | undefined
+    ) {
+        if (providedY !== undefined) {
+            return providedY;
+        }
+
+        switch (this.lane.num) {
             case 1:
-                return 400;
+                return 49;
             case 2:
-                return 300;
+                return 33;
             case 3:
-                return 200;
+                return 17;
             default:
-                return 400;
+                return 17;
         }
     }
 
@@ -49,22 +83,15 @@ export class Enemy {
     }
 
     public update() {
-        if (this.x > 100) {
-            this.x -= this.speed;
-        } else {
-            this.alive = false;
-        }
+        this.x -= this.speed;
     }
 
     toJSON(): any {
         return {
-            lane  : this.lane,
+            id    : this.id,
+            type  : this.type,
             x     : this.x,
             y     : this.y,
-            width : this.width,
-            height: this.height,
-            alive : this.alive,
-            health: this.health,
             speed : this.speed,
         };
     }

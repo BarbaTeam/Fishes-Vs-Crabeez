@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsGenerator = void 0;
 const types_1 = require("../../../../shared/types");
+const random_1 = require("../../../../shared/utils/random");
 ////////////////////////////////////////////////////////////////////////////////
 // Utils :
 ////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,7 @@ function num2words_fr(n) {
     ////////////////////////////////////////////////////////////////////////////
     // Main Logic :
     if (!Number.isFinite(n)) {
+        console.log(n);
         throw new Error("Can only convert finite number");
     }
     if (n === 0) {
@@ -119,14 +121,6 @@ function num2words_fr(n) {
     }
     return ret;
 }
-/**
- * @param min The minimum included boundary.
- * @param max The maximum excluded boundary.
- * @reurn A random integer btwn 'min' and 'max'.
- */
-function randint(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 ////////////////////////////////////////////////////////////////////////////////
 // Question Generator :
 ////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +131,7 @@ class QuestionsGenerator {
         if (allowedNotions.length === 0) {
             throw new Error("Aucune notion autorisée par le masque fourni.");
         }
-        return allowedNotions[randint(0, allowedNotions.length - 1)];
+        return allowedNotions[(0, random_1.randint)(0, allowedNotions.length - 1)];
     }
     static _convertNotionToOperator(notion) {
         switch (notion) {
@@ -153,11 +147,10 @@ class QuestionsGenerator {
                 return 'NA';
         }
     }
-    static _chooseOperands(operandsAmount = 2, minBound = 0, maxBound = 10) {
+    static _chooseOperands(minBound = 0, maxBound = 10) {
         const operands = [];
-        for (let i = 0; i < operandsAmount; i++) {
-            operands.push(randint(minBound, maxBound));
-        }
+        operands.push((0, random_1.randint)(minBound, maxBound));
+        operands.push((0, random_1.randint)(Math.max(1, minBound), maxBound));
         return operands;
     }
     static _computeAnswer(operands, operator) {
@@ -180,7 +173,7 @@ class QuestionsGenerator {
         const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_{|}";
         let ret = "";
         for (let i = 0; i < length; i++) {
-            ret += characters.charAt(randint(0, characters.length - 1));
+            ret += characters.charAt((0, random_1.randint)(0, characters.length - 1));
         }
         return ret;
     }
@@ -194,25 +187,32 @@ class QuestionsGenerator {
         [types_1.QuestionNotion.REWRITING]: false,
         [types_1.QuestionNotion.ENCRYPTION]: false,
     }) {
-        const notion = this._chooseNotion(notionMask);
+        let notion = this._chooseNotion(notionMask);
+        // TODO : Supporting equation one day
+        while (notion === types_1.QuestionNotion.EQUATION) {
+            notion = this._chooseNotion(notionMask);
+        }
+        return this.genQuestionOfNotion(notion);
+    }
+    static genQuestionOfNotion(notion) {
         switch (notion) {
             case types_1.QuestionNotion.REWRITING:
-                const nb = randint(0, 50);
+                const nb = (0, random_1.randint)(0, 50);
                 return {
                     prompt: `${nb} :\xa0`,
                     answer: num2words_fr(nb),
                     notion: notion,
                 };
             case types_1.QuestionNotion.ENCRYPTION:
-                const length = randint(4, 6);
+                const length = (0, random_1.randint)(4, 6);
                 return {
                     prompt: "",
                     answer: this._genEncryptedString(length),
                     notion: notion,
                 };
             case types_1.QuestionNotion.EQUATION:
-                // TODO : One day
-                return this.genQuestion(notionMask);
+                // TODO : Supporting equation one day
+                throw new Error("Equation generation ain't currently supported");
             default:
                 const operator = this._convertNotionToOperator(notion);
                 const operands = this._chooseOperands();

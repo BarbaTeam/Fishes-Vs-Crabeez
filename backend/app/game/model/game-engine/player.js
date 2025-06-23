@@ -8,6 +8,7 @@ class Player {
         this.height = 5;
         this.hasChangedLane = false;
         this.score = 0;
+        this.isParalysed = false;
         this.id = id;
         this.color = color;
         this.lane = lane;
@@ -36,8 +37,6 @@ class Player {
             id: this.id,
             x: this.x,
             y: this.y,
-            width: this.width,
-            height: this.height,
             color: this.color,
         };
     }
