@@ -5,11 +5,12 @@ import { EventKind } from '../event-types';
 
 import { LaneNumber } from '../../game-engine/lane';
 import { Enemy } from '../../game-engine/enemies/enemy';
-import { Crab } from '../../game-engine/enemies/crab';
 
 import { biasedRandint, randint } from '../../../../shared/utils/random';
+import { Difficulty } from '../../game-engine/difficulty';
+import { ENEMIES_CRATES_PER_LEVEL } from '../../game-engine/variables';
+
 import { LANES, VIRTUAL_WIDTH } from '../../../../game/model/game-engine/variables';
-import { HiveCrab } from '../../../../game/model/game-engine/enemies/hive-crab';
 
 
 
@@ -21,29 +22,33 @@ export class WaveEvent extends GameEvent<any[]> {
     private static readonly LANES_COUNT: number = 3;
 
 
-    private _waveDifficulty: number;
+    private _waveDifficulty: Difficulty;
 
 
-    constructor(handler: IEventsHandler, difficulty: number) {
+    constructor(
+        handler: IEventsHandler, difficulty: Difficulty,
+    ) {
         super(handler, EventKind.WAVE);
         this._waveDifficulty = difficulty;
     }
 
-
     onEventBirth(): void {
         super.onEventBirth();
 
-        const enemies: any[] = [];
         const amount = biasedRandint(
-            this._waveDifficulty,
+            this._waveDifficulty.waveCount,
             4.5,
             WaveEvent.MIN_AMOUNT_OF_ENNEMY,
             WaveEvent.MAX_AMOUNT_OF_ENNEMY + 1,
+            3 * this._waveDifficulty.harshness,
         );
 
+        const enemiesCrate = ENEMIES_CRATES_PER_LEVEL[this._waveDifficulty.level];
+
+        const enemies: Enemy[] = [];
         for (let i = 0; i < amount; i++) {
             const lane = randint(1, WaveEvent.LANES_COUNT + 1) as LaneNumber;
-            const enemy = Math.random() > 0.3 ? new Crab(lane) : new HiveCrab(lane);
+            const enemy = enemiesCrate.genEnemy(Math.random(), lane);
             enemies.push(enemy);
         }
 

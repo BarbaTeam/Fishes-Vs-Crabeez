@@ -6,13 +6,15 @@ import { GameModel } from "..";
 import { EventID, EventKind } from "../events-handler";
 
 import { Enemy } from "./enemies/enemy";
+import { Drone } from "./enemies/drone";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 
 import { LANES, PLAYER_COLORS, VIRTUAL_WIDTH } from "./variables";
-import { Drone } from "./enemies/drone";
 import { DRONE_HEIGHT, DRONE_WIDTH } from "./enemies/enemies-stats";
 import { Papa } from "./enemies/papa";
+
+import { Difficulty } from "./difficulty";
 
 
 
@@ -22,14 +24,22 @@ export class GameEngine {
     public enemies: Enemy[] = [];
     private score = 0;
     private health = 10;
-    private waveCounter = 0;
     private currWaveEventId?: EventID;
+
+    private difficulty: Difficulty;
+
 
     constructor(
         private model: GameModel,
         public notifier: GameUpdatesNotifier,
         playersId: UserID[],
     ) {
+        this.difficulty = {
+            level: 0,
+            waveCount: 0,
+            harshness: this.model.game.playersId.length,
+        };
+
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, PLAYER_COLORS[i], i);
         }
@@ -136,7 +146,7 @@ export class GameEngine {
                         this.notifier.onEnemyKilled(projectile, enemy.id);
                         this.notifier.onScoreUpdated(this.score);
                     }
-                    return; 
+                    return;
                 }
             }
         }
@@ -164,7 +174,6 @@ export class GameEngine {
     }
 
     public boss = false;
-
     public update(): void {
         if(!this.boss){
             this.notifier.onBossWave("papa");
@@ -186,15 +195,15 @@ export class GameEngine {
     private spawnNextWaveIfNeeded(): void {
         const noMoreEnemies = this.enemies.length === 0;
         const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
-        
+
         if (noMoreEnemies && noCurrentWave) {
-            const difficulty = this.waveCounter;
-            
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, difficulty);
-            this.waveCounter++;
-            this.notifier.onNewWave(this.waveCounter);
-            
-            console.log(`Spawning wave ${this.waveCounter} with difficulty ${difficulty}`); 
+            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, this.difficulty);
+            this.difficulty.waveCount++;
+
+            this.notifier.onNewWave(this.difficulty.waveCount++);
+
+            console.log(`Spawning wave ${this.difficulty.waveCount++} with difficulty :`);
+            console.log(this.difficulty);
         }
     }
 }
