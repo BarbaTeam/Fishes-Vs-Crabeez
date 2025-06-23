@@ -126,26 +126,6 @@
 
         </app-inner-box>
 
-        <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
-            <h1 class="title">Classement</h1>
-
-            <ng-template *ngIf="sectionData.leaderboard === undefined">
-                <p>Classement Indisponible</p>
-            </ng-template>
-
-            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
-                <app-user-card
-                    *ngFor="let lbuserId of leaderboard.ranking"
-                    [userId]="lbuserId"
-                    class="horizontal unclickable classement"
-                />
-            </ng-container>
-            <ng-template #loadingLeaderboar>
-                <p>Chargement du classement...</p>
-            </ng-template>
-        </app-inner-box>
-
-
         <!-- History Sections : -->
         <app-inner-box *ngIf="isInHistorySections()" class="main-box blue medium scrollable">
             <ng-container *ngIf="sectionData.playerResults as pr; else loadingResults">
@@ -193,25 +173,6 @@
             </ng-container>
             <ng-template #loadingResults>
                 <p>Chargement des résultats...</p>
-            </ng-template>
-        </app-inner-box>
-
-        <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
-            <h1 class="title">Classement</h1>
-
-            <ng-template *ngIf="sectionData.leaderboard === undefined">
-                <p>Classement Indisponible</p>
-            </ng-template>
-
-            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
-                <app-user-card
-                    *ngFor="let lbuserId of leaderboard.ranking"
-                    [userId]="lbuserId"
-                    class="horizontal unclickable classement"
-                />
-            </ng-container>
-            <ng-template #loadingLeaderboar>
-                <p>Chargement du classement...</p>
             </ng-template>
         </app-inner-box>
     </app-body>
