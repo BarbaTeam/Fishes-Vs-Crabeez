@@ -94,7 +94,7 @@ export class PlayerResultsService {
                 res.playerId === this.user.userId
             )
             .sort((res1, res2) =>
-                parseInt(res1.gameId.slice(1)) - parseInt(res2.gameId.slice(1))
+                -(parseInt(res1.gameId.slice(1)) - parseInt(res2.gameId.slice(1)))
             )
             .slice(0, 5);
 

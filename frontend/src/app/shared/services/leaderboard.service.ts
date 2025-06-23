@@ -15,7 +15,9 @@ import {
 
 
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root'
+})
 export class LeaderboardService {
     // Local Storage Keys :
     private static readonly LocalStorageKey = {
