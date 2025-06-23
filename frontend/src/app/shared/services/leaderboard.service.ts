@@ -5,18 +5,21 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { LocalStorageService } from './localStorage.service';
 
-import { GameLeaderboard } from '../models/game-leaderboard.model';
+import { GameLeaderboard, GlobalLeaderboard } from '../models/leaderboard.model';
 import { GameID } from '../models/ids';
 
-import { MOCK_GAMES_LEADERBOARD } from "../mocks/game-leaderboard.mock";
+import {
+    MOCK_GAMES_LEADERBOARD,
+    MOCK_GLOBAL_LEADERBOARD_PLACEHOLDER,
+} from "../mocks/leaderboard.mock";
 
 
 
 @Injectable({ providedIn: 'root' })
-export class GameLeaderboardService {
+export class LeaderboardService {
     // Local Storage Keys :
     private static readonly LocalStorageKey = {
-        GAME_LEADERBOARD_MAP: "gameLeaderboardMap"
+        GAME_LEADERBOARD_MAP: "gameLeaderboardMap",
     } as const;
 
 
@@ -28,6 +31,8 @@ export class GameLeaderboardService {
 
 
     // Public Observables :
+    public readonly globalLeaderBoard$: BehaviorSubject<GlobalLeaderboard>
+        = new BehaviorSubject({} as GlobalLeaderboard);
     public readonly gameLeaderboardMap$ = this._subject.asObservable();
 
 
@@ -35,22 +40,48 @@ export class GameLeaderboardService {
         // private http: HttpClient,
         private localStorage: LocalStorageService,
     ) {
+        // Global Leaderboard :
+        from(this._fetchGlobalLeaderboard()).subscribe({
+            next : value => this.globalLeaderBoard$.next(value),
+            error: err   => console.error(err),
+        });
+
+
+        // Game Leaderboards :
         this._gameLeaderboardMap = new Map();
 
-        const saved = this.localStorage.getData(
-            GameLeaderboardService.LocalStorageKey.GAME_LEADERBOARD_MAP
+        const savedGameLeaderboardMap = this.localStorage.getData(
+            LeaderboardService.LocalStorageKey.GAME_LEADERBOARD_MAP
         );
-        if (saved !== null) {
+        if (
+            savedGameLeaderboardMap !== null
+            && savedGameLeaderboardMap !== undefined
+        ) {
             try {
-                this._gameLeaderboardMap = new Map(
-                    JSON.parse(saved) as [GameID, GameLeaderboard][]
-                );
+                this._gameLeaderboardMap = new Map(JSON.parse(
+                    savedGameLeaderboardMap
+                ) as [GameID, GameLeaderboard][]);
             } catch (err) {
                 if (err !instanceof SyntaxError) throw err;
             }
         }
 
         this._subject.next(this._gameLeaderboardMap);
+    }
+
+
+    private async _fetchGlobalLeaderboard()
+        : Promise<GlobalLeaderboard>
+    {
+        // TODO : Replacing usage of local mocks w/ HTTP requests
+
+        let ret = MOCK_GLOBAL_LEADERBOARD_PLACEHOLDER;
+
+        // NOTE : Asynchrone to ease the transition to an implementation using API call (see return stmt below)
+        return Promise.resolve(ret);
+        // return this.http.get<GlobalLeaderboard>(
+        //     `/api/games/leaderboard`
+        // ).toPromise();
     }
 
 
@@ -101,7 +132,7 @@ export class GameLeaderboardService {
 
                 this._gameLeaderboardMap.set(gameId, result);
                 this.localStorage.saveData(
-                    GameLeaderboardService.LocalStorageKey.GAME_LEADERBOARD_MAP,
+                    LeaderboardService.LocalStorageKey.GAME_LEADERBOARD_MAP,
                     JSON.stringify([...this._gameLeaderboardMap.entries()]),
                 );
                 this._subject.next(this._gameLeaderboardMap);

@@ -9,7 +9,7 @@ import { assert } from 'src/utils';
 import { UserService } from 'src/app/shared/services/user.service';
 import { PlayerStatisticsService } from 'src/app/shared/services/player-statistics.service';
 import { PlayerResultsService } from 'src/app/shared/services/player-results.service';
-import { GameLeaderboardService } from 'src/app/shared/services/game-leaderboard.service';
+import { LeaderboardService } from 'src/app/shared/services/leaderboard.service';
 import { GameInfoService } from 'src/app/shared/services/game-info.service';
 
 // Types :
@@ -17,7 +17,7 @@ import { User } from 'src/app/shared/models/user.model';
 import { PlayerResults, PlayerStatistics } from 'src/app/shared/models/player-results.model';
 import { QuestionNotion } from 'src/app/shared/models/question.model';
 import { Grading } from 'src/app/shared/models/results.model';
-import { GameLeaderboard } from 'src/app/shared/models/game-leaderboard.model';
+import { GameLeaderboard, GlobalLeaderboard, Leaderboard } from 'src/app/shared/models/leaderboard.model';
 import { GameInfo } from 'src/app/shared/models/game-log.model';
 
 
@@ -41,12 +41,12 @@ type HistorySection = typeof Section[Extract<keyof typeof Section, `HISTORY_SECT
 type InvalidSectionData = undefined;
 type StatsSectionData = {
     playerStats: PlayerStatistics,
-    leaderboard: GameLeaderboard | undefined //unknown, // TODO : Supporting global leaderboard
+    leaderboard: Leaderboard | undefined
 };
 type HistorySectionData = {
     gameInfo: GameInfo,
     playerResults: PlayerResults,
-    leaderboard: GameLeaderboard | undefined,
+    leaderboard: Leaderboard | undefined,
 };
 
 
@@ -59,14 +59,16 @@ type HistorySectionData = {
 export class ChildStatPageComponent implements OnInit {
     public user!: User;
 
+    // Statistics Section Data :
     private _playerStatistics!: PlayerStatistics;
+    private _globalLeaderboard!: GlobalLeaderboard;
 
+    // History Sections Data :
     private _playerResultsList!: PlayerResults[];
     private _gameInfoList!: GameInfo[];
     private _gameLeaderboardList!: GameLeaderboard[];
 
     public availableHistorySections!: Section[];
-
     public currSection: Section;
     public sectionData: HistorySectionData | StatsSectionData | InvalidSectionData;
 
@@ -76,7 +78,7 @@ export class ChildStatPageComponent implements OnInit {
         private playerStatisticsService :PlayerStatisticsService,
         private playerResultsService: PlayerResultsService,
         private gameInfoService: GameInfoService,
-        private gameLeaderboardService: GameLeaderboardService,
+        private leaderboardService: LeaderboardService,
         private route: ActivatedRoute,
     ) {
         this.currSection = 0;
@@ -89,6 +91,12 @@ export class ChildStatPageComponent implements OnInit {
         this.playerStatisticsService.playerStatistics$.subscribe(
             (playerStatistics: PlayerStatistics) => {
                 this._playerStatistics = playerStatistics;
+            }
+        )
+
+        this.leaderboardService.globalLeaderBoard$.subscribe(
+            (globalLeaderboard: GlobalLeaderboard) => {
+                this._globalLeaderboard = globalLeaderboard;
             }
         )
 
@@ -120,7 +128,7 @@ export class ChildStatPageComponent implements OnInit {
             switchMap((gameIds) =>
                 (gameIds.length > 0)
                 ? combineLatest(gameIds.map(
-                    id => this.gameLeaderboardService.getLeaderboard$(id)
+                    id => this.leaderboardService.getLeaderboard$(id)
                 ))
                 : of([])
             )
@@ -162,14 +170,9 @@ export class ChildStatPageComponent implements OnInit {
     // Operations :
 
     private _updateAvailableHistorySections(): void {
-        // TODO : Displaying session date
-
         this.availableHistorySections = [
             ...Array(Math.min(this._playerResultsList.length, 5)).keys()
         ] as Section[];
-
-        // DEBUG ::
-        console.log(`AvailableHistorySections: ${this.availableHistorySections}`)
     }
 
     private _updateSectionData(): void {
@@ -181,8 +184,7 @@ export class ChildStatPageComponent implements OnInit {
         if (this.isInStatsSection()) {
             this.sectionData = {
                 playerStats: this._playerStatistics,
-                // TODO : Supporting global leaderboard
-                leaderboard: undefined,
+                leaderboard: this._globalLeaderboard,
             }
             return;
         }
