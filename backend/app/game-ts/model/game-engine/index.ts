@@ -7,6 +7,7 @@ import { Crab } from "./enemies/crab";
 import { Enemy } from "./enemies/enemy";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
+import { LANES, PLAYER_COLORS } from "./variables";
 
 
 
@@ -20,27 +21,37 @@ export class GameEngine {
         public notifier : GameUpdatesNotifier,
         playersId: UserID[],
     ) {
-        const COLORS = ["red", "blue", "yellow"] as const;
         for (const [i, playerId] of playersId.entries()) {
-            this.registerPlayer(playerId, COLORS[i], i+1);
-
+            this.registerPlayer(playerId, PLAYER_COLORS[i], i);
         }
     }
 
-    private registerPlayer(playerId : UserID, color: "yellow"|"blue"|"red", lane = 1): void {
-        const player = new Player(playerId, color, lane);
+    private registerPlayer(playerId : UserID, color: "yellow"|"blue"|"red", num_lane : number): void {
+        const player = new Player(playerId, color, LANES[num_lane]);
         player.id = playerId;
         this.players[playerId] = player;
     }
 
     public handleMove(playerId: UserID, direction: string) {
+        
         const player = this.players[playerId];
         if (!player) return;
 
         if (direction === 'UP') player.moveUp();
         else if (direction === 'DOWN') player.moveDown();
+        console.log(`[MOVE] ${playerId} moved to lane ${player.lane.num}`);
 
-        this.notifier.onPlayerChangedLane(playerId, player.lane);
+        this.notifier.onPlayerChangedLane(playerId, player.lane.num, player.x, player.y);
+        this.notifyAllLanes();
+    }
+
+    private notifyAllLanes(): void {
+        for (const lane of LANES) {
+            const players = lane.getPlayers();
+            for (const player of players) {
+                this.notifier.onPlayerChangedPosition(player.id, player.x, player.y);
+            }
+        }
     }
 
     public handleShoot(playerId: UserID) {

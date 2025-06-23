@@ -35,9 +35,9 @@
 
 .score-container {
     position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
+    top: 7%;
+    right: 2%;
+    transform: translateX(-50%, -50%);
 
     display: flex;
     flex-direction: row;
@@ -95,6 +95,57 @@
     width: 100%;
     height: 100%;
     z-index: 0;
+}
+
+.player-icon-container {
+    position: absolute;
+    top: 80%;
+    left: 2%;
+    gap : 1rem;
+    display: flex;
+    align-items: flex-end;
+
+    & #player-icon {
+        width: 10rem;
+        height: 10rem;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 5;
+    }
+
+    & #ally1-icon {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 5;
+    }
+    & #ally2-icon {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        background-color: #fff;
+        z-index: 5;
+    }
+
+}
+
+.health-bar-container {
+  display: flex;
+  gap: 5px;
+}
+
+.heart {
+  width: 24px;
+  height: 24px;
+  background: url('https://upload.wikimedia.org/wikipedia/commons/4/49/Red_Heart.svg') no-repeat center center;
+  background-size: contain;
+  opacity: 0.2; /* cœur vide par défaut */
+  transition: opacity 0.2s;
+}
+
+.heart.full {
+  opacity: 1;
 }
 
 .end-game-box {

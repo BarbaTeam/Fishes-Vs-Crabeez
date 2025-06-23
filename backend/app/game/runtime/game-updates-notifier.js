@@ -20,9 +20,13 @@ class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : Sending startup package ${startupPackage}\n\n`);
         this.broadcast.emit('gameStartup', startupPackage);
     }
-    onPlayerChangedLane(playerId, lane) {
-        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${lane}\n\n`);
-        this.broadcast.emit('playerChangedLane', { playerId: playerId, lane: lane });
+    onPlayerChangedLane(playerId, num_lane, x, y) {
+        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${num_lane} (${x}, ${y})\n\n`);
+        this.broadcast.emit('playerChangedLane', { playerId: playerId, x: x, y: y });
+    }
+    onPlayerChangedPosition(playerId, x, y) {
+        console.log(`[NOTIFIER] : Player : ${playerId} stayed on his lane but moved to (${x}, ${y})\n\n`);
+        this.broadcast.emit('playerChangedPosition', { playerId: playerId, x: x, y: y });
     }
     onPlayerShot(playerId, projectile) {
         console.log(`[NOTIFIER] : Player : ${playerId} shot a projectile`);

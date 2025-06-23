@@ -1,4 +1,4 @@
-import { Subscription } from "rxjs";
+import { Subject, Subscription } from "rxjs";
 
 import { SocketService } from "@app/shared/services/socket.service";
 
@@ -21,6 +21,13 @@ export class GameEngine {
     private gameLoopId: number | null = null;
     private subscriptions = new Subscription();
     private receivedStartup = false;
+
+    public localPlayerImageSrcChanged = new Subject<string>();
+    public localPlayerImageSrc: string = '';
+    public player1ImageSrcChanged = new Subject<string>();
+    public player1ImageSrc?: string;
+    public player2ImageSrcChanged = new Subject<string>();
+    public player2ImageSrc?: string;
 
     constructor(
         private canvas: HTMLCanvasElement,
@@ -59,22 +66,49 @@ export class GameEngine {
                 
                 const players = startupPackage.players;
                 for (let player of players) {
-                    this.players.set(player.id, Player.fromJSON(player, this.canvas));
+                    const newPlayer = Player.fromJSON(player, this.localPlayerId, this.canvas);
+                    this.players.set(player.id, newPlayer);
+                    if (player.id === this.localPlayerId) {
+                        this.localPlayerImageSrc = newPlayer.playerIconUrl;
+                        this.localPlayerImageSrcChanged.next(this.localPlayerImageSrc);
+                        console.log("[STARTUP] Local player image source set to: ", this.localPlayerImageSrc);
+                    }
+                    else if (!this.player1ImageSrc) {
+                        this.player1ImageSrc = newPlayer.playerIconUrl;
+                        this.player1ImageSrcChanged.next(this.player1ImageSrc);
+                        console.log("[STARTUP] Player 1 image source set to: ", this.player1ImageSrc);
+                    }
+                    else if (!this.player2ImageSrc) {
+                        this.player2ImageSrc = newPlayer.playerIconUrl;
+                        this.player2ImageSrcChanged.next(this.player2ImageSrc);
+                        console.log("[STARTUP] Player 2 image source set to: ", this.player2ImageSrc);
+                    }
                 }
             })
         );
 
         this.subscriptions.add(
-            this.socket.on<any>('playerChangedLane').subscribe(({playerId : playerId, lane : lane})=>{
+            this.socket.on<any>('playerChangedLane').subscribe(({playerId, x, y})=>{
                 const player = this.players.get(playerId);
                 if(player){
-                    player.lane = lane;
-                    player.update()
+                    player.x = x;
+                    player.y = y;
                 }
             })
         );
+
         this.subscriptions.add(
-            this.socket.on<any>('newProjectile').subscribe(({playerId, projectile})=>{ //c'est degeu TODO trouver une alternative pitié D:
+            this.socket.on<any>('playerChangedPosition').subscribe(({playerId, x, y})=>{
+                const player = this.players.get(playerId);
+                if(player){
+                    player.x = x;
+                    player.y = y;
+                }
+            })
+        );
+        
+        this.subscriptions.add(
+            this.socket.on<any>('newProjectile').subscribe(({playerId, projectile})=>{ 
                 console.log(playerId);
                 console.log(this.players.get(playerId));
                 console.log(projectile);
@@ -107,9 +141,6 @@ export class GameEngine {
     }
 
     private update(): void {
-        for (const player of this.players.values()) {
-            player.update();
-        }
         for (const enemy of this.enemies) {
             enemy.update();
         }

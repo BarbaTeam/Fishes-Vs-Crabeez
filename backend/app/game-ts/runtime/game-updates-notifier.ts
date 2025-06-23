@@ -29,9 +29,14 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('gameStartup', startupPackage);
     }
 
-    public onPlayerChangedLane(playerId: UserID, lane: number) {
-        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${lane}\n\n`);
-        this.broadcast.emit('playerChangedLane', {playerId : playerId, lane : lane});
+    public onPlayerChangedLane(playerId: UserID, num_lane: number, x: number, y: number) {
+        console.log(`[NOTIFIER] : Player : ${playerId} changed lane to number ${num_lane} (${x}, ${y})\n\n`);
+        this.broadcast.emit('playerChangedLane', {playerId : playerId, x : x, y: y});
+    }
+
+    public onPlayerChangedPosition(playerId: UserID, x: number, y: number) {
+        console.log(`[NOTIFIER] : Player : ${playerId} stayed on his lane but moved to (${x}, ${y})\n\n`);
+        this.broadcast.emit('playerChangedPosition', {playerId : playerId, x : x, y: y});
     }
 
     public onPlayerShot(playerId: UserID, projectile: Projectile) {

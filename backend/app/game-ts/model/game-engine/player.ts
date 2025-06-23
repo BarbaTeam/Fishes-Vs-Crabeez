@@ -1,74 +1,43 @@
+import { Lane } from "./lane";
+import { LANES } from "./variables";
 import { UserID } from "../../../shared/types";
 
 export class Player {
-    public id : UserID;
+    public id: UserID;
+    public x: number;
+    public y: number;
+    public width: number = 5;
+    public height: number = 5;
+    public lane: Lane;
+    public hasChangedLane: boolean = false;
+    public score: number = 0;
+    public color: "yellow" | "blue" | "red";
 
-    public x : number;
-    public y : number;
-    public width : number;
-    public height : number;
-    private _lane: number;
-
-    public hasChangedLane : boolean;
-    public score : number;
-
-    public color: "yellow"|"blue"|"red";
-
-    constructor(id: UserID, color: "yellow"|"blue"|"red", lane = 1) {
+    constructor(id: UserID, color: "yellow" | "blue" | "red", lane: Lane) {
         this.id = id;
-
-        this.score = 0;
-
-        this.width = 5;
-        this.height = 5;
-
-        this._lane = lane; // 1, 2, 3
         this.color = color;
-
-        this.x = 10;
-
-        this.hasChangedLane = false;
-
-        this.update();
+        this.lane = lane;
+        this.lane.addPlayer(this);
     }
 
-    get lane() {
-        return this._lane;
-    }
-
-    set lane(value) {
-        if (value >= 1 && value <= 3) {
-            this._lane = value;
-        }
+    private setLane(newLane: Lane) {
+        this.lane.removePlayer(this);
+        this.lane = newLane;
+        this.lane.addPlayer(this);
+        this.hasChangedLane = true;
     }
 
     moveUp() {
-        if (this.lane < 3) {
-            this.lane++;
-            this.hasChangedLane = true;
-            this.update();
+        const currentIndex = LANES.findIndex(l => l === this.lane);
+        if (currentIndex < LANES.length - 1) {
+            this.setLane(LANES[currentIndex + 1]);
         }
     }
 
     moveDown() {
-        if (this.lane > 1) {
-            this.lane--;
-            this.hasChangedLane = true;
-            this.update();
-        }
-    }
-
-    update() {
-        switch (this.lane) { //espacements de 25px entre les lanes
-            case 1:
-                this.y = 49;
-                break;
-            case 2:
-                this.y = 33;
-                break;
-            case 3:
-                this.y = 17;
-                break;
+        const currentIndex = LANES.findIndex(l => l === this.lane);
+        if (currentIndex > 0) {
+            this.setLane(LANES[currentIndex - 1]);
         }
     }
 
@@ -79,7 +48,6 @@ export class Player {
             y: this.y,
             width: this.width,
             height: this.height,
-            lane: this.lane,
             color: this.color,
         };
     }
