@@ -230,14 +230,14 @@ export class GameEngine {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.update();
         // debut debug
-        for (let i = 0; i <= 5; i++) {
-            const y = scaleToCanvas(0, i * 11.75, 0, 0, this.canvas).y;
-            this.ctx.beginPath();
-            this.ctx.moveTo(0, y);
-            this.ctx.lineTo(this.canvas.width, y);
-            this.ctx.strokeStyle = "rgba(0, 0, 0)";
-            this.ctx.stroke();
-        }
+        //for (let i = 0; i <= 5; i++) {
+        //    const y = scaleToCanvas(0, i * 11.75, 0, 0, this.canvas).y;
+        //    this.ctx.beginPath();
+        //    this.ctx.moveTo(0, y);
+        //    this.ctx.lineTo(this.canvas.width, y);
+        //    this.ctx.strokeStyle = "rgba(0, 0, 0)";
+        //    this.ctx.stroke();
+        //}
         // fin debug
         this.draw(this.ctx);
     }

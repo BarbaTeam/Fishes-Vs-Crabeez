@@ -46,8 +46,9 @@ class EventsHandler {
     onEventEmission(fromKind, emittedVal) {
         switch (fromKind) {
             case event_types_1.EventKind.WAVE:
-                const enemy = emittedVal;
-                this.model.gameEngine.spawnEnemy(enemy);
+                for (const enemy of emittedVal) {
+                    this.model.gameEngine.spawnEnemy(enemy);
+                }
                 break;
             case event_types_1.EventKind.BOSS:
                 // TODO : ...
