@@ -30,7 +30,7 @@ export class Player {
 
         this.encryptedImage = new Image();
         this.encryptedImage.src = "../../../../assets/images/game/player/yellow_fish_encrypted.png";
-
+        this.update();
     }
 
     public static fromJson(data: any, canvas : HTMLCanvasElement): Player {
@@ -75,6 +75,6 @@ export class Player {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.encryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
+        ctx.drawImage(this.decryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
     }
 }

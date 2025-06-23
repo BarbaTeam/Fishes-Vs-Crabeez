@@ -1,11 +1,17 @@
+import { Subscription } from "rxjs";
+import { first } from "rxjs/operators";
+
+import { SocketService } from "@app/shared/services/socket.service";
+
 import { UserID } from "@app/shared/models/ids";
+
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
+
 import { Enemy } from "./ennemies/Enemy";
 import { Crab } from "./ennemies/Crab";
-import { Socket } from "ngx-socket-io";
-import { SocketService } from "@app/shared/services/socket.service";
-import { Subscription } from "rxjs";
+
+
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
@@ -16,19 +22,42 @@ export class GameEngine {
     private gameLoopId: number | null = null;
     private subscriptions = new Subscription();
 
-    constructor(private canvas: HTMLCanvasElement, private socket: SocketService) {
+    constructor(
+        private canvas: HTMLCanvasElement,
+        private socket: SocketService,
+        private localPlayerId: UserID,
+    ) {
         this.initSocket();
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvasResolution();
 
         this.players = new Map();
+
         this.enemies = [];
         this.projectiles = [];
         this.score = 0;
         this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
+
+        this._startup();
     }
 
-    private initSocket(){
+    private _startup() {
+        this.socket.sendMessage('requestStartup');
+    }
+
+    private initSocket() {
+        this.subscriptions.add(
+            this.socket.on<any>('gameStartup').subscribe((startupPackage: any) => {
+                console.log("[STARTUP] Package :");
+                console.log(startupPackage);
+
+                const players = startupPackage.players;
+                for (let player of players) {
+                    this.players.set(player.id, Player.fromJson(player, this.canvas));
+                }
+            })
+        );
+
         this.subscriptions.add(
             this.socket.on<{playerId : UserID, lane : number}>('playerChangedLane').subscribe(({playerId : playerId, lane : lane})=>{
                 const player = this.players.get(playerId);
@@ -39,8 +68,11 @@ export class GameEngine {
             })
         );
         this.subscriptions.add(
-            this.socket.on<Projectile>('newProjectile').subscribe(projectile=>{
-                this.projectiles.push(projectile);
+            this.socket.on<any>('newProjectile').subscribe(({playerId, projectile})=>{ //c'est degeu TODO trouver une alternative pitié D:
+                console.log(playerId);
+                console.log(this.players.get(playerId));
+                console.log(projectile);
+                this.projectiles.push(Projectile.fromJson(projectile, this.players.get(playerId)!));
             })
         );
         this.subscriptions.add(
@@ -55,8 +87,8 @@ export class GameEngine {
         );
         this.subscriptions.add(
             this.socket.on<{projectile: Projectile, enemy: Enemy}>('enemyKilled').subscribe(({projectile : projectile, enemy : enemy})=>{
-                this.projectiles.filter(p => p.id != projectile.id);
-                this.enemies.filter(e => e.id != enemy.id);
+                this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
+                this.enemies = this.enemies.filter(e => e.id != enemy.id);
             })
         );
     }

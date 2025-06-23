@@ -1,13 +1,14 @@
 import { Component, ElementRef, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+
 import { UserService } from '@app/shared/services/user.service';
+import { SocketService } from '@app/shared/services/socket.service';
 import { GameEngine } from './game-engine';
 
 import { User } from '@app/shared/models/user.model';
-import { Question, QuestionNotion } from '@app/shared/models/question.model';
-import { Router } from '@angular/router';
-import { SocketService } from '@app/shared/services/socket.service';
 import { UserID } from '@app/shared/models/ids';
+import { Question, QuestionNotion } from '@app/shared/models/question.model';
 
 
 
@@ -59,22 +60,22 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     // Constructors & Destructors :
 
     constructor(
+        private socket : SocketService,
         private userService: UserService,
         private router: Router,
-        private socket : SocketService,
     ) {
-        this.userService.selectedUser$.subscribe((user: User) => {
-            this.user = user;
-        });
-
         this.keydownHandler = this.checkInput.bind(this);
-
         this.cursorPosition = 0;
-
         this.score = 0;
     }
 
     ngOnInit(): void {
+        this.subscriptions.add(
+            this.userService.selectedUser$.subscribe((user: User) => {
+                this.user = user;
+            })
+        );
+
         this.initSocket();
         this.setupAudio();
         document.addEventListener("keydown", this.keydownHandler);
@@ -90,6 +91,8 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
                 this.expected_answerInputs = this.question.answer.split("");
                 this.proposed_answerInputs = [];
                 this.cursorPosition = 0;
+
+                this.updateInputs();
             })
         );
 
@@ -120,7 +123,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.setupFontSize(`${3 * this.user.config.fontSize}rem`);
 
         const canvas = this.canvasRef.nativeElement;
-        this.gameEngine = new GameEngine(canvas, this.socket);
+        this.gameEngine = new GameEngine(canvas, this.socket, this.user.userId);
     }
 
     ngOnDestroy(): void {
@@ -224,6 +227,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     }
 
     private submitAnswer(): void {
+        console.log("Enter key pressed !")
         const answer = {
             prompt : this.question.prompt,
             expected_answer : this.question.answer,

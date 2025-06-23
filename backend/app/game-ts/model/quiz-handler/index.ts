@@ -32,8 +32,6 @@ export class QuizHandler {
                 // We don't skip encrypted question
                 return;
             }
-
-            this.model.gameEngine.handleShoot(playerId);
             this.notifier.onNewQuestionForPlayer(
                 playerId,
                 QuestionsGenerator.genQuestion(this._playersNotionsMask[playerId]),
@@ -46,5 +44,10 @@ export class QuizHandler {
             // this.model.gameEngine. ??? (playerId);
             this.notifier.onPlayerDeparalyzed(playerId);
         }
+        this.model.gameEngine.handleShoot(playerId);
+        this.notifier.onNewQuestionForPlayer(
+            playerId,
+            QuestionsGenerator.genQuestion(this._playersNotionsMask[playerId]),
+        );
     }
 }

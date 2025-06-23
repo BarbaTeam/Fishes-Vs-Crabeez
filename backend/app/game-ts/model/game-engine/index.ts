@@ -23,13 +23,13 @@ export class GameEngine {
         public notifier : GameUpdatesNotifier,
         playersId: UserID[],
     ) {
-        for (const playerId of playersId) {
-            this.registerPlayer(playerId);
+        for (const [i, playerId] of playersId.entries()) {
+            this.registerPlayer(playerId, i+1);
         }
     }
 
     private registerPlayer(playerId : UserID, lane = 1): void {
-        const player = new Player(lane);
+        const player = new Player(playerId, lane);
         player.id = playerId;
         this.players[playerId] = player;
     }
@@ -74,6 +74,10 @@ export class GameEngine {
 
     public kill(enemy : Enemy) {
         enemy.destroy();
+    }
+
+    public getAllPlayers(): Player[] {
+        return Object.values(this.players).map(player => player.toJSON());
     }
 
     public update() {

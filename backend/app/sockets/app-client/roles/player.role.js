@@ -3,7 +3,7 @@ const { Server, Socket } = require('socket.io');
 const { UserID, GameID } = require("../../../shared/types");
 
 
-const { CONNECTED_USERS_ID, GAMES } = require("../app-client.helpers");
+const { CONNECTED_USERS_ID, GAMES, GUEST_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { AppClientRole_Impl } = require('./app-client.role');
@@ -43,6 +43,11 @@ class PlayerRole_Impl extends ChildRole_Impl {
     setUpListeners() {
         super.setUpListeners(); // Set up child listeners
 
+        this._registerListener('requestStartup', () => {
+            console.log("[SERVER] Startup package requested");
+            RUNNING_GAMES[this._gameId].receiver.onStartupRequested();
+        });
+
         this._registerListener('leaveGame', () => {
             const leftGameId = this._gameId;
             this.leaveGame();
@@ -64,6 +69,7 @@ class PlayerRole_Impl extends ChildRole_Impl {
         });
 
         this._registerListener('sendAnswer', (answer) => {
+            console.log(`[CLIENT] answer received : ${answer}`);
             RUNNING_GAMES[this._gameId].receiver.onAnswerReceived(this._userId, answer);
         });
 

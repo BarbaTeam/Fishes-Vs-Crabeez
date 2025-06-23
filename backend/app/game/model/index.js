@@ -5,8 +5,20 @@ const game_engine_1 = require("./game-engine");
 const quiz_handler_1 = require("./quiz-handler");
 class GameModel {
     constructor(notifier, gameLobby) {
+        this.notifier = notifier;
+        this.gameLobby = gameLobby;
         this.gameEngine = new game_engine_1.GameEngine(this, notifier, gameLobby.playersId);
         this.quizHandler = new quiz_handler_1.QuizHandler(this, notifier, gameLobby.playersNotionsMask);
+    }
+    startup() {
+        // TODO : Add more things in startup package :
+        const startUpPackage = {
+            players: this.gameEngine.getAllPlayers(),
+        };
+
+        console.log(`[MODEL] Startup package ${startUpPackage} prepared`);
+
+        this.notifier.onStartup(startUpPackage);
     }
     runOneFrame() {
         this.gameEngine.update();

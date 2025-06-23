@@ -14,15 +14,19 @@ export class Player {
     public hasChangedLane : boolean;
     public score : number;
 
-    constructor(lane = 1) {
-        this.width = 150;
-        this.height = 150;
-        this._lane = lane; // 1, 2, 3
-        this.hasChangedLane = true;
+    constructor(id: UserID, lane = 1) {
+        this.id = id;
+
         this.score = 0;
 
+        this.width = 150;
+        this.height = 150;
+
+        this._lane = lane; // 1, 2, 3
         this.x = 150;
         this.y = 0;
+
+        this.hasChangedLane = true;
 
         this.update();
     }
@@ -71,6 +75,7 @@ export class Player {
 
     toJSON(): any {
         return {
+            id: this.id,
             x: this.x,
             y: this.y,
             width: this.width,

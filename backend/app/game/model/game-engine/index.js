@@ -11,12 +11,12 @@ class GameEngine {
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
-        for (const playerId of playersId) {
-            this.registerPlayer(playerId);
+        for (const [i, playerId] of playersId.entries()) {
+            this.registerPlayer(playerId, i + 1);
         }
     }
     registerPlayer(playerId, lane = 1) {
-        const player = new player_1.Player(lane);
+        const player = new player_1.Player(playerId, lane);
         player.id = playerId;
         this.players[playerId] = player;
     }
@@ -57,6 +57,9 @@ class GameEngine {
     }
     kill(enemy) {
         enemy.destroy();
+    }
+    getAllPlayers() {
+        return Object.values(this.players).map(player => player.toJSON());
     }
     update() {
         this.enemies.forEach(enemy => {

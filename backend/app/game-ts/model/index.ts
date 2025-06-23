@@ -10,9 +10,23 @@ export class GameModel {
     public readonly gameEngine: GameEngine;
     public readonly quizHandler: QuizHandler;
 
-    constructor (notifier: GameUpdatesNotifier, gameLobby: GameLobby) {
+    constructor (
+        private notifier: GameUpdatesNotifier,
+        private gameLobby: GameLobby
+    ) {
         this.gameEngine = new GameEngine(this, notifier, gameLobby.playersId);
         this.quizHandler = new QuizHandler(this, notifier, gameLobby.playersNotionsMask);
+    }
+
+    public startup() {
+        // TODO : Add more things in startup package :
+        const startUpPackage: any = {
+            players: this.gameEngine.getAllPlayers(),
+        };
+
+        console.log(`[MODEL] Startup package ${startUpPackage} prepared`);
+
+        this.notifier.onStartup(startUpPackage)
     }
 
     public runOneFrame() {
