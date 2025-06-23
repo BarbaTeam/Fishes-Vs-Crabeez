@@ -5,19 +5,20 @@ import { map, switchMap } from 'rxjs/operators';
 
 import { assert } from 'src/utils';
 
+// Services :
 import { UserService } from 'src/app/shared/services/user.service';
+import { PlayerStatisticsService } from 'src/app/shared/services/player-statistics.service';
 import { PlayerResultsService } from 'src/app/shared/services/player-results.service';
 import { GameLeaderboardService } from 'src/app/shared/services/game-leaderboard.service';
 import { GameInfoService } from 'src/app/shared/services/game-info.service';
 
+// Types :
 import { User } from 'src/app/shared/models/user.model';
 import { PlayerResults, PlayerStatistics } from 'src/app/shared/models/player-results.model';
 import { QuestionNotion } from 'src/app/shared/models/question.model';
 import { Grading } from 'src/app/shared/models/results.model';
 import { GameLeaderboard } from 'src/app/shared/models/game-leaderboard.model';
 import { GameInfo } from 'src/app/shared/models/game-log.model';
-
-import { MOCK_PLAYER_STATISTICS_PLACEHOLDERS } from 'src/app/shared/mocks/players-statistics.mock';
 
 
 
@@ -58,6 +59,8 @@ type HistorySectionData = {
 export class ChildStatPageComponent implements OnInit {
     public user!: User;
 
+    private _playerStatistics!: PlayerStatistics;
+
     private _playerResultsList!: PlayerResults[];
     private _gameInfoList!: GameInfo[];
     private _gameLeaderboardList!: GameLeaderboard[];
@@ -72,6 +75,7 @@ export class ChildStatPageComponent implements OnInit {
 
     constructor(
         private userService: UserService,
+        private playerStatisticsService :PlayerStatisticsService,
         private playerResultsService: PlayerResultsService,
         private gameInfoService: GameInfoService,
         private gameLeaderboardService: GameLeaderboardService,
@@ -84,6 +88,13 @@ export class ChildStatPageComponent implements OnInit {
         });
 
 
+        this.playerStatisticsService.playerStatistics$.subscribe(
+            (playerStatistics: PlayerStatistics) => {
+                this._playerStatistics = playerStatistics;
+            }
+        )
+
+
         this.playerResultsService.playerResultsList$.subscribe(
             (playerResultsList: PlayerResults[]) => {
                 this._playerResultsList = playerResultsList;
@@ -93,7 +104,6 @@ export class ChildStatPageComponent implements OnInit {
         const gameIdsStream$ = this.playerResultsService.playerResultsList$.pipe(
             map((playerResultsList) => playerResultsList.map(pr => pr.gameId)),
         );
-
 
         gameIdsStream$.pipe(
             switchMap((gameIds) =>
@@ -107,7 +117,6 @@ export class ChildStatPageComponent implements OnInit {
             this._gameInfoList = gameInfoList as GameInfo[];
             this._updateAvailableHistorySections();
         });
-
 
         gameIdsStream$.pipe(
             switchMap((gameIds) =>
@@ -125,6 +134,12 @@ export class ChildStatPageComponent implements OnInit {
 
     ngOnInit() {
         this.route.queryParams.subscribe((params: Params) => {
+            if (params['section'] === undefined) {
+                this.currSection = Section.STATS_SECTION;
+                this._updateSectionData();
+                return;
+            }
+
             const section = parseInt(params['section'], 10);
 
             if (
@@ -137,13 +152,6 @@ export class ChildStatPageComponent implements OnInit {
                 // the 5 latest player results.
                 this.currSection = Section.INVALID_SECTION;
                 return;
-            }
-
-            // DEBUG ::
-            let i=0;
-            for (let result of this._playerResultsList) {
-                console.log(`player result '${i++}' :`);
-                console.log(result);
             }
 
             this.currSection = section as Section;
@@ -174,10 +182,7 @@ export class ChildStatPageComponent implements OnInit {
 
         if (this.isInStatsSection()) {
             this.sectionData = {
-                // TODO : Using a statistics service or something equivalent instead of hardcoding mock in component
-                playerStats: MOCK_PLAYER_STATISTICS_PLACEHOLDERS[
-                    parseInt(this.user.userId.slice(1)) - 1
-                ],
+                playerStats: this._playerStatistics,
                 // TODO : Supporting global leaderboard
                 leaderboard: undefined,
             }
