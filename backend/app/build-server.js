@@ -73,6 +73,11 @@ module.exports = (cb) => {
                 console.log(`[SERVER] Player disconnected: ${currentPlayer.username}`);
             }
         });
+
+        socket.on('ergoStartGame', () => {
+            io.emit('gameStarted');
+            console.log('[SERVER] The game has started !')
+        })
     });
 
 

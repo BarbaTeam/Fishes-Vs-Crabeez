@@ -43,6 +43,10 @@ export class GameLobbyPageComponent implements OnDestroy {
         console.log('[LOBBY] Lobby created (message sent to server)');
     }
 
+    public startGame(){
+        this.socket.sendMessage('ergoStartGame', {});
+    }
+
     ngOnDestroy(): void {
         this.socket.sendMessage('destroyLobby', {}); 
         this.socket.disconnect();                    
