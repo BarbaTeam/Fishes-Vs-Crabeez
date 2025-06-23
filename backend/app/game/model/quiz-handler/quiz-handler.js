@@ -10,10 +10,9 @@ class QuizHandler {
         this.notifier = notifier;
         this.accumulator = accumulator;
         this._playersNotionsMask = playersNotionsMask;
-        for (const [playerId, playerMask] of Object.entries(playersNotionsMask)) {
-            const notionMask = Object.assign(Object.assign({}, playerMask), { [types_1.QuestionNotion.ENCRYPTION]: false });
-            this.sendQuestion(playerId, notionMask);
-        }
+    }
+    get playersNotionMask() {
+        return this._playersNotionsMask;
     }
     receiveAnswer(playerId, ans) {
         this.accumulator.accumulate(playerId, ans);

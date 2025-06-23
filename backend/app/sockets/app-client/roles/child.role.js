@@ -98,8 +98,9 @@ class ChildRole_Impl extends AppClientRole_Impl {
             
             GAMES[newGame.gameId] = newGame;
 
-            this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId);
-            registerRunningGame(newGame.gameId, new GameRuntime(this.io, newGame));
+            this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId, () =>
+                registerRunningGame(newGame.gameId, new GameRuntime(this.io, newGame))
+            );
         });
 
         this._registerListener('tryJoinGame', (gameId) => {

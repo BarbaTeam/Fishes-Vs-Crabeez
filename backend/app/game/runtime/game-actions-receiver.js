@@ -1,13 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameActionsReceiver = void 0;
+const types_1 = require("../../shared/types");
 class GameActionsReceiver {
     constructor(model) {
         this.model = model;
     }
     onStartupRequested() {
-        console.log("[RECEIVER] Request for startup package received");
         this.model.startup();
+        for (const [playerId, playerMask] of Object.entries(this.model.quizHandler.playersNotionMask)) {
+            const notionMask = Object.assign(Object.assign({}, playerMask), { [types_1.QuestionNotion.ENCRYPTION]: false });
+            this.model.quizHandler.sendQuestion(playerId, notionMask);
+        }
     }
     onAnswerReceived(playerId, answer) {
         this.model.quizHandler.receiveAnswer(playerId, answer);
