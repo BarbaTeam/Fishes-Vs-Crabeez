@@ -3,7 +3,7 @@ const { Server } = require('socket.io');
 const { GameLobby } = require('../../shared/types');
 
 const { GameActionsReceiver } = require('./game-actions-receiver');
-const { GameEventsNotifier } = require('./game-events-notifier');
+const { GameUpdatesNotifier } = require('./game-updates-notifier');
 const { GameModel } = require('../model');
 
 
@@ -13,8 +13,8 @@ class GameRuntime {
      * @param {GameLobby} gameLobby
      */
     constructor (io, gameLobby) {
-        this.notifier = new GameEventsNotifier(io);
-        this.model    = new GameModel(this.notifier);
+        this.notifier = new GameUpdatesNotifier(io);
+        this.model    = new GameModel(this.notifier, gameLobby);
         this.receiver = new GameActionsReceiver(this.model);
     }
 

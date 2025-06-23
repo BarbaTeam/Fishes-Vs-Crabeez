@@ -1,4 +1,15 @@
-class Player {
+import { UserID } from "../../../shared/types";
+
+export class Player {
+    public id : UserID;
+    public x : number;
+    public y : number;
+    public width : number;
+    public height : number;
+    private _lane: number;
+    public hasChangedLane : boolean;
+    public score : number;
+
     constructor(lane = 1) {
         this.width = 150;
         this.height = 150;
@@ -8,8 +19,6 @@ class Player {
 
         this.x = 150;
         this.y = 0;
-
-        this.projectiles = [];
 
         this.update();
     }
@@ -56,5 +65,3 @@ class Player {
         }
     }
 }
-
-module.exports = Player;

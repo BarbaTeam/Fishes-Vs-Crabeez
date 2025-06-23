@@ -16,7 +16,9 @@ class GameActionsReceiver {
     /**
      * @param {UserID} playerId
      */
-    onShoot(playerId) {}
+    onShoot(playerId) {
+        this.model.handleShoot(playerId)
+    }
 
     /**
      * @param {UserID} playerId

@@ -1,4 +1,6 @@
-const Enemy = require("./enemy");
+const { Enemy } = require("./enemy");
+
+
 
 class Crab extends Enemy {
     constructor(x, y, lane) {
@@ -6,4 +8,6 @@ class Crab extends Enemy {
     }
 }
 
-module.exports = Crab;
+
+
+module.exports = { Crab };

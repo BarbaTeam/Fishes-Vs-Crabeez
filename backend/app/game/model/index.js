@@ -1,10 +1,13 @@
 const GameEngine = require("./game-engine");
 
+
+
 class GameModel {
-    
-    constructor (sender) {
-        this.sender = sender;
-        this.gameEngine = new GameEngine(this.sender);
+    constructor (notifier) {
+        this.gameEngine = new GameEngine(notifier);
+
+        this.qGenerator = new QuestionGenerator();
+        this.ansChecker;
     }
 
     // TODO : Adding end for game
@@ -12,5 +15,7 @@ class GameModel {
         this.gameEngine.update();
     }
 }
+
+
 
 module.exports = { GameModel };
