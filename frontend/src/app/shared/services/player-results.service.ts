@@ -88,9 +88,14 @@ export class PlayerResultsService {
         // TODO : Directly asking for the 5 latest player results instead of fetching them all
         // TODO : Replacing usage of local mocks w/ HTTP requests
 
-        const ret: PlayerResults[] = MOCK_PLAYERS_RESULTS.sort((res1, res2) => (
-            parseInt(res1.gameId.slice(1)) - parseInt(res2.gameId.slice(1))
-        )).slice(0, 5);
+        const ret: PlayerResults[] = MOCK_PLAYERS_RESULTS
+            .filter((res) =>
+                res.playerId === this.user.userId
+            )
+            .sort((res1, res2) =>
+                parseInt(res1.gameId.slice(1)) - parseInt(res2.gameId.slice(1))
+            )
+            .slice(0, 5);
 
         // NOTE : Asynchrone to ease the transition to an implementation using API call (see return stmt below)
         return Promise.resolve(ret);
