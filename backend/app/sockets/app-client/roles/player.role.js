@@ -44,8 +44,34 @@ class PlayerRole_Impl extends ChildRole_Impl {
         super.setUpListeners(); // Set up child listeners
 
         this._registerListener('requestStartup', () => {
-            console.log("[SERVER] Startup package requested");
+            if (RUNNING_GAMES[this._gameId] === undefined) {
+                console.log("[CLIENT Warn] Startup package request denied as all player aren't yet connected");
+                return;
+            }
+            console.log("[CLIENT] Startup package requested");
             RUNNING_GAMES[this._gameId].receiver.onStartupRequested();
+        });
+
+        this._registerListener('sendAnswer', (answer) => {
+            if (RUNNING_GAMES[this._gameId] === undefined) {
+                // Should never happen
+                console.log("[CLIENT Warn] Answer ignored as game is not running");
+                return;
+            }
+            console.log(`[CLIENT] answer received : ${answer}`);
+            RUNNING_GAMES[this._gameId].receiver.onAnswerReceived(this._userId, answer);
+        });
+
+        this._registerListener('changeLane', (direc) => {
+            if (!["UP", "DOWN"].includes(direc)) {
+                throw new Error(`Invalid lane changement direction ${direc}`);
+            }
+            if (RUNNING_GAMES[this._gameId] === undefined) {
+                // Should never happen
+                console.log("[CLIENT Warn] Lane changement ignored as game is not running");
+                return;
+            }
+            RUNNING_GAMES[this._gameId].receiver.onLaneChanged(this._userId, direc);
         });
 
         this._registerListener('leaveGame', () => {
@@ -66,18 +92,6 @@ class PlayerRole_Impl extends ChildRole_Impl {
             delete gameToLeave.playersNotionsMask[this._userId];
 
             this.io.to(leftGameId).to(this.socket.id).emit('gameUpdated', gameToLeave);
-        });
-
-        this._registerListener('sendAnswer', (answer) => {
-            console.log(`[CLIENT] answer received : ${answer}`);
-            RUNNING_GAMES[this._gameId].receiver.onAnswerReceived(this._userId, answer);
-        });
-
-        this._registerListener('changeLane', (direc) => {
-            if (!["UP", "DOWN"].includes(direc)) {
-                throw new Error(`Invalid lane changement direction ${direc}`);
-            }
-            RUNNING_GAMES[this._gameId].receiver.onLaneChanged(this._userId, direc);
         });
     }
 
