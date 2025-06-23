@@ -71,6 +71,17 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
             })
         );
     }
+    
+    public playSolo() {
+        this.socket.on<GameID>('openGame_SUCCESS')
+            .pipe(first()) // <-- one time subscription
+            .subscribe((gameId) => {
+                this.gamesLobbyService.selectGameLobby(gameId);
+                this.router.navigate(['/child/game/running'], { queryParams: { id: gameId } });
+            });
+
+        this.socket.sendMessage('openGame');
+    }
 
     public joinGame(gameId: GameID): void {
         this.socket.on<string>('tryJoinGame_SUCCESS')
