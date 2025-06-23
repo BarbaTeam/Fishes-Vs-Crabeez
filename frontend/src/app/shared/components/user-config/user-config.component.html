@@ -1,0 +1,48 @@
+<span>
+    Âge : 
+    {{localUserTemp.age}} ans
+</span>
+<span>
+    LeaderBoard :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.leaderBoard"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Statistiques avancées :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.advancedStats"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Aide à la lecture :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.readingAssistance"></app-settings-toggle>
+</span>
+<span>
+    Taille de la police :
+    <app-settings-slider [(value)]="localUserTemp.userConfig.fontSize"></app-settings-slider>
+</span>
+<span>
+    Son :
+    <app-settings-slider [(value)]="localUserTemp.userConfig.sound"></app-settings-slider>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Réponses affichées :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.showsAnswer"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Réécriture des nombres :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.numberRewrite"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Addition :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.addition" [ngClass]=""></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Soustraction :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.soustraction"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Multiplication : 
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.multiplication"></app-settings-toggle>
+</span>
+<span *ngIf="currentUrl === '/ergo-config-selected'">
+    Division :
+    <app-settings-toggle [(checked)]="localUserTemp.userConfig.division"></app-settings-toggle>
+</span>

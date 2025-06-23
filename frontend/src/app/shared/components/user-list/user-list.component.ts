@@ -3,9 +3,6 @@ import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service'
-import { ChildListPageComponent } from 'src/app/pages/child/list-page/child-list-page.component';
-import { ErgoConfigPageComponent } from 'src/app/pages/ergo/config-page/ergo-config-page.component';
-import { ErgoStatPageComponent } from 'src/app/pages/ergo/stat-page/ergo-stat-page.component';
 
 @Component({
   selector: 'app-user-list',
