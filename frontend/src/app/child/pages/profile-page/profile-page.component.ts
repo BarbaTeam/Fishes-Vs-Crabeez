@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -56,9 +57,10 @@ type HistorySectionData = {
     templateUrl: './profile-page.component.html',
     styleUrl: './profile-page.component.scss',
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent implements OnInit, OnDestroy {
     public user!: User;
 
+    public subscriptions = new Subscription();
     public currSection: Section = 0;
 
     // Statistics Section Data :
@@ -82,30 +84,34 @@ export class ProfilePageComponent implements OnInit {
         private leaderboardService: LeaderboardService,
         private route: ActivatedRoute,
     ) {
-        this.userService.selectedUser$.subscribe((user: User) => {
-            this.user = user;
-        });
+        this.subscriptions.add(
+            this.userService.selectedUser$.subscribe((user: User) => {
+                        this.user = user;
+            })
+        );
 
-
-        this.playerStatisticsService.playerStatistics$.subscribe(
+        this.subscriptions.add(
+            this.playerStatisticsService.playerStatistics$.subscribe(
             (playerStatistics: PlayerStatistics|null) => {
                 if (playerStatistics) this._playerStatistics = playerStatistics;
-            }
-        )
+            })
+        );
 
-        this.leaderboardService.globalLeaderboard$.subscribe(
+        this.subscriptions.add(
+            this.leaderboardService.globalLeaderboard$.subscribe(
             (globalLeaderboard: GlobalLeaderboard) => {
                 this._globalLeaderboard = globalLeaderboard;
                 this._updateSectionData();
-            }
-        )
+            })
+        );
 
-
-        this.playerResultsService.playerResultsList$.subscribe(
+        this.subscriptions.add(
+            this.playerResultsService.playerResultsList$.subscribe(
             (playerResultsList: PlayerResults[]) => {
                 this._playerResultsList = playerResultsList;
-            }
+            })
         );
+        
 
         const gameIdsStream$ = this.playerResultsService.playerResultsList$.pipe(
             map((playerResultsList) => playerResultsList.map(pr => pr.gameId)),
@@ -135,43 +141,52 @@ export class ProfilePageComponent implements OnInit {
             )
         )
 
-        gamesInfos$.subscribe((gamesInfos) => {
-            this.gamesInfos = gamesInfos as GameInfo[];
-        });
-
-        gamesLeaderboards$.subscribe((gameLeaderboardList) => {
-            this._gameLeaderboardList = gameLeaderboardList as GameLeaderboard[];
-        });
+        this.subscriptions.add(
+            gamesInfos$.subscribe((gamesInfos) => {
+                this.gamesInfos = gamesInfos as GameInfo[];
+            })
+        );
+        
+        this.subscriptions.add(
+            gamesLeaderboards$.subscribe((gameLeaderboardList) => {
+                this._gameLeaderboardList = gameLeaderboardList as GameLeaderboard[];
+            })
+        );
     }
 
 
     ngOnInit() {
-        this.route.queryParams.subscribe((params: Params) => {
-            if (params['section'] === undefined) {
-                this.currSection = Section.STATS_SECTION;
+        this.subscriptions.add(
+            this.route.queryParams.subscribe((params: Params) => {
+                if (params['section'] === undefined) {
+                    this.currSection = Section.STATS_SECTION;
+                    this._updateSectionData();
+                    return;
+                }
+
+                const section = parseInt(params['section'], 10);
+
+                if (
+                    isNaN(section)
+                    || section < 0
+                    || Math.min(this._playerResultsList.length, 5) < section
+                ) {
+                    // NOTE : We might support accessing more than 5 results later.
+                    // However, we currently will only support displaying at most
+                    // the 5 latest player results.
+                    this.currSection = Section.INVALID_SECTION;
+                    return;
+                }
+
+                this.currSection = section as Section;
                 this._updateSectionData();
-                return;
-            }
-
-            const section = parseInt(params['section'], 10);
-
-            if (
-                isNaN(section)
-                || section < 0
-                || Math.min(this._playerResultsList.length, 5) < section
-            ) {
-                // NOTE : We might support accessing more than 5 results later.
-                // However, we currently will only support displaying at most
-                // the 5 latest player results.
-                this.currSection = Section.INVALID_SECTION;
-                return;
-            }
-
-            this.currSection = section as Section;
-            this._updateSectionData();
-        });
+            })
+        );
     }
 
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
+    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Operations :
