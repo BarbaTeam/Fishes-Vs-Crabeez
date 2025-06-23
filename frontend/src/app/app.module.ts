@@ -8,6 +8,7 @@ import { NgModule } from '@angular/core';
 
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -60,8 +61,7 @@ import { SettingsToggleComponent } from './shared/components/settings-toggle/set
 
 // Miscellaneous :
 import { GradingLineComponent } from './shared/components/grading-line/grading-line.component';
-import { FormsModule } from '@angular/forms';
-
+import { PlayerInLobbyComponent } from './shared/components/player-in-lobby/player-in-lobby.component';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -117,6 +117,7 @@ import { FormsModule } from '@angular/forms';
         SettingsToggleComponent,
         // Miscellaneous :
         GradingLineComponent,
+        PlayerInLobbyComponent,
     ],
     imports: [
         BrowserModule,

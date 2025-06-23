@@ -1,0 +1,116 @@
+:host {
+    width: 100%;
+
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    font-family: sans-serif;
+    font-size: var(--lobby-font-size);
+
+    --lobby-icon-size: 2rem;     /* Taille de l’avatar */
+    --lobby-font-size: 1rem;     /* Taille du texte */
+    --lobby-padding: 0.5rem;     /* Espacement interne */
+}
+
+
+.header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--lobby-padding);
+    cursor: pointer;
+    user-select: none;
+    background-color: #f5f5f5;
+}
+
+.avatar {
+    width: var(--lobby-icon-size);
+    height: var(--lobby-icon-size);
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 0.5rem;
+}
+
+.name {
+    flex: 1;
+    font-weight: 600;
+}
+
+.toggle-btn {
+    border: none;
+    background-color: #d4c9c9;
+    border-radius: 10px;
+
+    height: 1.5em;
+
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: var(--lobby-padding);
+    margin-bottom: 10px;
+    background: #fff;
+}
+
+
+
+
+
+
+
+
+
+/*
+:host {
+    display: block;
+
+    margin: 1%;
+
+    position: relative;
+    border-radius: 10px;
+    background-color: white;
+    width: 100%;
+
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+:host .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1% 2%;
+    background-color: #f5f5f5;
+}
+
+:host .usercard {
+    width: 20%;
+}
+
+:host .toggle-btn {
+    border: none;
+    background-color: #d4c9c9;
+    border-radius: 10px;
+
+    font-size: 1.5rem;
+    width: 1.5em;
+    height: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+    cursor: pointer;
+}
+:host .toggle-btn:hover {
+    background-color: #b5aeae;
+}
+
+:host .content {
+    padding: 1% 2%;
+}
+*/
