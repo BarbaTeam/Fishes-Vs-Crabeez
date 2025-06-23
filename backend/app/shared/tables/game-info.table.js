@@ -15,7 +15,7 @@ exports.GameInfoTable = new DatabaseTable(
     ["gameId"],
     genGameKey,
     () => ({
-        playerIds: [],
+        playersId: [],
         date: new Date(),
         duration: 0,
         config: {

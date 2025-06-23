@@ -9,7 +9,7 @@ const MOCK_GAMES_INFO = [
 
     {
         gameId: "g1",
-        playerIds: ["u1", "u2", "u3"],
+        playersId: ["u1", "u2", "u3"],
         date: new Date("2025-04-27T10:30:00.000Z"),
         duration: 6,
         config: {
@@ -28,7 +28,7 @@ const MOCK_GAMES_INFO = [
 
     {
         gameId: "g2",
-        playerIds: ["u2", "u1", "u4"],
+        playersId: ["u2", "u1", "u4"],
         date: new Date("2025-04-28T10:30:00.000Z"),
         duration: 5,
         config: {

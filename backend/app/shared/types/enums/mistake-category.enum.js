@@ -2,6 +2,6 @@
  * @enum {string}
  */
 exports.MistakeCategory = {
-    SPELLING_MISTAKES   : "spellingMistakes",
-    CALCULATION_MISTAKES: "calculationMistakes"
+    SPELLING_MISTAKES   : "spelling",
+    CALCULATION_MISTAKES: "calculation"
 };

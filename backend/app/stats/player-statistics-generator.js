@@ -6,7 +6,7 @@ const {grade, NO_GRADING} = require('./utils/grade');
 
 // Types :
 const { PlayerResults, Statistics} = require('../shared/types');
-const { QuestionNotion } = require('../shared/types/enums');
+const { QuestionNotion, Grade } = require('../shared/types/enums');
 
 
 

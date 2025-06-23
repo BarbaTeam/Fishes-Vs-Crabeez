@@ -78,7 +78,7 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
 /**
  * @typedef {Object} GameInfo
  * @property {GameID} gameId - Unique identifier for the game.
- * @property {UserID[]} playerIds - List of player identifiers.
+ * @property {UserID[]} playersId - List of player identifiers.
  * @property {Date} date - Date when the game took place.
  * @property {number} duration - Duration of the game in seconds.
  * @property {GameConfig} config - Game configuration parameters.
@@ -91,7 +91,7 @@ const { GameLobbyState } = require('./enums/game-lobby-state.enum');
  * @typedef {Object} GameLog
  * @property {GameID} gameId - Unique identifier for the game.
  * @property {Omit<GameInfo, "gameId">} info - Metadata about the game, without redundant gameId.
- * @property {AnsweredQuestion[][]} playerAnswers - Lists of answers given by players.
+ * @property {AnsweredQuestion[][]} playersAnswers - Lists of answers given by players.
  *
  * @memberof types
  */

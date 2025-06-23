@@ -6,7 +6,7 @@ const { arraySchema, objectSchema } = require('./utils/schemas-factories');
 
 exports.GameInfoSchema = objectSchema({
     gameId: GameIDSchema.required(),
-    playerIds: arraySchema(UserIDSchema).required(),
+    playersId: arraySchema(UserIDSchema).required(),
     date: DateSchema.required(),
     duration: numberSchema.required(),
     config: GameConfigSchema.required(),
