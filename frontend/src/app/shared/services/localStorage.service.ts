@@ -12,6 +12,9 @@ export class LocalStorageService {
     }
 
     public saveData(key: string, value: string) {
+        if (value === undefined) {
+            return;
+        }
         localStorage.setItem(key, value);
     }
 

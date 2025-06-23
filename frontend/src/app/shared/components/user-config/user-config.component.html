@@ -41,11 +41,6 @@
             Son :
             <app-settings-slider [(value)]="localUserTemp.userConfig.sound" (valueChange)="onChange()"></app-settings-slider>
         </span>
-
-        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
-            Réponses affichées :
-            <app-settings-toggle [(checked)]="localUserTemp.userConfig.showsAnswer" (checkedChange)="onChange()"></app-settings-toggle>
-        </span>
     </div>
 
     <div class="config-group">
@@ -64,6 +59,11 @@
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
             Aide à la lecture :
             <app-settings-toggle [(checked)]="localUserTemp.userConfig.readingAssistance" (checkedChange)="onChange()"></app-settings-toggle>
+        </span>
+
+        <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">
+            Réponses affichées :
+            <app-settings-toggle [(checked)]="localUserTemp.userConfig.showsAnswer" (checkedChange)="onChange()"></app-settings-toggle>
         </span>
 
         <span *ngIf="currentUrl === '/ergo-config-selected' || currentUrl === '/ergo-config-form'">

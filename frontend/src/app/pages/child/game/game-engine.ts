@@ -37,7 +37,7 @@ export class GameEngine {
     }
 
     public answerCorrectly(player : Player): void {
-        if(this.closestEnemy(player.seatValue)){
+        if(this.closestEnemy(player.seatValue) && this.questionNotion !== "ENCRYPTION" ){
             this.player.shoot();
             playBubbleSound(this.gameComponent.user.userConfig.sound);
         }
@@ -118,7 +118,7 @@ export class GameEngine {
                     projectile.destroy();
                     this.score += enemy.scoreValue;
                     playScoreSound(this.gameComponent.user.userConfig.sound);
-                    if(this.score >= 100){
+                    if(this.score >= 50){
                         this.gameComponent.end = true
                         this.gameComponent.stopAudio();
                         this.gameComponent.encryptAudio?.pause();
