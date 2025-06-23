@@ -15,7 +15,7 @@ import { GameInfoService } from 'src/app/shared/services/game-info.service';
 // Types :
 import { User } from 'src/app/shared/models/user.model';
 import { PlayerResults, PlayerStatistics } from 'src/app/shared/models/player-results.model';
-import { QuestionNotion } from 'src/app/shared/models/question.model';
+import { AnsweredQuestion, QuestionNotion } from 'src/app/shared/models/question.model';
 import { Grading } from 'src/app/shared/models/results.model';
 import { GameLeaderboard, GlobalLeaderboard, Leaderboard } from 'src/app/shared/models/leaderboard.model';
 import { GameInfo } from 'src/app/shared/models/game-log.model';
@@ -185,6 +185,8 @@ export class ErgoStatSelectedPageComponent implements OnInit {
                 playerStats: this._playerStatistics,
                 leaderboard: this._globalLeaderboard,
             }
+
+            let r = this.sectionData.playerStats.statistics.mostCommonMistakes.spelling.map(m => m[0])
             return;
         }
 
@@ -269,6 +271,34 @@ export class ErgoStatSelectedPageComponent implements OnInit {
         assert(this.isInHistorySections())
         let date = new Date(this.sectionData.gameInfo.date);
         return formatDate(date, detailed);
+    }
+
+    /**
+     * Don't call it outside of statistics section.
+     */
+    public getMostCommonMistakesSimplified(): {
+        spelling: AnsweredQuestion[],
+        calculation: AnsweredQuestion[],
+    } {
+        assert(this.isInStatsSection());
+        return {
+            spelling: this.sectionData.playerStats.statistics.mostCommonMistakes.spelling.map(m => m[0]),
+            calculation: this.sectionData.playerStats.statistics.mostCommonMistakes.calculation.map(m => m[0]),
+        };
+    }
+
+    /**
+     * Don't call it outside of statistics section.
+     */
+    public getMostRecentMistakesSimplified(): {
+        spelling: AnsweredQuestion[],
+        calculation: AnsweredQuestion[],
+    } {
+        assert(this.isInStatsSection());
+        return {
+            spelling: this.sectionData.playerStats.statistics.mostRecentMistakes.spelling.map(m => m[0]),
+            calculation: this.sectionData.playerStats.statistics.mostRecentMistakes.calculation.map(m => m[0]),
+        };
     }
 
 
