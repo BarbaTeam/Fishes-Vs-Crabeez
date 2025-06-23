@@ -16,4 +16,8 @@ export class UserListComponent {
 
     @Output()
     userClick = new EventEmitter<UserID>();
+
+    onClick(user: User) {
+        this.userClick.emit(user.userId);
+    }
 }

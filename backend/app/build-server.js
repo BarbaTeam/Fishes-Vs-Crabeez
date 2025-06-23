@@ -25,12 +25,36 @@ module.exports = (cb) => {
     });
 
     const roomPlayers = new Map(); // lobbyId => { creatorSocketId, players, lastActive }
+    const selectedUsersId = new Map(); // socket.id => userId ; pour ne pas pouvoir selectionner le même utilisateur plusieurs fois
 
     io.on('connection', (socket) => {
         let currentPlayer = null;
         let currentRoom = null;
 
         console.log(`[SERVER] Client connecté : ${socket.id}`);
+
+        socket.on('selectUser', (userId) => {
+            if ([...selectedUsersId.values()].includes(userId)) {
+                socket.emit('userSelectionDenied', userId);
+            } else {
+                selectedUsersId.set(socket.id, userId);
+                socket.emit('userSelectionGranted', userId);
+                broadcastSelectedUsers();
+            }
+        });
+
+        socket.on('deselectUser', (socketId) => {
+            if (selectedUsersId.has(socketId)) {
+                selectedUsersId.delete(socketId);
+                broadcastSelectedUsers();
+            }
+        });
+
+        socket.on('requestSelectedUsersId', () => {
+                const selectedUserList = Array.from(selectedUsersId.values());
+                socket.emit('selectedUsersUpdate', selectedUserList);
+            }
+        );
 
         socket.on('createLobby', () => {
             const lobbyId = `lobby-${Date.now()}`;
@@ -117,8 +141,17 @@ module.exports = (cb) => {
                 io.to(currentRoom).emit('playerDisconnected', { lobbyId: currentRoom, player: currentPlayer });
             }
 
+            selectedUsersId.delete(socket.id);
+
+            broadcastSelectedUsers();
             broadcastLobbiesUpdate();
         });
+
+        function broadcastSelectedUsers() {
+            console.log("update")
+            const selectedUserList = Array.from(selectedUsersId.values());
+            io.emit('selectedUsersUpdate', selectedUserList);
+        }
 
         function broadcastLobbiesUpdate() {
             const lobbyList = Array.from(roomPlayers.entries()).map(([lobbyId, lobby]) => ({
