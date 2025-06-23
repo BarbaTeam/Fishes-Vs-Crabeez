@@ -14,6 +14,7 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
     userTemp!: User;
     showSuccess = false;
     showDeleted = false;
+    public isValid : Boolean = false;
 
     constructor( private userService: UserService, private router: Router) {}
 
@@ -25,6 +26,7 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
 
     onUserTempChanged(updatedUser: User): void {
         this.userTemp = updatedUser;
+        this.validateUser();
     }
 
     saveChanges(): void {
@@ -51,4 +53,27 @@ export class ErgoConfigSelectedPageComponent implements OnInit {
         this.userService.removeUser(this.userTemp);
         this.router.navigate(['/ergo-list']);
     }
+
+    validateUser(): void {
+        const notions = [
+          this.userTemp.userConfig.numberRewrite,
+          this.userTemp.userConfig.addition,
+          this.userTemp.userConfig.soustraction,
+          this.userTemp.userConfig.multiplication,
+          this.userTemp.userConfig.division,
+          this.userTemp.userConfig.encryption,
+          this.userTemp.userConfig.equation
+        ];
+        console.log('Notions:', notions);
+        const atLeastOneNotionSelected = notions.some(n => n === true);
+  
+        this.isValid =
+          !!this.userTemp &&
+          this.userTemp.name.trim().length > 0 &&
+          this.userTemp.icon !== 'unknown.png' &&
+          this.userTemp.age !== '' &&
+          !isNaN(Number(this.userTemp.age)) &&
+          Number(this.userTemp.age) > 0 &&
+          atLeastOneNotionSelected;
+      }
 }
