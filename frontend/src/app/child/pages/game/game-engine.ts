@@ -118,9 +118,9 @@ export class GameEngine {
                     this.score += enemy.scoreValue;
                     playScoreSound(this.gameComponent.user.userConfig.sound);
                     if(this.score >= 50){
-                        this.gameComponent.end = true
-                        this.gameComponent.stopAudio();
-                        this.gameComponent.encryptAudio?.pause();
+                        //this.gameComponent.end = true
+                        //this.gameComponent.stopAudio();
+                        //this.gameComponent.encryptAudio?.pause();
                         playSuccess(this.gameComponent.user.userConfig.sound)
                     }
                 }

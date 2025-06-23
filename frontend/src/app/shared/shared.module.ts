@@ -44,7 +44,7 @@ import { NotifContainerComponent } from './components/notif-container/notif-cont
 // Miscellaneous :
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
-import { LobbyCardComponent } from './components/lobby-card/lobby-card.component';
+import { GameCardComponent } from './components/game-card/game-card.component';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 
@@ -92,7 +92,7 @@ const SHARED_COMPONENTS = [
     // Miscellaneous :
     PlayerInLobbyComponent,
     UserConfigComponent,
-    LobbyCardComponent
+    GameCardComponent
 ];
 
 

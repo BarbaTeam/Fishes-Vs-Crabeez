@@ -34,15 +34,15 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box *ngIf="lobbies && lobbies.length" class="scrollable column no-background medium" style="width: 35vw;">
-            <app-lobby-card *ngFor="let lobby of lobbies"
-                [lobbyId]="lobby.lobbyId"
-                [playerCount]="lobby.players.length"
-                (click)="joinLobby(lobby.lobbyId)"
+        <app-inner-box *ngIf="games && games.length" class="scrollable column no-background medium" style="width: 35vw;">
+            <app-game-card *ngFor="let game of games"
+                [gameId]="game.gameId"
+                [playerCount]="game.players.length"
+                (click)="joinGame(game.gameId)"
             >
-            </app-lobby-card>
+            </app-game-card>
         </app-inner-box>
-        <p *ngIf="!lobbies || !lobbies.length">En attente de parties...</p>
+        <p *ngIf="!games || !games.length">En attente de parties...</p>
     </app-body>
 
 </app-template>
