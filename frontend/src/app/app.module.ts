@@ -27,7 +27,7 @@ import { ChildLobbyGameComponent } from './pages/child/lobby-game/child-lobby-ga
 import { ErgoLobbyGameComponent } from './pages/ergo/lobby-game/ergo-lobby-game.component';
 import { ErgoConfigSelectedPageComponent} from './pages/ergo/config-selected-page/ergo-config-selected-page.component';
 import { ErgoStatSelectedPageComponent } from './pages/ergo/stat-selected-page/ergo-stat-selected-page.component';
-
+import { GameComponent } from './pages/child/game/game.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,8 @@ import { ErgoStatSelectedPageComponent } from './pages/ergo/stat-selected-page/e
     ErgoStatSelectedPageComponent,
     SettingsSliderComponent,
     SettingsToggleComponent,
-    UserListComponent
+    UserListComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
