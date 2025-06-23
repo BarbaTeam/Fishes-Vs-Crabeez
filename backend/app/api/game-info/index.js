@@ -7,34 +7,43 @@ const router = new Router();
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// AFFICHER TOUT LES USERS :
+// GET :
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Manager.getUsers());
+        res.status(200).json(Manager.getGameInfos());
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get('/:userId', (req, res) => {
+router.get('/:gameInfoId', (req, res) => {
     try {
-        res.status(200).json(Manager.getUserById(req.params.userId));
+        res.status(200).json(Manager.getGameInfoById(req.params.gameInfoId));
     } catch (err) {
         res.status(500).json(err);
     }
 });
+
+
 
 ////////////////////////////////////////////////////////////////////////////////
-// CREER UN USER :
+// DEBUG ::
+// NOTE : Those API call should not be used outside of debug purposes.
+////////////////////////////////////////////////////////////////////////////////
+
+
+////////////////////////////////////////////////////////////////////////////////
+// POST :
 
 router.post('/', (req, res) => {
     try {
-        res.status(201).json(Manager.createUser(req.body));
+        res.status(201).json(Manager.insertGameInfo(req.body));
     } catch (err) {
         if (err.name === 'ValidationError'){
             res.status(400).json(err.extra);
         } else {
+            console.log(err);
             res.status(500).json(err);
         }
     }
@@ -42,27 +51,29 @@ router.post('/', (req, res) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// METTRE A JOUR UNE QUESTION :
+// PUT :
 
-router.put('/:userId', (req, res) => {
+router.put('/:gameInfoId', (req, res) => {
     try {
-      res.status(200).json(Manager.updateUserById(req.params.userId, req.body))
+      res.status(201).json(Manager.updateGameInfoById(req.params.gameInfoId, req.body));
     } catch (err) {
-      manageAllErrors(res, err)
+      manageAllErrors(res, err);
     }
   });
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// DELETE UN USER :
+// DELETE :
 
-router.delete('/:userId', (req, res) => {
+router.delete('/:gameInfoId', (req, res) => {
     try {
-        Manager.deleteUserById(req.params.userId);
+        Manager.deleteGameInfoById(req.params.gameInfoId);
         res.status(204).end();
     } catch (err) {
         res.status(500).json(err);
     }
 });
+
+
 
 module.exports = router;
