@@ -9,7 +9,6 @@ import { HiveCrab } from "./HiveCrab";
 import { Drone } from "./Drone";
 import { Ui } from "./Ui";
 import { Background } from "./Background";
-import { Turtle } from "./Turtle";
 import { playBubbleSound, playKillSound, playScoreSound, playSuccess } from "./Sound";
 
 
@@ -17,7 +16,6 @@ import { playBubbleSound, playKillSound, playScoreSound, playSuccess } from "./S
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
     private background: Background;
-    private turtle: Turtle
     private player : Player;
     private currentQuestionNotion: QuestionNotion;
     private Ui: Ui;
@@ -32,7 +30,6 @@ export class GameEngine {
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvaResolution();
         this.background = new Background(this, canvas);
-        this.turtle = new Turtle(this, canvas);
         this.player = new Player(this, canvas);
         this.currentQuestionNotion = gameComponent.questionNotion;
         this.enemies = [new Crab(this, canvas)];
@@ -54,10 +51,6 @@ export class GameEngine {
 
     public get scoreValue(): number {
         return this.score;
-    }
-
-    public get turtlePosition(): {x:number, y:number} {
-        return this.turtle.position;
     }
 
     public get playerPosition(): {x:number, y:number} {
@@ -142,7 +135,6 @@ export class GameEngine {
     private draw(ctx: CanvasRenderingContext2D): void {
         this.background.draw(ctx);
         this.Ui.draw(ctx);
-        this.turtle.draw(ctx);
         this.player.draw(ctx);
         this.enemies.forEach(enemy=>{
             if (enemy instanceof Crab) {

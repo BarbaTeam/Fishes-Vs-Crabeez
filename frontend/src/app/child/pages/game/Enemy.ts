@@ -4,7 +4,7 @@ export class Enemy {
 
     protected x: number;
     protected y: number;
-    protected side: number;
+    protected lane: number;
     protected width: number;
     protected height: number;
     protected alive: boolean;
@@ -16,26 +16,26 @@ export class Enemy {
         private canvas: HTMLCanvasElement,
         x?: number,
         y?: number,
-        side?: number
+        lane?: number
     ) {
         this.gameEngine = gameEngine;
-        if(!side){
-            this.side = Math.floor(Math.random() * 3) + 1;
+        if(!lane){
+            this.lane = Math.floor(Math.random() * 3) + 1;
         } else {
-            this.side = side;
+            this.lane = lane;
         }
-        switch (this.side) {
+        switch (this.lane) {
             case 1:
-                this.x = x || 0;
-                this.y = y ||  this.canvas.height - 50;
+                this.x = x ||  this.canvas.width;
+                this.y = y ||  (this.canvas.height  + 300) - (this.canvas.height / 4) *2;
                 break;
             case 2:
-                this.x = x || this.canvas.width * Math.random();
-                this.y = y || 0;
+                this.x = x || this.canvas.width;
+                this.y = y || (this.canvas.height  + 300) - (this.canvas.height / 4) * 3;
                 break;
             case 3:
                 this.x = x ||  this.canvas.width;
-                this.y = y ||  this.canvas.height -50;
+                this.y = y ||  this.canvas.height  + 300 - (this.canvas.height / 4) * 4;
                 break;
             default:
                 this.x = 0;
@@ -60,7 +60,7 @@ export class Enemy {
         return this.score;
     }
     public get sideValue(): number {
-        return this.side;
+        return this.lane;
     }
 
     public destroy(): void {
@@ -68,18 +68,12 @@ export class Enemy {
     }
 
     public update(): void {
-        const dx = this.gameEngine.turtlePosition.x - this.x;
-        const dy = this.gameEngine.turtlePosition.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance > 0) {
-            const moveX = (dx / distance) * this.speed;
-            const moveY = (dy / distance) * this.speed;
-            this.x += moveX;
-            this.y += moveY;
+        if (this.x > 100) {
+            const moveX = 1 * this.speed;
+            this.x -= moveX;
         }
-
-        if (distance < 100) {
+        else {
             this.alive = false;
         }
     }
