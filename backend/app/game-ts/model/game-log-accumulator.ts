@@ -8,6 +8,8 @@ export class GameLogAccumulator {
     private _killAcc : Record<UserID, Record<EnemyKind, number>> = {};
     private _scoreAcc : number = 0;
 
+    private _initialPlayersId: UserID[] = [];
+
     constructor(
         private readonly gameLobby: Game,
     ) {
@@ -19,6 +21,7 @@ export class GameLogAccumulator {
                 return acc;
             }, {} as Record<EnemyKind, number>);
         }
+        this._initialPlayersId = [...playersId];
     }
 
     public accumulateAnswer(playerId: UserID, ans: AnsweredQuestion): void {
@@ -39,7 +42,7 @@ export class GameLogAccumulator {
         return {
             gameId: this.gameLobby.gameId,
             info: {
-                playersId: this.gameLobby.playersId,
+                playersId: this._initialPlayersId,
                 date: new Date(Date.now()),
 
                 // TODO : Compute duration of game
@@ -57,5 +60,11 @@ export class GameLogAccumulator {
             playersAnswers: Object.values(this._ansAcc),
             playersKills: Object.values(this._killAcc),
         } as GameLog;
+    }
+
+    public isEmpty(): boolean {
+        return (
+            Object.values(this._ansAcc).every(playersAnswers => playersAnswers.length === 0)
+        );
     }
 }

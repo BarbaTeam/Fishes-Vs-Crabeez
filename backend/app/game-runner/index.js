@@ -3,6 +3,10 @@
 
 const { GameID } = require('../shared/types');
 
+/**
+ * @typedef {import('../game/runtime/index').GameRuntime} GameRuntime
+ */
+
 
 const RUNNING_INTERVALS = {};
 

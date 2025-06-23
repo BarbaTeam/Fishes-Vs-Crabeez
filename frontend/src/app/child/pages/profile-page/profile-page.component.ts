@@ -52,7 +52,6 @@ type HistorySectionData = {
     leaderboard: Leaderboard | undefined,
 };
 
-const THRESHOLD = 200;
 const Acquisition = {
     obtained : "obtained",
     not_obtained : "not_obtained",
@@ -66,6 +65,10 @@ type Badge = {
     counter: number;
     acquisition: Acquisition,
 }
+
+const THRESHOLD = 200;
+
+
 
 @Component({
     selector: 'app-profile-page',
@@ -88,15 +91,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             description: "Tuer 200 crabes",
             counter: 0,
             acquisition: "not_obtained",
-        },
-        {
+        }, {
             enemy: EnemyKind.HIVECRAB,
             name: "hiveCrab_killer_trophy",
             description: "Tuer 200 hiveCrabes",
             counter: 0,
             acquisition: "not_obtained",
-        },
-        {
+        }, {
             enemy: EnemyKind.DRONE,
             name: "drone_killer_trophy",
             description: "Tuer 200 drones",
@@ -151,6 +152,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             this.playerResultsService.playerResultsList$.subscribe(
             (playerResultsList: PlayerResults[]) => {
                 this._playerResultsList = playerResultsList;
+                this._updateSectionData();
             })
         );
 
@@ -168,7 +170,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 ))
                 : of([])
             )
-        )
+        );
 
         const gamesLeaderboards$ = gameIdsStream$.pipe(
             switchMap((gameIds) =>
@@ -180,7 +182,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 ))
                 : of([])
             )
-        )
+        );
 
         this.subscriptions.add(
             gamesInfos$.subscribe((gamesInfos) => {

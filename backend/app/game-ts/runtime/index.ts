@@ -47,13 +47,9 @@ export class GameRuntime {
     public onGameEnd(): void {
         if (this?.timeout) this.timeout.close();
         this.notifier.onGameEnd();
-        processGameLog(this.accumulator.gamelog);
-        stopRunningGame(this.model.game.gameId);
-    }
-
-    public onForcedGameEnd(): void {
-        if (this?.timeout) this.timeout.close();
-        this.notifier.onGameEnd();
+        if (!this.accumulator.isEmpty()) {
+            processGameLog(this.accumulator.gamelog);
+        }
         stopRunningGame(this.model.game.gameId);
     }
 }
