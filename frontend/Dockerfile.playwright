@@ -10,4 +10,4 @@ COPY  --chown=pwuser:pwuser package*.json .
 RUN npm install
 
 COPY --chown=pwuser:pwuser . .
-CMD ["npx", "playwright", "test", "--config", "./playwright.config-docker.ts"]
+CMD ["npx", "playwright", "test", "--config", "./playwright.config-docker.ts", "&&", "npx", "rimraf", "../ops/e2e-results/playwright-report/data"];
