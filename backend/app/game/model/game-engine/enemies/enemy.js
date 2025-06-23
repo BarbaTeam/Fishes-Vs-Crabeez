@@ -1,8 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Enemy = void 0;
+const variables_1 = require("../../../../game/model/game-engine/variables");
 const random_1 = require("../../../../shared/utils/random");
-const variables_1 = require("../variables");
+const variables_2 = require("../variables");
 class Enemy {
     constructor(type, health, speed, score, width, height, laneNum, x, y) {
         this.type = type;
@@ -11,8 +12,8 @@ class Enemy {
         this.score = score;
         this.width = width;
         this.height = height;
-        this.id = `ennemy-${Date.now()}`;
-        this.lane = variables_1.LANES[laneNum !== undefined
+        this.id = `ennemy-${Enemy.nextId++}`;
+        this.lane = variables_2.LANES[laneNum !== undefined
             ? laneNum - 1
             : (0, random_1.randint)(0, 3)];
         this.x = this._computeInitialXPosition(x);
@@ -28,7 +29,7 @@ class Enemy {
         if (providedX !== undefined) {
             return providedX;
         }
-        return 100 + this.width;
+        return variables_1.VIRTUAL_WIDTH + this.width;
     }
     _computeInitialYPosition(providedY) {
         if (providedY !== undefined) {
@@ -36,13 +37,13 @@ class Enemy {
         }
         switch (this.lane.num) {
             case 1:
-                return variables_1.bandHeight * 3.5;
+                return variables_2.bandHeight * 3.5;
             case 2:
-                return variables_1.bandHeight * 2.5;
+                return variables_2.bandHeight * 2.5;
             case 3:
-                return variables_1.bandHeight * 1.5;
+                return variables_2.bandHeight * 1.5;
             default:
-                return variables_1.bandHeight * 1.5;
+                return variables_2.bandHeight * 1.5;
         }
     }
     destroy() {
@@ -62,3 +63,4 @@ class Enemy {
     }
 }
 exports.Enemy = Enemy;
+Enemy.nextId = 0;

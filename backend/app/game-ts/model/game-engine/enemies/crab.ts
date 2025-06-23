@@ -1,4 +1,4 @@
-import { CRAB_HEALTH, CRAB_HEIGHT, CRAB_SCORE, CRAB_SEED, CRAB_WIDTH } from "./enemies-stats";
+import { CRAB_HEALTH, CRAB_HEIGHT, CRAB_SCORE, CRAB_SPEED, CRAB_WIDTH } from "./enemies-stats";
 import { Enemy } from "./enemy";
 
 export class Crab extends Enemy {
@@ -6,7 +6,7 @@ export class Crab extends Enemy {
         super(
             "crab",
             CRAB_HEALTH, 
-            CRAB_SEED, 
+            CRAB_SPEED, 
             CRAB_SCORE, 
             CRAB_WIDTH, 
             CRAB_HEIGHT, 

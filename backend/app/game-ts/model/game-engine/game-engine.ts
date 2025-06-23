@@ -9,19 +9,20 @@ import { Enemy } from "./enemies/enemy";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 
-import { LANES, PLAYER_COLORS } from "./variables";
-
+import { LANES, PLAYER_COLORS, VIRTUAL_WIDTH } from "./variables";
 
 
 
 export class GameEngine {
     public players: Record<UserID, Player> = {};
-    public projectiles : Projectile[] = [];
-    public enemies : Enemy[] = [];
+    public projectiles: Projectile[] = [];
+    public enemies: Enemy[] = [];
+
+    private currWaveEventId?: EventID;
 
     constructor(
         private model: GameModel,
-        public notifier : GameUpdatesNotifier,
+        public notifier: GameUpdatesNotifier,
         playersId: UserID[],
     ) {
         for (const [i, playerId] of playersId.entries()) {
@@ -29,19 +30,17 @@ export class GameEngine {
         }
     }
 
-    private registerPlayer(playerId : UserID, color: "yellow"|"blue"|"red", num_lane : number): void {
-        const player = new Player(playerId, color, LANES[num_lane]);
-        player.id = playerId;
+    private registerPlayer(playerId: UserID, color: "yellow" | "blue" | "red", laneIndex: number): void {
+        const player = new Player(playerId, color, LANES[laneIndex]);
         this.players[playerId] = player;
     }
 
-    public handleMove(playerId: UserID, direction: string) {
+    public handleMove(playerId: UserID, direction: string): void {
         const player = this.players[playerId];
         if (!player) return;
 
         if (direction === 'UP') player.moveUp();
         else if (direction === 'DOWN') player.moveDown();
-        console.log(`[MOVE] ${playerId} moved to lane ${player.lane.num}`);
 
         this.notifier.onPlayerChangedLane(playerId, player.lane.num, player.x, player.y);
         this.notifyAllLanes();
@@ -49,8 +48,7 @@ export class GameEngine {
 
     private notifyAllLanes(): void {
         for (const lane of LANES) {
-            const players = lane.getPlayers();
-            for (const player of players) {
+            for (const player of lane.getPlayers()) {
                 this.notifier.onPlayerChangedPosition(player.id, player.x, player.y);
             }
         }
@@ -62,7 +60,6 @@ export class GameEngine {
 
         const projectile = new Projectile(player);
         this.projectiles.push(projectile);
-
         this.notifier.onPlayerShot(playerId, projectile);
     }
 
@@ -72,76 +69,94 @@ export class GameEngine {
     }
 
     public paralysePlayer(playerId: UserID): void {
-        this.players[playerId].isParalysed = true;
+        const player = this.players[playerId];
+        if (!player) return;
+
+        player.isParalysed = true;
         this.notifier.onPlayerParalysed(playerId);
     }
 
     public deparalysePlayer(playerId: UserID): void {
-        this.players[playerId].isParalysed = false;
+        const player = this.players[playerId];
+        if (!player) return;
+
+        player.isParalysed = false;
         this.notifier.onPlayerDeparalysed(playerId);
     }
 
-    private _checkCollision(obj1 : any, obj2: any) {
-        if (!obj1 || !obj2) return false;
-        if (typeof obj1.x !== 'number' || typeof obj1.y !== 'number') return false;
-        if (typeof obj2.x !== 'number' || typeof obj2.y !== 'number') return false;
-
-        const dx = obj1.x - obj2.x;
-        const dy = obj1.y - obj2.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        return distance < (obj1.width / 2 + obj2.width / 2);
+    private checkCollision(obj1: { x: number, y: number, width: number, height: number }, obj2: { x: number, y: number, width: number, height: number }): boolean {
+        return !(
+            obj1.x + obj1.width / 2 < obj2.x - obj2.width / 2 ||
+            obj1.x - obj1.width / 2 > obj2.x + obj2.width / 2 ||
+            obj1.y + obj1.height / 2 < obj2.y - obj2.height / 2 ||
+            obj1.y - obj1.height / 2 > obj2.y + obj2.height / 2
+        );
     }
 
-    public kill(enemy : Enemy): void {
-        enemy.destroy();
+    private processEnemy(enemy: Enemy): void {
+        enemy.update();
+        if (enemy.x < 10) {
+            this.kill(enemy);
+            this.notifier.onEnemyDespawned(enemy.id);
+        }
+    }
 
-        const ennemyIdx = this.enemies.indexOf(enemy);
-        if (ennemyIdx === -1) return; // Shouldn't happen
-        this.enemies.splice(ennemyIdx, 1);
+    private processProjectile(projectile: Projectile): void {
+        projectile.update();
+        if (projectile.x > VIRTUAL_WIDTH) {
+            projectile.destroy();
+        }
+    }
+
+    private detectCollisions(): void {
+        for (const projectile of this.projectiles) {
+            if (projectile.markedForDeletion) continue;
+
+            for (const enemy of this.enemies) {
+                if (!enemy.alive) continue;
+
+                if (this.checkCollision(enemy, projectile)) {
+                    this.kill(enemy);
+                    projectile.destroy();
+                    const player = projectile.player;
+                    player.score += enemy.score;
+
+                    this.notifier.onEnemyKilled(projectile, enemy);
+                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
+                    return; 
+                }
+            }
+        }
+    }
+
+    public kill(enemy: Enemy): void {
+        enemy.destroy();
     }
 
     public getAllPlayers(): Player[] {
         return Object.values(this.players).map(player => player.toJSON());
     }
 
+    public update(): void {
+        this.spawnNextWaveIfNeeded();
 
-    private currWaveEventId?: EventID;
-    public update() {
-        if (
-            this.enemies.length === 0
-            && (
-                this.currWaveEventId === undefined
-                || !this.model.eventsHandler.aliveEvents[this.currWaveEventId]
-            )
-        ) {
-            // TODO : Using dynamic difficulty
-            console.log("Spawning new wave event");
-            const PLACEHOLDER_DIFFICULTY = 10;
-            this.model.eventsHandler.spawnEvent(EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
-        }
+        this.enemies.forEach(enemy => this.processEnemy(enemy));
+        this.projectiles.forEach(projectile => this.processProjectile(projectile));
 
-        this.enemies.forEach(enemy => {
-            enemy.update();
-            if (enemy.x < 10) {
-                this.kill(enemy);
-                this.notifier.onEnemyDespawned(enemy.id);
-            }
-            this.projectiles.forEach(projectile => {
-                projectile.update();
-                if (!projectile.markedForDeletion && this._checkCollision(enemy, projectile)) {
-                    const player = projectile.player;
-                    this.kill(enemy);
-                    projectile.destroy();
-                    player.score += enemy.score;
-
-                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
-                    this.notifier.onEnemyKilled(projectile, enemy);
-                }
-            });
-        });
+        this.detectCollisions();
 
         this.projectiles = this.projectiles.filter(p => !p.markedForDeletion);
         this.enemies = this.enemies.filter(e => e.alive);
+    }
+
+    private spawnNextWaveIfNeeded(): void {
+        const noMoreEnemies = this.enemies.length === 0;
+        const currentEventEnded = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
+
+        if (noMoreEnemies && currentEventEnded) {
+            const PLACEHOLDER_DIFFICULTY = 10;
+            this.currWaveEventId = this.model.eventsHandler.spawnEvent(EventKind.WAVE, PLACEHOLDER_DIFFICULTY);
+            console.log("Spawning new wave event");
+        }
     }
 }

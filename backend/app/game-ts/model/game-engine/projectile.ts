@@ -23,9 +23,9 @@ export class Projectile {
         this.player = player;
         this.x = player.x;
         this.y = player.y;
-        this.width = 2.5;
-        this.height = 2.5;
-        this.speed = 10;
+        this.width = 5;
+        this.height = 5;
+        this.speed = 5;
         this.markedForDeletion = false;
     }
 
@@ -34,7 +34,6 @@ export class Projectile {
     }
 
     update() {
-        if (this.x > VIRTUAL_WIDTH) this.destroy();
         this.x += this.speed;
     }
 
