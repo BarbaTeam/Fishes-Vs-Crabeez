@@ -61,6 +61,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     public health: number;
     public waveCounter: number;
     public bossWave: boolean;
+    public bossHealth : number;
     public hasEnded: boolean;
 
     ////////////////////////////////////////////////////////////////////////////
@@ -78,6 +79,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.health = 10;
         this.waveCounter = 0;
         this.bossWave = false;
+        this.bossHealth = 0;
         this.hasEnded = false;
     }
 
@@ -151,6 +153,11 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.gameEngine.bossWave$.subscribe(bossWave => {
                 this.bossWave = bossWave;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.bossHealth$.subscribe(bossHealth => {
+                this.bossHealth = bossHealth;
             })
         );
         this.subscriptions.add(

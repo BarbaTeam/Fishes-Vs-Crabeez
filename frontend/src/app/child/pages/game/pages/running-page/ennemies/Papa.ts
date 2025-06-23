@@ -1,7 +1,7 @@
 import { Enemy } from "./Enemy";
 
 export class Papa extends Enemy {
-    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number ) {
+    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: string) {
         super(canvas, id);
 
         this.enemyImage = new Image();
@@ -16,6 +16,7 @@ export class Papa extends Enemy {
         
         this.speed = speed;
         this.health = health;
+        this.type = type;
     }
 
     public static fromJson(data: any, canvas : HTMLCanvasElement): Papa {
@@ -26,6 +27,7 @@ export class Papa extends Enemy {
             data.y, 
             data.speed,
             data.health,
+            data.type,
         );
         return crab;
     }

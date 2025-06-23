@@ -30,6 +30,8 @@ export class GameEngine {
     private waveCounter : number;
     public bossWave$ = new Subject<boolean>();
     private bossWave : boolean;
+    public bossHealth$ = new Subject<number>();
+    private bossHealth : number;
     public hasEnded$ = new Subject<boolean>();
     private hasEnded : boolean;
     private gameLoopId: number | null = null;
@@ -68,6 +70,7 @@ export class GameEngine {
         this.health = 10;
         this.waveCounter = 0;
         this.bossWave = false;
+        this.bossHealth = 0;
         this.hasEnded = false;
         this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
         
@@ -204,6 +207,8 @@ export class GameEngine {
                         const papa = Papa.fromJson(enemy, this.canvas);
                         this.enemies.set(papa._id, papa);
                         console.log(`ATTENTION NEW PAPA SPAWNED IN THE SEA : ${papa.id}, position: (${papa.x}, ${papa.y})`);
+                        this.bossHealth = papa.health;
+                        this.bossHealth$.next(this.bossHealth);
                         break;
                     default:
                         console.warn(`Unknown enemy type: ${enemy.type}`);
@@ -228,12 +233,18 @@ export class GameEngine {
                 const enemy = this.enemies.get(enemyId);
                 if(enemy){
                     enemy.health = enemyHealth;
+
+                    if(enemy.type == "papa"){
+                        this.bossHealth = enemyHealth;
+                        this.bossHealth$.next(this.bossHealth);
+                    }
+
                     enemy.enemyImage.src = enemy.enemyHitUrl!;
                     setTimeout(() => {
                         enemy.enemyImage.src = enemy.enemyUrl!;
                     }, 100)
                 }
-
+    
                 if(projectile.playerId == this.localPlayerId){
                     this.soundBoard.play("hit");
                 }

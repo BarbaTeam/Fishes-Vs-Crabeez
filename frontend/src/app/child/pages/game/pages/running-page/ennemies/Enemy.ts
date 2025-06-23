@@ -3,6 +3,7 @@ import { scaleToCanvas } from "../utils";
 
 export class Enemy {
     public _id: string;
+    public type!: string;
     public x!: number;
     public y!: number;
     public virtualWidth!: number;
