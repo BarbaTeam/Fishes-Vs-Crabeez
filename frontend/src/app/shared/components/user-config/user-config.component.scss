@@ -1,14 +1,39 @@
 :host {
-    height: 80%;
+    height: auto;
     width: 100%;
 }
+
+.config-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: space-between;
+}
+
+.config-group {
+    flex: 1 1 300px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    min-width: 280px;
+}
+
+.config-group h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+    font-family: 'Press Start 2P', monospace;
+}
+
 span {
-    font-size: 15px;
-    width: 100%;
+    font-size: 14px;
     display: flex; 
     flex-direction: row; 
-    gap: 20px;
-    margin-top: 20px;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
 }
 
 .underline-input {

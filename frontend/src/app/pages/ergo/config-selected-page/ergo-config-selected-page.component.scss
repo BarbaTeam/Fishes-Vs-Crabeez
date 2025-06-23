@@ -6,7 +6,8 @@
 }
 
 .save-container {
-    bottom: -3rem;
+    bottom: -1rem;
+    margin-bottom: 2rem;
     position: relative;
     //display: inline-block;
     display: flex;
@@ -19,10 +20,6 @@
         width: 3rem;
         height: 3rem;
         display: none;
-    }
-
-    .delete .cross .cap{
-        left: -2rem;
     }
 
     .cap{
