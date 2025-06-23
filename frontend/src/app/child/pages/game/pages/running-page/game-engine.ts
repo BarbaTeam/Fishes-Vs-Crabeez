@@ -13,6 +13,7 @@ import { scaleToCanvas } from "./utils";
 import { NumberFormatStyle } from "@angular/common";
 import { HiveCrab } from "./ennemies/HiveCrab";
 import { Drone } from "./ennemies/Drone";
+import { Papa } from "./ennemies/Papa";
 
 
 
@@ -28,6 +29,8 @@ export class GameEngine {
     private health : number;
     public waveCounter$ = new Subject<number>();
     private waveCounter : number;
+    public bossWave$ = new Subject<boolean>();
+    private bossWave : boolean;
     public hasEnded$ = new Subject<boolean>();
     private hasEnded : boolean;
     private gameLoopId: number | null = null;
@@ -60,6 +63,7 @@ export class GameEngine {
         this.generalScore = 0;
         this.health = 10;
         this.waveCounter = 0;
+        this.bossWave = false;
         this.hasEnded = false;
         this.gameLoopId = window.setInterval(() => this.updateGameLoop(), 1000 / 30);
 
@@ -179,6 +183,11 @@ export class GameEngine {
                         this.enemies.set(drone._id, drone);
                         console.log(`New Drone received: ${drone.id}, position: (${drone.x}, ${drone.y})`);
                         break;
+                    case 'papa':
+                        const papa = Papa.fromJson(enemy, this.canvas);
+                        this.enemies.set(papa._id, papa);
+                        console.log(`ATTENTION NEW PAPA SPAWNED IN THE SEA : ${papa.id}, position: (${papa.x}, ${papa.y})`);
+                        break;
                     default:
                         console.warn(`Unknown enemy type: ${enemy.type}`);
                 }
@@ -192,10 +201,11 @@ export class GameEngine {
         );
 
         this.subscriptions.add(
-            this.socket.on<{projectile: Projectile, enemyId: string}>('enemyHit').subscribe(({projectile : projectile, enemyId : enemyId})=>{
+            this.socket.on<{projectile: Projectile, enemyId: string, enemyHealth: number}>('enemyHit').subscribe(({projectile : projectile, enemyId : enemyId, enemyHealth: enemyHealth})=>{
                 this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
                 const enemy = this.enemies.get(enemyId);
                 if(enemy){
+                    enemy.health = enemyHealth;
                     enemy.enemyImage.src = enemy.enemyHitUrl!;
                     setTimeout(() => {
                         enemy.enemyImage.src = enemy.enemyUrl!;
@@ -226,6 +236,13 @@ export class GameEngine {
                 if(player.id == this.localPlayerId){
                     this.localPlayerPlayerParalysed$.next(player.paralysed);
                 }
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<void>('bossWave').subscribe(() => {
+                this.bossWave = true;
+                this.bossWave$.next(this.bossWave);
             })
         );
     }

@@ -2,7 +2,7 @@ import { Enemy } from "./Enemy";
 
 export class Drone extends Enemy {
 
-    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number ) {
+    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number ) {
         super(canvas, id);
 
         this.enemyImage = new Image();
@@ -14,7 +14,8 @@ export class Drone extends Enemy {
         this.x = x;
         this.y = y;
 
-        this.speed = speed
+        this.speed = speed;
+        this.health = health;
     }
 
     public static fromJson(data: any, canvas : HTMLCanvasElement): Drone {
@@ -23,7 +24,8 @@ export class Drone extends Enemy {
             data.id, 
             data.x, 
             data.y, 
-            data.speed
+            data.speed,
+            data.health,
         );
         return crab;
     }

@@ -11,7 +11,8 @@ export class Enemy {
     public enemyHitUrl?: string;
     public enemyUrl!: string;
     public speed!: number;
-
+    public health! : number;
+    
     constructor(
         private canvas: HTMLCanvasElement,
         id : string,
