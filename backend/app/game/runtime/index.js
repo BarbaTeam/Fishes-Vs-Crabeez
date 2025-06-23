@@ -6,7 +6,8 @@ const game_updates_notifier_1 = require("./game-updates-notifier");
 const model_1 = require("../model");
 class GameRuntime {
     constructor(io, gameLobby) {
-        this.notifier = new game_updates_notifier_1.GameUpdatesNotifier(io.to(gameLobby.gameId));
+        //this.notifier = new GameUpdatesNotifier(io.to(gameLobby.gameId));
+        this.notifier = new game_updates_notifier_1.GameUpdatesNotifier(io, io.to(gameLobby.gameId));
         this.model = new model_1.GameModel(this.notifier, gameLobby);
         this.receiver = new game_actions_receiver_1.GameActionsReceiver(this.model);
     }

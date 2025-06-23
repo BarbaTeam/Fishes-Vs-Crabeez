@@ -13,7 +13,8 @@ export class GameRuntime {
     public readonly receiver : GameActionsReceiver;
 
     constructor (io: Server, gameLobby: GameLobby) {
-        this.notifier = new GameUpdatesNotifier(io.to(gameLobby.gameId));
+        //this.notifier = new GameUpdatesNotifier(io.to(gameLobby.gameId));
+        this.notifier = new GameUpdatesNotifier(io, io.to(gameLobby.gameId));
         this.model    = new GameModel(this.notifier, gameLobby);
         this.receiver = new GameActionsReceiver(this.model);
     }

@@ -15,9 +15,6 @@ class GameModel {
         const startUpPackage = {
             players: this.gameEngine.getAllPlayers(),
         };
-
-        console.log(`[MODEL] Startup package ${startUpPackage} prepared`);
-
         this.notifier.onStartup(startUpPackage);
     }
     runOneFrame() {

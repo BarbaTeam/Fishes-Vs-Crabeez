@@ -11,9 +11,6 @@ import { Projectile } from "./projectile";
 
 
 export class GameEngine {
-    public static readonly V_SCREEN_WIDTH = 1920;
-    public static readonly V_SCREEN_HEIGHT = 1200;
-
     public players: Record<UserID, Player> = {};
     public projectiles : Projectile[] = [];
     public enemies : Enemy[] = [];
@@ -23,13 +20,15 @@ export class GameEngine {
         public notifier : GameUpdatesNotifier,
         playersId: UserID[],
     ) {
+        const COLORS = ["red", "blue", "yellow"] as const;
         for (const [i, playerId] of playersId.entries()) {
-            this.registerPlayer(playerId, i+1);
+            this.registerPlayer(playerId, COLORS[i], i+1);
+
         }
     }
 
-    private registerPlayer(playerId : UserID, lane = 1): void {
-        const player = new Player(playerId, lane);
+    private registerPlayer(playerId : UserID, color: "yellow"|"blue"|"red", lane = 1): void {
+        const player = new Player(playerId, color, lane);
         player.id = playerId;
         this.players[playerId] = player;
     }

@@ -1,35 +1,30 @@
-import { GameEngine } from "./game-engine";
 import { Player } from "./Player";
+import { scaleToCanvas } from "./scale-utils";
 
 export class Projectile {
     private _id: string;
-    private x: number;
-    private y: number;
-    private width: number;
-    private height: number;
+
+    private virtualX!: number;
+    private virtualY!: number;
+    private virtualWidth: number;
+    private virtualHeight: number;
+
     private image: HTMLImageElement;
 
-    constructor(
-        private player: Player,
-        id: string,
-    ) {
+    constructor(private canvas: HTMLCanvasElement, private player: Player, id: string) {
         this._id = id;
-        this.player = player;
-        //this.x = this.player.position.x;
-        //this.y = this.player.position.y;
-        this.x = 200;
-        this.y = 500;
-        this.width = 50;
-        this.height = 50;
+
+        this.virtualWidth = 2.5;
+        this.virtualHeight = 2.5;
 
         this.image = new Image();
         this.image.src = "../../../../assets/images/game/projectile/bubble.png";
     }
 
-    public static fromJson(data: any, player: Player): Projectile {
-        const projectile = new Projectile(player, data.id);
-        projectile.x = data.x;
-        projectile.y = data.y;
+    public static fromJSON(data: any, canvas: HTMLCanvasElement, player: Player): Projectile {
+        const projectile = new Projectile(canvas, player, data.id);
+        projectile.virtualX = data.x;
+        projectile.virtualY = data.y;
         return projectile;
     }
 
@@ -37,11 +32,19 @@ export class Projectile {
         return this._id;
     }
 
-    public update() : void {
-        this.x += 10;
+    public update(): void {
+        this.virtualX += 2;
     }
-    
+
     public draw(ctx: CanvasRenderingContext2D): void {
-        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        const { x, y, width, height } = scaleToCanvas(
+            this.virtualX,
+            this.virtualY,
+            this.virtualWidth,
+            this.virtualHeight,
+            this.canvas,
+        );
+
+        ctx.drawImage(this.image, x, y, width, height);
     }
 }
