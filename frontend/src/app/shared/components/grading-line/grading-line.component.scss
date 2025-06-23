@@ -1,12 +1,10 @@
 .grading-line {
     display: flex;
     align-items: center;
-    font-size: 1rem;
     margin: 0.5rem 0;
 
     .key {
         color: black;
-        font-weight: 600;
         margin-right: 0.25rem;
     }
 
@@ -30,18 +28,3 @@
         }
     }
 }
-
-
-/*
-.host #grade {
-
-}
-
-.host #accuracy {
-
-}
-
-.host #improvement {
-
-}
-*/

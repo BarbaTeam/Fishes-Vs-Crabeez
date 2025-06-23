@@ -1,11 +1,12 @@
-app-small-button{
+:host app-small-button{
     margin: 0.5rem;
 }
 
-.title{
+:host .title{
     font-size: 30px;
 }
-.name{
+
+:host .name{
     text-align: left;
     width: 55%;
     position: relative;

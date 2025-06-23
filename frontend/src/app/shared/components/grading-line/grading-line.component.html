@@ -1,19 +1,12 @@
 <p class="grading-line">
-    <!-- Clé en noir -->
     <span class="key">{{ key }}</span>
-    &nbsp;
 
-    <!-- Deux-points de séparation -->
-    <span class="sep">:</span>
-    &nbsp;
+    <span class="sep">&nbsp;:&nbsp;</span>
 
-    <!-- Note colorée dynamiquement -->
     <span class="grade" [style.color]="gradeColor()">{{ grading.grade }}</span>
-    &nbsp;
 
-    <span class="accuracy">({{ grading.accuracy }}%)</span>
-    &nbsp;
-    <!-- Improvement affichée seulement si définie -->
+    <span class="accuracy">&nbsp;({{ grading.accuracy }}%)</span>
+
     <ng-container *ngIf="improvement !== undefined">
         <span
             class="improvement"
@@ -24,15 +17,3 @@
         </span>
     </ng-container>
 </p>
-
-
-
-<!--
-<p>
-@if (withImprovement) {
-    <span id="key">{{ key }} :</span> <span id="grade">{{ grading.grade }}</span> <span id="accuracy">({{ grading.accuracy }}% <span id="improvement">+{{ improvement }}%</span>)</span>
-} @else {
-    <span id="key">{{ key }} :</span> <span id="grade">{{ grading.grade }}</span> <span id="accuracy">({{ grading.accuracy }}%)</span>
-}
-</p>
--->

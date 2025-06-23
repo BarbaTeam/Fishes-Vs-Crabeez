@@ -22,6 +22,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g1",
         answersShown: true,
         results: {
+            wordsPerMinute: 1.6666666666666667,
             globalGrading: { grade: "F" , accuracy: 40 },
             gradingPerNotion: {
                 ADDITION      : { grade: "F" , accuracy: 0 },
@@ -82,6 +83,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g1",
         answersShown: false,
         results: {
+            wordsPerMinute: 2.1666666666666665,
             globalGrading: { grade: "D+", accuracy: 69.23076923076923 },
             gradingPerNotion: {
                 ADDITION      : { grade: "A+", accuracy: 100 },
@@ -137,6 +139,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g1",
         answersShown: false,
         results: {
+            wordsPerMinute: 2,
             globalGrading: { grade: "B", accuracy: 83.33333333333334 },
             gradingPerNotion: {
                 ADDITION:      { grade: "B-", accuracy: 81.81818181818183 },
@@ -192,6 +195,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g2",
         answersShown: false,
         results: {
+            wordsPerMinute: 3.2,
             globalGrading: { grade: "D+", accuracy: 68.75 },
             gradingPerNotion: {
                 ADDITION      : { grade: "A+", accuracy: 100 },
@@ -252,6 +256,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g2",
         answersShown: true,
         results: {
+            wordsPerMinute: 1.6,
             globalGrading: { grade: "F", accuracy: 37.5 },
             gradingPerNotion: {
                 ADDITION      : { grade: "A+", accuracy: 100 },
@@ -312,6 +317,7 @@ export const MOCK_PLAYERS_RESULTS: PlayerResults[] = [
         gameId: "g2",
         answersShown: true,
         results: {
+            wordsPerMinute: 3.8,
             globalGrading: { grade: "F", accuracy: 52.631578947368425 },
             gradingPerNotion: {
                 ADDITION      : { grade: "F", accuracy: 50 },

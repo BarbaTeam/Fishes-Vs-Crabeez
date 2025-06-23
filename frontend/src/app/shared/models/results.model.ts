@@ -38,6 +38,7 @@ export type RawResults = AnsweredQuestion[];
 
 
 export type Results = {
+    wordsPerMinute: number,
     globalGrading: Grading
     gradingPerNotion: { [key in QuestionNotion]: Grading },
     mistakes: {
@@ -53,6 +54,9 @@ export type Results = {
 ////////////////////////////////////////////////////////////////////////////////
 
 export type Statistics = {
+    wordsPerMinute: number,
+    wordsPerMinuteImprovement: number, // in signed percentage
+
     globalGrading: Grading,
     globalAccuracyImprovement: number, // in signed percentage
 
