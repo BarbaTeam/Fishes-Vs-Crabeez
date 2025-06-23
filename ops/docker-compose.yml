@@ -24,7 +24,7 @@ services:
             args:
                 - FRONTEND_DOMAIN=localhost
                 - BACKEND_DOMAIN=localhost
-                - BACKEND_PORT=9428
+                - BACKEND_PORT=8081
         ports:
             - "8080:80"
 

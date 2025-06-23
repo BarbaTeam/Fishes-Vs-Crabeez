@@ -2,11 +2,11 @@ import { test, expect } from '@playwright/test';
 import { testUrl } from '../e2e.config';
 
 import { ChoicePageFixture } from '@e2e/pages-fixtures/home/choice-page.fixture';
-import { ErgoHomePageFixture } from '@e2e/pages-fixtures/ergo-home-page.fixture';
-import { ChildsListPageFixture } from '@e2e/pages-fixtures/child-list-page.fixture';
+import { GamesManagerPageFixture } from '@e2e/pages-fixtures/ergo/games-manager-page.fixture';
+import { ChildsListPageFixture } from '@e2e/pages-fixtures/ergo/childs-list-page.fixture';
 import { NewChildPageFixture } from '@e2e/pages-fixtures/new-child-page.fixture';
-import { ChildConfigPageFixture } from '@e2e/pages-fixtures/child-config-page.fixture';
-import { ChildStatsPageFixture } from '@e2e/pages-fixtures/child-stats-page.fixture';
+import { ChildConfigPageFixture } from '@e2e/pages-fixtures/ergo/child-config-page.fixture';
+import { ChildStatsPageFixture } from '@e2e/pages-fixtures/ergo/child-stats-page.fixture';
 
 
 
@@ -14,7 +14,7 @@ test.describe('Ergo creates a new player and access it to double check', () => {
     test.setTimeout(120_000);
 
     let choicePage: ChoicePageFixture;
-    let ergoHomePage: ErgoHomePageFixture;
+    let gamesManagerPage: GamesManagerPageFixture;
     let childrenListPage: ChildsListPageFixture;
     let newChildPage: NewChildPageFixture;
     let childConfigPage: ChildConfigPageFixture;
@@ -28,7 +28,7 @@ test.describe('Ergo creates a new player and access it to double check', () => {
 
     test.beforeEach(async ({ page }) => {
         choicePage = new ChoicePageFixture(page);
-        ergoHomePage = new ErgoHomePageFixture(page);
+        gamesManagerPage = new GamesManagerPageFixture(page);
         childrenListPage = new ChildsListPageFixture(page);
         newChildPage = new NewChildPageFixture(page);
         childConfigPage = new ChildConfigPageFixture(page);
@@ -48,12 +48,12 @@ test.describe('Ergo creates a new player and access it to double check', () => {
         });
 
         await test.step("Verify ergo home page", async () => {
-            await ergoHomePage.verifyPageElements();
-            await ergoHomePage.checkGamesStatus();
+            await gamesManagerPage.verifyPageElements();
+            await gamesManagerPage.checkGamesStatus();
         });
 
         await test.step("Navigate to children list", async () => {
-            await ergoHomePage.navigateToPlayerList();
+            await gamesManagerPage.navigateToPlayerList();
             await expect(page).toHaveURL(/.*\/ergo\/childs-list/);
         });
 
