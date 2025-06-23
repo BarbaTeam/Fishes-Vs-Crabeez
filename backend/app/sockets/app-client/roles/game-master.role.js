@@ -4,8 +4,9 @@ const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
 const { GameRuntime } = require('../../../game/runtime');
+const { GAMES_RUNING } = require('../../../game/running-games');
 
-const { GAMES, ERGO_ROOM, CHILD_ROOM, GAMES_RUNTIME } = require("../app-client.helpers");
+const { GAMES, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { ErgoRole_Impl } = require("./ergo.role");
@@ -50,13 +51,21 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
 
             this.io.to(this._gameId).emit('startCountdown');
             setTimeout(() => {
-                GAMES_RUNTIME[game.gameId] = new GameRuntime(this.io, game);
+                GAMES_RUNING[game.gameId] = new GameRuntime(this.io, game);
                 this.io.to(this._gameId).emit('endCountdown');
             }, 5000);
         });
 
         this._registerListener('updateGame', (update) => {
             // TODO : Enabling game master to update game
+
+            const game = GAMES.get(this._gameId);
+            if (game.state === GameLobbyState.WAITING) {
+                // ...
+                return;
+            }
+
+            //const gameRuntime = GAMES_RUNING[this._gameId].receiver.onErgoUpdate(update);
         });
 
         this._registerListener('closeGame', () => {

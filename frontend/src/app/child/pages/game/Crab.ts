@@ -5,11 +5,16 @@ export class Crab extends Enemy {
 
     private image: HTMLImageElement;
 
-    constructor(gameEngine: GameEngine,  canvas: HTMLCanvasElement, x?: number, y?: number) {
-        super(gameEngine, canvas, x, y);
+    private constructor(canvas: HTMLCanvasElement, x: number, y: number, lane: number ) {
+        super(canvas, x, y, lane);
 
         this.image = new Image();
         this.image.src = "../../../../assets/images/game/enemy/crab_32x32.png";
+    }
+
+    public static fromJson(data: any, canvas : HTMLCanvasElement): Crab {
+        const crab = new Crab(canvas, data.x, data.y, data.lane);
+        return crab;
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {

@@ -1,3 +1,4 @@
+/*
 import { Enemy } from "./Enemy";
 import { GameEngine } from "./game-engine";
 
@@ -28,3 +29,4 @@ export class HiveCrab extends Enemy {
         );
     }
 }
+*/
