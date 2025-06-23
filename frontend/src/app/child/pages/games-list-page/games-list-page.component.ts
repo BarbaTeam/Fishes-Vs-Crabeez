@@ -9,7 +9,7 @@ import { GamesService } from '@app/shared/services/games.service';
 import { NotifService } from '@app/shared/services/notif.service';
 
 import { GameID } from '@app/shared/models/ids';
-import { Game, GameLobby, GameState } from '@app/shared/models/game.model';
+import { Game, GameState } from '@app/shared/models/game.model';
 import { User } from '@app/shared/models/user.model';
 
 
@@ -76,7 +76,7 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
         this.socket.on<GameID>('openGame_SUCCESS')
             .pipe(first()) // <-- one time subscription
             .subscribe((gameId) => {
-                this.gamesLobbyService.selectGameLobby(gameId);
+                this.gamesService.selectGame(gameId);
                 this.router.navigate(['/child/game/running'], { queryParams: { id: gameId } });
             });
 
