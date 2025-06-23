@@ -114,7 +114,7 @@ export class GameEngine {
         if (enemy.x < 11) {
             enemy.destroy();
             this.health = Math.max(0, this.health - enemy.maxHealth);
-            if(this.health <= 1){
+            if(this.health == 0){
                 this.model.hasEnded = true;
             }
             this.notifier.onEnemyDespawned(enemy.id);

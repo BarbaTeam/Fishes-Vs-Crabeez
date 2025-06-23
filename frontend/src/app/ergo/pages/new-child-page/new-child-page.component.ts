@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserService } from '@app/shared/services/user.service';
 
 import { User } from '@app/shared/models/user.model';
+import { QuestionNotion } from '@app/shared/models/question.model';
 
 
 
@@ -38,9 +39,11 @@ export class NewChildPageComponent {
         const containsValidFirstName = this._userTemp.firstName.length > 0;
         const containsValidLastName = this._userTemp.lastName.length > 0;
         const containsValidAge = this._userTemp.age > 0;
-        const activatesAtLeastOneNotion = Object.values(
+        const activatesAtLeastOneNotion =  Object.entries(
             this._userTemp.config.notionsMask
-        ).some(n => n);
+        ).some(([k, n]) => {
+            return n && k !== QuestionNotion.ENCRYPTION;
+        });
 
         this.isValid = (
             containsValidFirstName

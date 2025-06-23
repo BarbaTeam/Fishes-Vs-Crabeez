@@ -1,4 +1,5 @@
 "use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameEngine = void 0;
 const events_handler_1 = require("../events-handler");
 const drone_1 = require("./enemies/drone");
@@ -83,7 +84,7 @@ class GameEngine {
         if (enemy.x < 11) {
             enemy.destroy();
             this.health = Math.max(0, this.health - enemy.maxHealth);
-            if (this.health <= 1) {
+            if (this.health == 0) {
                 this.model.hasEnded = true;
             }
             this.notifier.onEnemyDespawned(enemy.id);
@@ -166,3 +167,4 @@ class GameEngine {
     }
 }
 exports.GameEngine = GameEngine;
+
