@@ -27,7 +27,7 @@
     cursor: default;
     padding-bottom: 0%;
     transform: scale(1);
-
+    transform: translateY(0px);
     color: #041833;
     background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
 }
@@ -41,6 +41,15 @@
 }
 :host(.green){
     background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
+}
+
+:host(.grey){
+    background-image: url('../../../../assets/images/environement/grey_conteneur_back.gif');
+}
+:host(.grey):hover{
+    cursor: not-allowed;
+    transform: translateY(0px);
+    transform: scale(1);
 }
 
 :host(.orange){

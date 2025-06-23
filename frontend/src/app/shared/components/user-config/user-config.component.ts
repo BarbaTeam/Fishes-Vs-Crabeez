@@ -30,5 +30,24 @@ export class UserConfigComponent implements OnInit {
 
         this.userTemp.emit(this.localUserTemp);
     }
+
+    showIconSelector = false;
+
+    availableIcons = [
+        'blue_fish.png',
+        'red_fish.png',
+        'yellow_fish.png',
+        'turtle.png'
+    ];
+
+    selectIcon(icon: string) {
+        this.localUserTemp.icon = icon;
+        this.showIconSelector = false;
+        this.onChange();
+    }
+
+    onChange(): void {
+        this.userTemp.emit(this.localUserTemp);
+    }
 }
 

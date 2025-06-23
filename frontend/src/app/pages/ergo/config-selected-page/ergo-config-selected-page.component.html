@@ -3,26 +3,59 @@
     <app-medium-button class="navbar-button"
         [routerLink]="['/ergo-stat-selected']"
         routerLinkActive="active"
-        > <p class="name">{{user.name}}</p>
+    >
+        <p class="name"> {{user.name}} </p>
     </app-medium-button>
     <app-medium-button class="navbar-button"
         [routerLink]="['/ergo-config-selected']"
         routerLinkActive="active"
-        > Configuration
+    >
+        Configuration
     </app-medium-button>
     <app-medium-button
         class="navbar-button red"
         (click)="back()"
-        > Retour
+    >
+        Retour
     </app-medium-button>
 
 
     <!--Zone du main -->
-    <app-inner-box class="main-box blue center-content">
+    <app-inner-box class="main-box blue center-content scrollable">
         <app-user-config
             [user]="user"
-            (userTemp)="onUserTempChanged($event)">
-        </app-user-config>
-        <app-big-button class="save" (click)="saveChanges()">Sauvegarder</app-big-button>
+            (userTemp)="onUserTempChanged($event)"
+        />
+        <div class="save-container">
+            <img
+                src="../../../../assets/images/icons/cross.png"
+                alt="Supprimé"
+                class="cross icon"
+                [class.visible]="showDeleted"
+                (click)="removeUser()"
+            />
+            <img
+                src="../../../../assets/images/icons/cap.png"
+                alt="Supprimé"
+                class="cap icon"
+                [class.visible]="showDeleted"
+                (click)="putSafety()"
+            />
+            <img
+                src="../../../../assets/images/icons/closedcross.png"
+                alt="Supprimé"
+                class="delete icon"
+                [class.visible]="!showDeleted"
+                (click)="removeSafety()"
+            />
+
+            <app-big-button class="save" (click)="saveChanges()">Sauvegarder</app-big-button>
+            <img
+                src="../../../../assets/images/icons/valid.png"
+                alt="Validé"
+                class="success icon"
+                [class.visible]="showSuccess"
+            />
+        </div>
     </app-inner-box>
 </app-template>

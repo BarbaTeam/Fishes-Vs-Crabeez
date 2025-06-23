@@ -15,7 +15,7 @@ import { ErgoListPageComponent } from 'src/app/pages/ergo/list-page/ergo-list-pa
   styleUrl: './user-list.component.scss'
 })
 
-export class UserListComponent {
+export class UserListComponent implements OnInit {
     public userList: User[] = [];
 
     constructor(private userService: UserService,  private router: Router, private route: ActivatedRoute){

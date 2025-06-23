@@ -17,6 +17,28 @@ import { UserID } from "../models/ids";
  *      Confirmer la bonne utilisation de BehaviorSubject, plûtot que Observable
  */
 export class UserService{
+    public EMPTY_USER: User = {
+        userId:`u${Math.floor(Math.random() * 1000)}`,
+        name: "New Player",
+        age: "",
+        icon: "unknown.png",
+        userConfig: {
+            showsAnswer: false,
+            readingAssistance: false,
+            advancedStats: false,
+            leaderBoard: false,
+            fontSize: 0.5,
+            sound: 0.5,
+            numberRewrite: false,
+            addition: false,
+            soustraction: false,
+            multiplication: false,
+            division: false,
+            encryption: false,
+            equation: false,
+        }
+    };
+
     private users: User[] = [];
     public users$: BehaviorSubject<User[]> = new BehaviorSubject(this.users);
 
@@ -48,6 +70,17 @@ export class UserService{
     public createUser(user: User) {
         this.users.push(user);
         this.users$.next(this.users);
+    }
+    
+    public removeUser(user: User) {
+        const userIdx = this.users.findIndex(u => u.userId === user.userId);
+        if (userIdx !== -1) {
+            this.users.splice(userIdx, 1);
+            this.users$.next(this.users);
+            this.localStorageService.removeData(this.LOCAL_STORAGE_KEY);
+        } else {
+            console.warn(`User ${user.userId} not found`);
+        }
     }
     
     public saveChanges(changedUser: User): void {

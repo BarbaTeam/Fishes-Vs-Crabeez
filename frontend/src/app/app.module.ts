@@ -59,6 +59,7 @@ import { SettingsToggleComponent } from './shared/components/settings-toggle/set
 
 // Miscellaneous :
 import { GradingLineComponent } from './shared/components/grading-line/grading-line.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -117,7 +118,8 @@ import { GradingLineComponent } from './shared/components/grading-line/grading-l
     ],
     imports: [
         BrowserModule,
-        AppRoutingModule
+        AppRoutingModule,
+        FormsModule
     ],
     providers: [],
     bootstrap: [AppComponent]
