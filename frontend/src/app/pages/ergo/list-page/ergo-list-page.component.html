@@ -5,9 +5,9 @@
     <app-medium-button class="navbar-button invisible"/>
 
     <!--Zone du main -->
-    <app-inner-box class="main-box blue">
+    <app-inner-box class="main-box blue scrollable" style="width: 47.5vw">
         <app-user-list></app-user-list>
         <app-user-card [user]="userBlank" (click)="addNewUser()"/>
     </app-inner-box>
-    
+
 </app-template>
