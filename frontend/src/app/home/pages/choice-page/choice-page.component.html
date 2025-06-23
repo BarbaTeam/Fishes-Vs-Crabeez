@@ -14,13 +14,24 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-big-button [routerLink]="['/ergo']">
-            Je suis un ergothérapeute
-        </app-big-button>
+        <div class="container">
+            <h2 class="title">Selectionnez votre rôle !</h2>
+            <app-choice-button
+                class="card1"
+                [title]="'Ergothérapeute'"
+                [imageUrl]="'../../assets/images/icons/ergo_choice.png'"
+                [description]="'Un rôle qui permet de créer des sessions multijoueur, de gérer, créer et suivre une liste d\'enfants.'"
+                [routerLink]="['/ergo']"
+            />
 
-        <app-big-button [routerLink]="['/home/childs-list']">
-            Je suis un enfant
-        </app-big-button>
+            <app-choice-button
+                class="card2"
+                [title]="'Enfant'"
+                [imageUrl]="'../../assets/images/icons/child_choice.png'"
+                [description]="'Un rôle qui permet de jouer, que ça soit en solo, ou avec ses amis, en rejoignant les sessions créées par l\'Ergo.'"
+                [routerLink]="['/home/childs-list']"
+            />
+        </div>
     </app-body>
 
 </app-template>
