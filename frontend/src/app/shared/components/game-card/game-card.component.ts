@@ -8,4 +8,9 @@ import { Component, Input } from '@angular/core';
 export class GameCardComponent {
   @Input() gameId!: string;
   @Input() playerCount!: number;
+  @Input() gameState!: string;
+
+  getStatusClass(state: string): string {
+    return 'status-' + state.replace(/\s+/g, '-').toLowerCase();
+  }
 }

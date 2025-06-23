@@ -1,36 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
 .game-card {
+  font-family: 'Press Start 2P', monospace;
   background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
-  padding: 1.25rem 1.5rem;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  padding: 1.5rem;
+  border: 3px solid #4dd0e1;
+  border-radius: 8px;
   color: #01579b;
-  border: 2px solid #4dd0e1;
-  overflow: hidden;
   image-rendering: pixelated;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  min-width: 250px;
+  max-width: 400px;
 
   &:hover {
-    transform: translate(-2px, -2px);
-   
+    transform: translate(-3px, -3px);
+    box-shadow: 6px 6px 12px rgba(1, 87, 155, 0.3);
   }
 
   .game-header {
-    margin-bottom: 0.75rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px dashed rgba(0, 131, 176, 0.3);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px dashed rgba(0, 131, 176, 0.4);
 
     h3 {
       margin: 0;
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: #01579b;
-      text-shadow: 1px 1px 0 #b2ebf2;
+      text-shadow: 0 0 2px #b2ebf2, 1px 1px 0 #b2ebf2;
     }
   }
 
   .game-body {
     p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #0277bd;
+      margin: 0.25rem 0;
+      font-size: 0.75rem;
       text-shadow: 1px 1px 0 #e0f7fa;
+    }
+
+    .status-en-attente {
+      color: #388e3c;
+    }
+
+    .status-en-préparation {
+      color: #f57c00;
+    }
+
+    .status-en-cours-de-jeu {
+      color: #d32f2f;
+    }
+
+    .status-terminé {
+      color: #0288d1;
     }
   }
 }

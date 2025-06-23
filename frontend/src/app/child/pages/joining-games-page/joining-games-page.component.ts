@@ -57,10 +57,21 @@ export class JoiningGamesPageComponent implements OnInit, OnDestroy {
                 }));
             })
         );
+
+        this.subscriptions.add(
+            this.socket.on<string>('accessGranted').subscribe((gameId) => {
+                this.router.navigate(['/child/games-list'], { queryParams: { id: gameId } });
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<string>('accessDenied').subscribe(() => {
+            })
+        );
     }
 
-    joinGame(roomId: string): void {
-        this.router.navigate(['/child/games-list'], { queryParams: { id: roomId } });
+    joinGame(gameId: string): void {
+        this.socket.sendMessage('askAccessToGame', { gameId: gameId});
     }
 
     ngOnDestroy(): void {

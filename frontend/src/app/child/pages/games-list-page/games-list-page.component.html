@@ -21,7 +21,11 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box class="main-box blue little">
+        <app-inner-box *ngIf="state === 'En attente'" class="main-box transparent little">
+            <img class="tuto" src="../../../../assets/images/icons/tuto1.png">
+            <img class="tuto" src="../../../../assets/images/icons/tuto2.png">
+        </app-inner-box>
+        <app-inner-box *ngIf="state === 'En attente'" class="main-box blue little">
             <p class="title">Joueurs en attente</p>
             <app-user-card
                 *ngFor="let player of players"
@@ -29,6 +33,19 @@
                 class="horizontal lobby unclickable"
             ></app-user-card>
         </app-inner-box>
+        <app-inner-box *ngIf="state === 'En attente'" class="main-box transparent little">
+            <img class="tuto" src="../../../../assets/images/icons/tuto3.png">
+            <img class="tuto" src="../../../../assets/images/icons/tuto4.png">
+        </app-inner-box>
+
+         <div *ngIf="state === 'En préparation'" class="countdown-container">
+            <div *ngIf="countdown > 0" class="countdown-number animate">
+                {{ countdown }}
+            </div>
+            <div *ngIf="countdown === 0" class="countdown-number go-message animate">
+                GO !
+            </div>
+        </div>
     </app-body>
 
 </app-template>

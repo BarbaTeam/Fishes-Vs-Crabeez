@@ -15,8 +15,17 @@ export class Drone extends Enemy {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        const scaledWidth = this.width * 0.9;
-        const scaledHeight = this.height * 0.9;
-        ctx.drawImage(this.image, this.x - scaledWidth / 2, this.y - scaledHeight/2, this.width, this.height);
+        const scale = 0.6;
+        const scaledWidth = this.width * scale;
+        const scaledHeight = this.height * scale;
+
+        ctx.drawImage(
+            this.image,
+            this.x - scaledWidth / 2,
+            this.y - scaledHeight / 2,
+            scaledWidth,
+            scaledHeight
+        );
     }
+
 }

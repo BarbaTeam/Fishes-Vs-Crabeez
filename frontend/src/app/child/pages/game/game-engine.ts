@@ -95,7 +95,7 @@ export class GameEngine {
 
     private kill(enemy: Enemy): void {
         if(enemy instanceof HiveCrab){
-            this.enemies.push(new Drone(this,this.canvas, enemy.position.x, enemy.position.y - 50, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x+40, enemy.position.y-80, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x-100, enemy.position.y, enemy.sideValue));
+            this.enemies.push(new Drone(this,this.canvas, enemy.position.x, enemy.position.y, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x+40, enemy.position.y-40, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x-50, enemy.position.y+40, enemy.sideValue));
         }
         playKillSound(this.gameComponent.user.userConfig.sound);
         enemy.destroy();
@@ -117,12 +117,6 @@ export class GameEngine {
                     projectile.destroy();
                     this.score += enemy.scoreValue;
                     playScoreSound(this.gameComponent.user.userConfig.sound);
-                    if(this.score >= 50){
-                        //this.gameComponent.end = true
-                        //this.gameComponent.stopAudio();
-                        //this.gameComponent.encryptAudio?.pause();
-                        playSuccess(this.gameComponent.user.userConfig.sound)
-                    }
                 }
             });
         });

@@ -102,18 +102,18 @@ export class Player {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-
         ctx.save();
-        ctx.translate(this.x + this.width / 2, this.y + this.height / 2);
 
-        ctx.rotate(Math.PI/4);
+        ctx.translate(this.x, this.y);
 
+        ctx.rotate(Math.PI / 4);
 
-        if (this.gameEngine.questionNotion == "ENCRYPTION"){
-            ctx.drawImage(this.encryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
-        } else {
-            ctx.drawImage(this.decryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
-        }
+        const img = this.gameEngine.questionNotion === "ENCRYPTION"
+            ? this.encryptedImage
+            : this.decryptedImage;
+
+        ctx.drawImage(img, -this.width / 2, -this.height / 2, this.width, this.height);
+
         ctx.restore();
 
         this.projectiles.forEach(projectile => {

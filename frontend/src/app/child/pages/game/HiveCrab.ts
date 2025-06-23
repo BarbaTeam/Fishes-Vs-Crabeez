@@ -15,8 +15,16 @@ export class HiveCrab extends Enemy {
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
-        const scaledWidth = this.width * 2.5;
-        const scaledHeight = this.height * 2.5;
-        ctx.drawImage(this.image, this.x - scaledWidth / 2, this.y - scaledHeight, scaledWidth, scaledHeight);
+        const scale = 1.5;
+        const scaledWidth = this.width * scale;
+        const scaledHeight = this.height * scale;
+
+        ctx.drawImage(
+            this.image,
+            this.x - scaledWidth / 2,
+            this.y - scaledHeight / 2,
+            scaledWidth,
+            scaledHeight
+        );
     }
 }
