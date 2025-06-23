@@ -5,15 +5,13 @@ const bodyParser = require('body-parser');
 const http = require('http');
 const { Server } = require('socket.io');
 const api = require('./api');
-const number = require('joi/lib/types/number');
-const { UserSchema } = require('./shared/schemas/user.schema')
 
 module.exports = (cb) => {
     const app = express();
     app.disable('x-powered-by');
     app.use(cors());
     app.use(bodyParser.json());
-    app.use(morgan('[:date[iso]] :method :url :status :response-time ms - :res[content-length]'));
+    app.use(morgan('[:date[iso]] :method :url :status :response-time ms')) // Allégé
 
     app.use('/api', api);
     app.use('*', (req, res) => res.status(404).end());
@@ -26,74 +24,96 @@ module.exports = (cb) => {
         }
     });
 
-    let lobbies = new Map();
-    let lobbyCount = 0;
+    const roomPlayers = new Map(); // lobbyId => [players]
 
     io.on('connection', (socket) => {
         let currentPlayer = null;
-        let currentLobbyId = null;
+        let currentRoom = null;
 
-        console.log('Client connected:', socket.id);
-
+        console.log(`[SERVER] Client connecté : ${socket.id}`);
 
         socket.on('createLobby', () => {
-            currentLobbyId = lobbyCount++;
-            lobbies.set(currentLobbyId, []);
-            io.emit('lobbyCreated', currentLobbyId); 
-            console.log('[SERVER] Lobby created by', socket.id);
+            const lobbyId = `lobby-${Date.now()}`;
+            roomPlayers.set(lobbyId, []);
+            socket.join(lobbyId);
+            io.emit('lobbyCreated', lobbyId);
+        });
+
+        socket.on('joinLobby', ({ lobbyId, player }) => {
+            currentPlayer = player;
+            currentRoom = lobbyId;
+            socket.join(lobbyId);
+
+            if (!roomPlayers.has(lobbyId)) roomPlayers.set(lobbyId, []);
+            const players = roomPlayers.get(lobbyId);
+            if (!players.some(p => p.userId === player.userId)) {
+                players.push(player);
+            }
+
+            io.to(lobbyId).emit('playerConnected', { lobbyId, player });
+            broadcastLobbiesUpdate();
+        });
+
+        socket.on('leaveLobby', ({ lobbyId, player }) => {
+            if (!roomPlayers.has(lobbyId)) return;
+
+            const players = roomPlayers.get(lobbyId);
+            roomPlayers.set(lobbyId, players.filter(p => p.userId !== player.userId));
+
+            socket.leave(lobbyId);
+            io.to(lobbyId).emit('playerDisconnected', { lobbyId, player });
+            broadcastLobbiesUpdate();
         });
 
         socket.on('closeLobby', (lobbyId) => {
-            lobbies.delete(lobbyId);
-            io.emit('lobbyClosed', lobbyId); 
-            console.log('[SERVER] Lobby destroyed by', socket.id);
-        });
-
-        socket.on('playerConnected', ({lobbyId, player}) => {
-            currentPlayer = player;
-            currentLobbyId = lobbyId;
-            const alreadyExists = lobbies.get(lobbyId).some(p => p.userId === player.userId);
-            if (!alreadyExists) {
-                lobbies.get(lobbyId).push(player);
-                socket.broadcast.emit('playerConnected', {lobbyId, player});
-                console.log(`[SERVER] Player connected: ${player.username} to lobby ${lobbyId}`);
-            }
-        });
-
-        socket.on('playerDisconnected', () => {
-            if (currentPlayer && currentLobbyId) {
-                const newList = lobbies.get(currentLobbyId).filter(p => p.userId !== currentPlayer.userId);
-                lobbies.set(currentLobbyId,newList);
-                io.emit('playerDisconnected', {lobbyId, currentPlayer});
-                console.log(`[SERVER] Player disconnected: ${currentPlayer.username}`);
-            }
+            roomPlayers.delete(lobbyId);
+            io.emit('lobbyClosed', lobbyId);
+            io.to(lobbyId).emit('leaveLobby', lobbyId); // Optionnel
+            broadcastLobbiesUpdate();
         });
 
         socket.on('requestLobbies', () => {
-            if(lobbies){
-                socket.emit('lobbies', lobbies);
-            } else {
-                console.log('[SERVER] No lobby found')
-            }
-        })
+            const lobbyList = Array.from(roomPlayers.keys());
+            const detailedLobbies = Array.from(roomPlayers.entries()).map(([lobbyId, players]) => ({
+                lobbyId,
+                players
+            }));
+
+            socket.emit('lobbies', lobbyList);
+            socket.emit('lobbiesUpdated', detailedLobbies);
+        });
 
         socket.on('requestLobbyState', (lobbyId) => {
-            if (lobbyId) {
-                socket.emit('lobbyState', lobbies.get(lobbyId));
-            } else {
-                console.log(`[SERVER] Lobby ${lobbyId} not found`);
-            }
+            const players = roomPlayers.get(lobbyId) || [];
+            socket.emit('lobbyState', { lobbyId, players });
         });
 
         socket.on('ergoStartGame', () => {
-            io.emit('gameStarted');
-            console.log('[SERVER] The game has started !')
-        })
-    });
+            if (currentRoom) {
+                io.to(currentRoom).emit('gameStarted');
+            }
+        });
 
+        socket.on('disconnect', () => {
+            if (currentPlayer && currentRoom) {
+                const players = roomPlayers.get(currentRoom) || [];
+                roomPlayers.set(currentRoom, players.filter(p => p.userId !== currentPlayer.userId));
+                io.to(currentRoom).emit('playerDisconnected', { lobbyId: currentRoom, player: currentPlayer });
+                broadcastLobbiesUpdate();
+            }
+        });
+
+        function broadcastLobbiesUpdate() {
+            const lobbyList = Array.from(roomPlayers.entries()).map(([lobbyId, players]) => ({
+                lobbyId,
+                players
+            }));
+            io.emit('lobbiesUpdated', lobbyList);
+        }
+    });
 
     server.listen(process.env.PORT || 9428, () => {
         if (cb) cb(server);
-        console.log('Server listening on port', process.env.PORT || 9428);
+        console.log(`[SERVER] Listening on port ${process.env.PORT || 9428}`);
     });
 };
