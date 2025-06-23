@@ -13,10 +13,15 @@
     text-align: center;
 }
 
-:host:hover{
-    cursor: pointer;
+:host(.auto-width) {
+    width: auto;
 }
 
-:host:active{
+:host(.active) {
+    background-color: #669d94;
+}
+
+:host:hover{
     cursor: pointer;
+    background-color: #bfc5d9;
 }

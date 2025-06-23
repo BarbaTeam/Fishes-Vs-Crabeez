@@ -1,9 +1,12 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
+import { from } from "rxjs";
+
 import { LocalStorageService } from "./localStorage.service";
 
 import { User } from "../models/user.model";
 import { MOCK_USER } from "../mocks/user.mock";
+import { UserID } from "../models/ids";
 
 @Injectable({
     providedIn: 'root'
@@ -44,22 +47,28 @@ export class UserService{
 
     public saveChanges(changedUser: User): void {
         if (changedUser) {
-          const index = this.users.findIndex(user => user.userId === changedUser.userId);
-      
-          if (index !== -1) {
-            this.users[index] = { ...changedUser }; //c'est un spread operator, ca sert à faire une copie de changedUser et pas utilisé directement l'instance passé en paramètre, une bonne pratique angular askip
-            
+            const userIdx = this.users.findIndex(
+                user => user.userId === changedUser.userId
+            );
+
+            if (userIdx === -1) {
+                console.warn(`User ${changedUser.userId} not found`);
+                return;
+            }
+
+            this.users[userIdx] = { ...changedUser };
+
             if (this.selectedUser.userId === changedUser.userId) {
-              this.selectedUser = { ...changedUser }; 
-              this.selectedUser$.next(this.selectedUser); 
-              this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
-          }
+                this.selectedUser = { ...changedUser };
+                this.selectedUser$.next(this.selectedUser);
+                this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
+            }
 
             this.users$.next(this.users);
-            console.log(`User ${changedUser.userId} mis à jour.`);
-          } else {
-            console.warn(`User ${changedUser.userId} non trouvé dans la liste.`);
-          }
         }
-      }
+    }
+
+    public getUser(userId: UserID): User | undefined {
+        return this.users.find(user => user.userId == userId);
+    }
 }
