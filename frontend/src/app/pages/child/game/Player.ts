@@ -25,7 +25,6 @@ export class Player {
         this.height = 100;
         this._projectiles = [];
         this.seat = Math.floor(Math.random() * 3) + 1;;
-        this.rotateFish();
         this.hasChangedSeat = true;
 
         this.decryptedImage = new Image();
@@ -66,25 +65,9 @@ export class Player {
             default:
                 break;
         }
-        this.rotateFish();
     }
 
-    private rotateFish(): void {
-        switch (this.seat) {
-            case 1:
-                this.angle = Math.PI / 2;
-                break;
-            case 2:
-                this.angle = 0;
-                break; 
-            case 3:
-                this.angle = Math.PI / 2;
-                break;
-            default:
-                this.angle = 0;
-                break;
-        }   
-    }
+
     public shoot(): void {
         if(this.gameEngine.questionNotion !== "ENCRYPTION")
             this.projectiles.push(new Projectile(this.gameEngine, this));
@@ -117,12 +100,27 @@ export class Player {
     }    
 
     public draw(ctx: CanvasRenderingContext2D): void {
+        const target = this.gameEngine.closestEnemy(this.seat);
+        if(target){
+            const dx = target.position.x - this.x;
+            const dy = target.position.y - this.y;
+            this.angle = Math.atan2(dy, dx) + Math.PI / 4; // + 45 degrés car le poisson est incliné de 45 degrés de base
+        }
+        else {
+            this.angle = 0;
+        }
+
         ctx.save(); 
         ctx.translate(this.x + this.width / 2, this.y + this.height / 2); 
-        ctx.rotate(this.angle); 
-        if (this.seat == 1) {
-            ctx.scale(1, -1); 
+
+        if (this.angle > Math.PI / 2 || this.angle < -Math.PI / 4) {
+            ctx.scale(-1, 1); 
+            this.angle = -this.angle - Math.PI/2; 
         }
+
+        ctx.rotate(this.angle); 
+
+
         if (this.gameEngine.questionNotion == "ENCRYPTION"){
             ctx.drawImage(this.encryptedImage, -this.width / 2, -this.height / 2, this.width, this.height);
         } else {
