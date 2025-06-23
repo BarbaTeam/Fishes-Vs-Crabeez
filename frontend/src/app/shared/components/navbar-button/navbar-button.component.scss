@@ -14,6 +14,7 @@
     font-weight: bold;
     padding-bottom: 2%;
     transition: transform 0.3s;
+    text-shadow: 3px 3px 5px rgba(47, 32, 0, 0.7);
 
 }
 
@@ -25,10 +26,10 @@
 
 :host(.active){
     cursor: default;
-    padding-bottom: 0%;
     transform: scale(1);
     transform: translateY(0px);
     color: #041833;
+    padding-bottom: 0%;
     background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
 }
 
@@ -36,16 +37,24 @@
     cursor: default;
 }
 
-:host(.red){
-    background-image: url('../../../../assets/images/environement/red_conteneur_back.gif');
-}
-:host(.green){
-    background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
+:host(.red) {
+  background-image: url('../../../../assets/images/environement/red_conteneur_back.gif');
+  color: #fff; // plus fort que #fcfcfc
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); // ✅ lisibilité sur fond clair
 }
 
-:host(.grey){
-    background-image: url('../../../../assets/images/environement/grey_conteneur_back.gif');
+:host(.green) {
+  background-image: url('../../../../assets/images/environement/green_conteneur_back.gif');
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
 }
+
+:host(.grey) {
+  background-image: url('../../../../assets/images/environement/grey_conteneur_back.gif');
+  color: #eaeaea; // gris clair plus contrasté
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
 :host(.grey):hover{
     cursor: not-allowed;
     transform: translateY(0px);

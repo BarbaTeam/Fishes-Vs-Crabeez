@@ -13,16 +13,23 @@
     left: 3rem;
 }
 
-.badge-group {
-    flex: 1 1 300px;
-    display: column;
-    flex-direction: row;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    min-width: 280px;
+.title, .name, .badge-group{
+    margin-top: 1rem;
 }
+
+.badge-group {
+  display: flex;
+  flex-direction: column; // ✅ Flex colonne
+  gap: 1rem;
+
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  min-width: 280px;
+  width: 100%;
+}
+
 
 .badge-list{
     display: flex;

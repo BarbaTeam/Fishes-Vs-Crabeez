@@ -1,74 +1,98 @@
 :host {
-    border-radius: 20px;
-    display:flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    overflow-y: hidden;
-    height: 70vh;
-    width: 77vh;
-    padding:1%;
-    margin: 1%;
+  --background-default: #ffffff;
+  --background-blue: #E0E7FA;
+  --text-default: #000000;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  justify-content: flex-start;
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 70vh;
+  width: 77vh;
+  padding: 1%;
+  margin: 1%;
+  border-radius: 20px;
+  background-color: var(--background-default);
+  color: var(--text-default);
+  transition: all 0.3s ease-in-out;
 }
 
+/* 🎨 Couleur bleue */
 :host(.blue) {
-    background-color: #E0E7FA;
-    color: black;
+  background-color: var(--background-blue);
 }
 
+/* 🧩 Contenu centré */
 :host(.center-content) {
-    justify-content: center;
+  justify-content: center;
 }
 
-
+/* 🧱 Tailles */
 :host(.big) {
-    width: 50vw;
+  width: 50vw;
 }
 
 :host(.medium) {
-    width: 45vw;
-    overflow-x: hidden;
+  width: 45vw;
+  overflow-x: hidden;
 }
 
 :host(.small) {
-    width: 25vw;
+  width: 25vw;
 }
 
 :host(.little) {
-    width: 40vh;
-    flex-direction: column;
-    align-items: center;
-    align-content: normal;
-    overflow-x: hidden;
+  width: 40vh;
+  flex-direction: column;
+  align-items: center;
+  align-content: flex-start;
+  overflow-x: hidden;
 }
 
-:host(.short){
-    height: 35vh;
+/* 📏 Hauteurs */
+:host(.short) {
+  height: 35vh;
 }
 
-:host(.shorter){
-    height: 20vh;
+:host(.shorter) {
+  height: 20vh;
 }
 
+/* 🧮 Liste de boutons verticale */
 :host(.button-list) {
-    flex-direction: column;
-    align-items: center;
-    height: 70vh;
-    width: 20vh;
-    color: #000000;
-    font-size: large;
-    font-weight: bold;
-    overflow-x: hidden;
+  flex-direction: column;
+  align-items: center;
+  height: 70vh;
+  width: 20vh;
+  font-size: 1rem;
+  font-weight: bold;
+  overflow-x: hidden;
 }
 
+/* 🧻 Scroll amélioré */
 :host(.scrollable) {
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-gutter: stable both-edges;
-    transition: scrollbar-color 0.5s;
-    scrollbar-color: rgba(128, 128, 128, 0) transparent;
-} :host(.scrollable):hover {
-    scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
-} :host(.scrollable)::-webkit-scrollbar {
-    // NOTE : Doesn't work on all browser
-    width: 3px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-color: rgba(128, 128, 128, 0) transparent;
+  transition: scrollbar-color 0.5s ease;
+}
+
+:host(.scrollable):hover {
+  scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
+}
+
+:host(.scrollable)::-webkit-scrollbar {
+  width: 4px;
+}
+
+:host(.scrollable)::-webkit-scrollbar-thumb {
+  background-color: rgba(100, 100, 100, 0.7);
+  border-radius: 2px;
+}
+
+:host(.scrollable)::-webkit-scrollbar-track {
+  background: transparent;
 }

@@ -1,66 +1,88 @@
-:host{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+:host {
+  --primary-color: #ff9918;
+  --primary-shadow: #b07039;
+  --hover-color: #df904b;
+  --active-color: #b07039;
+  --active-shadow: #724926;
 
-    height: 10vh;
-    width: 40vw;
-    border-radius: 0.5rem;
+  --green-color: #4caf50;
+  --green-hover: #409343;
+  --green-shadow: #1f4821;
 
-    margin-left: 5vw;
-    margin-right: 5vw;
+  --grey-color: #adadad;
+  --grey-shadow: #555555;
 
-    font-size: 30px;
-    font-weight: bold;
-    color: #11262d;
-    text-align: center;
-    background-color: #ff9918;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    box-shadow: 0px 8px 0px #b07039, 0px 12px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.1s ease-in-out;
+  height: 10vh;
+  width: 40vw;
+  border-radius: 0.5rem;
+  margin: 0 5vw;
+
+  font-size: clamp(1.2rem, 2vw, 2rem);
+  font-weight: bold;
+  color: #11262d;
+  text-align: center;
+  background-color: var(--primary-color);
+
+  box-shadow:
+    0 8px 0 var(--primary-shadow),
+    0 12px 15px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
-:host:hover{
-    cursor: pointer;
-    background-color: rgb(223, 144, 75);
+:host(:hover) {
+  cursor: pointer;
+  background-color: var(--hover-color);
 }
 
-:host:active{
-    background-color: #b07039;
-    box-shadow: 0px 4px 0px #724926, 0px 6px 10px rgba(0, 0, 0, 0.3);
-    transform: translateY(4px);
+:host(:active) {
+  background-color: var(--active-color);
+  box-shadow:
+    0 4px 0 var(--active-shadow),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(4px);
 }
 
-:host(.green){
-    height: 7vh;
-    width: 22vw;
-    background-color: #4caf50;
-    color: white;
-    box-shadow: 0px 8px 0px #1f4821, 0px 12px 15px rgba(0, 0, 0, 0.3);
-    transition: all 0.1s ease-in-out;
+/* 🟢 Green Variant */
+:host(.green) {
+  height: 7vh;
+  width: 22vw;
+  color: white;
+  background-color: var(--green-color);
+  box-shadow:
+    0 8px 0 var(--green-shadow),
+    0 12px 15px rgba(0, 0, 0, 0.3);
 }
 
-:host(.green):hover{
-    cursor: pointer;
-    background-color: #409343;
+:host(.green:hover) {
+  background-color: var(--green-hover);
 }
 
-:host(.green):active{
-    box-shadow: 0px 4px 0px #1f4821, 0px 6px 10px rgba(0, 0, 0, 0.3);
-    transform: translateY(4px);
+:host(.green:active) {
+  box-shadow:
+    0 4px 0 var(--green-shadow),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(4px);
 }
 
-:host(.grey){
-    height: 7vh;
-    width: 22vw;
-    background-color: #adadad;
-    color: rgb(1, 1, 1);
-    box-shadow: 0px 8px 0px #555555, 0px 12px 15px rgba(0, 0, 0, 0.3);
-    cursor: not-allowed;
+/* ⚪ Grey Variant */
+:host(.grey) {
+  height: 7vh;
+  width: 22vw;
+  color: #010101;
+  background-color: var(--grey-color);
+  box-shadow:
+    0 8px 0 var(--grey-shadow),
+    0 12px 15px rgba(0, 0, 0, 0.3);
+  cursor: not-allowed;
 }
 
-:host(.endGameButton){
-    margin:0;
-    height: 8vh;
-    width: 15vw;
+/* 🔚 End Game Button */
+:host(.endGameButton) {
+  margin: 0;
+  height: 8vh;
+  width: 15vw;
 }
