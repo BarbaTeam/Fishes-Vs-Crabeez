@@ -2,10 +2,11 @@
  * @namespace types
  */
 
-
 const { Grade } = require('./enums/grade.enum');
 const { MistakeCategory } = require('./enums/mistake-category.enum');
 const { QuestionNotion } = require('./enums/question-notion.enum');
+const { GameLobbyState } = require('./enums/game-lobby-state.enum');
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -151,6 +152,19 @@ const { QuestionNotion } = require('./enums/question-notion.enum');
 
 
 /**
+ * @typedef {Object} TempConfig
+ * @property {boolean} addition
+ * @property {boolean} soustraction
+ * @property {boolean} multiplication
+ * @property {boolean} division
+ * @property {boolean} equation
+ * @property {boolean} numberRewrite
+ * @property {boolean} encryption
+ *
+ * @memberof types
+ */
+
+/**
  * @typedef {Object} UserConfig
  * @property {boolean} showsAnswer      - Whether to display correct answers
  * @property {boolean} readingAssistance - Whether to enable reading assistance
@@ -170,7 +184,6 @@ const { QuestionNotion } = require('./enums/question-notion.enum');
  */
 
 
-
 /**
  * @typedef {Object} User
  * @property {UserID} userId     - Unique identifier for the user
@@ -178,6 +191,19 @@ const { QuestionNotion } = require('./enums/question-notion.enum');
  * @property {number} age        - User's age in years
  * @property {string} icon       - URL or key of the user's avatar/icon
  * @property {UserConfig} userConfig - User-specific configuration settings
+ *
+ * @memberof types
+ */
+
+
+/**
+ * @typedef {Object} GameLobby
+ * @property {GameID} gameId
+ * @property {string} name
+ * @property {UserID[]} playersId
+ * @property {GameLobbyState} state
+ * @property {Record<UserID, TempConfig>} playersTempConfig
+ * @property {string|null} [masterId]   // socket.id of the GAME_MASTER, or null if none
  *
  * @memberof types
  */
