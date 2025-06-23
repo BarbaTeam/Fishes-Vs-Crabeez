@@ -11,6 +11,7 @@ export const MOCK_GAMES_LOG: GameLog[] = [
         gameId: "g1",
         info: {
             playerIds: ["u1", "u2", "u3"],
+            date: new Date("2025-04-27T10:30:00.000Z"),
             duration: 6,
             config: {
                 maxDuration: 15,
@@ -233,6 +234,7 @@ export const MOCK_GAMES_LOG: GameLog[] = [
         gameId: "g2",
         info: {
             playerIds: ["u2", "u1", "u4"],
+            date: new Date("2025-04-28T10:30:00.000Z"),
             duration: 5,
             config: {
                 maxDuration: 10,
