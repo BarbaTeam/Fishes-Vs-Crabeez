@@ -11,11 +11,11 @@ import { GameLobby } from '@app/shared/models/game-lobby.model';
 
 
 @Component({
-    selector: 'app-game-lobby-page',
-    templateUrl: './game-lobby-page.component.html',
-    styleUrl: './game-lobby-page.component.scss'
+    selector: 'app-game-waiting-page',
+    templateUrl: './game-waiting-page.component.html',
+    styleUrl: './game-waiting-page.component.scss'
 })
-export class GameLobbyPageComponent implements OnInit, OnDestroy {
+export class GameWaitingPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
 
     public waitingGame!: GameLobby;
@@ -40,16 +40,12 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
             });
 
         this.subscriptions.add(
-            this.socket.on<any>('gameClosed').subscribe(() => {
-                this.router.navigate(['child/games-list']);
+            this.socket.on<any>('forcedGameLeave').subscribe(() => {
+                this.router.navigate(['/child']);
             })
         );
 
-        this.subscriptions.add(
-            this.socket.on<any>('leaveGame').subscribe(() => {
-                this.router.navigate(['child/games-list']);
-            })
-        );
+        // TODO : Moving countdown management in a guard
 
         this.subscriptions.add(
             this.socket.on<void>('startCountdown').subscribe(() => {
@@ -59,7 +55,7 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
 
         this.subscriptions.add(
             this.socket.on<void>('endCountdown').subscribe(() => {
-                this.router.navigate(['child/game'], { queryParams: { id: this.waitingGame.gameId } });
+                this.router.navigate(['/child/game/running'], { queryParams: { id: this.waitingGame.gameId } });
             })
         );
     }
@@ -79,6 +75,5 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
 
     ngOnDestroy(): void {
         this.subscriptions.unsubscribe();
-        this.socket.sendMessage('leaveGame');
     }
 }

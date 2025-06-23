@@ -1,36 +1,40 @@
 import { UserID } from "../../../shared/types";
+
 import { GameUpdatesNotifier } from "../../runtime/game-updates-notifier";
+import { GameModel } from "..";
+
 import { Crab } from "./enemies/crab";
 import { Enemy } from "./enemies/enemy";
 import { Player } from "./player";
 import { Projectile } from "./projectile";
 
+
+
 export class GameEngine {
-    
-    public notifier : GameUpdatesNotifier;
-    public players: Record<UserID, Player>;
-    public projectiles : Projectile[];
-    public enemies : Enemy[];
-    
-    constructor(notifier : GameUpdatesNotifier) {
-        this.notifier = notifier;
-        this.players = {};
-        this.projectiles = [];
-        this.enemies = [];
-        this.init();
+    public static readonly V_SCREEN_WIDTH = 1920;
+    public static readonly V_SCREEN_HEIGHT = 1200;
+
+    public players: Record<UserID, Player> = {};
+    public projectiles : Projectile[] = [];
+    public enemies : Enemy[] = [];
+
+    constructor(
+        private model: GameModel,
+        public notifier : GameUpdatesNotifier,
+        playersId: UserID[],
+    ) {
+        for (const playerId of playersId) {
+            this.registerPlayer(playerId);
+        }
     }
 
-    init() {
-        setInterval(() => this.update(), 1000 / 30);
-    }
-
-    registerPlayer(playerId : UserID, lane = 1) {
+    private registerPlayer(playerId : UserID, lane = 1): void {
         const player = new Player(lane);
         player.id = playerId;
         this.players[playerId] = player;
     }
 
-    handleMove(playerId: UserID, direction: string) {
+    public handleMove(playerId: UserID, direction: string) {
         const player = this.players[playerId];
         if (!player) return;
 
@@ -40,7 +44,7 @@ export class GameEngine {
         this.notifier.onPlayerChangedLane(playerId, player.lane);
     }
 
-    handleShoot(playerId: UserID) {
+    public handleShoot(playerId: UserID) {
         const player = this.players[playerId];
         if (!player) return;
 
@@ -50,7 +54,7 @@ export class GameEngine {
         this.notifier.onPlayerShot(playerId, projectile);
     }
 
-    _checkCollision(obj1 : any, obj2: any) {
+    private _checkCollision(obj1 : any, obj2: any) {
         if (!obj1 || !obj2) return false;
         if (typeof obj1.x !== 'number' || typeof obj1.y !== 'number') return false;
         if (typeof obj2.x !== 'number' || typeof obj2.y !== 'number') return false;
@@ -62,17 +66,17 @@ export class GameEngine {
         return distance < (obj1.width / 2 + obj2.width / 2);
     }
 
-    _addEnemy() {
+    private _addEnemy() {
         const enemy = new Crab();
         this.enemies.push(enemy);
         return enemy;
     }
 
-    kill(enemy : Enemy) {
+    public kill(enemy : Enemy) {
         enemy.destroy();
     }
 
-    update() {
+    public update() {
         this.enemies.forEach(enemy => {
             enemy.update();
             this.projectiles.forEach(projectile => {

@@ -10,21 +10,21 @@ import { CommonModule } from '@angular/common';
 
 import { SharedModule } from '@app/shared/shared.module';
 
-import { ChildRoutingModule } from './child-routing.module';
+import { GameRoutingModule } from './game-routing.module';
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Host :
 
-import { ChildHostComponent } from './child-host.component';
+import { GameHostComponent } from './game-host.component';
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pages :
 
-import { ProfilePageComponent } from './pages/profile-page/profile-page.component';
-import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
-import { GamesListPageComponent } from './pages/games-list-page/games-list-page.component';
+import { GameWaitingPageComponent } from './pages/waiting-page/game-waiting-page.component';
+import { GameRunningPageComponent } from './pages/running-page/game-running-page.component';
+
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -32,26 +32,25 @@ import { GamesListPageComponent } from './pages/games-list-page/games-list-page.
 ////////////////////////////////////////////////////////////////////////////////
 
 const PAGES_COMPONENTS = [
-    ProfilePageComponent,
-    SettingsPageComponent,
-    GamesListPageComponent,
+    GameWaitingPageComponent,
+    GameRunningPageComponent,
 ];
 
 
 
 @NgModule({
     declarations: [
-        ChildHostComponent,
+        GameHostComponent,
         ...PAGES_COMPONENTS,
     ],
     imports: [
         CommonModule,
-        ChildRoutingModule,
+        GameRoutingModule,
         SharedModule,
     ],
     exports: [
-        ChildHostComponent,
+        GameHostComponent,
         ...PAGES_COMPONENTS,
     ],
 })
-export class ChildModule {}
+export class GameModule {}

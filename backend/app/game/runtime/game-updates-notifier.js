@@ -1,44 +1,33 @@
-const { Server } = require('socket.io');
-
-const { UserID } = require('../../shared/types');
-
-const { Projectile } = require('../model/game-engine/projectile');
-
-
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameUpdatesNotifier = void 0;
 class GameUpdatesNotifier {
-    /**
-     * @param {Server} io
-     */
-    contructor(io) {
+    constructor(io) {
         this.io = io;
     }
-
-    /**
-     * @param {UserID} playerId
-     * @param {number} lane
-     */
+    onNewQuestionForPlayer(playerId, question) {
+        this.io.to(playerId).emit('newQuestion', question);
+    }
     onPlayerChangedLane(playerId, lane) {
-        this.io.send('playerChangedLane', { playerId, lane })
+        this.io.emit('playerChangedLane', playerId, lane);
     }
-
-    /**
-     * @param {UserID} playerId
-     * @param {Projectile} projectile
-     */
     onPlayerShot(playerId, projectile) {
-        this.io.send('newProjectile', projectile);
+        this.io.emit('newProjectile', projectile);
     }
-
-    /**
-     * @param {UserID} playerId
-     * @param {number} score
-     */
     onPlayerScoreUpdated(playerId, newScore) {
-        this.io.to(playerId).send('scoreUpdated', newScore);
+        this.io.to(playerId).emit('scoreUpdated', newScore);
+    }
+    onEnemyAdded(enemy) {
+        this.io.emit('enemyAdded', enemy);
+    }
+    onEnemyKilled(projectile, enemy) {
+        this.io.emit('enemyKilled', projectile, enemy);
+    }
+    onPlayerParalyzed(playerId) {
+        this.io.emit('playerParalyzed', playerId);
+    }
+    onPlayerDeparalyzed(playerId) {
+        this.io.emit('playerDeparalyzed', playerId);
     }
 }
-
-
-
-module.exports = { GameUpdatesNotifier };
+exports.GameUpdatesNotifier = GameUpdatesNotifier;

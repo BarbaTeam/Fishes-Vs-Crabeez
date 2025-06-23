@@ -1,12 +1,16 @@
 import { UserID } from "../../../shared/types";
 
+
+
 export class Player {
     public id : UserID;
+
     public x : number;
     public y : number;
     public width : number;
     public height : number;
     private _lane: number;
+
     public hasChangedLane : boolean;
     public score : number;
 
@@ -63,5 +67,15 @@ export class Player {
                 this.y = 0;
                 break;
         }
+    }
+
+    toJSON(): any {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            lane: this.lane,
+        };
     }
 }

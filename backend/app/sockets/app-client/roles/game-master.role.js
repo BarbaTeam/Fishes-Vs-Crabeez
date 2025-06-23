@@ -4,7 +4,7 @@ const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
 const { GameRuntime } = require('../../../game/runtime');
-const { GAMES_RUNNING } = require('../../../game/running-games');
+const { RUNNING_GAMES } = require('../../../game/running-games');
 
 const { GAMES, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
 
@@ -51,7 +51,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
 
             this.io.to(this._gameId).emit('startCountdown');
             setTimeout(() => {
-                GAMES_RUNNING[game.gameId] = new GameRuntime(this.io, game);
+                RUNNING_GAMES[game.gameId] = new GameRuntime(this.io, game);
                 this.io.to(this._gameId).emit('endCountdown');
             }, 5000);
         });
@@ -65,14 +65,18 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
                 return;
             }
 
-            //const gameRuntime = GAMES_RUNNING[this._gameId].receiver.onErgoUpdate(update);
+            //const gameRuntime = RUNNING_GAMES[this._gameId].receiver.onErgoUpdate(update);
         });
+
+        this._registerListener('unspyGame', () => {
+            // TODO : Allowing game masters to unspy a game w/o closing it
+        })
 
         this._registerListener('closeGame', () => {
             const oldGameId = this._gameId;
             this.unspyGame();
             GAMES.delete(oldGameId);
-            this.io.to(oldGameId).emit('leaveGame');
+            this.io.to(oldGameId).emit('forcedGameLeave');
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', oldGameId);
         });
     }

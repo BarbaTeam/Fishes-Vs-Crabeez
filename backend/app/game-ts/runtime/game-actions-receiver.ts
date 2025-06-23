@@ -10,14 +10,14 @@ export class GameActionsReceiver {
     ) {}
 
     public onAnswerReceived(playerId: UserID, answer: AnsweredQuestion): void {
-        // TODO : ...
+        this.model.quizHandler.receiveAnswer(playerId, answer);
     }
 
-    public onLanesChange(playerId: UserID, change: "UP"|"DOWN"): void {
-        // TODO : ...
+    public onLaneChanged(playerId: UserID, direction: "UP"|"DOWN"): void {
+        this.model.gameEngine.handleMove(playerId, direction);
     }
 
     public onPlayerLeaving(playerId: UserID): void {
-        // TODO : ...
+        // TODO : Handling player leaving
     }
 }

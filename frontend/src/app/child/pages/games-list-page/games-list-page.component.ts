@@ -48,7 +48,7 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
         this.socket.on<string>('tryJoinGame_SUCCESS')
             .pipe(first()) // <-- one time subscription
             .subscribe(() => {
-                this.router.navigate(['/child/game-lobby'], { queryParams: { id: gameId } });
+                this.router.navigate(['/child/game/'], { queryParams: { id: gameId } });
             });
 
         this.socket.on<string>('tryJoinGame_FAILURE')

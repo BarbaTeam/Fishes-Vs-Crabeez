@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Player = void 0;
 class Player {
     constructor(lane = 1) {
         this.width = 150;
@@ -5,25 +8,18 @@ class Player {
         this._lane = lane; // 1, 2, 3
         this.hasChangedLane = true;
         this.score = 0;
-
         this.x = 150;
         this.y = 0;
-
-        this.projectiles = [];
-
         this.update();
     }
-
     get lane() {
         return this._lane;
     }
-
     set lane(value) {
         if (value >= 1 && value <= 3) {
             this._lane = value;
         }
     }
-
     moveUp() {
         if (this.lane < 3) {
             this.lane++;
@@ -31,7 +27,6 @@ class Player {
             this.update();
         }
     }
-
     moveDown() {
         if (this.lane > 1) {
             this.lane--;
@@ -39,10 +34,8 @@ class Player {
             this.update();
         }
     }
-
     update(screenHeight = 1080) {
         const laneHeight = screenHeight / 4;
-
         switch (this.lane) {
             case 1:
                 this.y = laneHeight * 2;
@@ -55,8 +48,14 @@ class Player {
                 break;
         }
     }
+    toJSON() {
+        return {
+            x: this.x,
+            y: this.y,
+            width: this.width,
+            height: this.height,
+            lane: this.lane,
+        };
+    }
 }
-
-
-
-module.exports = { Player };
+exports.Player = Player;

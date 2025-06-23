@@ -1,7 +1,6 @@
 const { AppClientRole } = require("./roles/app-client-role.enum");
 const { AppClientRole_Impl } = require("./roles/app-client.role");
 const { GuestRole_Impl } = require("./roles/guest.role");
-const { GAMES_RUNTIME } = require('./app-client.helpers')
 
 
 
@@ -49,10 +48,4 @@ class AppClient {
 
 
 
-module.exports = {
-    AppClient,
-    AppClientRole,
-
-    // TODO : Removing it once we are (finally) using multithreading
-    GAMES_RUNTIME,
-};
+module.exports = { AppClient, AppClientRole };

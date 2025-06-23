@@ -1,43 +1,18 @@
-const { AnsweredQuestion, GameID, UserID } = require('../../shared/types');
-
-
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.GameActionsReceiver = void 0;
 class GameActionsReceiver {
-    /**
-     * @param {GameID} gameId
-     * @param {GameModel} model
-     */
-    constructor (gameId, model) {
-        this.gameId = gameId;
+    constructor(model) {
         this.model = model;
     }
-
-
-    /**
-     * @param {UserID} playerId
-     */
-    onShoot(playerId) {
-        this.model.handleShoot(playerId)
+    onAnswerReceived(playerId, answer) {
+        this.model.quizHandler.receiveAnswer(playerId, answer);
     }
-
-    /**
-     * @param {UserID} playerId
-     * @param {AnsweredQuestion} answer
-     */
-    onAnswerReceived(playerId, answer) {}
-
-    /**
-     * @param {UserID} playerId
-     * @param {"UP"|"DOWN"} change
-     */
-    onLanesChange(playerId, change) {}
-
-    /**
-     * @param {UserID} playerId
-     */
-    onPlayerLeaving(playerId) {}
+    onLaneChanged(playerId, direction) {
+        this.model.gameEngine.handleMove(playerId, direction);
+    }
+    onPlayerLeaving(playerId) {
+        // TODO : Handling player leaving
+    }
 }
-
-
-
-module.exports = { GameActionsReceiver };
+exports.GameActionsReceiver = GameActionsReceiver;
