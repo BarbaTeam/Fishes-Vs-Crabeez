@@ -8,12 +8,12 @@ services:
         ports:
             - "8081:9428"
 
-        image: "barbamaths-backend-e2e"
+        image: "barbamaths:backend-e2e"
 
         environment:
             - DB_FOLDER="database/e2e"
         volumes:
-            - database:/home/node/database/e2e
+            - database:/home/node/database/e2e:rw
         healthcheck:
             test: [ "CMD-SHELL", "curl -f http://localhost:9428/api/status || exit 1" ]
             interval: 1m30s
@@ -33,7 +33,7 @@ services:
         ports:
             - "8080:80"
 
-        image: "barbamaths-frontend-e2e"
+        image: "barbamaths:frontend-e2e"
 
         depends_on:
             backend:

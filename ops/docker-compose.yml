@@ -6,10 +6,10 @@ services:
         ports:
             - "8081:9428"
 
-        image: "barbamaths-backend"
+        image: "barbamaths:backend"
 
         volumes:
-            - database:/home/node/database
+            - database:/home/node/database:rw
         healthcheck:
             test: [ "CMD-SHELL", "curl -f http://localhost:9428/api/status || exit 1" ]
             interval: 1m30s
@@ -28,7 +28,7 @@ services:
         ports:
             - "8080:80"
 
-        image: "barbamaths-frontend"
+        image: "barbamaths:frontend"
 
         depends_on:
             backend:
