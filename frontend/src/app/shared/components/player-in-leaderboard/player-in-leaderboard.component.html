@@ -1,6 +1,6 @@
-<img class="icon" [src]="'../../assets/images/child-pps/' + user.icon" [alt]="'Icône de ' + user.name">
+<img class="icon" [src]="'../../assets/images/child-pps/' + user.icon" [alt]="'Icône de ' + user.firstName + ' ' + user.lastName">
 <div class="name">
-    <div class="first-name">{{ firstName }}</div>
-    <div class="last-name">{{ lastName }}</div>
+    <div class="first-name">{{ user.firstName }}</div>
+    <div class="last-name">{{ user.lastName }}</div>
 </div>
 <img class="grade" [src]="gradeIcon" [alt]="grading.grade"/>

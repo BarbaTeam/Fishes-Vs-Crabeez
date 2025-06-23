@@ -1,0 +1,18 @@
+:host{
+    display:flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    overflow-y: hidden;
+}
+
+:host(.horizontal){
+    display:flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: flex-start;
+    overflow-x: auto;
+
+    > * {
+        flex-shrink: 0; // Empêche la compression des éléments enfants
+    }
+}

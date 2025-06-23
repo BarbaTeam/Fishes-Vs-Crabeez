@@ -23,6 +23,9 @@ import { RollableBoxComponent } from './components/rollable-box/rollable-box.com
 // Users :
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { UserListComponent } from './components/user-list/user-list.component';
+import { StatefulUserCardComponent } from './components/stateful-user-card/stateful-user-card.component';
+import { StatefulUsersListComponent } from './components/stateful-user-list/stateful-users-list.component';
+import { NewChildButtonComponent } from './components/new-child-button/new-child-button.component';
 
 // Inputs :
 import { NavbarButtonComponent } from './components/navbar-button/navbar-button.component';
@@ -79,6 +82,9 @@ const SHARED_COMPONENTS = [
     // Users :
     UserCardComponent,
     UserListComponent,
+    StatefulUserCardComponent,
+    StatefulUsersListComponent,
+    NewChildButtonComponent,
 
     // Settings :
     BigButtonComponent,

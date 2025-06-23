@@ -1,9 +1,10 @@
 <ng-content></ng-content>
 
-@for(user of users; track user.userId) {
-    <app-user-card
+@for(user of users; let i = $index; track user.userId) {
+    <app-stateful-user-card
         class="hoverable"
         [user]="user"
+        [state]="states[i]"
         (click)="userClick.emit(user.userId)"
     />
 }

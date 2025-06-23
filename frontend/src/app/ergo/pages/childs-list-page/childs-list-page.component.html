@@ -35,18 +35,49 @@
     ---                               MAIN                                   ---
     --------------------------------------------------------------------------->
 
+    <!--
+        <app-body>
+            <app-inner-box class="transparent scrollable" style="width: 47.5vw">
+                <app-inner-box class="blue horizontal-scrollable" style="width: 47.5vw; height: 30vh">
+                    <h3> Enfants connectés </h3>
+                    <app-user-list
+                        class="horizontal"
+                        [users]="users"
+                        (userClick)="onUserClick($event)"
+                    />
+                </app-inner-box>
+
+                <app-inner-box class="blue horizontal-scrollable" style="width: 47.5vw; height: 30vh">
+                    <h3> Enfants déconnectés </h3>
+                    <app-user-list
+                        class="horizontal"
+                        [users]="users"
+                        (userClick)="onUserClick($event)"
+                    />
+                </app-inner-box>
+
+                <app-big-button class="delete"
+                    (click)="addNewUser()"
+                >
+                    Ajouter un enfant
+                </app-big-button>
+            </app-inner-box>
+        </app-body>
+    -->
+
     <app-body>
-        <app-inner-box class="main-box blue scrollable" style="width: 47.5vw">
-            <app-user-list
-                [users]="users"
-                (userClick)="onUserClick($event)"
-            />
-            <app-user-card
-                class="hoverable"
-                [user]="userBlank"
-                (click)="addNewUser()"
-            />
-        </app-inner-box>
+        <div class="container">
+            <h3 class="title"> Séléctionnez un enfant pour voir ses statistiques et ses paramêtres </h3>
+            <app-inner-box  class="blue scrollable" style="width: 50rem;">
+                <app-stateful-users-list
+                    [users]="users"
+                    [states]="usersState"
+                    (userClick)="onUserClick($event)"
+                >
+                    <app-new-child-button (click)="addNewUser()"/>
+                </app-stateful-users-list>
+            </app-inner-box>
+        </div>
     </app-body>
 
 </app-template>
