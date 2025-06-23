@@ -60,17 +60,10 @@ import { SoundControlComponent } from './components/sound-control/sound-control.
 ////////////////////////////////////////////////////////////////////////////////
 
 const socketConfig: SocketIoConfig = {
-<<<<<<< Updated upstream
     url: "http://localhost:9428",
     options: {
         transports: ['websocket'],
     },
-=======
-  url: 'http://localhost:9428',
-  options: {
-    transports: ['websocket'],
-  },
->>>>>>> Stashed changes
 };
 
 

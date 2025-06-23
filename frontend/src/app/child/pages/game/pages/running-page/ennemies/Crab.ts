@@ -6,8 +6,8 @@ export class Crab extends Enemy {
         super(canvas, id);
 
         this.enemyImage = new Image();
-        this.enemyImage.src = 'assets/images/game/enemy/crab_32x32.png';
-
+        this.enemyUrl = 'assets/images/game/enemy/crab_32x32.png';
+        this.enemyImage.src = this.enemyUrl;
         this.virtualWidth = 5;
         this.virtualHeight = 5;
         

@@ -74,7 +74,7 @@
 
 .score-container {
     position: absolute;
-    top: 89.5%;
+    top: 87%;
     right: 12rem;
     z-index: 5;
     display: flex;
@@ -177,7 +177,7 @@
 
 .player-icon-container {
     position: absolute;
-    top: 85%;
+    top: 82%;
     left: 2%;
     gap: 1rem;
     display: flex;
@@ -206,7 +206,7 @@
 
 .wave-counter-container {
     position: absolute;
-    top: 85%;
+    top: 82%;
     right: 2%;
     z-index: 5;
     display: flex;
@@ -247,7 +247,7 @@
 
 .health-bar-container {
     position: fixed;
-    bottom: 20px;
+    bottom: 2.5%;
     left: 50%;
     width: 50%;
     max-width: 500px;

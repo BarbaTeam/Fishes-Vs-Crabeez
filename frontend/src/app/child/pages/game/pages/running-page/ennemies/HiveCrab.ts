@@ -6,7 +6,9 @@ export class HiveCrab extends Enemy {
         super(canvas, id);
 
         this.enemyImage = new Image();
-        this.enemyImage.src = 'assets/images/game/enemy/hiveCrab_64x64.png';
+        this.enemyHitUrl = 'assets/images/game/enemy/hiveCrabHit_64x64.png';
+        this.enemyUrl = 'assets/images/game/enemy/hiveCrab_64x64.png';
+        this.enemyImage.src = this.enemyUrl;
 
         this.virtualWidth = 8;
         this.virtualHeight = 8;

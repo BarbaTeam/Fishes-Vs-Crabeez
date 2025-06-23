@@ -50,14 +50,14 @@ export class WaveEvent extends GameEvent<any[]> {
         const byLane: Record<number, any[]> = {};
         for (const e of enemies) {
             const lane = e.lane;
-            if (!byLane[lane.num-1]) byLane[lane.num-1] = [];
-            byLane[lane.num-1].push(e);
+            if (!byLane[lane.num]) byLane[lane.num] = [];
+            byLane[lane.num].push(e);
         }
 
         for (let lane = 1; lane <= WaveEvent.LANES_COUNT; lane++) {
             const laneEnemies = byLane[lane] ?? [];
             let nextX = VIRTUAL_WIDTH + 10;
-            const laneY0 = LANES[lane - 1].y;
+            const laneY0 = LANES[lane-1].y;
 
             for (const enemy of laneEnemies) {
                 const xSpacing = randint(enemy.width, enemy.width*4);
@@ -77,5 +77,6 @@ export class WaveEvent extends GameEvent<any[]> {
         }
 
         this.emit(enemies);
+        this.die();
     }
 }

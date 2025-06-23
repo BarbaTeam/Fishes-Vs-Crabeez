@@ -21,6 +21,7 @@ class Enemy {
         this.y = this._computeInitialYPosition(y);
         this.width = width;
         this.height = height;
+        this.maxHealth = health;
         this.health = health;
         this.speed = speed;
         this.alive = true;

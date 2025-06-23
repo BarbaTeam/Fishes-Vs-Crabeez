@@ -38,9 +38,14 @@ export class GameUpdatesNotifier {
         this.broadcast.emit('enemyAdded', enemy.toJSON());
     }
 
-    public onEnemyKilled(projectile : Projectile, enemy: Enemy) {
+    public onEnemyHit(projectile : Projectile, enemyId: string) {
+        console.log(`[NOTIFIER] : An enemy has been hit`);
+        this.broadcast.emit('enemyHit', {projectile: projectile.toJSON(), enemyId: enemyId});
+    }
+
+    public onEnemyKilled(projectile : Projectile, enemyId: string) {
         console.log(`[NOTIFIER] : An enemy has been slain`);
-        this.broadcast.emit('enemyKilled', {projectile: projectile.toJSON(), enemy: enemy.toJSON()});
+        this.broadcast.emit('enemyKilled', {projectile: projectile.toJSON(), enemyId: enemyId});
     }
 
     public onEnemyDespawned(enemyId: string) {

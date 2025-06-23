@@ -25,9 +25,9 @@ class WaveEvent extends game_event_1.GameEvent {
         const byLane = {};
         for (const e of enemies) {
             const lane = e.lane;
-            if (!byLane[lane.num - 1])
-                byLane[lane.num - 1] = [];
-            byLane[lane.num - 1].push(e);
+            if (!byLane[lane.num])
+                byLane[lane.num] = [];
+            byLane[lane.num].push(e);
         }
         for (let lane = 1; lane <= WaveEvent.LANES_COUNT; lane++) {
             const laneEnemies = (_a = byLane[lane]) !== null && _a !== void 0 ? _a : [];
@@ -45,6 +45,7 @@ class WaveEvent extends game_event_1.GameEvent {
             }
         }
         this.emit(enemies);
+        this.die();
     }
 }
 exports.WaveEvent = WaveEvent;
