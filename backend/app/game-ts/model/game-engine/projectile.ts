@@ -1,4 +1,5 @@
 import { Player } from "./player";
+import { VIRTUAL_WIDTH } from "./variables";
 
 export type ProjectileID = `projectile-${number}`;
 
@@ -20,8 +21,8 @@ export class Projectile {
         this.id = `projectile-${Date.now()}`
 
         this.player = player;
-        this.x = player.x + player.width / 2;
-        this.y = player.y + player.height / 2;
+        this.x = player.x;
+        this.y = player.y;
         this.width = 2.5;
         this.height = 2.5;
         this.speed = 10;
@@ -33,7 +34,7 @@ export class Projectile {
     }
 
     update() {
-        if(this.x > 100) this.destroy();
+        if (this.x > VIRTUAL_WIDTH) this.destroy();
         this.x += this.speed;
     }
 

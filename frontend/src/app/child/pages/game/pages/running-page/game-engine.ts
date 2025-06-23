@@ -9,6 +9,7 @@ import { Projectile } from "./Projectile";
 
 import { Enemy } from "./ennemies/Enemy";
 import { Crab } from "./ennemies/Crab";
+import { scaleToCanvas } from "./utils";
 
 
 
@@ -38,8 +39,8 @@ export class GameEngine {
     ) {
         this.initSocket();
         this.ctx = canvas.getContext('2d')!;
-        this.adjustCanvasResolution();
-        window.addEventListener('resize', () => this.adjustCanvasResolution());
+        this.resizeCanvas();
+        window.addEventListener('resize', () => this.resizeCanvas());
 
         this.players = new Map();
 
@@ -198,21 +199,37 @@ export class GameEngine {
         });
     }
 
-    private adjustCanvasResolution(): void {
-        const scale = window.devicePixelRatio || 1;
+    resizeCanvas() {
+        const aspectRatio = 16 / 9;
+        const parent = this.canvas.parentElement!;
+        const availableWidth = parent.clientWidth;
+        const availableHeight = parent.clientHeight;
 
-        this.canvas.style.width = "100vw";
-        this.canvas.style.height = "100vh";
+        let width = availableWidth;
+        let height = availableWidth / aspectRatio;
 
-        this.canvas.width = window.innerWidth * scale;
-        this.canvas.height = window.innerHeight * scale;
+        if (height > availableHeight) {
+            height = availableHeight;
+            width = height * aspectRatio;
+        }
 
-        this.ctx.scale(scale, scale);
+        this.canvas.width = width;
+        this.canvas.height = height;
     }
 
     private updateGameLoop(): void {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.update();
+        // debut debug
+        for (let i = 0; i <= 5; i++) {
+            const y = scaleToCanvas(0, i * 11.75, 0, 0, this.canvas).y;
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y);
+            this.ctx.lineTo(this.canvas.width, y);
+            this.ctx.strokeStyle = "rgba(0, 0, 0)";
+            this.ctx.stroke();
+        }
+        // fin debug
         this.draw(this.ctx);
     }
 }
