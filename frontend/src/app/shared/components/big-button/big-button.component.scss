@@ -30,3 +30,22 @@
     box-shadow: 0px 4px 0px #724926, 0px 6px 10px rgba(0, 0, 0, 0.3);
     transform: translateY(4px);
 }
+
+:host(.save){
+    height: 7vh;
+    width: 22vw;
+    background-color: #4caf50;
+    color: white;
+    box-shadow: 0px 8px 0px #1f4821, 0px 12px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.1s ease-in-out;
+}
+
+:host(.save):hover{
+    cursor: pointer;
+    background-color: #409343;
+}
+
+:host(.save):active{
+    box-shadow: 0px 4px 0px #1f4821, 0px 6px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(4px);
+}
