@@ -11,3 +11,20 @@
     background-position: center;
 }
 
+:host(.title) {
+    ::ng-deep h1 {
+        position: relative;
+        bottom: 2.3vh;
+        font-size: 100px;
+        color: #11262d;
+    }
+}
+
+:host(.subtitle) {
+    ::ng-deep h1 {
+        position: relative;
+        bottom: 2.3vh;
+        font-size: 50px;
+        color: #11262d;
+    }
+}

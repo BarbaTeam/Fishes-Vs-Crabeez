@@ -1,0 +1,49 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            [routerLink]="['/child/profile']"
+            routerLinkActive="active"
+            (click)="saveChanges()"
+        >
+            <p class="name">
+                <app-user-card [user]="user" class="horizontal navbar"/>
+            </p>
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/joining-games']"
+            routerLinkActive="active"
+            (click)="saveChanges()"
+        >
+            Jouer
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/settings']"
+            routerLinkActive="active"
+        >
+            Options
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-inner-box class="blue">
+            <app-user-config
+                [user]="user"
+                (userTemp)="onUserTempChanged($event)"
+            />
+        </app-inner-box>
+    </app-body>
+
+</app-template>

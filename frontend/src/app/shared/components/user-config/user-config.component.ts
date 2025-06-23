@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { User } from '../../models/user.model';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { isInErgoPage } from '@app/utils/component-inspect';
 
 
 
@@ -10,6 +11,12 @@ import { Router } from '@angular/router';
     styleUrls: ['./user-config.component.scss']
 })
 export class UserConfigComponent implements OnInit {
+    public readonly availableIcons = [
+        'blue_fish.png',
+        'red_fish.png',
+        'yellow_fish.png',
+        'turtle.png',
+    ];
 
     @Input()
 	user!: User;
@@ -18,24 +25,15 @@ export class UserConfigComponent implements OnInit {
 	userTemp = new EventEmitter<User>();
 
     public localUserTemp!: User;
-    public currentUrl: string = '';
 
-    public showIconSelector = false;
-
-    public readonly availableIcons = [
-        'blue_fish.png',
-        'red_fish.png',
-        'yellow_fish.png',
-        'turtle.png'
-    ];
-
+    public isInErgoPage: boolean = false;
+    public showIconSelector: boolean = false;
 
     constructor(
-        private router: Router
+        private route: ActivatedRoute,
+        private router: Router,
     ) {
-        this.router.events.subscribe(() => {
-            this.currentUrl = this.router.url;
-        });
+        this.isInErgoPage = isInErgoPage(route, router);
     }
 
     ngOnInit(): void {

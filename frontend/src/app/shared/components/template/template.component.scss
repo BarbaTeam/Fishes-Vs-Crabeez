@@ -7,20 +7,14 @@
     grid-template-columns: 1fr;
 
     background-color: #72A1E5;
-}
 
+    .template-navbar {
+        grid-row: 1;
+        grid-column: 1;
+    }
 
-.template-navbar {
-    grid-row: 1;
-    grid-column: 1;
-}
-
-
-.template-main {
-    grid-row: 2;
-    grid-column: 1;;
-    background: linear-gradient(#75d4ff,rgb(0, 50, 74),);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    .template-body {
+        grid-row: 2;
+        grid-column: 1;;
+    }
 }

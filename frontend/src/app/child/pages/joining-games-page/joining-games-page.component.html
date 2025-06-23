@@ -1,0 +1,44 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            [routerLink]="['/child/profile']"
+            routerLinkActive="active"
+        >
+            <p class="name">
+                <app-user-card [user]="user" class="horizontal navbar"/>
+            </p>
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/joining-games']"
+            routerLinkActive="active"
+        >
+            Jouer
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/settings']"
+            routerLinkActive="active"
+        >
+            Options
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        <app-big-button [routerLink]="['/child/games-list']">
+            Trouver une partie
+        </app-big-button>
+    </app-body>
+
+</app-template>
