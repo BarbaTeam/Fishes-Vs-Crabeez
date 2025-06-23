@@ -9,4 +9,3 @@ class Crab extends enemy_1.Enemy {
     }
 }
 exports.Crab = Crab;
-

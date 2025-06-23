@@ -84,6 +84,14 @@ export class Enemy {
 
     public destroy() {
         this.alive = false;
+        this.health = 0;
+    }
+    
+    public hit() {
+        this.health--;
+        if( this.health == 0) {
+            this.alive = false;
+        }
     }
 
     public update() {
