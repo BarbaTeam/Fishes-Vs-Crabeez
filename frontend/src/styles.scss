@@ -12,6 +12,11 @@
   box-sizing: border-box;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
 html {
   //font-family: 'Press Start 2P', cursive;
   font-family: 'Joystix', monospace;
@@ -22,8 +27,8 @@ html {
   scroll-behavior: smooth;
 }
 
+
 body {
-  height: 100vh;
   width: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;

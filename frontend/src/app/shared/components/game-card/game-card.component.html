@@ -3,7 +3,7 @@
     <h3>#{{ gameId }}</h3>
   </div>
   <div class="game-body">
-    <p>Joueurs : {{ playerCount }}</p>
-    <p [ngClass]="getStatusClass(gameState)">{{ gameState }}</p>
+    <div>Joueurs : {{ playerCount }}</div>
+    <div [ngClass]="getStatusClass(gameState)">{{ gameState }}</div>
   </div>
 </div>

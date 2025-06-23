@@ -1,4 +1,4 @@
-.card {
+:host {
   width: 80%;
   height: 90%;
   border: 4px solid #ff9918;
@@ -13,7 +13,7 @@
   justify-self: center;
 }
 
-.card:hover {
+:host:hover {
   transform: translate(-2px, -2px);
   cursor: pointer;
   box-shadow: 2px 2px 0 #5a2200;
@@ -47,3 +47,4 @@
   color: #231400;
   line-height: 1.5;
 }
+
