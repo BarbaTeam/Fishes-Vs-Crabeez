@@ -4,30 +4,30 @@ const router = new Router();
 const Manager = require('./manager')
 
 ////////////////////////////////////////////////////////////////////////////////
-// AFFICHER TOUT LES USERS :
+// AFFICHER TOUTES LES QUESTIONS :
 
 router.get('/', (req, res) => {
     try {
-        res.status(200).json(Manager.getUsers());
+        res.status(200).json(Manager.getQuestions());
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
-router.get('/:userId', (req, res) => {
+router.get('/:questionId', (req, res) => {
     try {
-        res.status(200).json(Manager.getUserById(req.params.userId));
+        res.status(200).json(Manager.getQuestionById(req.params.questionId));
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// CREER UN USER :
+// CREER UNE QUESTION :
 
 router.post('/', (req, res) =>{
     try {
-        res.status(201).json(Manager.createUser(req.body));
+        res.status(201).json(Manager.createQuestion(req.body));
     } catch (err) {
         if (err.name === 'ValidationError'){
             res.status(400).json(err.extra);
@@ -41,9 +41,9 @@ router.post('/', (req, res) =>{
 ////////////////////////////////////////////////////////////////////////////////
 // METTRE A JOUR UNE QUESTION :
 
-router.put('/:userId', (req, res) => {
+router.put('/:questionId', (req, res) => {
     try {
-      res.status(200).json(Manager.updateUser(req.params.userId, req.body))
+      res.status(201).json(Manager.updateQuestion(req.params.questionId, req.body))
     } catch (err) {
       manageAllErrors(res, err)
     }
@@ -51,11 +51,11 @@ router.put('/:userId', (req, res) => {
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// DELETE UN USER :
+// DELETE UNE QUESTION :
 
-router.delete('/:userId', (req, res) =>{
+router.delete('/:questionId', (req, res) =>{
     try {
-        Manager.deleteUser(req.params.userId);
+        Manager.deleteQuestion(req.params.questionId);
         res.status(204).end();
     } catch (err) {
         res.status(500).json(err);
