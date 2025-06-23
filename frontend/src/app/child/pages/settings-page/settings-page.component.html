@@ -18,7 +18,7 @@
             routerLinkActive="active"
             (click)="saveChanges()"
         >
-            Jouer
+            Liste des parties
         </app-navbar-button>
 
         <app-navbar-button
@@ -36,12 +36,7 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box class="blue column scrollable">
-            <app-user-config
-                [user]="user"
-                (userTemp)="onUserTempChanged($event)"
-            />
-        </app-inner-box>
+       
     </app-body>
 
 </app-template>

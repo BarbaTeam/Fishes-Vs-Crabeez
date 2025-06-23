@@ -15,7 +15,8 @@ exports.UserTable = new DatabaseTable(
     ["userId"],
     genUserKey,
     () => ({
-        name: "",
+        firstName: "",
+        lastName:"",
         age: 0,
         icon: "",
         config: {

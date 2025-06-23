@@ -5,7 +5,8 @@ const { UserTable } = require('../tables/user.table');
 const MOCK_USER = [
     {
         userId:"u1",
-        name: "Eli KOPTER",
+        firstName: "Eli",
+        lastName: "KOPTER",
         age: 9,
         icon: "red_fish.png",
         config: {
@@ -27,7 +28,8 @@ const MOCK_USER = [
         },
     }, {
         userId:"u2",
-        name: "patrick BATMAN",
+        firstName: "patrick",
+        lastName:"BATMAN",
         age: 9,
         icon: "yellow_fish.png",
         config: {
@@ -49,7 +51,8 @@ const MOCK_USER = [
         },
     }, {
         userId:"u3",
-        name: "Petelo WAWAZI",
+        firstName: "Petelo",
+        lastName:"WAWAZI",
         age: 9,
         icon: "blue_fish.png",
         config: {
@@ -71,7 +74,8 @@ const MOCK_USER = [
         },
     }, {
         userId:"u4",
-        name: "Camille RITELECU",
+        firstName: "Camille",
+        lastName:"RITELECU",
         age: 9,
         icon: "turtle.png",
         config: {

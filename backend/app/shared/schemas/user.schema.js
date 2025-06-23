@@ -6,7 +6,8 @@ const { objectSchema } = require('./utils/schemas-factories');
 
 exports.UserSchema = objectSchema({
     userId: UserIDSchema.required(),
-    name: stringSchema.required(),
+    firstName: stringSchema.required(),
+    lastName: stringSchema.required(),
     age: numberSchema.required(),
     icon: stringSchema.required(),
     config: UserConfigSchema.required(),

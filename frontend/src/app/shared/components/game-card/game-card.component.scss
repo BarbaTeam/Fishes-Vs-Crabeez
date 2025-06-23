@@ -1,19 +1,22 @@
 .game-card {
-    background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+    --background-default: #ffffff;
+    --background-blue: #E0E7FA;
+    --text-default: #000000;
+
+    background-color: var(--background-blue, #E0E7FA);
     padding: 1.5rem;
-    border: 3px solid #4dd0e1;
-    color: #01579b;
+    border: 2px solid #b0c4de;
+    color: var(--text-default, #01579b);
     image-rendering: pixelated;
     overflow: hidden;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
-    min-width: 250px;
-    height: 12vh;
-    max-width: 400px;
+    width: 25vw;
+    height: 15vh;
     margin-bottom: 1rem;
+    cursor: pointer;
 
     &:hover {
         transform: translate(-1px, -1px);
-        cursor: pointer;
         box-shadow: 2px 2px rgba(1, 87, 155, 0.3);
     }
 
@@ -24,7 +27,7 @@
 
         h3 {
             margin: 0;
-            font-size: 1rem;
+            font-size: 1.2rem;
             color: #01579b;
             text-shadow: 0 0 2px #b2ebf2, 1px 1px 0 #b2ebf2;
         }
@@ -32,39 +35,26 @@
 
     .game-body {
         display: flex;
-        justify-content: space-around;
-        div {
-            font-size: 0.75rem;
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 0.25rem;
+
+        p {
+            margin: 0;
+            font-size: 1rem;
             text-shadow: 1px 1px 0 #e0f7fa;
         }
 
-        .game-header {
-            margin-bottom: 1rem;
-            padding-bottom: 0.75rem;
-            border-bottom: 2px dashed rgba(0, 131, 176, 0.4);
-
-            h3 {
-                margin: 0;
-                font-size: 1rem;
-                color: #01579b;
-                text-shadow: 0 0 2px #b2ebf2, 1px 1px 0 #b2ebf2;
-            }
+        .status-en-attente {
+            color: #388e3c; 
         }
 
-        .game-body {
-            p {
-                margin: 0.25rem 0;
-                font-size: 0.75rem;
-                text-shadow: 1px 1px 0 #e0f7fa;
-            }
+        .status-en-cours-de-jeu {
+            color: #d32f2f; 
+        }
 
-            .status-en-attente {
-                color: #388e3c;
-            }
-
-            .status-en-cours-de-jeu {
-                color: #d32f2f;
-            }
+        .status-termine {
+            color: #616161; 
         }
     }
 }
