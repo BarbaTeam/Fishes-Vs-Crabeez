@@ -56,7 +56,43 @@
               "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
-              "namedChunks": true
+              "namedChunks": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.development.ts"
+                }
+              ]
+            },
+            "deploy": {
+              "budgets": [],
+              "fileReplacements": [
+                {
+                  "replace" : "src/environments/environment.ts",
+                  "with": "src/environments/environment.deploy.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "docker": {
+              "budgets": [],
+              "fileReplacements": [
+                {
+                  "replace" : "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "docker-e2e": {
+              "budgets": [],
+              "fileReplacements": [
+                {
+                  "replace" : "src/environments/environment.ts",
+                  "with": "src/environments/environment.docker-e2e.ts"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "production"

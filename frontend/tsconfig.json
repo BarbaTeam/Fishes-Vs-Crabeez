@@ -6,6 +6,7 @@
     "paths": {
         "@app/*": ["src/app/*"],
         "@e2e/*": ["e2e/*"],
+        "@env/*": ["src/environments/*"],
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,

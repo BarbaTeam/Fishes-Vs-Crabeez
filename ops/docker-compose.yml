@@ -1,0 +1,44 @@
+services:
+    backend:
+        build:
+            context: ../backend/
+            dockerfile: Dockerfile.backend
+        ports:
+            - "8081:9428"
+
+        image: "barbamaths-backend"
+
+        volumes:
+            - database:/home/node/database
+        healthcheck:
+            test: [ "CMD-SHELL", "curl -f http://localhost:9428/api/status || exit 1" ]
+            interval: 1m30s
+            timeout: 5s
+            retries: 3
+            start_period: 5s
+
+    frontend:
+        build:
+            context: ../frontend/
+            dockerfile: Dockerfile.frontend
+            args:
+                - FRONTEND_DOMAIN=localhost
+                - BACKEND_DOMAIN=localhost
+                - BACKEND_PORT=9428
+        ports:
+            - "8080:80"
+
+        image: "barbamaths-frontend"
+
+        depends_on:
+            backend:
+                condition: service_healthy
+        healthcheck:
+            test: [ "CMD-SHELL", "curl -f http://localhost || exit 1" ]
+            interval: 1m30s
+            timeout: 5s
+            retries: 3
+            start_period: 5s
+
+volumes:
+    database:

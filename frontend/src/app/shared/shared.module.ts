@@ -6,6 +6,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { SOCKET_CONFIG } from '@app/app-settings';
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Shared Components :
@@ -49,24 +51,17 @@ import { PlayerInLeaderboardComponent } from './components/player-in-leaderboard
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { SocketIoModule } from 'ngx-socket-io';
 import { ChoiceButtonComponent } from './components/choice-button/choice-button.component';
 import { InfoTooltipComponent } from './components/info-tooltip/info-tooltip.component';
 import { FontSizeControlComponent } from './components/font-size-control/font-size-control.component';
 import { SoundControlComponent } from './components/sound-control/sound-control.component';
 
+
+
 ////////////////////////////////////////////////////////////////////////////////
 // SharedModule :
 ////////////////////////////////////////////////////////////////////////////////
-
-import { HOST } from '@app/app-settings';
-const socketConfig: SocketIoConfig = {
-    url: `http://${HOST}`,
-    options: {
-        transports: ['websocket'],
-    },
-};
-
 
 const SHARED_COMPONENTS = [
     // Pages Template :
@@ -111,7 +106,7 @@ const SHARED_COMPONENTS = [
     PlayerInLobbyComponent,
     UserConfigComponent,
     GameCardComponent,
-    ChoiceButtonComponent,    
+    ChoiceButtonComponent,
 ];
 
 
@@ -123,7 +118,7 @@ const SHARED_COMPONENTS = [
     imports: [
         CommonModule,
         FormsModule,
-        SocketIoModule.forRoot(socketConfig)
+        SocketIoModule.forRoot(SOCKET_CONFIG)
     ],
     exports: [
         ...SHARED_COMPONENTS,

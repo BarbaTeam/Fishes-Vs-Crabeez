@@ -5,3 +5,5 @@
 
 node_modules/
 maquette_matrio/dist/
+
+ops/e2e-results/

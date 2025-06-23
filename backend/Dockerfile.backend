@@ -1,0 +1,22 @@
+FROM node:24.2-alpine3.22
+
+RUN apk add --no-cache curl
+
+USER node
+
+WORKDIR /app
+
+COPY  --chown=node:node package*.json ./
+RUN npm install
+
+COPY --chown=node:node . .
+
+EXPOSE 9428
+
+ARG NODE_ENV
+ENV NODE_ENV=${NODE_ENV}
+
+ARG COMMAND=start
+ENV COMMAND=${COMMAND}
+
+CMD ["sh", "-c", "npm run ${COMMAND}"]

@@ -6,6 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "build:docker": "ng build --configuration docker",
+    "build:docker-e2e": "ng build --configuration docker-e2e",
     "test": "ng test",
     "test:e2e": "npx playwright test"
   },
