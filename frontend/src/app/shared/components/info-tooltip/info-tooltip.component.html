@@ -1,0 +1,14 @@
+<div class="info-tooltip-container">
+    <div class="info-bubble" 
+        (mouseenter)="showTooltip($event)" 
+        (mouseleave)="hideTooltip()"
+        (mousemove)="updateTooltipPosition($event)">
+    ?
+    </div>
+    <div class="tooltip" 
+        [class.visible]="isVisible" 
+        [style.left.px]="tooltipX" 
+        [style.top.px]="tooltipY">
+    {{ tooltipText }}
+    </div>
+</div>
