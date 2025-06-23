@@ -19,6 +19,8 @@ const LIMIT = 5; // Number of results with coeff non null used to compute a stat
  * @param {GameLog} gameLog
  */
 exports.processGameLog = (gameLog) => {
+    console.log(`Processing statistics for game ${gameLog.gameId}`);
+
     const nbPlayers = gameLog.info.playersId.length
 
     const gameId = gameLog.gameId;

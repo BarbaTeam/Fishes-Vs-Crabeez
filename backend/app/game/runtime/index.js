@@ -88,6 +88,8 @@ class GameRuntime {
         if (this?.timeout) this.timeout.close();
         this.notifier.onGameEnd();
         processGameLog(this.accumulator.gamelog);
+
+        console.log(stopRunningGame);
         stopRunningGame(this.model.game.gameId);
     }
 
