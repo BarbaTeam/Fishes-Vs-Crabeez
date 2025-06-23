@@ -20,18 +20,31 @@ class GameRuntime {
     }
     runOneFrame() {
         if (this.model.hasEnded || this.model.game.playersId.length === 0) {
-            this.onGameEnd();
+            if (process.env.TEST_E2E) {
+                this.onGameEnd();
+            }
+            else {
+                this.onForcedGameEnd();
+            }
             return;
         }
         this.model.runOneFrame();
     }
     onGameEnd() {
-        if (this === null || this === void 0 ? void 0 : this.timeout)
+        if (this === null || this === void 0 ? void 0 : this.timeout) {
             this.timeout.close();
+        }
         this.notifier.onGameEnd();
         if (!this.accumulator.isEmpty()) {
             (0, stats_1.processGameLog)(this.accumulator.gamelog);
         }
+        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
+    }
+    onForcedGameEnd() {
+        if (this === null || this === void 0 ? void 0 : this.timeout) {
+            this.timeout.close();
+        }
+        this.notifier.onGameEnd();
         (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
     }
 }

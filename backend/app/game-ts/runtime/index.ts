@@ -38,18 +38,34 @@ export class GameRuntime {
 
     public runOneFrame(): void {
         if(this.model.hasEnded || this.model.game.playersId.length === 0){
-            this.onGameEnd();
+            if (process.env.TEST_E2E) {
+                this.onGameEnd();
+            } else {
+                this.onForcedGameEnd();
+            }
             return;
         }
         this.model.runOneFrame();
     }
 
     public onGameEnd(): void {
-        if (this?.timeout) this.timeout.close();
+        if (this?.timeout) {
+            this.timeout.close();
+        }
+
         this.notifier.onGameEnd();
         if (!this.accumulator.isEmpty()) {
             processGameLog(this.accumulator.gamelog);
         }
+
+        stopRunningGame(this.model.game.gameId);
+    }
+
+    public onForcedGameEnd(): void {
+        if (this?.timeout) {
+            this.timeout.close();
+        }
+        this.notifier.onGameEnd();
         stopRunningGame(this.model.game.gameId);
     }
 }
