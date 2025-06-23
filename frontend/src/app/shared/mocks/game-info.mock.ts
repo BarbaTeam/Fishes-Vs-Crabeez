@@ -1,7 +1,7 @@
 import { GameInfo } from "../models/game-log.model";
 
 
-export const MOCK_GAMES_LOG: GameInfo[] = [
+export const MOCK_GAMES_INFO: GameInfo[] = [
 
     ////////////////////////////////////////////////////////////////////////////
     // Game 1 :
