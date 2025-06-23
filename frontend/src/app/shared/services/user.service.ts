@@ -1,12 +1,13 @@
 import { Injectable } from "@angular/core";
-// import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from "rxjs";
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable, firstValueFrom } from "rxjs";
 import { from } from "rxjs";
+
+import { HTTP_API } from '@app/app-settings';
 
 import { LocalStorageService } from "./local-storage.service";
 
 import { User } from "../models/user.model";
-import { MOCK_USER } from "../mocks/user.mock";
 import { UserID } from "../models/ids";
 
 
@@ -57,16 +58,17 @@ export class UserService{
 
 
     constructor(
-        // private http: HttpClient,
+        private http: HttpClient,
         private localStorageService : LocalStorageService,
     ) {
-        from(this._fetchUsers()).subscribe(
-            users => {
-                this._users = users;
-                this.users$.next(users)
-            }
-        )
+        // Users :
+        from(this._fetchUsers()).subscribe((users) => {
+            this._users = users;
+            this.users$.next(users);
+        });
 
+
+        // Selected User :
         const saved = this.localStorageService.getData(
             UserService.LocalStorageKey.SELECTED_USER
         );
@@ -80,25 +82,41 @@ export class UserService{
         this.selectedUser$.next(this._selectedUser);
     }
 
-
     ///////////////////////////////////////////////////////////////////////////.
-    // Utils :
+    // API Calls :
 
     private async _fetchUsers(): Promise<User[]> {
-        // TODO : Replacing usage of local mocks w/ HTTP requests
-        const ret: User[] = MOCK_USER;
+        return firstValueFrom(this.http.get<User[]>(
+            `${HTTP_API}/users`
+        ));
+    }
 
-        // NOTE : Asynchrone to ease the transition to an implementation using API call (see return stmt below)
-        return Promise.resolve(ret);
-        // return this.http.get<User[]>(
-        //     `/api/users/list`
-        // ).toPromise();
+    private async _createUser(userData: Omit<User, "userId">): Promise<User> {
+        return firstValueFrom(this.http.post<User>(
+            `${HTTP_API}/users/`, userData
+        ));
+    }
+
+    // TODO : Add support for sending `Partial<User>` as update
+    private async _updateUserById(userId: UserID, updatedUser: User): Promise<User> {
+        return firstValueFrom(this.http.put<User>(
+            `${HTTP_API}/users/${userId}`, updatedUser
+        ));
+    }
+
+    private async _removeUserById(userId: UserID): Promise<void> {
+        return firstValueFrom(this.http.delete<void>(
+            `${HTTP_API}/users/${userId}`
+        ));
     }
 
 
-    public selectUser(userId: User['userId']){
+    ///////////////////////////////////////////////////////////////////////////.
+    // Actions :
+
+    public selectUser(userId: UserID){
         this._selectedUser = this._users.find(user => user.userId == userId)!;
-        if(this._selectedUser){
+        if (this._selectedUser) {
             this.selectedUser$.next(this._selectedUser);
             this.localStorageService.saveData(
                 UserService.LocalStorageKey.SELECTED_USER,
@@ -107,24 +125,44 @@ export class UserService{
         }
     }
 
-    public createUser(user: User) {
-        this._users.push(user);
-        this.users$.next(this._users);
-    }
-
-    public removeUser(user: User) {
-        const userIdx = this._users.findIndex(u => u.userId === user.userId);
-        if (userIdx !== -1) {
-            this._users.splice(userIdx, 1);
+    public async createUser(userData: Omit<User, "userId">): Promise<void> {
+        try {
+            const user = await this._createUser(userData);
+            // On Success :
+            this._users.push(user);
             this.users$.next(this._users);
-            this.localStorageService.removeData(UserService.LocalStorageKey.SELECTED_USER);
-        } else {
-            console.warn(`User ${user.userId} not found`);
+        } catch (err) {
+            // On Failure :
+            if (err instanceof HttpErrorResponse) {
+                switch (err.status) {
+                    case 500 :
+                        console.warn("Error occured on server");
+                        break;
+
+                    case 0: case 502: case 504:
+                        console.warn("Request timeout");
+                        break;
+
+                    default :
+                        throw new Error(`Unexpected Error: ${err}`);
+                }
+            } else {
+                throw new Error(`Unexpected Error: ${err}`);
+            }
         }
     }
 
-    public saveChanges(changedUser: User): void {
-        if (changedUser) {
+
+    public async saveChanges(changedUser: User): Promise<void> {
+        if (!changedUser) {
+            return;
+        }
+
+        try {
+            const updatedUser = await this._updateUserById(
+                changedUser.userId, changedUser
+            );
+            // On Success :
             const userIdx = this._users.findIndex(
                 user => user.userId === changedUser.userId
             );
@@ -146,10 +184,71 @@ export class UserService{
             }
 
             this.users$.next(this._users);
+        } catch (err) {
+            // On Failure :
+            if (err instanceof HttpErrorResponse) {
+                switch (err.status) {
+                    case 404 :
+                        console.warn("User not found");
+                        break;
+
+                    case 500 :
+                        console.warn("Error occured on server");
+                        break;
+
+                    case 0: case 502: case 504:
+                        console.warn("Request timeout");
+                        break;
+
+                    default :
+                        throw new Error(`Unexpected Error: ${err}`);
+                }
+            } else {
+                throw new Error(`Unexpected Error: ${err}`);
+            }
         }
     }
 
-    public getUser(userId: UserID): User | undefined {
+    public async removeUserById(userId: UserID) {
+        try {
+            await this._removeUserById(userId);
+            // On Success :
+            const userIndex = this._users.findIndex(u => u.userId === userId);
+            if (userIndex !== -1) {
+                this._users.splice(userIndex, 1);
+                this.users$.next(this._users);
+                this.localStorageService.removeData(
+                    UserService.LocalStorageKey.SELECTED_USER
+                );
+            } else {
+                console.warn(`User \"${userId}\" not found`);
+            }
+        } catch (err) {
+            // On Failure :
+            if (err instanceof HttpErrorResponse) {
+                switch (err.status) {
+                    case 404 :
+                        console.warn("User not found");
+                        break;
+
+                    case 500 :
+                        console.warn("Error occured on server");
+                        break;
+
+                    case 0: case 502: case 504:
+                        console.warn("Request timeout");
+                        break;
+
+                    default :
+                        throw new Error(`Unexpected Error: ${err}`);
+                }
+            } else {
+                throw new Error(`Unexpected Error: ${err}`);
+            }
+        }
+    }
+
+    public getUserById(userId: UserID): User | undefined {
         return this._users.find(user => user.userId == userId);
     }
 }

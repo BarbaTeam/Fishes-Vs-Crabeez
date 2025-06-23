@@ -39,7 +39,7 @@
 
     <app-body>
         <!-- Sections' List : -->
-        <app-side-box class="main-box button-list">
+        <app-side-box class="button-list">
             <app-small-button
                 [routerLink]="[]"
                 [queryParams]="{ 'section': 0 }"
@@ -51,15 +51,19 @@
 
             <p>HISTORIQUE :</p>
 
-            <app-small-button
-                *ngFor="let i of availableHistorySections;"
-                [routerLink]="[]"
-                [queryParams]="{ 'section': i+1 }"
-                [class.active]="currSection === i+1"
-                style="width: 100%;"
-            >
-                {{ getFormattedGameDateByIndex(i, false) }}
-            </app-small-button>
+            <ng-container *ngIf="gamesInfos?.length">
+                <ng-container *ngFor="let info of gamesInfos; let idx = index">
+                <app-small-button
+                    [routerLink]="[]"
+                    [queryParams]="{ section: idx+1 }"
+                    [class.active]="currSection === idx+1"
+                    style="width:100%"
+                    *ngIf="info?.date"
+                >
+                    {{ info.date | date:'dd/MM/yyyy' }}
+                </app-small-button>
+                </ng-container>
+            </ng-container>
         </app-side-box>
 
 
@@ -73,11 +77,93 @@
         <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium scrollable">
             <h1 class="title">Statistiques générales</h1>
 
-            <ng-container *ngIf="sectionData.playerStats.statistics.globalGrading.grade !== 'XF'; else noStatistics">
+            <ng-container *ngIf="sectionData.playerStats as ps; else loadingStatistics">
+                <ng-container *ngIf="sectionData.playerStats.statistics.globalGrading.grade !== 'XF'; else noStatistics">
+                    <app-grading-line
+                        [key]="'Note'"
+                        [grading]="sectionData.playerStats.statistics.globalGrading"
+                        [improvement]="sectionData.playerStats.statistics.globalAccuracyImprovement"
+                    />
+
+                    <app-rollable-box
+                        *ngIf="notionGradings.length > 0"
+                        [title]="'Détails par notions :'"
+                    >
+                        <app-grading-line
+                            *ngFor="let n of notionGradings"
+                            [key]="n.key"
+                            [grading]="n.grading"
+                            [improvement]="n.improvement"
+                        />
+                    </app-rollable-box>
+
+                    <p>
+                        Mot par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
+                        <span
+                            *ngIf="sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
+                            [style.color]="improvement > 0 ? 'green' : 'red'"
+                        >
+                            {{ improvement! > 0 ? '+' : '' }}{{ improvement.toFixed(2) }}%
+                        </span>
+                    </p>
+
+                    <app-mistakes-boxes
+                        [title]="'Erreurs Communes'"
+                        [mistakes]="getMostCommonMistakesSimplified()"
+                    />
+
+                    <app-mistakes-boxes
+                        [title]="'Erreurs Récentes'"
+                        [mistakes]="getMostRecentMistakesSimplified()"
+                    />
+                </ng-container>
+
+                <ng-template #noStatistics>
+                    <p>Statistiques Indisponible</p>
+                    <p>L'utilisateur n'a pas encore était évalué.</p>
+                </ng-template>
+            </ng-container>
+            <ng-template #loadingStatistics>
+                <p>Chargement des statistiques...</p>
+            </ng-template>
+
+        </app-inner-box>
+
+        <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
+            <h1 class="title">Classement</h1>
+
+            <ng-template *ngIf="sectionData.leaderboard === undefined">
+                <p>Classement Indisponible</p>
+            </ng-template>
+
+            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
+                <app-user-card
+                    *ngFor="let lbuserId of leaderboard.ranking"
+                    [userId]="lbuserId"
+                    class="horizontal"
+                />
+            </ng-container>
+            <ng-template #loadingLeaderboar>
+                <p>Chargement du classement...</p>
+            </ng-template>
+        </app-inner-box>
+
+
+        <!-- History Sections : -->
+        <app-inner-box *ngIf="isInHistorySections()" class="main-box blue medium scrollable">
+            <ng-container *ngIf="sectionData.playerResults as pr; else loadingResults">
+                <h1 class="title">Partie du {{ sectionData.gameInfo.date | date:'dd/MM/yyyy HH:mm' }}</h1>
+
+                <p>
+                    Réponse affichées :
+                    <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
+                        {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
+                    </span>
+                </p>
+
                 <app-grading-line
                     [key]="'Note'"
-                    [grading]="sectionData.playerStats.statistics.globalGrading"
-                    [improvement]="sectionData.playerStats.statistics.globalAccuracyImprovement"
+                    [grading]="sectionData.playerResults.results.globalGrading"
                 />
 
                 <app-rollable-box
@@ -88,103 +174,40 @@
                         *ngFor="let n of notionGradings"
                         [key]="n.key"
                         [grading]="n.grading"
-                        [improvement]="n.improvement"
                     />
                 </app-rollable-box>
 
                 <p>
-                    Mot par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
-                    <span
-                        *ngIf="sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
-                        [style.color]="improvement > 0 ? 'green' : 'red'"
-                    >
-                        {{ improvement! > 0 ? '+' : '' }}{{ improvement.toFixed(2) }}%
-                    </span>
+                    Mot par minute :
+                    {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
                 </p>
 
                 <app-mistakes-boxes
-                    [title]="'Erreurs Communes'"
-                    [mistakes]="getMostCommonMistakesSimplified()"
-                />
-
-                <app-mistakes-boxes
-                    [title]="'Erreurs Récentes'"
-                    [mistakes]="getMostRecentMistakesSimplified()"
+                    [title]="'Erreurs'"
+                    [mistakes]="sectionData.playerResults.results.mistakes"
                 />
             </ng-container>
-
-            <ng-template #noStatistics>
-                <p>Statistiques Indisponible</p>
-                <p>L'utilisateur n'a pas encore était évalué.</p>
+            <ng-template #loadingResults>
+                <p>Chargement des résultats...</p>
             </ng-template>
-        </app-inner-box>
-
-        <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
-            <h1 class="title">Classement</h1>
-            <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
-                <app-user-card
-                    *ngFor="let lbuserId of sectionData.leaderboard.ranking"
-                    [userId]="lbuserId"
-                    class="horizontal"
-                />
-            </ng-container>
-
-            <ng-template #noLeaderboard>
-                <p>Classement Indisponible</p>
-            </ng-template>
-        </app-inner-box>
-
-
-        <!-- History Sections : -->
-        <app-inner-box *ngIf="isInHistorySections()" class="main-box blue medium scrollable">
-            <h1 class="title">Partie du {{ getFormattedGameDate(true) }}</h1>
-
-            <p>
-                Réponse affichées :
-                <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
-                    {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
-                </span>
-            </p>
-
-            <app-grading-line
-                [key]="'Note'"
-                [grading]="sectionData.playerResults.results.globalGrading"
-            />
-
-            <app-rollable-box
-                *ngIf="notionGradings.length > 0"
-                [title]="'Détails par notions :'"
-            >
-                <app-grading-line
-                    *ngFor="let n of notionGradings"
-                    [key]="n.key"
-                    [grading]="n.grading"
-                />
-            </app-rollable-box>
-
-            <p>
-                Mot par minute :
-                {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
-            </p>
-
-            <app-mistakes-boxes
-                [title]="'Erreurs'"
-                [mistakes]="sectionData.playerResults.results.mistakes"
-            />
         </app-inner-box>
 
         <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
             <h1 class="title">Classment</h1>
-            <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
+
+            <ng-template *ngIf="sectionData.leaderboard === undefined">
+                <p>Classement Indisponible</p>
+            </ng-template>
+
+            <ng-container *ngIf="sectionData.leaderboard as leaderboard; else loadingLeaderboar">
                 <app-user-card
-                    *ngFor="let lbuserId of sectionData.leaderboard.ranking"
+                    *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
                     class="horizontal"
                 />
             </ng-container>
-
-            <ng-template #noLeaderboard>
-                <p>Classement Indisponible</p>
+            <ng-template #loadingLeaderboar>
+                <p>Chargement du classement...</p>
             </ng-template>
         </app-inner-box>
     </app-body>

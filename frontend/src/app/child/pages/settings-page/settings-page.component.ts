@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
 import { UserService } from '@app/shared/services/user.service';
 
@@ -18,7 +17,6 @@ export class SettingsPageComponent {
 
     constructor(
         private userService: UserService,
-        private router: Router
     ) {}
 
     ngOnInit(): void {
@@ -31,9 +29,9 @@ export class SettingsPageComponent {
         this.userTemp = updatedUser;
     }
 
-    public saveChanges(): void {
+    public async saveChanges(): Promise<void> {
         if (this.userTemp) {
-            this.userService.saveChanges(this.userTemp);
+            await this.userService.saveChanges(this.userTemp);
         }
     }
 }

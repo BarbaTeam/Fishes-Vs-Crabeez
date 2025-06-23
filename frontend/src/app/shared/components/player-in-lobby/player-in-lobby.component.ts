@@ -29,7 +29,7 @@ export class PlayerInLobbyComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.userId) {
-            this.user = this.userService.getUser(this.userId)!;
+            this.user = this.userService.getUserById(this.userId)!;
         }
     }
 

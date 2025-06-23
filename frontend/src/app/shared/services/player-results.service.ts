@@ -1,14 +1,14 @@
 import { Injectable } from "@angular/core";
-// import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, firstValueFrom } from "rxjs";
+
+import { HTTP_API } from '@app/app-settings';
 
 import { UserService } from "./user.service";
 import { LocalStorageService } from "./local-storage.service";
 
 import { User } from "../models/user.model";
 import { PlayerResults } from "../models/player-results.model";
-
-import { MOCK_PLAYERS_RESULTS } from "../mocks/players-results.mock";
 
 
 
@@ -28,14 +28,12 @@ export class PlayerResultsService {
 
 
     // Public Observables :
-    public readonly isLoading$: BehaviorSubject<boolean>
-        = new BehaviorSubject(false);
     public readonly playerResultsList$: BehaviorSubject<PlayerResults[]>
         = new BehaviorSubject(this._playerResultsList);
 
 
     constructor(
-        // private http: HttpClient,
+        private http: HttpClient,
         private userService: UserService,
         private localStorageService: LocalStorageService,
     ) {
@@ -54,11 +52,23 @@ export class PlayerResultsService {
 
         this.userService.selectedUser$.subscribe(async (user: User) => {
             this.user = user;
-
-            this.isLoading$.next(true);
             this._setPlayerResultsList(await this._fetchLatestPlayerResults());
-            this.isLoading$.next(false);
         });
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////.
+    // API Calls :
+
+    /**
+     * @returns A promise resolving to an array of the 5 latest player results
+     * corresponding to the selected user.
+     */
+    private async _fetchLatestPlayerResults(): Promise<PlayerResults[]> {
+        // API call - GET :
+        return firstValueFrom(this.http.get<PlayerResults[]>(
+            `${HTTP_API}/player-results/${this.user.userId}?limit=5`
+        ));
     }
 
 
@@ -77,41 +87,5 @@ export class PlayerResultsService {
             JSON.stringify(this._playerResultsList),
         );
         this.playerResultsList$.next(this._playerResultsList);
-    }
-
-    /**
-     * @returns A promise resolving to an array of the 5 latest player results
-     * corresponding to the selected user.
-     */
-    private async _fetchLatestPlayerResults(): Promise<PlayerResults[]> {
-        // TODO : Replacing usage of local mocks w/ HTTP requests
-
-        const ret: PlayerResults[] = MOCK_PLAYERS_RESULTS
-            .filter((res) =>
-                res.playerId === this.user.userId
-            )
-            .sort((res1, res2) =>
-                -(parseInt(res1.gameId.slice(1)) - parseInt(res2.gameId.slice(1)))
-            )
-            .slice(0, 5);
-
-        // NOTE : Asynchrone to ease the transition to an implementation using API call (see return stmt below)
-        return Promise.resolve(ret);
-        // return this.http.get<PlayerResults[]>(
-        //     `/api/users/${this.user.id}/results?limit=5`
-        // ).toPromise();
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////.
-    // Operations :
-
-    /**
-     * Enqueue a player results to the list.
-     * Useful to prevent loss of time by enabling receiving only new results.
-     * @param newResultsList An array of new player results to enqueue.
-     */
-    public enqueuePlayerResults(...newResults: PlayerResults[]): void {
-        this._setPlayerResultsList([...newResults, ...this._playerResultsList]);
     }
 }
