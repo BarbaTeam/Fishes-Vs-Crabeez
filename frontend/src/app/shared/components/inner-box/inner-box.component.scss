@@ -1,91 +1,79 @@
 :host {
-  /* 🎨 Couleurs CSS vars avec fallback */
+  /* === 🎨 Thème & Couleurs === */
   --background-default: #ffffff;
   --background-blue: #E0E7FA;
   --text-default: #000000;
 
-  /* 🧱 Layout principal */
+  background-color: var(--background-blue, #E0E7FA);
+  color: var(--text-default, #01579b);
+  border: 2px solid #b0c4de;
+  box-shadow:
+    4px 4px 0 #cbdcf5,
+    8px 8px 0 rgba(0, 128, 176, 0.1);
+  image-rendering: pixelated;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+
+  /* === 🧱 Layout Flexbox === */
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-content: flex-start;
   justify-content: flex-start;
 
-  /* 📐 Dimensions principales */
+  /* === 📐 Dimensions === */
   height: 70vh;
   width: 77vh;
   padding: 1%;
   margin: 1%;
-  border-radius: 20px;
-
-  /* 🎨 Apparence */
-  background-color: var(--background-default, #fff);
-  color: var(--text-default, #000);
-  box-sizing: border-box;
-  transition: all 0.3s ease-in-out;
-
-  /* 🌪️ Overflow */
+  border-radius: 0;
   overflow-y: hidden;
   overflow-x: auto;
 }
 
-/* === VARIANTS === */
-
-/* 🎨 Couleur bleue */
+/* === 🎨 VARIANTS === */
 :host(.blue) {
   background-color: var(--background-blue, #E0E7FA);
 }
 
-/* 🧩 Contenu centré horizontalement */
 :host(.center-content) {
   justify-content: center;
 }
 
-/* ⬇️ Colonne simple */
 :host(.column) {
   flex-direction: column;
   flex-wrap: nowrap;
   gap: 1rem;
 }
 
-/* ❌ Sans fond */
 :host(.no-background) {
   background-color: transparent;
+  border: none;
+  box-shadow: none;
 }
 
-/* === SIZES === */
-
-/* 📦 Grands conteneurs */
+/* === 📏 SIZES === */
 :host(.big) {
   width: clamp(40vw, 50vw, 60vw);
 }
 
-/* 📦 Taille moyenne */
 :host(.medium) {
   width: clamp(35vw, 45vw, 55vw);
   overflow-x: hidden;
 }
 
-/* 📦 Petite largeur */
 :host(.small) {
   width: clamp(20vw, 25vw, 30vw);
 }
 
-/* 📦 Très petit + colonne */
 :host(.little) {
   width: clamp(25vh, 40vh, 50vh);
-
   display: flex;
   flex-direction: column;
-
-  /* Centrage */
   align-items: center;
-  justify-content: flex-start;   
-
-  /* Reset potentiels héritages */
+  justify-content: flex-start;
   align-content: center;
   text-align: center;
-
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0.5rem;
@@ -93,9 +81,7 @@
   box-sizing: border-box;
 }
 
-
-/* === HEIGHTS === */
-
+/* === 📐 HEIGHTS === */
 :host(.short) {
   height: clamp(30vh, 35vh, 40vh);
 }
@@ -104,7 +90,7 @@
   height: clamp(15vh, 20vh, 25vh);
 }
 
-/* 🎛️ Liste verticale typée boutons */
+/* === 🎛️ BUTTON LIST === */
 :host(.button-list) {
   flex-direction: column;
   align-items: center;
@@ -115,8 +101,7 @@
   overflow-x: hidden;
 }
 
-/* === SCROLLABLE === */
-
+/* === 🎚️ SCROLLABLE === */
 :host(.scrollable) {
   overflow-y: auto;
   scrollbar-width: thin;

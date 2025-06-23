@@ -1,31 +1,42 @@
 .lobby-card {
-  background-color: #f9f9f9;
-  border-radius: 1rem;
-  padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  overflow-y: hidden;
-  transition: transform 0.2s ease;
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  border-radius: 0; // Pixel touch
+  padding: 1.25rem 1.5rem;
+  box-shadow:
+    4px 4px 0 #b2dfdb,
+    8px 8px 0 rgba(0, 128, 176, 0.2); // Shadow façon pixel
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  color: #01579b;
+  border: 2px solid #4dd0e1;
+  overflow: hidden;
+  image-rendering: pixelated;
 
   &:hover {
-    transform: scale(1.02);
+    transform: translate(-2px, -2px);
+    box-shadow:
+      6px 6px 0 #80deea,
+      12px 12px 0 rgba(0, 128, 176, 0.25);
   }
 
   .lobby-header {
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px dashed rgba(0, 131, 176, 0.3);
 
     h3 {
       margin: 0;
-      font-size: 1.25rem;
-      color: #333;
+      font-size: 1.2rem;
+      color: #01579b;
+      text-shadow: 1px 1px 0 #b2ebf2;
     }
   }
 
   .lobby-body {
     p {
       margin: 0;
-      font-size: 1rem;
-      color: #555;
+      font-size: 0.9rem;
+      color: #0277bd;
+      text-shadow: 1px 1px 0 #e0f7fa;
     }
   }
 }
