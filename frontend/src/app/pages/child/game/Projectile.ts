@@ -1,4 +1,5 @@
 import { GameEngine } from "./game-engine";
+import { Player } from "./Player";
 
 export class Projectile {
 
@@ -9,10 +10,11 @@ export class Projectile {
     private markedForDeletion: boolean;
     private image: HTMLImageElement;
 
-    constructor(private gameEngine: GameEngine, private canvas: HTMLCanvasElement) {
-
-        this.x = this.canvas.width / 2 - 25;
-        this.y = this.canvas.height - 270 - 25;
+    constructor(private gameEngine: GameEngine, private player: Player) {
+        this.gameEngine = gameEngine;
+        this.player = player;
+        this.x = this.player.position.x;
+        this.y = this.player.position.y;
         this.width = 50;
         this.height = 50;
         this.markedForDeletion = false;
@@ -34,7 +36,7 @@ export class Projectile {
     }
 
     public update(): void {
-        const target = this.gameEngine.closestEnemy;
+        const target = this.gameEngine.closestEnemy(this.player.seatValue);
         if (!target) return;
     
         const dx = target.position.x - this.x;
