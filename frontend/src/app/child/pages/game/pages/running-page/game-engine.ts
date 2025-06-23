@@ -1,5 +1,4 @@
 import { UserID } from "@app/shared/models/ids";
-import { Background } from "./Background";
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
 import { Enemy } from "./ennemies/Enemy";
@@ -10,7 +9,6 @@ import { Subscription } from "rxjs";
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
-    private background: Background;
     private players: Map<UserID, Player>;
     private projectiles: Projectile[];
     private enemies: Enemy[];
@@ -22,7 +20,6 @@ export class GameEngine {
         this.initSocket();
         this.ctx = canvas.getContext('2d')!;
         this.adjustCanvasResolution();
-        this.background = new Background(this, canvas);
 
         this.players = new Map();
         this.enemies = [];
@@ -84,8 +81,6 @@ export class GameEngine {
     }
 
     private draw(ctx: CanvasRenderingContext2D): void {
-        this.background.draw(ctx);
-
         for (const player of this.players.values()) {
             player.draw(ctx);
         }

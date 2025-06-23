@@ -16,6 +16,9 @@ export class QuizHandler {
         playersNotionsMask: Record<UserID, UserQuestionNotionsMask>,
     ) {
         this._playersNotionsMask = playersNotionsMask;
+        for(const [playerId, playerMask] of Object.entries(playersNotionsMask)){
+            this.notifier.onNewQuestionForPlayer(playerId as UserID, QuestionsGenerator.genQuestion(playerMask));
+        }
     }
 
     public receiveAnswer(playerId: UserID, ans: AnsweredQuestion): void {

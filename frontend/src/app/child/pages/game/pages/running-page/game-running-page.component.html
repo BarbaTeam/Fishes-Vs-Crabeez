@@ -16,11 +16,13 @@
         </div>
     </div>
 } @else {
-    <div class="question-container">
-        <div class="question">
-            <p>Chargement de la question ...</p>
+    <div #headerRef class="header">
+        <div class="question-container">
+            <div class="question">
+                <p>Chargement de la question ...</p>
+            </div>
+            <div class="answer"></div>
         </div>
-        <div class="answer"></div>
     </div>
 }
 
@@ -30,4 +32,4 @@
 </div>
 
 <canvas #gameCanvas class="game"></canvas>
-<img id="layer1" src="../../../../assets/images/game/world/background.png">
+<img id="background" src="../../../../assets/images/game/world/background.png">

@@ -51,8 +51,9 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
 
             this.io.to(this._gameId).emit('startCountdown');
             setTimeout(() => {
-                RUNNING_GAMES[game.gameId] = new GameRuntime(this.io, game);
-                this.io.to(this._gameId).emit('endCountdown');
+                this.io.to(this._gameId).emit('endCountdown', () => {
+                    RUNNING_GAMES[game.gameId] = new GameRuntime(this.io, game);
+                });
             }, 5000);
         });
 

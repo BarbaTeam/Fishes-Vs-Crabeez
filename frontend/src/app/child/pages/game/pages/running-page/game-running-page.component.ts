@@ -76,7 +76,6 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.initSocket();
-        this.socket.sendMessage('requestQuestion');
         this.setupAudio();
         document.addEventListener("keydown", this.keydownHandler);
         this.updateInputs();
@@ -85,6 +84,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     private initSocket() {
         this.subscriptions.add(
             this.socket.on<Question>('newQuestion').subscribe(question => {
+                console.log(`[CLIENT] : Player ${this.user.userId} received a new question ${question}`);
                 this.question = question;
                 this.inputs = [];
                 this.expected_answerInputs = this.question.answer.split("");
