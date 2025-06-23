@@ -1,48 +1,33 @@
-.name {
-    text-align: left;
-    width: 55%;
-    position: relative;
-    left: 3rem;
+.buttons {
+  width: 100%;
+  padding-top: 2%;
+  display: flex;
+  justify-content: space-between;
 }
 
-.save-container {
-    bottom: -1rem;
-    margin-bottom: 2rem;
-    position: relative;
-    //display: inline-block;
-    display: flex;
-    flex-direction: row;
-
-    .icon {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 3rem;
-        height: 3rem;
-        display: none;
-    }
-
-    .cap{
-        top:-1.5rem;
-    }
-
-    .icon.visible {
-        display: inline;
-    }
-
-    .success.icon {
-        right: 0rem;
-        top: 0.1rem;
-        animation: fadeInOut 2s ease;
-    }
-    .success.icon:not(.visible) {
-        animation: none;
-    }
+.delete-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
 }
 
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(5px); }
-    10% { opacity: 1; transform: translateX(0); }
-    90% { opacity: 1; transform: translateX(0); }
-    100% { opacity: 0; transform: translateX(5px); }
+.delete-container app-big-button.delete {
+  margin-right: 2.5rem; 
+}
+
+.delete-container .icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 5rem;
+  height: 5rem;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.delete-container .icon.visible {
+  opacity: 1;
+  z-index: 1;
 }

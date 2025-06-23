@@ -35,50 +35,45 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box class="main-box blue center-content big scrollable">
+        <app-inner-box class="main-box blue center-content scrollable" style="width: 83.5%;">
             <app-user-config
                 [user]="user"
                 (userTemp)="onUserTempChanged($event)"
             />
-            <div class="save-container">
-                <img
-                    src="../../../../assets/images/icons/cross.png"
-                    alt="Supprimé"
-                    class="cross icon"
-                    [class.visible]="showDeleted"
-                    (click)="removeUser()"
-                />
-                <img
-                    src="../../../../assets/images/icons/cap.png"
-                    alt="Supprimé"
-                    class="cap icon"
-                    [class.visible]="showDeleted"
-                    (click)="putSafety()"
-                />
-                <img
-                    src="../../../../assets/images/icons/closedcross.png"
-                    alt="Supprimé"
-                    class="delete icon"
-                    [class.visible]="!showDeleted"
-                    (click)="removeSafety()"
-                />
+            <div class="buttons">
+                <div class="delete-container">
+                    <app-big-button class="delete"
+                        [class.grey]="!showDeleted"
+                        [class.red]="showDeleted"
+                        (click)="removeUser()"
+                        >
+                        Supprimer
+                    </app-big-button>
+                    <img
+                        src="../../../../assets/images/icons/open_lock.png"
+                        alt="Supprimé"
+                        class="cap icon"
+                        [class.visible]="showDeleted"
+                        (click)="putSafety()"
+                    />
+                    <img
+                        src="../../../../assets/images/icons/close_lock.png"
+                        alt="Supprimé"
+                        class="delete icon"
+                        [class.visible]="!showDeleted"
+                        (click)="removeSafety()"
+                    />
+                </div>
 
                 <app-big-button class="save"
-                    class="navbar-button"
-                    [class.green]="isValid"
-                    [class.grey]="!isValid"
-                    (click)="saveChanges()"
-                >
-                    Sauvegarder
+                        [class.green]="isValid"
+                        [class.grey]="!isValid"
+                        (click)="saveChanges()"
+                    >
+                        Sauvegarder
                 </app-big-button>
-
-                <img
-                    src="../../../../assets/images/icons/valid.png"
-                    alt="Validé"
-                    class="success icon"
-                    [class.visible]="showSuccess"
-                />
             </div>
+            
         </app-inner-box>
     </app-body>
 

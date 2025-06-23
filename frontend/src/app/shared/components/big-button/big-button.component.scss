@@ -9,6 +9,11 @@
   --green-hover: #409343;
   --green-shadow: #1f4821;
 
+  --red-color: #af4c4c;
+  --red-hover: #934040;
+  --red-shadow: #481f1f;
+
+
   --grey-color: #adadad;
   --grey-shadow: #555555;
 
@@ -64,6 +69,28 @@
 :host(.green:active) {
   box-shadow:
     0 4px 0 var(--green-shadow),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+  transform: translateY(4px);
+}
+
+/* red Variant */
+:host(.red) {
+  height: 7vh;
+  width: 22vw;
+  color: white;
+  background-color: var(--red-color);
+  box-shadow:
+    0 8px 0 var(--red-shadow),
+    0 12px 15px rgba(0, 0, 0, 0.3);
+}
+
+:host(.red:hover) {
+  background-color: var(--red-hover);
+}
+
+:host(.red:active) {
+  box-shadow:
+    0 4px 0 var(--red-shadow),
     0 6px 10px rgba(0, 0, 0, 0.3);
   transform: translateY(4px);
 }
