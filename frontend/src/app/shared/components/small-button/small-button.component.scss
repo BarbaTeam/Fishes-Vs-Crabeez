@@ -1,27 +1,36 @@
 :host{
+    display: flex;
+
     height: 4.7vh;
     width: 11vw;
-    display: flex;
+
     justify-content: center;
     align-items: center;
+    text-align: center;
+
     border-radius: 0.5rem;
-    color: #B5D587;
+
     font-size: 20px;
     font-weight: bold;
+
     background-color: #E0E7FA;
     color: #11262d;
-    text-align: center;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
 }
-
-:host(.auto-width) {
-    width: auto;
+:host:hover{
+    cursor: pointer;
+    background-color: #bfc5d9;
 }
 
 :host(.active) {
     background-color: #669d94;
+    box-shadow: none;
+}
+:host(.active):hover{
+    cursor: default;
+    background-color: #669d94;
 }
 
-:host:hover{
-    cursor: pointer;
-    background-color: #bfc5d9;
+:host(.auto-width) {
+    width: auto;
 }

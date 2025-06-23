@@ -28,7 +28,6 @@
 
 :host .toggle-btn {
     border: none;
-    //background: transparent;
     background-color: #d4c9c9;
     border-radius: 10px;
 
@@ -38,6 +37,9 @@
     line-height: 1.5em;
     text-align: center;
     cursor: pointer;
+}
+:host .toggle-btn:hover {
+    background-color: #b5aeae;
 }
 
 :host .content {
