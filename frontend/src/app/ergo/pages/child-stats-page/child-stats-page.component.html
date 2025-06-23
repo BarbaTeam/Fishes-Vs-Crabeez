@@ -47,8 +47,7 @@
                 Stats
             </app-small-button>
 
-            <p>HISTORIQUE
-            </p>
+            <p>HISTORIQUE</p>
 
             <ng-container *ngIf="gamesInfos?.length">
                 <ng-container *ngFor="let info of gamesInfos; let idx = index">
@@ -78,47 +77,46 @@
 
             <ng-container *ngIf="sectionData.playerStats as ps; else loadingStatistics">
                 <ng-container *ngIf="sectionData.playerStats.statistics.globalGrading.grade !== 'XF'; else noStatistics">
-                    <app-grading-line
-                        [key]="'Note'"
-                        [grading]="sectionData.playerStats.statistics.globalGrading"
+                    <app-stat-line
+                        [title]="'Note'"
+                        [value]="sectionData.playerStats.statistics.globalGrading"
                         [improvement]="sectionData.playerStats.statistics.globalAccuracyImprovement"
+                        [withAdvancedStats]="true"
                     />
 
                     <app-rollable-box
                         *ngIf="notionGradings.length > 0"
-                        [title]="'Détails par notions :'"
+                        [title]="'Détails par notions'"
                     >
-                        <app-grading-line
+                        <app-stat-line
                             *ngFor="let n of notionGradings"
-                            [key]="n.key"
-                            [grading]="n.grading"
+                            [title]="n.key"
+                            [value]="n.grading"
                             [improvement]="n.improvement"
+                            [withAdvancedStats]="true"
                         />
                     </app-rollable-box>
 
-                    <p>
-                        Mots par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
-                        <span
-                            *ngIf="sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
-                            [style.color]="improvement > 0 ? 'green' : 'red'"
-                        >
-                            {{ improvement! > 0 ? '+' : '' }}{{ improvement.toFixed(2) }}%
-                        </span>
-                    </p>
+                    <app-stat-line
+                        [title]="'Mots par minute'"
+                        [value]="ps.statistics.wordsPerMinute"
+                        [improvement]="ps.statistics.wordsPerMinuteImprovement"
+                        [withAdvancedStats]="user.userConfig.advancedStats"
+                    />
 
-                    <app-mistakes-boxes
+                    <app-mistakes-box
                         [title]="'Erreurs Communes'"
                         [mistakes]="getMostCommonMistakesSimplified()"
                     />
 
-                    <app-mistakes-boxes
+                    <app-mistakes-box
                         [title]="'Erreurs Récentes'"
                         [mistakes]="getMostRecentMistakesSimplified()"
                     />
                 </ng-container>
 
                 <ng-template #noStatistics>
-                    <p>Statistiques Indisponible</p>
+                    <p>Statistiques Indisponibles</p>
                     <p>L'utilisateur n'a pas encore était évalué.</p>
                 </ng-template>
             </ng-container>
@@ -156,36 +154,39 @@
                 <div class="section-block">
                     <div class="info-line">
                         <strong>Réponses affichées :</strong>
-                        <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
-                        {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
+                        <span [style.color]="pr.answersShown ? 'green' : 'red'">
+                        {{ pr.answersShown ? "Oui" : "Non" }}
                         </span>
                     </div>
 
-                    <app-grading-line
-                        [key]="'Note'"
-                        [grading]="sectionData.playerResults.results.globalGrading"
+                    <app-stat-line
+                        [title]="'Note'"
+                        [value]="pr.results.globalGrading"
+                        [withAdvancedStats]="true"
                     />
                 </div>
 
                 <app-rollable-box
                     *ngIf="notionGradings.length > 0"
-                    [title]="'Détails par notions :'"
+                    [title]="'Détails par notions'"
                 >
-                    <app-grading-line
+                    <app-stat-line
                         *ngFor="let n of notionGradings"
-                        [key]="n.key"
-                        [grading]="n.grading"
+                        [title]="n.key"
+                        [value]="n.grading"
+                        [withAdvancedStats]="true"
                     />
                 </app-rollable-box>
 
                 <div class="section-block">
-                    <div class="info-line">
-                        <strong>Mots par minute :</strong>
-                        <span>{{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}</span>
-                    </div>
+                    <app-stat-line
+                        [title]="'Mots par minutes'"
+                        [value]="pr.results.wordsPerMinute"
+                        [withAdvancedStats]="user.userConfig.advancedStats"
+                    />
                 </div>
 
-                <app-mistakes-boxes
+                <app-mistakes-box
                     [title]="'Erreurs'"
                     [mistakes]="sectionData.playerResults.results.mistakes"
                 />

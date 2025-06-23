@@ -19,7 +19,6 @@ import { BodyComponent } from './components/body/body.component';
 import { InnerBoxComponent } from './components/inner-box/inner-box.component';
 import { SideBoxComponent } from './components/side-box/side-box.component';
 import { RollableBoxComponent } from './components/rollable-box/rollable-box.component';
-import { MistakesBoxesComponent } from './components/mistakes-box/mistakes-boxes.component';
 
 // Users :
 import { UserCardComponent } from './components/user-card/user-card.component';
@@ -34,12 +33,15 @@ import { SmallButtonComponent } from './components/small-button/small-button.com
 import { SettingsSliderComponent } from './components/settings-slider/settings-slider.component';
 import { SettingsToggleComponent } from './components/settings-toggle/settings-toggle.component';
 
+// Statistics :
+import { MistakesBoxComponent } from './components/mistakes-box/mistakes-box.component';
+import { StatLineComponent } from './components/stat-line/stat-line.component';
+
 // Notification
 import { NotifComponent } from './components/notif/notif.component';
 import { NotifContainerComponent } from './components/notif-container/notif-container.component';
 
 // Miscellaneous :
-import { GradingLineComponent } from './components/grading-line/grading-line.component';
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
 import { LobbyCardComponent } from './components/lobby-card/lobby-card.component';
@@ -68,7 +70,6 @@ const SHARED_COMPONENTS = [
     InnerBoxComponent,
     SideBoxComponent,
     RollableBoxComponent,
-    MistakesBoxesComponent,
 
     // Users :
     UserCardComponent,
@@ -80,12 +81,15 @@ const SHARED_COMPONENTS = [
     SettingsSliderComponent,
     SettingsToggleComponent,
 
+    // Statistics :
+    MistakesBoxComponent,
+    StatLineComponent,
+
     // Notification :
     NotifComponent,
     NotifContainerComponent,
 
     // Miscellaneous :
-    GradingLineComponent,
     PlayerInLobbyComponent,
     UserConfigComponent,
     LobbyCardComponent

@@ -1,9 +1,9 @@
-.grading-line {
+.stat-line {
     display: flex;
     align-items: center;
     margin: 0.5rem 0;
 
-    .key {
+    .title {
         color: black;
         margin-right: 0.25rem;
     }
@@ -12,7 +12,7 @@
         margin: 0 0.25rem;
     }
 
-    .grade {
+    .value {
         height: 2rem;
         width: 2rem;
     }

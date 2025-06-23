@@ -68,11 +68,16 @@
             <p>Contenu Inexistant</p>
         </app-inner-box>
 
+        <!-- Badges Setion :-->
+        <app-inner-box *ngIf="isInInvalidSection()" class="blue medium">
+            <p>Contenu Inexistant</p>
+        </app-inner-box>
+
 
         <!-- Statistic Section : -->
         <app-inner-box *ngIf="isInStatsSection()" class="blue medium scrollable">
             <div class="badge-group">
-                <h3>Badges acquis :</h3>
+                <h3>Badges</h3>
                 <span class="badge-list">
                     <img class="badge" src="../../../../assets/images//icons/crab_killer_trophy.png" alt="Eliminer 200 crabes" title="Eliminer 200 crabes">
                     <img class="badge" src="../../../../assets/images//icons/defender_trophy.png" alt="Vous avez atteint un score de plus de 1000 points" title="Vous avez atteint un score de plus de 1000 points">
@@ -84,37 +89,36 @@
 
             <ng-container *ngIf="sectionData.playerStats as ps; else loadingStatistics">
                 <ng-container *ngIf="ps.statistics.globalGrading.grade !== 'XF'; else noStatistics">
-                    <app-grading-line
-                        [key]="'Note'"
-                        [grading]="ps.statistics.globalGrading"
+                    <app-stat-line
+                        [title]="'Note'"
+                        [value]="ps.statistics.globalGrading"
                         [improvement]="ps.statistics.globalAccuracyImprovement"
+                        [withAdvancedStats]="user.userConfig.advancedStats"
                     />
 
                     <app-rollable-box
                         *ngIf="notionGradings.length > 0"
-                        [title]="'Détails par notions :'"
+                        [title]="'Détails par notions'"
                     >
-                        <app-grading-line
+                        <app-stat-line
                             *ngFor="let n of notionGradings"
-                            [key]="n.key"
-                            [grading]="n.grading"
+                            [title]="n.key"
+                            [value]="n.grading"
                             [improvement]="n.improvement"
+                            [withAdvancedStats]="user.userConfig.advancedStats"
                         />
                     </app-rollable-box>
 
-                    <p>
-                        Mot par minute : {{ ps.statistics.wordsPerMinute.toFixed(2) }}
-                        <span
-                            *ngIf="user.userConfig.advancedStats && ps.statistics.wordsPerMinuteImprovement as improvement"
-                            [style.color]="improvement > 0 ? 'green' : 'red'"
-                        >
-                            {{ improvement! > 0 ? '+' : '' }}{{ improvement.toFixed(2) }}%
-                        </span>
-                    </p>
+                    <app-stat-line
+                        [title]="'Mots par minutes'"
+                        [value]="ps.statistics.wordsPerMinute"
+                        [improvement]="ps.statistics.wordsPerMinuteImprovement"
+                        [withAdvancedStats]="user.userConfig.advancedStats"
+                    />
                 </ng-container>
 
                 <ng-template #noStatistics>
-                    <p>Statistiques Indisponible</p>
+                    <p>Statistiques Indisponibles</p>
                     <p>L'utilisateur n'a pas encore été évalué.</p>
                 </ng-template>
             </ng-container>
@@ -148,26 +152,29 @@
             <ng-container *ngIf="sectionData.playerResults as pr; else loadingResults">
                 <h1 class="title">Partie du {{ sectionData.gameInfo.date | date:'dd/MM/yyyy HH:mm' }}</h1>
 
-                <app-grading-line
-                    [key]="'Note'"
-                    [grading]="sectionData.playerResults.results.globalGrading"
+                <app-stat-line
+                    [title]="'Note'"
+                    [value]="sectionData.playerResults.results.globalGrading"
+                    [withAdvancedStats]="user.userConfig.advancedStats"
                 />
 
                 <app-rollable-box
                     *ngIf="notionGradings.length > 0"
-                    [title]="'Détails par notions :'"
+                    [title]="'Détails par notions'"
                 >
-                    <app-grading-line
+                    <app-stat-line
                         *ngFor="let n of notionGradings"
-                        [key]="n.key"
-                        [grading]="n.grading"
+                        [title]="n.key"
+                        [value]="n.grading"
+                        [withAdvancedStats]="user.userConfig.advancedStats"
                     />
                 </app-rollable-box>
 
-                <p>
-                    Mot par minute :
-                    {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
-                </p>
+                <app-stat-line
+                    [title]="'Mots par minutes'"
+                    [value]="sectionData.playerResults.results.wordsPerMinute"
+                    [withAdvancedStats]="user.userConfig.advancedStats"
+                />
 
                 <div class="badge-group">
                     <h3>Récompenses acquises :</h3>
@@ -175,7 +182,7 @@
                     <span class="badge-list">
                         <img class="badge" src="../../../../assets/images//icons/gold_trophy.png" alt="Vous avez eu le score le plus élevé" title="Vous avez eu le score le plus élevé">
                         <img class="badge" src="../../../../assets/images//icons/silver_trophy.png" alt="Vous avez eu un très bon score" title="Vous avez eu un très bon score">
-                        <img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez fait de votre mieux" title="Vous avez fait de votre mieux et vous êtes récompensés pour ça">
+                        <img class="badge" src="../../../../assets/images//icons/copper_trophy.png" alt="Vous avez fait de votre mieux" title="Tout le monde à le droit à une petite récompense">
                     </span>
                 </div>
             </ng-container>

@@ -12,11 +12,11 @@ type Mistakes = {
 
 
 @Component({
-    selector: 'app-mistakes-boxes',
-    templateUrl: './mistakes-boxes.component.html',
-    styleUrl: './mistakes-boxes.component.scss'
+    selector: 'app-mistakes-box',
+    templateUrl: './mistakes-box.component.html',
+    styleUrl: './mistakes-box.component.scss'
 })
-export class MistakesBoxesComponent {
+export class MistakesBoxComponent {
 
     @Input()
     title!: string;

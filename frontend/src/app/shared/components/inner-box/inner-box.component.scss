@@ -1,32 +1,32 @@
 :host {
-  /* === 🎨 Thème & Couleurs === */
-  --background-default: #ffffff;
-  --background-blue: #E0E7FA;
-  --text-default: #000000;
+    /* === 🎨 Thème & Couleurs === */
+    --background-default: #ffffff;
+    --background-blue: #E0E7FA;
+    --text-default: #000000;
 
-  background-color: var(--background-blue, #E0E7FA);
-  color: var(--text-default, #01579b);
-  border: 2px solid #b0c4de;
- 
-  image-rendering: pixelated;
-  box-sizing: border-box;
-  transition: all 0.3s ease-in-out;
+    background-color: var(--background-blue, #E0E7FA);
+    color: var(--text-default, #01579b);
+    border: 2px solid #b0c4de;
 
-  /* === 🧱 Layout Flexbox === */
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-content: flex-start;
-  justify-content: flex-start;
+    image-rendering: pixelated;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
 
-  /* === 📐 Dimensions === */
-  height: 70vh;
-  width: 77vh;
-  padding: 1%;
-  margin: 1%;
-  border-radius: 0;
-  overflow-y: hidden;
-  overflow-x: auto;
+    /* === 🧱 Layout Flexbox === */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-content: flex-start;
+    justify-content: flex-start;
+
+    /* === 📐 Dimensions === */
+    height: 70vh;
+    width: 77vh;
+    padding: 1%;
+    margin: 1%;
+    border-radius: 0;
+    overflow-y: hidden;
+    overflow-x: auto;
 }
 
 /* === 🎨 VARIANTS === */
@@ -35,7 +35,7 @@
 }
 
 :host(.center-content) {
-  justify-content: center;
+    justify-content: center;
 }
 
 :host(.column) {
@@ -101,26 +101,27 @@
 
 /* === 🎚️ SCROLLABLE === */
 :host(.scrollable) {
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-gutter: stable both-edges;
-  scrollbar-color: rgba(128, 128, 128, 0) transparent;
-  transition: scrollbar-color 0.5s ease;
-}
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-gutter: stable both-edges;
+    scrollbar-color: rgba(128, 128, 128, 0) transparent;
+    transition: scrollbar-color 0.5s ease;
 
-:host(.scrollable):hover {
-  scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
-}
+    &:hover {
+        scrollbar-color: rgba(100, 100, 100, 0.7) transparent;
+    }
 
-:host(.scrollable)::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
+    &::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
 
-:host(.scrollable)::-webkit-scrollbar-thumb {
-  background-color: rgba(100, 100, 100, 0.7);
-}
+    &::-webkit-scrollbar-thumb {
+        background-color: rgba(100, 100, 100, 0.7);
+        border-radius: 2px;
+    }
 
-:host(.scrollable)::-webkit-scrollbar-track {
-  background: transparent;
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
 }
