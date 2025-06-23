@@ -88,7 +88,6 @@ function num2words_fr(n) {
     ////////////////////////////////////////////////////////////////////////////
     // Main Logic :
     if (!Number.isFinite(n)) {
-        console.log(n);
         throw new Error("Can only convert finite number");
     }
     if (n === 0) {
@@ -131,7 +130,7 @@ class QuestionsGenerator {
         if (allowedNotions.length === 0) {
             throw new Error("Aucune notion autorisée par le masque fourni.");
         }
-        return allowedNotions[(0, random_1.randint)(0, allowedNotions.length - 1)];
+        return allowedNotions[(0, random_1.randint)(0, allowedNotions.length)];
     }
     static _convertNotionToOperator(notion) {
         switch (notion) {
@@ -144,7 +143,7 @@ class QuestionsGenerator {
             case types_1.QuestionNotion.DIVISION:
                 return '/';
             default:
-                return 'NA';
+                throw new Error(`Unexpected notion: ${notion}`);
         }
     }
     static _chooseOperands(minBound = 0, maxBound = 10) {
@@ -187,6 +186,8 @@ class QuestionsGenerator {
         [types_1.QuestionNotion.REWRITING]: false,
         [types_1.QuestionNotion.ENCRYPTION]: false,
     }) {
+        console.log(`[QUESTION GENERATOR Using notions mask :`);
+        console.log(notionMask);
         let notion = this._chooseNotion(notionMask);
         // TODO : Supporting equation one day
         while (notion === types_1.QuestionNotion.EQUATION) {

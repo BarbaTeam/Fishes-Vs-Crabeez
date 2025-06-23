@@ -19,32 +19,30 @@ class QuizHandler {
         this.accumulator.accumulate(playerId, ans);
         const answeredCorrectly = utils_1.AnswerChecker.checkAnswer(ans);
         const answeredToEncryptedQuestion = ans.notion === types_1.QuestionNotion.ENCRYPTION;
-        if (!answeredCorrectly) {
-            if (answeredToEncryptedQuestion) {
-                // We don't skip encrypted question
-                return;
-            }
-            this.sendQuestion(playerId);
-            return;
-        }
         if (answeredToEncryptedQuestion) {
-            for (let [id, event] of Object.entries(this.model.eventsHandler.aliveEvents)) {
-                if (event.kind === events_handler_1.EventKind.PARALYSIS
-                    && event.affectedPlayerId === playerId) {
-                    console.log(`Killing event ${id} for player ${playerId}`);
+            if (!answeredCorrectly) {
+                return; // We don't skip encrypted question
+            }
+            const eventsAffectingPlayer = Object.entries(this.model.eventsHandler.getEventsAffectingPlayer(playerId));
+            for (let [id, event] of eventsAffectingPlayer) {
+                if (event.kind === events_handler_1.EventKind.PARALYSIS) {
                     this.model.eventsHandler.killEvent(id);
                 }
             }
-            this.sendQuestion(playerId);
+            // Sending another question different than an ecrypted one :
+            const notionMask = Object.assign(Object.assign({}, this._playersNotionsMask[playerId]), { [types_1.QuestionNotion.ENCRYPTION]: false });
+            this.sendQuestion(playerId, notionMask);
             return;
         }
-        this.model.gameEngine.handleShoot(playerId);
+        if (answeredCorrectly) {
+            this.model.gameEngine.handleShoot(playerId);
+        }
         this.sendQuestion(playerId);
     }
-    sendQuestion(playerId, notionMask) {
+    sendQuestion(playerId, notionsMask) {
         let question;
-        if (notionMask) {
-            question = utils_1.QuestionsGenerator.genQuestion(notionMask);
+        if (notionsMask) {
+            question = utils_1.QuestionsGenerator.genQuestion(notionsMask);
         }
         else {
             question = utils_1.QuestionsGenerator.genQuestion(this._playersNotionsMask[playerId]);

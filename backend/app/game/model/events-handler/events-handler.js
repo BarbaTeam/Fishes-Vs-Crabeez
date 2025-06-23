@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EventsHandler = void 0;
-const types_1 = require("../../../shared/types");
 const event_types_1 = require("./event-types");
 const wave_1 = require("./game-events/wave");
 const paralysis_1 = require("./player-events/paralysis");
@@ -18,6 +17,14 @@ class EventsHandler {
                 kind: event.kind,
                 affectedPlayerId: (_a = event === null || event === void 0 ? void 0 : event.affectedPlayerId) !== null && _a !== void 0 ? _a : undefined
             };
+            return acc;
+        }, {});
+    }
+    getEventsAffectingPlayer(playerId) {
+        return Object.entries(this.aliveEvents)
+            .filter(([id, ev]) => (ev === null || ev === void 0 ? void 0 : ev.affectedPlayerId) === playerId)
+            .reduce((acc, [id, ev]) => {
+            acc[id] = { kind: ev.kind };
             return acc;
         }, {});
     }
@@ -61,8 +68,6 @@ class EventsHandler {
                 }
                 else {
                     this.model.gameEngine.deparalysePlayer(affectedPlayerId);
-                    const notionMask = Object.assign(Object.assign({}, this.model.gameLobby.playersNotionsMask[affectedPlayerId]), { [types_1.QuestionNotion.ENCRYPTION]: false });
-                    this.model.quizHandler.sendQuestion(affectedPlayerId, notionMask);
                 }
                 break;
             case event_types_1.EventKind.FRENZY:
@@ -79,6 +84,7 @@ class EventsHandler {
                 event.onEventDeath();
                 continue;
             }
+            stillAliveEvents[event.id] = event;
             event.onEventUpdate();
         }
         this._aliveEvents = stillAliveEvents;

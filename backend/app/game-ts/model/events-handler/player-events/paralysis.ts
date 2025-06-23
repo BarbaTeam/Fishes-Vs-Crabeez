@@ -7,11 +7,16 @@ import { PlayerEvent } from "./player-event";
 
 
 
+// TODO : Finding `Timeout` type
+type Timeout = any;
+
+
+
 export class ParalysisEvent extends PlayerEvent<boolean> {
     private static PARALYSIS_DEFAULT_DURATION_MS = 15000; // in ms
 
     private _paralysisDurationInMs: number;
-    private timeOut!: NodeJS.Timeout;
+    private timeOut!: Timeout;
 
     constructor(
         handler: IEventsHandler,
@@ -34,6 +39,8 @@ export class ParalysisEvent extends PlayerEvent<boolean> {
 
     onEventKill(): void {
         super.onEventKill();
+
+        console.log("Paralysis on kill called");
         clearTimeout(this.timeOut);
         this.emit(false);
     }

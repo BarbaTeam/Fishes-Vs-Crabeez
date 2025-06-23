@@ -137,7 +137,7 @@ export class QuestionsGenerator {
             throw new Error("Aucune notion autorisée par le masque fourni.");
         }
 
-        return allowedNotions[randint(0, allowedNotions.length - 1)];
+        return allowedNotions[randint(0, allowedNotions.length)];
     }
 
     private static _convertNotionToOperator(notion: QuestionNotion): string {
@@ -151,7 +151,7 @@ export class QuestionsGenerator {
             case QuestionNotion.DIVISION:
                 return '/';
             default:
-                return 'NA';
+                throw new Error(`Unexpected notion: ${notion}`);
         }
     }
 
@@ -201,6 +201,9 @@ export class QuestionsGenerator {
             [QuestionNotion.ENCRYPTION]    : false,
         }
     ): Question {
+        console.log(`[QUESTION GENERATOR Using notions mask :`);
+        console.log(notionMask);
+
         let notion = this._chooseNotion(notionMask);
 
         // TODO : Supporting equation one day

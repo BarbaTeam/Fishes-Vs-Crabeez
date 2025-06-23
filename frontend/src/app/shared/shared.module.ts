@@ -55,11 +55,12 @@ import { ExpandableButtonComponent } from './components/expandable-button/expand
 ////////////////////////////////////////////////////////////////////////////////
 
 const socketConfig: SocketIoConfig = {
-  url: 'http://192.168.126.235:9428',
-  options: {
-    transports: ['websocket'],
-  },
+    url: "http://localhost:9428",
+    options: {
+        transports: ['websocket'],
+    },
 };
+
 
 const SHARED_COMPONENTS = [
     // Pages Template :

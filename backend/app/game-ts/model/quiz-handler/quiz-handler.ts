@@ -1,9 +1,8 @@
-import { GameModel } from '..';
-import { AnsweredQuestion, QuestionNotion, UserID, UserQuestionNotionsMask } from '../../../shared/types';
+import { AnsweredQuestion, Question, QuestionNotion, UserID, UserQuestionNotionsMask } from '../../../shared/types';
 
+import { GameModel } from '..';
 import { GameLogAccumulator } from '../game-log-accumulator';
 import { GameUpdatesNotifier } from '../../runtime/game-updates-notifier'
-
 import { EventID, EventKind } from '../events-handler';
 
 import { AnswerChecker, QuestionsGenerator } from './utils';
@@ -33,46 +32,44 @@ export class QuizHandler implements IQuizHandler {
         const answeredCorrectly = AnswerChecker.checkAnswer(ans);
         const answeredToEncryptedQuestion = ans.notion === QuestionNotion.ENCRYPTION;
 
-        if (!answeredCorrectly) {
-            if (answeredToEncryptedQuestion) {
-                // We don't skip encrypted question
-                return;
-            }
-            this.sendQuestion(playerId);
-            return;
-        }
-
         if (answeredToEncryptedQuestion) {
-            for (let [id, event] of Object.entries(this.model.eventsHandler.aliveEvents)) {
-                if (
-                    event.kind === EventKind.PARALYSIS
-                    && event.affectedPlayerId === playerId
-                ) {
-                    console.log(`Killing event ${id} for player ${playerId}`);
+            if (!answeredCorrectly) {
+                return; // We don't skip encrypted question
+            }
+
+            const eventsAffectingPlayer = Object.entries(
+                this.model.eventsHandler.getEventsAffectingPlayer(playerId)
+            );
+            for (let [id, event] of eventsAffectingPlayer) {
+                if (event.kind === EventKind.PARALYSIS) {
                     this.model.eventsHandler.killEvent(id as EventID);
                 }
             }
 
-            this.sendQuestion(playerId);
+            // Sending another question different than an ecrypted one :
+            const notionMask = {...this._playersNotionsMask[playerId], [QuestionNotion.ENCRYPTION]: false};
+            this.sendQuestion(playerId, notionMask);
             return;
         }
-        this.model.gameEngine.handleShoot(playerId);
+
+        if (answeredCorrectly) {
+            this.model.gameEngine.handleShoot(playerId);
+        }
         this.sendQuestion(playerId);
     }
 
-    public sendQuestion(playerId: UserID, notionMask?: UserQuestionNotionsMask): void {
-        let question;
-        if (notionMask) {
-            question = QuestionsGenerator.genQuestion(notionMask);
+    public sendQuestion(playerId: UserID, notionsMask?: UserQuestionNotionsMask): void {
+        let question: Question;
+
+        if (notionsMask) {
+            question = QuestionsGenerator.genQuestion(notionsMask);
         } else {
             question = QuestionsGenerator.genQuestion(this._playersNotionsMask[playerId]);
         }
+
         if( question.notion === QuestionNotion.ENCRYPTION ) {
             this.model.eventsHandler.spawnEvent("PARALYSIS", playerId);
         }
-        this.notifier.onNewQuestionForPlayer(
-                playerId,
-                question,
-        );
+        this.notifier.onNewQuestionForPlayer(playerId, question);
     }
 }
