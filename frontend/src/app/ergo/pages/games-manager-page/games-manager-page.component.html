@@ -36,12 +36,37 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-big-button
-            class="main-box orange"
-            (click)="openGame()"
-        >
-            Lancer une partie
-        </app-big-button>
+        <div class="game-modes-container">
+            <div class="solo-conteneur">
+                <p class="title">Créer une salle d'attente</p>
+                <app-big-button style="width: 20rem; height: 5rem;"
+                (click)="openGame()">
+                    Lancer une partie
+                </app-big-button>
+            </div>
+            <div class="multi-conteneur">
+                <p class="sub-title">Ou intéragissez avec les enfants en jeu !</p>
+                @if (waitingGames.length !== 0 || runningGames.length !== 0) {
+                    <p>Cliquez pour rejoindre</p>
+                    <div class="game-list">
+                        @for (game of waitingGames; track game.gameId) {
+                            <app-game-card
+                                [gameLobby]="game"
+                                (click)="spyGame(game.gameId)"
+                            />
+                        }
+                        @for (game of runningGames; track game.gameId) {
+                            <app-game-card
+                                [gameLobby]="game"
+                                (click)="spyGame(game.gameId)"
+                            />
+                        }
+                    </div>
+                } @else {
+                    <p class="waiting">En attente de parties...</p>
+                }
+            </div>
+        </div>
     </app-body>
 
 </app-template>

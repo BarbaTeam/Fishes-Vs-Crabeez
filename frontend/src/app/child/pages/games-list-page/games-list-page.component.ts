@@ -9,7 +9,7 @@ import { GamesService } from '@app/shared/services/games.service';
 import { NotifService } from '@app/shared/services/notif.service';
 
 import { GameID } from '@app/shared/models/ids';
-import { GameLobby, GameState } from '@app/shared/models/game.model';
+import { Game, GameLobby, GameState } from '@app/shared/models/game.model';
 import { User } from '@app/shared/models/user.model';
 
 
@@ -22,7 +22,8 @@ import { User } from '@app/shared/models/user.model';
 export class GamesListPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
     public user!: User;
-    public waitingGames: GameLobby[] = [];
+    public waitingGames: Game[] = [];
+    public runningGames : Game[] = [];
 
     showSettings = false;
     showRules = false;
@@ -65,8 +66,8 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
 
         this.subscriptions.add(
             this.gamesService.gamesPerStates$.subscribe(gamePerStates => {
-                // NOTE : Might be changed to support display of running games
                 this.waitingGames = gamePerStates[GameState.WAITING];
+                this.runningGames = gamePerStates[GameState.RUNNING];
             })
         );
     }

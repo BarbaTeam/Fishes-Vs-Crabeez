@@ -15,9 +15,7 @@ class GameRuntime {
         this.receiver = new game_actions_receiver_1.GameActionsReceiver(this.model);
         const maxDurationInMin = game.gameConfig.maxDuration;
         if (maxDurationInMin !== "inf") {
-            this.timeout = setTimeout(() => {
-                this.onGameEnd();
-            }, maxDurationInMin * 60000);
+            this.timeout = setTimeout(() => this.onGameEnd(), maxDurationInMin * 60000);
         }
     }
     runOneFrame() {
@@ -28,11 +26,16 @@ class GameRuntime {
         this.model.runOneFrame();
     }
     onGameEnd() {
-        // TODO : enhanced game end
         if (this === null || this === void 0 ? void 0 : this.timeout)
             this.timeout.close();
         this.notifier.onGameEnd();
         (0, stats_1.processGameLog)(this.accumulator.gamelog);
+        (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
+    }
+    onForcedGameEnd() {
+        if (this === null || this === void 0 ? void 0 : this.timeout)
+            this.timeout.close();
+        this.notifier.onGameEnd();
         (0, game_runner_1.stopRunningGame)(this.model.game.gameId);
     }
 }
