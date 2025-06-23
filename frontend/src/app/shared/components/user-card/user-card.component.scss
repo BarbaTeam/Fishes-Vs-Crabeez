@@ -11,9 +11,6 @@
   color: #01579b;
 
   border: 2px solid #b0c4de;
-  box-shadow:
-    4px 4px 0 #cbdcf5,
-    8px 8px 0 rgba(0, 128, 176, 0.1);
 
   margin: 0.5rem;
   box-sizing: border-box;
@@ -27,9 +24,7 @@
   cursor: pointer;
   background-color: #d0d9f5;
   transform: translateY(-2px);
-  box-shadow:
-    2px 2px 0 #bcd4ee,
-    4px 4px 0 rgba(0, 128, 176, 0.1);
+
 }
 
 
@@ -129,9 +124,6 @@
 
   background: linear-gradient(135deg, #e0f7fa, #ecfcff);
   border: 2px solid #b0c4de;
-  box-shadow:
-    4px 4px 0 #cbdcf5,
-    8px 8px 0 rgba(0, 128, 176, 0.1);
 
   box-sizing: border-box;
   overflow: hidden; 
@@ -161,7 +153,6 @@
     justify-content: center;
     padding-left: 1rem;
 
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
 
     .first-name {
       font-size: clamp(0.9rem, 1.5vw, 1rem);

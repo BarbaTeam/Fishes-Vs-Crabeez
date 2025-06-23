@@ -1,9 +1,6 @@
 .lobby-card {
   background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
   padding: 1.25rem 1.5rem;
-  box-shadow:
-    4px 4px 0 #b2dfdb,
-    8px 8px 0 rgba(0, 128, 176, 0.2); // Shadow façon pixel
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   color: #01579b;
   border: 2px solid #4dd0e1;
@@ -12,9 +9,7 @@
 
   &:hover {
     transform: translate(-2px, -2px);
-    box-shadow:
-      6px 6px 0 #80deea,
-      12px 12px 0 rgba(0, 128, 176, 0.25);
+   
   }
 
   .lobby-header {
