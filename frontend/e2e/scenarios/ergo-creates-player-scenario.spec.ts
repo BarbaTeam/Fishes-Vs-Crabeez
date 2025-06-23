@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { testUrl } from '../e2e.config';
 
-import { ChoiceButtonFixture } from '@app/shared/components/choice-button/choice-button.fixture';
+import { ChoicePageFixture } from '@e2e/pages-fixtures/home/choice-page.fixture';
 import { ErgoHomePageFixture } from '@e2e/pages-fixtures/ergo-home-page.fixture';
-import { ChildListPageFixture } from '@e2e/pages-fixtures/child-list-page.fixture';
+import { ChildsListPageFixture } from '@e2e/pages-fixtures/child-list-page.fixture';
 import { NewChildPageFixture } from '@e2e/pages-fixtures/new-child-page.fixture';
 import { ChildConfigPageFixture } from '@e2e/pages-fixtures/child-config-page.fixture';
 import { ChildStatsPageFixture } from '@e2e/pages-fixtures/child-stats-page.fixture';
@@ -13,9 +13,9 @@ import { ChildStatsPageFixture } from '@e2e/pages-fixtures/child-stats-page.fixt
 test.describe('Ergo creates a new player and access it to double check', () => {
     test.setTimeout(120_000);
 
-    let choiceButton: ChoiceButtonFixture;
+    let choicePage: ChoicePageFixture;
     let ergoHomePage: ErgoHomePageFixture;
-    let childrenListPage: ChildListPageFixture;
+    let childrenListPage: ChildsListPageFixture;
     let newChildPage: NewChildPageFixture;
     let childConfigPage: ChildConfigPageFixture;
     let childStatsPage: ChildStatsPageFixture;
@@ -27,9 +27,9 @@ test.describe('Ergo creates a new player and access it to double check', () => {
     };
 
     test.beforeEach(async ({ page }) => {
-        choiceButton = new ChoiceButtonFixture(page);
+        choicePage = new ChoicePageFixture(page);
         ergoHomePage = new ErgoHomePageFixture(page);
-        childrenListPage = new ChildListPageFixture(page);
+        childrenListPage = new ChildsListPageFixture(page);
         newChildPage = new NewChildPageFixture(page);
         childConfigPage = new ChildConfigPageFixture(page);
         childStatsPage = new ChildStatsPageFixture(page);
@@ -38,13 +38,11 @@ test.describe('Ergo creates a new player and access it to double check', () => {
     test('Ergo creates a new player and access it to double check', async ({ page }) => {
         await test.step("Navigate to ergo page", async () => {
             await page.goto(testUrl);
+            await expect(page).toHaveURL(/.*\/home/);
+            await choicePage.verifyPageElements();
 
-            await expect(page.getByText('PIXEL TYPER')).toBeVisible();
-            await expect(page.getByText('Selectionnez votre rôle !')).toBeVisible();
-            await expect(choiceButton.ergoCard()).toBeVisible();
-            await expect(choiceButton.ergoCard()).toContainText('Un rôle qui permet de créer des sessions multijoueur');
+            await choicePage.selectErgoRole();
 
-            await choiceButton.ergoCard().click();
             await expect(page).toHaveURL(/.*\/ergo/);
             await page.waitForLoadState('networkidle');
         });

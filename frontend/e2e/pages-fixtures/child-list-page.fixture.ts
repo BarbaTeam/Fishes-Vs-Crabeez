@@ -8,7 +8,7 @@ import { StatefulUsersListFixture } from '@app/shared/components/stateful-user-l
 
 
 
-export class ChildListPageFixture extends E2EComponentFixture{
+export class ChildsListPageFixture extends E2EComponentFixture{
     private navbarButton = new NavbarButtonFixture(this.page);
     private newChildButton = new NewChildButtonFixture(this.page);
     private innerBox = new InnerBoxFixture(this.page);
