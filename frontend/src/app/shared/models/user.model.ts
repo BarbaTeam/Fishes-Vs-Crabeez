@@ -3,7 +3,10 @@ import { QuestionNotion } from "./question.model";
 
 
 
-export type UserQuestionNotionsMask = Record<QuestionNotion, boolean>;
+export type PlayerConfig = {
+    notionsMask: Record<QuestionNotion, boolean>,
+};
+
 
 export type UserConfig = {
     advancedStats: boolean,
@@ -14,9 +17,8 @@ export type UserConfig = {
 
     fontSize: number,
     sound: number,
+} & PlayerConfig;
 
-    notionsMask: UserQuestionNotionsMask
-};
 
 export type User = {
     userId: UserID;

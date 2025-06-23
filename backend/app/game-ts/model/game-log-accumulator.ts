@@ -1,4 +1,4 @@
-import { AnsweredQuestion, GameLobby, GameLog, UserID } from '../../shared/types';
+import { AnsweredQuestion, Game, GameLog, UserID } from '../../shared/types';
 
 
 
@@ -6,7 +6,7 @@ export class GameLogAccumulator {
     private _acc: Record<UserID, AnsweredQuestion[]> = {} as Record<UserID, AnsweredQuestion[]>;
 
     constructor(
-        private readonly gameLobby: GameLobby
+        private readonly gameLobby: Game,
     ) {
         const playersId = gameLobby.playersId;
         for (let playerId of playersId) {

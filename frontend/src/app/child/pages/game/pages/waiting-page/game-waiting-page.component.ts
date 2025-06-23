@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs';
 
 import { SocketService } from '@app/shared/services/socket.service';
-import { GamesLobbyService } from '@app/shared/services/games-lobby.service';
+import { GamesService } from '@app/shared/services/games.service';
 
-import { GameLobby } from '@app/shared/models/game-lobby.model';
+import { Game } from '@app/shared/models/game.model';
 
 
 
@@ -18,12 +18,12 @@ import { GameLobby } from '@app/shared/models/game-lobby.model';
 export class GameWaitingPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
 
-    public waitingGame!: GameLobby;
+    public waitingGame!: Game;
     public inCountdown: boolean = false;
 
     constructor(
         private socket: SocketService,
-        private gameLobbiesService:GamesLobbyService,
+        private gamesService: GamesService,
         private router: Router,
         private route: ActivatedRoute
     ) {}
@@ -33,8 +33,8 @@ export class GameWaitingPageComponent implements OnInit, OnDestroy {
             .pipe(first()) // <-- one time subscription
             .subscribe(params => {
                 this.subscriptions.add(
-                    this.gameLobbiesService.getGameLobbyById$(params['id']).subscribe(
-                        gameLobby => this.waitingGame = gameLobby!
+                    this.gamesService.getGameById$(params['id']).subscribe(
+                        game => this.waitingGame = game!
                     )
                 );
             });

@@ -1,46 +1,47 @@
+@if (user) {
+    <div class="header" (click)="toogle()">
+        <img class="icon" [src]="'../../assets/images/child-pps/' + user.icon" [alt]="'Icône de ' + user.firstName + ' ' + user.lastName"/>
+        <div class="name">
+            <p class="first-name">{{ user.firstName }}</p>
+            <p class="last-name">{{ user.lastName }}</p>
+        </div>
+        <button class="toggle-btn" aria-label="Toggle details">
+            {{ isUnrolled() ? '－' : '＋' }}
+        </button>
+    </div>
 
-<div class="header" (click)="toogle()">
-    <img
-        class="avatar"
-        [src]="'../../assets/images/child-pps/' + user.icon"
-        [alt]="'Icône de ' + user.firstName + ' ' + user.lastName"
-    />
-    <span class="name">{{ user.firstName }} {{user.lastName}}</span>
-    <button class="toggle-btn" aria-label="Toggle details">
-        {{ isUnrolled() ? '－' : '＋' }}
-    </button>
-</div>
 
-<div class="content" *ngIf="isUnrolled()">
-    <span >
-        Réécriture des nombres :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.REWRITING"/>
-    </span>
+    <div class="content" *ngIf="isUnrolled()">
+        <span >
+            Réécriture :
+            <app-settings-toggle [(checked)]="notionsMask.REWRITING" (checkedChange)="onMaskChanged()"/>
+        </span>
 
-    <span>
-        Addition :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.ADDITION"/>
-    </span>
+        <span>
+            Addition :
+            <app-settings-toggle [(checked)]="notionsMask.ADDITION" (checkedChange)="onMaskChanged()"/>
+        </span>
 
-    <span>
-        Soustraction :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.SUBSTRACTION"/>
-    </span>
+        <span>
+            Soustraction :
+            <app-settings-toggle [(checked)]="notionsMask.SUBSTRACTION" (checkedChange)="onMaskChanged()"/>
+        </span>
 
-    <span>
-        Multiplication :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.MULTIPLICATION"/>
-    </span>
+        <span>
+            Multiplication :
+            <app-settings-toggle [(checked)]="notionsMask.MULTIPLICATION" (checkedChange)="onMaskChanged()"/>
+        </span>
 
-    <span>
-        Division :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.DIVISION"/>
-    </span>
+        <span>
+            Division :
+            <app-settings-toggle [(checked)]="notionsMask.DIVISION" (checkedChange)="onMaskChanged()"/>
+        </span>
 
-    <!--
-    <span>
-        Equation :
-        <app-settings-toggle [(checked)]="user.config.notionsMask.EQUATION"/>
-    </span>
-    -->
-</div>
+        <!--
+        <span>
+            Equation :
+            <app-settings-toggle [(checked)]="notionsMask.EQUATION" (checkedChange)="onMaskChanged()"/>
+        </span>
+        -->
+    </div>
+}

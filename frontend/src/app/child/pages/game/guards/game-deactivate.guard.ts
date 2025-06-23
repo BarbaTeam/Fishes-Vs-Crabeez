@@ -13,6 +13,6 @@ export const gameDeactivateGuard: CanDeactivateFn<any> = (
     nextState?: RouterStateSnapshot
 ): Observable<boolean> | Promise<boolean> | boolean => {
     const socket = inject(SocketService);
-    socket.on<void>('leaveGame');
+    socket.sendMessage('leaveGame', {});
     return true;
 };

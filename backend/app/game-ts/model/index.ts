@@ -1,4 +1,4 @@
-import { GameLobby } from '../../shared/types';
+import { Game, PlayerConfig, UserID, UserQuestionNotionsMask } from '../../shared/types';
 
 import { GameUpdatesNotifier } from '../runtime/game-updates-notifier';
 import { GameLogAccumulator } from '../model/game-log-accumulator';
@@ -18,13 +18,24 @@ export class GameModel {
 
     constructor (
         private notifier: GameUpdatesNotifier,
-        public gameLobby: GameLobby,
+        public game: Game,
         accumulator: GameLogAccumulator,
     ) {
 
-        this.gameEngine = new GameEngine(this, notifier, gameLobby.playersId);
+        this.gameEngine = new GameEngine(this, notifier, game.playersId);
 
-        this.quizHandler = new QuizHandler(this, notifier, gameLobby.playersNotionsMask, accumulator);
+        const playersConfigEntries = Object.entries(game.playersConfig) as [UserID, PlayerConfig][];
+        const playersNotionsMask = playersConfigEntries.reduce(
+            (acc, [playerId, config]) => {
+                acc[playerId] = config.notionsMask;
+                if (game.gameConfig.encrypted) {
+                    console.log("cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc");
+                    acc[playerId].ENCRYPTION = true;
+                }
+                return acc;
+            }, {} as Record<UserID, UserQuestionNotionsMask>
+        );
+        this.quizHandler = new QuizHandler(this, notifier, playersNotionsMask, accumulator);
 
         this.eventsHandler = new EventsHandler(this);
     }

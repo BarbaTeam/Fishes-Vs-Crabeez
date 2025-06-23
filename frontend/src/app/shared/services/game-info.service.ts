@@ -8,7 +8,7 @@ import { HTTP_API } from '@app/app-settings';
 import { LocalStorageService } from './local-storage.service';
 
 import { GameID } from '@app/shared/models/ids';
-import { GameInfo } from '@app/shared/models/game-log.model';
+import { GameInfo } from '@app/shared/models/game-info.model';
 
 
 

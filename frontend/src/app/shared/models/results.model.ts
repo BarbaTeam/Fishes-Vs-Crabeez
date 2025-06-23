@@ -25,12 +25,6 @@ export type Grading = {
 // Results :
 ////////////////////////////////////////////////////////////////////////////////
 
-/**
- * BACKEND :: Type representing not yet processed results of a game.
- */
-export type RawResults = AnsweredQuestion[];
-
-
 export type Results = {
     wordsPerMinute: number,
     globalGrading: Grading

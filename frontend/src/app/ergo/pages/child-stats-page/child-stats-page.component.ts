@@ -18,7 +18,7 @@ import { PlayerResults, PlayerStatistics } from '@app/shared/models/player-resul
 import { AnsweredQuestion, QuestionNotion } from '@app/shared/models/question.model';
 import { Grading } from '@app/shared/models/results.model';
 import { GameLeaderboard, GlobalLeaderboard, Leaderboard } from '@app/shared/models/leaderboard.model';
-import { GameInfo } from '@app/shared/models/game-log.model';
+import { GameInfo } from '@app/shared/models/game-info.model';
 
 
 

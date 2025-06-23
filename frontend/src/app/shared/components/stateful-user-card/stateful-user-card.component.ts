@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { SocketService } from '@app/shared/services/socket.service';
 import { UserService } from '../../services/user.service';
@@ -21,7 +22,9 @@ type ConnectionState = "Connected"|"Disconnected";
         '[class.disconnected]': 'state === "Disconnected"'
     }
 })
-export class StatefulUserCardComponent implements OnInit {
+export class StatefulUserCardComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription = new Subscription();
+
     @Input()
     user!: User;
 
@@ -31,9 +34,6 @@ export class StatefulUserCardComponent implements OnInit {
     @Input()
     state!: ConnectionState;
 
-    firstName = '';
-    lastName = '';
-
     constructor(
         private socket: SocketService,
         private userService: UserService
@@ -41,8 +41,16 @@ export class StatefulUserCardComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.userId) {
-            this.user = this.userService.getUserById(this.userId)!;
+            this.subscriptions.add(
+                this.userService.getUserById$(this.userId).subscribe(
+                    user => { if (user) this.user = user; }
+                )
+            );
         }
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     public disconnectUser(event : Event): void {

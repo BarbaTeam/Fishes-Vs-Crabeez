@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { GameLobby, GameLobbyState } from '@app/shared/models/game-lobby.model';
+import { GameLobby, GameState } from '@app/shared/models/game.model';
 
 
 
@@ -15,8 +15,8 @@ export class GameCardComponent {
 
     get state_fr(): string {
         switch (this.gameLobby.state) {
-            case GameLobbyState.RUNNING : return "En cours";
-            case GameLobbyState.WAITING : return "En attente";
+            case GameState.RUNNING : return "En cours";
+            case GameState.WAITING : return "En attente";
         }
     }
 }

@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy,  Input } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '../../services/user.service';
 
@@ -13,7 +14,8 @@ import { Grade, Grading } from '@app/shared/models/results.model';
     templateUrl: './player-in-leaderboard.component.html',
     styleUrl: './player-in-leaderboard.component.scss'
 })
-export class PlayerInLeaderboardComponent implements OnInit {
+export class PlayerInLeaderboardComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription = new Subscription();
 
     @Input()
     user!: User;
@@ -36,8 +38,16 @@ export class PlayerInLeaderboardComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.userId) {
-            this.user = this.userService.getUserById(this.userId)!;
+            this.subscriptions.add(
+                this.userService.getUserById$(this.userId).subscribe(
+                    user => { if (user) this.user = user; }
+                )
+            );
         }
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
 

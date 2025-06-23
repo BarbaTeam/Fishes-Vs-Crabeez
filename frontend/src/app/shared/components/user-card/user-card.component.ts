@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { UserService } from '../../services/user.service';
 
@@ -12,7 +13,8 @@ import { UserID } from '../../models/ids';
     templateUrl: './user-card.component.html',
     styleUrl: './user-card.component.scss'
 })
-export class UserCardComponent implements OnInit {
+export class UserCardComponent implements OnInit, OnDestroy {
+    private subscriptions: Subscription = new Subscription();
 
     @Input()
     user!: User;
@@ -29,9 +31,17 @@ export class UserCardComponent implements OnInit {
 
     ngOnInit(): void {
         if (this.userId) {
-            this.user = this.userService.getUserById(this.userId)!;
+            this.subscriptions.add(
+                this.userService.getUserById$(this.userId).subscribe(
+                    user => { if (user) this.user = user; }
+                )
+            );
         }
         this.firstName = this.user.firstName;
         this.lastName = this.user.lastName;
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 }

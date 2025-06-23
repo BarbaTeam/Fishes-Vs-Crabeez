@@ -35,16 +35,18 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box class="main-box blue little scrollable">
+        <app-inner-box class="blue little column scrollable">
             @if (inWaitingGame) {
                 <p class="title">Joueurs en attente</p>
 
-                @if (gameLobby.playersId.length === 0) {
+                @if (game.playersId.length === 0) {
                     <p> En attente de joueurs... </p>
                 } @else {
-                    @for (playerId of gameLobby.playersId; track playerId) {
+                    @for (playerId of game.playersId; track playerId) {
                         <app-player-in-lobby
                             [userId]="playerId"
+                            [notionsMask]="game.playersConfig[playerId].notionsMask"
+                            (maskChanged)="onGameUpdate()"
                             style="
                                 --lobby-icon-size: 2rem;
                                 --lobby-font-size: 0.8rem;
@@ -59,26 +61,80 @@
             }
         </app-inner-box>
 
-        <app-inner-box class="main-box blue medium">
-            <span>
-                Encryptage des questions :
-                <app-settings-toggle/>
+        <app-inner-box class="blue medium">
+            <span class="text-line">
+                <label for="name">Nom de la partie :</label>
+                <input
+                    id="name"
+                    class="underline-input"
+                    type="text"
+                    [(ngModel)]="game.name"
+                    (ngModelChange)="onGameUpdate()"
+                />
             </span>
-            <span>
-                Temps de la partie : 20min
+
+            <span class="text-line">
+                <label for="maxDuration">Durée max :</label>
+                <input
+                    id="maxDuration"
+                    class="underline-input"
+                    type="number"
+                    size="2"
+                    [(ngModel)]="game.gameConfig.maxDuration"
+                    (ngModelChange)="onGameUpdate()"
+                /> min
             </span>
+
             <span>
-                Fréquence d'apparition des méduses :
-                <app-settings-slider/>
+                Questions cryptées :
+                <app-settings-toggle
+                    [(checked)]="game.gameConfig.encrypted"
+                    (checkedChange)="onGameUpdate()"
+                />
             </span>
-            <span>
-                Fréquence d'apparition des crabes :
-                <app-settings-slider/>
-            </span>
-            <span>
-                Vitesse des crabes :
-                <app-settings-slider/>
-            </span>
+
+            <!-- TODO : To support
+                <span class="text-line">
+                    <label for="minNbPlayers">Nombre minimal de joueurs :</label>
+                    <input
+                        id="minNbPlayers"
+                        type="number"
+                        size="2"
+                        [(ngModel)]="game.gameConfig.minNbPlayers"
+                        (ngModelChange)="onGameUpdate()"
+                        class="underline-input"
+                    />
+                </span>
+
+                <span class="text-line">
+                    <label for="maxNbPlayers">Nombre maximal de joueurs :</label>
+                    <input
+                        id="maxNbPlayers"
+                        type="number"
+                        size="2"
+                        [(ngModel)]="game.gameConfig.maxNbPlayers"
+                        (ngModelChange)="onGameUpdate()"
+                        class="underline-input"
+                    />
+                </span>
+
+                <span>
+                    Fréquence d'apparition des crabes :
+                    <app-settings-slider
+                        [(value)]="game.gameConfig.monstersSpawnRate"
+                        (valueChange)="onGameUpdate()"
+                    />
+                </span>
+
+                <span>
+                    Vitesse des crabes :
+                    <app-settings-slider
+                        [(value)]="game.gameConfig.monstersSpeedCoeff"
+                        (valueChange)="onGameUpdate()"
+                    />
+                </span>
+            -->
+
         </app-inner-box>
     </app-body>
 

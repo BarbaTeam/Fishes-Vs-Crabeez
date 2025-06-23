@@ -5,12 +5,14 @@ import { first } from 'rxjs/operators';
 
 import { SocketService } from '@app/shared/services/socket.service';
 import { UserService } from '@app/shared/services/user.service';
-import { GamesLobbyService } from '@app/shared/services/games-lobby.service';
+import { GamesService } from '@app/shared/services/games.service';
 import { NotifService } from '@app/shared/services/notif.service';
 
 import { GameID } from '@app/shared/models/ids';
-import { GameLobby, GameLobbyState  } from '@app/shared/models/game-lobby.model';
+import { GameLobby, GameState } from '@app/shared/models/game.model';
 import { User } from '@app/shared/models/user.model';
+
+
 
 @Component({
     selector: 'app-games-list-page',
@@ -27,7 +29,7 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
     showIconSelector: boolean = false;
 
     public userTemp!: User;
-    
+
     get settings() {
         return {
             fontSize: this.userTemp?.config?.fontSize,
@@ -45,7 +47,7 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
     constructor(
         private socket: SocketService,
         private userService: UserService,
-        private gamesLobbyService: GamesLobbyService,
+        private gamesService: GamesService,
         private router: Router,
         private notifService: NotifService,
     ) {}
@@ -62,9 +64,9 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.add(
-            this.gamesLobbyService.gamesLobbyPerStates$.subscribe(gameLobbiesPerStates => {
+            this.gamesService.gamesPerStates$.subscribe(gamePerStates => {
                 // NOTE : Might be changed to support display of running games
-                this.waitingGames = gameLobbiesPerStates[GameLobbyState.WAITING];
+                this.waitingGames = gamePerStates[GameState.WAITING];
             })
         );
     }
@@ -127,11 +129,11 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
 
         try {
             await this.userService.saveChanges(this.userTemp);
-            
+
             this.notifService.triggerNotif(
                 "Success", "Paramètres mis à jour"
             );
-            
+
             this.showSettings = false;
         } catch (error) {
             this.notifService.triggerNotif(
