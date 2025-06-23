@@ -19,14 +19,6 @@
     background-color: #92c3ff;
 }
 
-:host(.adder):hover {
-    cursor: pointer;
-    background-color: #ababab;
-}
-:host(.adder):active {
-    background-color: #868686;
-}
-
 :host(.horizontal) {
     flex-direction: row;
     align-items: center;
