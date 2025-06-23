@@ -1,7 +1,8 @@
+import { UserID } from "./ids";
 import { UserConfig } from "./user-config.model";
 
 export type User = {
-    userId: string;
+    userId: UserID;
     name: string;
     age: string;
     icon: string;
