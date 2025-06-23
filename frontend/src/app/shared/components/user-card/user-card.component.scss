@@ -7,22 +7,29 @@
   width: 8.3rem;
   height: 10rem;
 
-  background: linear-gradient(135deg, #e0f7fa, #c3eaf0);
+  background: linear-gradient(135deg, #e0f7fa, #ecfcff);
   color: #01579b;
 
-  border-radius: 0;
   border: 2px solid #b0c4de;
   box-shadow:
     4px 4px 0 #cbdcf5,
     8px 8px 0 rgba(0, 128, 176, 0.1);
 
   margin: 0.5rem;
-  cursor: pointer;
   box-sizing: border-box;
   transition: background-color 0.3s, transform 0.2s;
   image-rendering: pixelated;
 
   overflow: hidden; /* ✅ évite tout débordement */
+}
+
+:host(.hoverable):hover {
+  cursor: pointer;
+  background-color: #d0d9f5;
+  transform: translateY(-2px);
+  box-shadow:
+    2px 2px 0 #bcd4ee,
+    4px 4px 0 rgba(0, 128, 176, 0.1);
 }
 
 
@@ -120,26 +127,31 @@
   height: 4.5rem;
   padding-left: 1rem;
 
-  background: linear-gradient(135deg, #e0f7fa, #c3eaf0);
+  background: linear-gradient(135deg, #e0f7fa, #ecfcff);
   border: 2px solid #b0c4de;
   box-shadow:
     4px 4px 0 #cbdcf5,
     8px 8px 0 rgba(0, 128, 176, 0.1);
 
-  border-radius: 0;
   box-sizing: border-box;
   overflow: hidden; 
   image-rendering: pixelated;
 
   .icon {
-    width: 3.5rem; 
+    width: 3.5rem;
     height: 3.5rem;
-    background-color: #fff;
-    box-shadow: inset 0 0 0 1px #cce4ff;
-    flex-shrink: 0;
-    border-radius: 0;
-    object-fit: cover;
-    overflow: hidden; 
+    margin-right: 1rem;
+    background: none;
+    box-shadow: none;
+    flex-shrink: 0; // ✅ Empêche la réduction de taille
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; // ✅ Montre toute l’image sans la couper
+    image-rendering: pixelated; // 👾 pour les icônes en pixel art
+    display: block;
   }
 
   .name {

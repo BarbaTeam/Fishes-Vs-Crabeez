@@ -1,4 +1,5 @@
 <app-user-card
+    class="hoverable"
     *ngFor="let user of users"
     [user]="user"
     (click)="userClick.emit(user.userId)"
