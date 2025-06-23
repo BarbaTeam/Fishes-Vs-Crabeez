@@ -42,6 +42,7 @@ import { NotifComponent } from './components/notif/notif.component';
 import { NotifContainerComponent } from './components/notif-container/notif-container.component';
 
 // Miscellaneous :
+import { PlayerInLeaderboardComponent } from './components/player-in-leaderboard/player-in-leaderboard.component';
 import { PlayerInLobbyComponent } from './components/player-in-lobby/player-in-lobby.component';
 import { UserConfigComponent } from './components/user-config/user-config.component';
 import { GameCardComponent } from './components/game-card/game-card.component';
@@ -99,6 +100,7 @@ const SHARED_COMPONENTS = [
     SoundControlComponent,
 
     // Miscellaneous :
+    PlayerInLeaderboardComponent,
     PlayerInLobbyComponent,
     UserConfigComponent,
     GameCardComponent,
