@@ -2,12 +2,21 @@
 // Imports :
 ////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
+// Modules :
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { HomeRoutingModule } from './home-routing.module';
 
 import { SharedModule } from '@app/shared/shared.module';
+
+
+////////////////////////////////////////////////////////////////////////////////
+// Host :
+
+import { HomeHostComponent } from './home-host.component';
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -30,6 +39,7 @@ const PAGES_COMPONENTS = [
 
 @NgModule({
     declarations: [
+        HomeHostComponent,
         ...PAGES_COMPONENTS,
     ],
     imports: [
@@ -38,6 +48,7 @@ const PAGES_COMPONENTS = [
         SharedModule,
     ],
     exports: [
+        HomeHostComponent,
         ...PAGES_COMPONENTS,
     ],
 })

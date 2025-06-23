@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Socket } from 'ngx-socket-io';
 import { Observable } from 'rxjs';
+
 import { User } from '@app/shared/models/user.model';
+
+
 
 @Injectable({
     providedIn: 'root'
@@ -9,7 +12,9 @@ import { User } from '@app/shared/models/user.model';
 export class SocketService {
     private _currentUser?: User;
 
-    constructor(private socket: Socket) {}
+    constructor(
+        private socket: Socket
+    ) {}
 
     setCurrentUser(user: User): void {
         this._currentUser = user;

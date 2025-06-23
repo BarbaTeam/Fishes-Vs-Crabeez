@@ -85,8 +85,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
     ) {
         this.subscriptions.add(
-            this.userService.selectedUser$.subscribe((user: User) => {
-                        this.user = user;
+            this.userService.selectedUser$.subscribe(
+            (user: User) => {
+                this.user = user;
             })
         );
 
@@ -111,7 +112,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 this._playerResultsList = playerResultsList;
             })
         );
-        
 
         const gameIdsStream$ = this.playerResultsService.playerResultsList$.pipe(
             map((playerResultsList) => playerResultsList.map(pr => pr.gameId)),
@@ -146,7 +146,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                 this.gamesInfos = gamesInfos as GameInfo[];
             })
         );
-        
+
         this.subscriptions.add(
             gamesLeaderboards$.subscribe((gameLeaderboardList) => {
                 this._gameLeaderboardList = gameLeaderboardList as GameLeaderboard[];
@@ -185,8 +185,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscriptions.unsubscribe();
+        //this.subscriptions.unsubscribe();
     }
+
 
     ////////////////////////////////////////////////////////////////////////////
     // Operations :

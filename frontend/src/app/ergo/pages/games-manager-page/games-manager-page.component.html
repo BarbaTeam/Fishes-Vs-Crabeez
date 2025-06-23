@@ -38,9 +38,9 @@
     <app-body>
         <app-big-button
             class="main-box orange"
-            [routerLink]="['/ergo/game-lobby']"
+            (click)="openGame()"
         >
-            Lancer la partie
+            Lancer une partie
         </app-big-button>
     </app-body>
 

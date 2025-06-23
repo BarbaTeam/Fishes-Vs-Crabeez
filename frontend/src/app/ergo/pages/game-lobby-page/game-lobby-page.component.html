@@ -36,25 +36,27 @@
 
     <app-body>
         <app-inner-box class="main-box blue little scrollable">
-            <p *ngIf="state === 'En attente' ; else gameInProgress" class="title">Joueurs en attente</p>
-            <ng-container *ngIf="players.length !== 0 && state === 'En attente' ; else waitingForPlayers">
-                <app-player-in-lobby
-                    *ngFor="let player of players"
-                    [user]="player"
-                    style="
-                        --lobby-icon-size: 2rem;
-                        --lobby-font-size: 0.8rem;
-                        --lobby-padding: 0rem;
-                    "
-                    />
-            </ng-container>
-            <ng-template #waitingForPlayers>
-                <p>En attente de joueurs...</p>
-            </ng-template>
-            <ng-template #gameInProgress>
+            @if (inWaitingGame) {
+                <p class="title">Joueurs en attente</p>
+
+                @if (gameLobby.playersId.length === 0) {
+                    <p> En attente de joueurs... </p>
+                } @else {
+                    @for (playerId of gameLobby.playersId; track playerId) {
+                        <app-player-in-lobby
+                            [userId]="playerId"
+                            style="
+                                --lobby-icon-size: 2rem;
+                                --lobby-font-size: 0.8rem;
+                                --lobby-padding: 0rem;
+                            "
+                        />
+                    }
+                }
+
+            } @else if (inRunningGame) {
                 <p>La partie est en cours !</p>
-            </ng-template>
-      
+            }
         </app-inner-box>
 
         <app-inner-box class="main-box blue medium">

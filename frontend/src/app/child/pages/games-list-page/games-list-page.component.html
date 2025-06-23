@@ -6,11 +6,24 @@
 
     <app-navbar>
         <app-navbar-button
-            class="navbar-button"
+            [routerLink]="['/child/profile']"
+            routerLinkActive="active"
+        >
+            <app-user-card [user]="user" class="horizontal navbar"/>
+        </app-navbar-button>
+
+        <app-navbar-button
             [routerLink]="['/child/games-list']"
             routerLinkActive="active"
         >
-            Lancement de la partie
+            Jouer
+        </app-navbar-button>
+
+        <app-navbar-button
+            [routerLink]="['/child/settings']"
+            routerLinkActive="active"
+        >
+            Options
         </app-navbar-button>
     </app-navbar>
 
@@ -21,31 +34,88 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <app-inner-box *ngIf="state === 'En attente'" class="main-box transparent little">
-            <img class="tuto" src="../../../../assets/images/icons/tuto1.png">
-            <img class="tuto" src="../../../../assets/images/icons/tuto2.png">
-        </app-inner-box>
-        <app-inner-box *ngIf="state === 'En attente'" class="main-box blue little">
-            <p class="title">Joueurs en attente</p>
-            <app-user-card
-                *ngFor="let player of players"
-                [user]="player"
-                class="horizontal lobby unclickable"
-            ></app-user-card>
-        </app-inner-box>
-        <app-inner-box *ngIf="state === 'En attente'" class="main-box transparent little">
-            <img class="tuto" src="../../../../assets/images/icons/tuto3.png">
-            <img class="tuto" src="../../../../assets/images/icons/tuto4.png">
-        </app-inner-box>
+       <div class="game-mode" [class.expanded]="selected">
+            <h2>Choisissez votre mode de jeu !</h2>
 
-         <div *ngIf="state === 'En préparation'" class="countdown-container">
-            <div *ngIf="countdown > 0" class="countdown-number animate">
-                {{ countdown }}
-            </div>
-            <div *ngIf="countdown === 0" class="countdown-number go-message animate">
-                GO !
-            </div>
+            @if (selected) {
+                <app-expandable-button
+                    class="card-wrapper expanded-card"
+                    [title]="selected === 'solo' ? 'Solo' : 'Équipe'"
+                    subtitle="Les règles du jeu"
+                    [mode]="selected"
+                    [expanded]="true"
+                    imageUrl="'../../assets/images/icons/ergo_choice.png'"
+                    [description]="
+                        selected === 'solo'
+                        ? '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position des hordes qui arrivent\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'
+                        : '🦀 Ecrivez les réponses aux questions pour éliminer un crabe\n\n🛡️ Défendez votre position et vos alliés\n\n⚔️ Mettez vous face à l\'ennemi pour pouvoir l\'éliminer\n\n🏆 Gagnez des succès et des badges qui témoigneront de votre réussite\n\n📈 Améliorez vous à chaque fois'
+                    "
+                    (expand)="onExpand($event)"
+                >
+                @if (waitingGames.length !== 0 && selected !== "solo") {
+                    <p class="title">Liste des parties</p>
+                    <p class="sub-title">Cliquez pour rejoindre</p>
+                    <div class="game-list">
+                        @for (waitingGame of waitingGames; track waitingGame.gameId) {
+                            <app-game-card
+                                [gameLobby]="waitingGame"
+                                (click)="joinGame(waitingGame.gameId)"
+                            />
+                        }
+                    </div>
+                } @else if (selected !== "solo") {
+                    <p>En attente de parties...</p>
+                }
+                </app-expandable-button>
+            } @else {
+                <ng-container *ngIf="!selected">
+                    <app-expandable-button
+                        class="card-wrapper"
+                        title="Solo"
+                        imageUrl="../../assets/images/icons/solo.png"
+                        description="Vous affronterez une horde de crabe, seul, mais déterminé(e), arriveriez vous à les repousser ?"
+                        mode="solo"
+                        [expanded]="false"
+                        (expand)="onExpand($event)"
+                    ></app-expandable-button>
+
+                    <app-expandable-button
+                        class="card-wrapper"
+                        title="Équipe"
+                        imageUrl="../../assets/images/icons/multi.png"
+                        description="Les crabes n'ont pas peur d'une bande d'enfant comme vous, montrez leur le contraire !"
+                        mode="multi"
+                        [expanded]="false"
+                        (expand)="onExpand($event)"
+                    ></app-expandable-button>
+                </ng-container>
+            }
         </div>
+
+        <div class="back-button-container" *ngIf="selected">
+            <div class="back-button" (click)="selected = null">Retour</div>
+        </div>
+
+        <!--
+        @if (waitingGames.length !== 0) {
+            <p class="title">Liste des parties</p>
+            <p class="sub-title">Cliquez pour rejoindre</p>
+            <app-inner-box
+                class="scrollable column no-background medium center-content"
+                style="width: 35vw;"
+            >
+                @for (waitingGame of waitingGames; track waitingGame.gameId) {
+                    <app-game-card
+                        [gameLobby]="waitingGame"
+                        (click)="joinGame(waitingGame.gameId)"
+                    />
+                }
+            </app-inner-box>
+        } @else {
+            <p>En attente de parties...</p>
+        }
+        -->
+
     </app-body>
 
 </app-template>

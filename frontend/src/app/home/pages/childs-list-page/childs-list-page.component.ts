@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs';
 
 import { UserService } from '@app/shared/services/user.service';
 import { SocketService } from '@app/shared/services/socket.service';
@@ -9,68 +10,78 @@ import { User } from '@app/shared/models/user.model';
 import { UserID } from '@app/shared/models/ids';
 
 
+
 @Component({
     selector: 'app-childs-list-page',
     templateUrl: './childs-list-page.component.html',
     styleUrl: './childs-list-page.component.scss'
 })
 export class ChildsListPageComponent {
-    public users!: User[];
-    public filteredUsers: User[] = [];
     private subscriptions: Subscription = new Subscription();
-    private selectedUserIds: UserID[] = [];
+
+    private allUsers!: User[];
+    private availableUsersId!: UserID[];
+
+    public get availableUsers(): User[] {
+        return this.allUsers.filter(
+            u => this.availableUsersId.includes(u.userId)
+        );
+    }
 
     constructor(
+        private socket: SocketService,
         private userService: UserService,
         private router: Router,
-        private socket: SocketService,
     ) {}
 
     ngOnInit(): void {
-        this.initSocket();
-        this.socket.sendMessage('deselectUser', this.socket.id);
+        this._startup();
 
         this.subscriptions.add(
             this.userService.users$.subscribe((users: User[]) => {
-                this.users = users;
-                this.updateFilteredUsers();
+                this.allUsers = users;
             })
         );
 
-        this.socket.sendMessage('requestSelectedUsersId', {});
+        this.subscriptions.add(
+            this.socket.on<UserID>('userConnected').subscribe((userId) => {
+                this.availableUsersId.splice(this.availableUsersId.indexOf(userId), 1);
+            })
+        );
+
+        this.subscriptions.add(
+            this.socket.on<UserID>('userDisconnected').subscribe((userId) => {
+                this.availableUsersId.push(userId);
+            })
+        );
     }
 
+    private _startup(): void {
+        this.socket.onReady(() => {
+            this.socket.sendMessage('requestAvailableUsersId', {});
+        });
+        this.socket.on<UserID[]>('availableUsersId')
+            .pipe(first()) // <-- one time subscription
+            .subscribe((availableUsersId) => {
+                this.availableUsersId = availableUsersId;
+            });
+    }
 
-    private initSocket(): void {
-        this.subscriptions.add(
-            this.socket.on<UserID>('userSelectionGranted').subscribe((userId) => {
+    public onUserClick(userId: UserID) {
+        this.socket.on<string>('tryConnectAsChild_SUCCESS')
+            .pipe(first()) // <-- one time subscription
+            .subscribe(() => {
                 this.userService.selectUser(userId);
-                this.router.navigate(['/child/joining-games']);
-            })
-        );
+                this.router.navigate(['/child']);
+            });
 
-        this.subscriptions.add(
-            this.socket.on<UserID>('userSelectionDenied').subscribe((userId) => {
-            })
-        );
+        this.socket.on<string>('tryConnectAsChild_FAILURE')
+            .pipe(first()) // <-- one time subscription
+            .subscribe(() => {
+                // TODO : Show notification
+            });
 
-        this.subscriptions.add(
-            this.socket.on<UserID[]>('selectedUsersUpdate').subscribe((selectedUserIds: UserID[]) => {
-                this.selectedUserIds = selectedUserIds;
-                this.updateFilteredUsers();
-            })
-        );
-    }
-
-    private updateFilteredUsers(): void {
-        if (this.users) {
-            this.filteredUsers = this.users.filter(u => !this.selectedUserIds.includes(u.userId));
-        }
-    }
-
-
-    onUserClick(userId: UserID) {
-        this.socket.sendMessage('selectUser', userId);
+        this.socket.sendMessage('tryConnectAsChild', userId);
     }
 
     ngOnDestroy(): void {

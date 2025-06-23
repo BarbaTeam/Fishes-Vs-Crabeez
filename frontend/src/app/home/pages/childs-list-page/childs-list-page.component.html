@@ -15,20 +15,18 @@
     --------------------------------------------------------------------------->
 
     <app-body>
-        <div class="container">
-            <ng-container *ngIf="filteredUsers.length != 0 ; else noUsers" >
-            <h2> Selectionnez un profil ! </h2>
-            <app-inner-box class="main-box blue scrollable" style="width: 47.5vw;">
-                <app-user-list
-                    [users]="filteredUsers"
-                    (userClick)="onUserClick($event)"
-                />
-            </app-inner-box>
-        </ng-container>
-        </div>
-        <ng-template #noUsers>
+        @if (availableUsers.length !== 0) {
+            <div class="container">
+                <app-inner-box class="main-box blue scrollable" style="width: 47.5vw;">
+                    <app-user-list
+                        [users]="availableUsers"
+                        (userClick)="onUserClick($event)"
+                    />
+                </app-inner-box>
+            </div>
+        } @else {
             <p>Aucun profil n'a été créé</p>
-        </ng-template>
+        }
     </app-body>
 
 </app-template>

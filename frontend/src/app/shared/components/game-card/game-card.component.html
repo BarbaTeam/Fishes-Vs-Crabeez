@@ -1,9 +1,10 @@
 <div class="game-card">
-  <div class="game-header">
-    <h3>#{{ gameId }}</h3>
-  </div>
-  <div class="game-body">
-    <div>Joueurs : {{ playerCount }}</div>
-    <div [ngClass]="getStatusClass(gameState)">{{ gameState }}</div>
-  </div>
+    <div class="game-header">
+        <h3>#{{ gameLobby.gameId }}</h3>
+    </div>
+
+    <div class="game-body">
+        <p>Joueurs : {{ gameLobby.playersId.length }}</p>
+        <p [ngClass]="gameLobby.state.toLowerCase()">{{ state_fr }}</p>
+    </div>
 </div>

@@ -181,4 +181,3 @@ const { QuestionNotion } = require('./enums/question-notion.enum');
  *
  * @memberof types
  */
-

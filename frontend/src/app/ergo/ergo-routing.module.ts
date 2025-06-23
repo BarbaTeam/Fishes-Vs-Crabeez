@@ -5,6 +5,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ErgoHostComponent } from './ergo-host.component';
+import { ergoDeactivateGuard } from './guards/ergo-deactivate.guard';
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Pages :
@@ -22,16 +25,23 @@ import { ChildConfigPageComponent } from './pages/child-config-page/child-config
 // ErgoRoutingModule :
 ////////////////////////////////////////////////////////////////////////////////
 
-const ROUTES: Routes = [
-    { path: "", redirectTo: "games-manager", pathMatch: "full" },
+export const ROUTES: Routes = [
+    {
+        path: '',
+        component: ErgoHostComponent,
+        canDeactivate: [ergoDeactivateGuard],
+        children: [
+            { path: '', redirectTo: 'games-manager', pathMatch: 'full' },
 
-    { path: "games-manager", component: GamesManagerPageComponent },
-    { path: "game-lobby", component: GameLobbyPageComponent },
+            { path: 'games-manager', component: GamesManagerPageComponent },
+            { path: 'game-lobby', component: GameLobbyPageComponent },
 
-    { path: "childs-list", component: ChildsListPageComponent },
-    { path: "new-child", component: NewChildPageComponent },
-    { path: "child-stats", component: ChildStatsPageComponent },
-    { path: "child-config", component: ChildConfigPageComponent },
+            { path: 'childs-list', component: ChildsListPageComponent },
+            { path: 'new-child', component: NewChildPageComponent },
+            { path: 'child-stats', component: ChildStatsPageComponent },
+            { path: 'child-config', component: ChildConfigPageComponent },
+        ]
+    },
 ];
 
 

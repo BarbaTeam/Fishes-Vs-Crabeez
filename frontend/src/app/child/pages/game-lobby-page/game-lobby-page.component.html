@@ -1,0 +1,56 @@
+<app-template>
+
+    <!--------------------------------------------------------------------------
+    ---                              NAVBAR                                  ---
+    --------------------------------------------------------------------------->
+
+    <app-navbar>
+        <app-navbar-button
+            class="navbar-button"
+            [routerLink]="['/child/game-lobby']"
+            routerLinkActive="active"
+        >
+            Lancement de la partie
+        </app-navbar-button>
+    </app-navbar>
+
+
+
+    <!--------------------------------------------------------------------------
+    ---                               MAIN                                   ---
+    --------------------------------------------------------------------------->
+
+    <app-body>
+        @if (!inCountdown) {
+            <app-inner-box class="main-box transparent little">
+                <img class="tuto" src="../../../../assets/images/icons/tuto1.png">
+                <img class="tuto" src="../../../../assets/images/icons/tuto2.png">
+            </app-inner-box>
+
+            <app-inner-box class="main-box blue little">
+                <p class="title">Joueurs en attente</p>
+                @for (playerId of waitingGame.playersId; track playerId) {
+                    <app-user-card
+                        [userId]="playerId"
+                        class="horizontal lobby unclickable"
+                    />
+                }
+            </app-inner-box>
+
+            <app-inner-box class="main-box transparent little">
+                <img class="tuto" src="../../../../assets/images/icons/tuto3.png">
+                <img class="tuto" src="../../../../assets/images/icons/tuto4.png">
+            </app-inner-box>
+
+        } @else {
+            <div class="countdown-container">
+                @if (countdown > 0) {
+                    <div class="countdown-number animate">{{ countdown }}</div>
+                } @else {
+                    <div class="countdown-number go-message animate"> GO ! </div>
+                }
+            </div>
+        }
+    </app-body>
+
+</app-template>
