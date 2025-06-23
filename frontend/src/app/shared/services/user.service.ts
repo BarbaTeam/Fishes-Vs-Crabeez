@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { User } from "../models/user.model";
 import { BehaviorSubject, Observable } from "rxjs";
+import { LocalStorageService } from "./localStorage.service";
 
 @Injectable({
     providedIn: 'root'
@@ -9,25 +10,20 @@ import { BehaviorSubject, Observable } from "rxjs";
 /**
  * Remarques & Interrogations:
  *      Confirmer la bonne utilisation de BehaviorSubject, plûtot que Observable
- *      Lorsqu'on définie selectedUser, je mets undefined car this.users.find (dans la méthode selectUser) est de type "User | undefined"
- *      DEFAULT_USER sert de "sécurité" car behaviorSubject ne peut pas être undefined... d'où le changement potentiel avec Observable ??
 */     
 export class UserService{
     private users: User[] = [];
     public users$: BehaviorSubject<User[]> = new BehaviorSubject(this.users);
 
-    private DEFAULT_USER : User = {
-        userId: "",
-        name: "",
-        age: "",
-        icon: ""
-    }
-    private selectedUser!: User | undefined; 
-    public selectedUser$: BehaviorSubject<User> = new BehaviorSubject(this.selectedUser || this.DEFAULT_USER);
+    private LOCAL_STORAGE_KEY = "selectedUser"
+    private selectedUser!: User; 
+    public selectedUser$: BehaviorSubject<User> = new BehaviorSubject(this.selectedUser);
 
-    constructor() {
+    constructor(private localStorageService : LocalStorageService) {
+        this.selectedUser = JSON.parse(localStorageService.getData(this.LOCAL_STORAGE_KEY)!) as User;
+        this.selectedUser$.next(this.selectedUser);
+
         this.loadUsers();
-        console.log(this.selectedUser);
     }
 
     //plus tard on utilisera les requêtes https
@@ -43,9 +39,10 @@ export class UserService{
     }
 
     public selectUser(userId: User['userId']){
-        this.selectedUser = this.users.find(user => user.userId == userId);
+        this.selectedUser = this.users.find(user => user.userId == userId)!;
         if(this.selectedUser){
             this.selectedUser$.next(this.selectedUser);
+            this.localStorageService.saveData(this.LOCAL_STORAGE_KEY, JSON.stringify(this.selectedUser));
         }
     }
     
