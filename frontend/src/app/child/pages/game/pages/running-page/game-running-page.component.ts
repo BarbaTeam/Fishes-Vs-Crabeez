@@ -56,7 +56,8 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     
     private gameEngine!: GameEngine;
 
-    public score: number;
+    public personalScore: number;
+    public generalScore: number;
 
     private readonly normalAudio = new Audio('../../../../assets/sons/in-game-music.mp3');
     private readonly paralyzedAudio = new Audio('../../../../assets/sons/encrypted.mp3');
@@ -72,7 +73,8 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
     ) {
         this.keydownHandler = this.checkInput.bind(this);
         this.cursorPosition = 0;
-        this.score = 0;
+        this.personalScore = 0;
+        this.generalScore = 0;
     }
 
     ngOnInit(): void {
@@ -126,6 +128,11 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.gameEngine.$localPlayerPlayerParalysed.subscribe(bool => {
                 this.isEncrypted = bool;
+            })
+        );
+        this.subscriptions.add(
+            this.gameEngine.$generalScore.subscribe(score => {
+                this.generalScore = score;
             })
         );
     }

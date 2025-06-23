@@ -42,13 +42,17 @@ class GameUpdatesNotifier {
         console.log(`[NOTIFIER] : Player ${playerId} freed himself !\n\n`);
         this.broadcast.emit('playerDeparalysed', playerId);
     }
+    onScoreUpdated(newScore) {
+        console.log(`[NOTIFIER] : new score for all players : ${newScore}`);
+        this.broadcast.emit('scoreUpdated', newScore);
+    }
     onNewQuestionForPlayer(playerId, question) {
         console.log(`[NOTIFIER] : New question sent to player : ${playerId}\n\n`);
         this.io.to(playerId).emit('newQuestion', question);
     }
     onPlayerScoreUpdated(playerId, newScore) {
         console.log(`[NOTIFIER] : Player ${playerId}'s new score : ${newScore}`);
-        this.io.to(playerId).emit('scoreUpdated', newScore);
+        this.io.to(playerId).emit('playerScoreUpdated', newScore);
     }
 }
 exports.GameUpdatesNotifier = GameUpdatesNotifier;

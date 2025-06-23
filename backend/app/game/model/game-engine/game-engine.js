@@ -12,6 +12,7 @@ class GameEngine {
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
+        this.score = 0;
         for (const [i, playerId] of playersId.entries()) {
             this.registerPlayer(playerId, variables_1.PLAYER_COLORS[i], i);
         }
@@ -94,9 +95,9 @@ class GameEngine {
                     this.kill(enemy);
                     projectile.destroy();
                     const player = projectile.player;
-                    player.score += enemy.score;
+                    this.score += enemy.score;
                     this.notifier.onEnemyKilled(projectile, enemy);
-                    this.notifier.onPlayerScoreUpdated(player.id, player.score);
+                    this.notifier.onScoreUpdated(this.score);
                     return;
                 }
             }
