@@ -1,79 +1,132 @@
 :host {
-    height: auto;
-    width: 100%;
+  width: 100%;
+  height: auto;
 }
 
+/* === SECTION PRINCIPALE === */
 .config-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  justify-content: space-between;
 }
 
+/* === BLOCS DE CONFIGURATION === */
 .config-group {
-    flex: 1 1 300px;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-    min-width: 280px;
-}
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  min-width: 280px;
+  box-sizing: border-box;
 
-.config-group h3 {
-    font-size: 16px;
-    margin-bottom: 10px;
+  h3 {
+    font-size: 1rem;
     font-family: 'Press Start 2P', monospace;
-}
+    margin: 0 0 0.75rem;
+  }
 
-span {
-    font-size: 14px;
+  span {
     display: flex;
-    flex-direction: row;
     align-items: center;
-    gap: 10px;
-    margin-top: 10px;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 14px;
+    flex-wrap: wrap;
+
+    label {
+      min-width: 80px;
+      font-weight: 600;
+      margin-right: auto;
+    }
+
+    /* === Sliders & Toggles à droite === */
+    app-settings-slider,
+    app-settings-toggle {
+      margin-left: auto;
+    }
+
+    /* === Cas spéciaux : Nom & Âge === */
+    &.text-line {
+      justify-content: flex-start;
+
+      input.underline-input {
+        flex: 0 0 auto;
+        width: auto;
+        min-width: 100px;
+        max-width: 300px;
+        margin: 0;
+      }
+    }
+  }
 }
 
+/* === INPUT STYLE === */
 .underline-input {
-    background: transparent;
-    border: none;
-    border-bottom: 2px solid #ccc;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 14px;
-    width: 100%;
-    max-width: 300px;
-    color: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #ccc;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: inherit;
+  padding: 4px 0;
 }
 
 .underline-input:focus {
-    outline: none;
-    border-bottom-color: #ffae00;
+  outline: none;
+  border-bottom-color: #ffae00;
 }
 
+/* === ICONES === */
 .icon-select-trigger {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-top: 0.5rem;
 }
 
 .icon-selector {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
 }
 
 .icon-option {
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    border: 2px solid transparent;
-    transition: border-color 0.2s;
+  width: 50px;
+  height: 50px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: #ffae00;
+  }
 }
 
-.icon-option:hover {
-    border-color: #ffae00;
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .config-group span {
+    flex-direction: column;
+    align-items: flex-start;
+
+    label,
+    input,
+    app-settings-slider,
+    app-settings-toggle {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    app-settings-toggle,
+    app-settings-slider {
+      margin-left: 0;
+    }
+  }
 }

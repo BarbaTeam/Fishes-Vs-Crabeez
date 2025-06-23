@@ -3,15 +3,16 @@
     <div class="config-group">
         <h3>Informations utilisateur</h3>
 
-        <span *ngIf="isInErgoPage">
-            <label for="name">Nom :</label>
+        <span class="text-line" *ngIf="isInErgoPage">
+            <label for="name">Nom* :</label>
             <input id="name" type="text" [(ngModel)]="localUserTemp.name" (ngModelChange)="onChange()" class="underline-input"/>
         </span>
 
-        <span *ngIf="isInErgoPage">
-            <label for="age">Âge :</label>
+        <span class="text-line" *ngIf="isInErgoPage">
+            <label for="age">Âge* :</label>
             <input id="age" type="number" size="2" [(ngModel)]="localUserTemp.age" (ngModelChange)="onChange()" class="underline-input"/> ans
         </span>
+
 
         <span *ngIf="!showIconSelector" (click)="showIconSelector = !showIconSelector" class="icon-select-trigger">
             Icône :
@@ -34,18 +35,22 @@
 
         <span>
             Taille de la police :
-            <app-settings-slider
-                [(value)]="localUserTemp.userConfig.fontSize"
-                (valueChange)="onChange()"
-            />
+            <span>
+                0<app-settings-slider
+                    [(value)]="localUserTemp.userConfig.fontSize"
+                    (valueChange)="onChange()"
+                />1
+            </span>
         </span>
 
         <span>
             Son :
-            <app-settings-slider
-                [(value)]="localUserTemp.userConfig.sound"
-                (valueChange)="onChange()"
-            />
+            <span>
+                0<app-settings-slider
+                    [(value)]="localUserTemp.userConfig.sound"
+                    (valueChange)="onChange()"
+                />1
+            </span>
         </span>
     </div>
 
@@ -94,7 +99,7 @@
     </div>
 
     <div *ngIf="isInErgoPage" class="config-group">
-        <h3>Mathématiques</h3>
+        <h3>Mathématiques*</h3>
 
         <span >
             Réécriture des nombres :
