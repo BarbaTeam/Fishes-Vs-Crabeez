@@ -12,6 +12,7 @@
     text-align: center;
     font-size: clamp(1rem, 1.8vw, 2rem);
     font-weight: bold;
+    padding-bottom: 2%;
 }
 
 :host:hover{
@@ -20,6 +21,8 @@
 
 :host(.active){
     cursor: default;
+    padding-bottom: 0%;
+
     color: #041833;
     background-image: url('../../../../assets/images/environement/orange_conteneur_front.gif');
 }
