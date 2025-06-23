@@ -29,12 +29,24 @@
     overflow-x: hidden;
 }
 
+:host(.small) {
+    width: 25vw;
+}
+
 :host(.little) {
     width: 40vh;
     flex-direction: column;
     align-items: center;
     align-content: normal;
     overflow-x: hidden;
+}
+
+:host(.short){
+    height: 35vh;
+}
+
+:host(.shorter){
+    height: 20vh;
 }
 
 :host(.button-list) {

@@ -21,3 +21,7 @@ export function crystalHitSound(volume: number): void {
 export function playBubbleSound(volume: number): void {
     playSound("bubble", volume);
 }
+
+export function playSuccess(volume:number): void {
+    playSound("success",volume);
+}

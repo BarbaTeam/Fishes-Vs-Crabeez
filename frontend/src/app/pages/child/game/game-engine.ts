@@ -9,7 +9,7 @@ import { Ui } from "./Ui";
 import { Background } from "./Background";
 import { Turtle } from "./Turtle";
 import { QuestionNotion } from "src/app/shared/models/question.model";
-import { playBubbleSound, playKillSound, playScoreSound } from "./Sound";
+import { playBubbleSound, playKillSound, playScoreSound, playSuccess } from "./Sound";
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
@@ -118,6 +118,12 @@ export class GameEngine {
                     projectile.destroy();
                     this.score += enemy.scoreValue;
                     playScoreSound(this.gameComponent.user.userConfig.sound);
+                    if(this.score >= 100){
+                        this.gameComponent.end = true
+                        this.gameComponent.stopAudio();
+                        this.gameComponent.encryptAudio?.pause();
+                        playSuccess(this.gameComponent.user.userConfig.sound)
+                    }
                 }
             });
         });
