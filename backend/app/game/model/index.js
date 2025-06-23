@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameModel = void 0;
 const game_engine_1 = require("./game-engine");
 const quiz_handler_1 = require("./quiz-handler");

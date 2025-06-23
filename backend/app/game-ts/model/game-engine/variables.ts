@@ -1,4 +1,4 @@
-import { ENEMIES_CRATES_PER_LEVEL } from "./enemies/enemies-per-level";
+import { ENEMIES_CRATES_PER_LEVEL } from "./enemies/enemies-crates";
 import { Lane } from "./lane";
 
 

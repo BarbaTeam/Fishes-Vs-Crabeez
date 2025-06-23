@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsGenerator = exports.AnswerChecker = void 0;
 const answer_checker_1 = require("./answer-checker");
 Object.defineProperty(exports, "AnswerChecker", { enumerable: true, get: function () { return answer_checker_1.AnswerChecker; } });

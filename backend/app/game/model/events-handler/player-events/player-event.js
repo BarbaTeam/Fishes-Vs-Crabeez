@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayerEvent = void 0;
 const event_1 = require("../event");
 class PlayerEvent extends event_1.Event {

@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.GameEngine = void 0;
 const events_handler_1 = require("../events-handler");
 const drone_1 = require("./enemies/drone");
@@ -7,16 +6,15 @@ const player_1 = require("./player");
 const projectile_1 = require("./projectile");
 const variables_1 = require("./variables");
 const enemies_stats_1 = require("./enemies/enemies-stats");
-const papa_1 = require("./enemies/papa");
 class GameEngine {
     constructor(model, notifier, playersId) {
         this.model = model;
         this.notifier = notifier;
+        this.score = 0;
+        this.health = 10;
         this.players = {};
         this.projectiles = [];
         this.enemies = [];
-        this.score = 0;
-        this.health = 10;
         this.difficulty = {
             level: 0,
             waveCount: 0,
@@ -132,6 +130,7 @@ class GameEngine {
                     break;
                 case "papa":
                     this.notifier.onBossKilled("papa");
+                    this.difficulty.level++;
                 default:
                     break;
             }
@@ -141,11 +140,6 @@ class GameEngine {
         return Object.values(this.players).map(player => player.toJSON());
     }
     update() {
-        if (!this.boss) {
-            this.notifier.onBossWave("papa");
-            this.spawnEnemy(new papa_1.Papa(2));
-            this.boss = true;
-        }
         this.spawnNextWaveIfNeeded();
         this.enemies.forEach(enemy => this.processEnemy(enemy));
         this.projectiles.forEach(projectile => this.processProjectile(projectile));
@@ -157,10 +151,16 @@ class GameEngine {
         const noMoreEnemies = this.enemies.length === 0;
         const noCurrentWave = !this.currWaveEventId || !this.model.eventsHandler.aliveEvents[this.currWaveEventId];
         if (noMoreEnemies && noCurrentWave) {
-            this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, this.difficulty);
             this.difficulty.waveCount++;
-            this.notifier.onNewWave(this.difficulty.waveCount++);
-            console.log(`Spawning wave ${this.difficulty.waveCount++} with difficulty :`);
+            if (this.difficulty.waveCount !== 0 && this.difficulty.waveCount % 10 === 0) {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.BOSS_WAVE, this.difficulty);
+                this.notifier.onBossWave("papa");
+            }
+            else {
+                this.currWaveEventId = this.model.eventsHandler.spawnEvent(events_handler_1.EventKind.WAVE, this.difficulty);
+                this.notifier.onNewWave(this.difficulty.waveCount);
+            }
+            console.log(`Spawning wave ${this.difficulty.waveCount} with difficulty :`);
             console.log(this.difficulty);
         }
     }

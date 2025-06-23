@@ -4,7 +4,7 @@ export type EventID = `event-${number}`;
 export const EventKind = {
     // Game's Events :
     WAVE: "WAVE",
-    BOSS: "BOSS",
+    BOSS_WAVE: "BOSS_WAVE",
     // ...
 
     // Player's Events :

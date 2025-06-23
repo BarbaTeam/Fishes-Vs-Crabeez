@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.QuestionsGenerator = void 0;
 const types_1 = require("../../../../shared/types");
 const random_1 = require("../../../../shared/utils/random");

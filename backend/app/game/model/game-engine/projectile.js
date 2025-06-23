@@ -1,5 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 exports.Projectile = void 0;
 class Projectile {
     constructor(player) {
