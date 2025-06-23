@@ -70,9 +70,8 @@ ppp
 
 
 
-TODO : 
-
+TODO :
 - Niveau de difficulté (Facile, Moyen, Difficile)
 - Fix : Police d'écriture et volume sonore
 - Fix : Les navigateurs
-- Fix : Fix `stopRunningGame`
+
