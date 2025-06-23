@@ -8,16 +8,16 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
         statistics: {
             wordsPerMinute: 2.466666666666667,
             wordsPerMinuteImprovement: -0.066666666666667,
-            globalGrading: { grade: Grade.F, accuracy: 0 },
+            globalGrading: { grade: Grade.A, accuracy: 80 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
-                ADDITION:       { grade: Grade.XF, accuracy: 0 },
-                SUBSTRACTION:   { grade: Grade.XF, accuracy: 0 },
-                MULTIPLICATION: { grade: Grade.F, accuracy: 0 },
-                DIVISION:       { grade: Grade.XF, accuracy: 0 },
-                REWRITING:      { grade: Grade.F, accuracy: 0 },
-                ENCRYPTION:     { grade: Grade.XF, accuracy: 0 },
-                EQUATION:       { grade: Grade.F, accuracy: 0 },
+                ADDITION      : { grade: "A" , accuracy: 70 },
+                SUBSTRACTION  : { grade: "B+" , accuracy: 60 },
+                MULTIPLICATION: { grade: "A+" , accuracy: 90 },
+                DIVISION      : { grade: "A+", accuracy: 100 },
+                EQUATION      : { grade: "XF", accuracy: 0 },
+                REWRITING     : { grade: "A", accuracy: 80 },
+                ENCRYPTION    : { grade: "C+" , accuracy: 30 },
             },
             accuracyImprovementPerNotion: {
                 ADDITION:       0,
@@ -46,7 +46,7 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
             wordsPerMinute: 3.7666666666666666,
             wordsPerMinuteImprovement: -1.366666666666667,
 
-            globalGrading: { grade: Grade.F, accuracy: 0 },
+            globalGrading: { grade: Grade.XF, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
@@ -83,7 +83,7 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
         statistics: {
             wordsPerMinute: 4,
             wordsPerMinuteImprovement: +2,
-            globalGrading: { grade: Grade.F, accuracy: 0 },
+            globalGrading: { grade: Grade.XF, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },
@@ -120,7 +120,7 @@ export const MOCK_PLAYER_STATISTICS_PLACEHOLDERS: PlayerStatistics[] = [
         statistics: {
             wordsPerMinute: 3,
             wordsPerMinuteImprovement: 0,
-            globalGrading: { grade: Grade.F, accuracy: 0 },
+            globalGrading: { grade: Grade.XF, accuracy: 0 },
             globalAccuracyImprovement: 0,
             gradingPerNotion: {
                 ADDITION:       { grade: Grade.XF, accuracy: 0 },

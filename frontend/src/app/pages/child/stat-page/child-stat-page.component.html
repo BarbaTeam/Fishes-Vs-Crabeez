@@ -47,7 +47,7 @@
 
 
     <!-- Statistic Section : -->
-    <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium">
+    <app-inner-box *ngIf="isInStatsSection()" class="main-box blue medium scrollable">
         <h1 class="title">Statistiques générales</h1>
 
         <ng-container *ngIf="sectionData.playerStats.statistics.globalGrading.grade !== 'XF'; else noStatistics">
@@ -72,7 +72,7 @@
             <p>
                 Mot par minute : {{ sectionData.playerStats.statistics.wordsPerMinute.toFixed(2) }}
                 <span
-                    *ngIf="sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
+                    *ngIf="user.userConfig.advancedStats && sectionData.playerStats.statistics.wordsPerMinuteImprovement as improvement"
                     [style.color]="improvement > 0 ? 'green' : 'red'"
                 >
                     {{ improvement! > 0 ? '+' : '' }}{{ improvement.toFixed(2) }}%
@@ -89,7 +89,7 @@
 
     <app-inner-box *ngIf="isInStatsSection()" class="main-box blue little">
         <h1 class="title">Classement</h1>
-        <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
+        <ng-container *ngIf="sectionData.leaderboard !== undefined && user.userConfig.leaderBoard; else noLeaderboard">
             <app-user-card
                 *ngFor="let lbuserId of sectionData.leaderboard.ranking"
                 [userId]="lbuserId"
@@ -128,16 +128,10 @@
             {{ sectionData.playerResults.results.wordsPerMinute.toFixed(2) }}
         </p>
 
-        <p>
-            Réponse affichées :
-            <span [style.color]="sectionData.playerResults.answersShown ? 'green' : 'red'">
-                {{ sectionData.playerResults.answersShown ? "Oui" : "Non" }}
-            </span>
-        </p>
     </app-inner-box>
     <app-inner-box *ngIf="isInHistorySections()" class="main-box blue little">
         <h1 class="title">Classment</h1>
-        <ng-container *ngIf="sectionData.leaderboard !== undefined; else noLeaderboard">
+        <ng-container *ngIf="sectionData.leaderboard !== undefined && user.userConfig.leaderBoard; else noLeaderboard">
             <app-user-card
                 *ngFor="let lbuserId of sectionData.leaderboard.ranking"
                 [userId]="lbuserId"

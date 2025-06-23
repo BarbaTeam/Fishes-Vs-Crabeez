@@ -1,5 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Grade, Grading } from 'src/app/shared/models/results.model';
+import { UserService } from '../../services/user.service';
+import { User } from '../../models/user.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ChildStatPageComponent } from 'src/app/pages/child/stat-page/child-stat-page.component';
 
 @Component({
     selector: 'app-grading-line',
@@ -17,7 +21,26 @@ export class GradingLineComponent implements OnInit {
     @Input()
     improvement?: number;
 
+    user!: User;
+    isOnChildApp!: boolean;
+    iconGrade: string = 'nograde';
+    iconImprovement: string = '';
+    bravoText: string = '';
+
+    constructor(private userService: UserService, private route: ActivatedRoute) {}
+
     ngOnInit(): void {
+        if(this.route.component === ChildStatPageComponent){
+            this.isOnChildApp = true;
+        }
+        else {
+            this.isOnChildApp = false;
+        }
+
+        this.userService.selectedUser$.subscribe((user: User) => {
+            this.user = user;
+        });
+
         this.grading = {
             grade: this.grading.grade,
             accuracy: parseFloat(this.grading.accuracy.toFixed(2)),
@@ -26,24 +49,67 @@ export class GradingLineComponent implements OnInit {
         if (this.improvement !== undefined) {
             this.improvement = parseFloat(this.improvement.toFixed(2));
         }
+
+        switch (this.grading.grade) {
+            case Grade.A_PLUS : 
+                this.iconGrade = 'diamond_coin'; 
+                this.bravoText = 'Incroyable !';
+                break;
+            case Grade.A      : 
+                this.iconGrade = 'emerald_coin';
+                this.bravoText = 'Bravo !';
+                break;
+            case Grade.A_MINUS: 
+                this.iconGrade = 'emerald_coin';
+                this.bravoText = 'Bravo !';
+                break;
+            case Grade.B_PLUS : 
+                this.iconGrade = 'gold_coin';
+                this.bravoText = 'Super !';
+                break;
+            case Grade.B      : 
+                this.iconGrade = 'gold_coin';
+                this.bravoText = 'Super !';
+                break;
+            case Grade.B_MINUS: 
+                this.iconGrade = 'silver_coin';
+                this.bravoText = 'Ouah !';
+                break;
+            case Grade.C_PLUS : 
+                this.iconGrade = 'silver_coin';
+                this.bravoText = 'Ouah !';
+                break;
+            case Grade.C      : 
+                this.iconGrade = 'copper_coin';
+                this.bravoText = 'Tous les meilleurs commencent quelque part !';
+                break;
+            case Grade.C_MINUS:
+                this.iconGrade = 'copper_coin';
+                this.bravoText = 'Tous les meilleurs commencent quelque part !';
+                break;
+            case Grade.D_PLUS :
+                this.iconGrade = 'poop_coin';
+                this.bravoText = 'Ne laches rien !';
+                break;
+        }
+        
+            
     }
 
     public gradeColor(): string {
         switch (this.grading.grade) {
-            case Grade.A_PLUS : return 'gold';
+            case Grade.A_PLUS : return 'blue';
             case Grade.A      : return 'green';
             case Grade.A_MINUS: return 'green';
-            case Grade.B_PLUS : return 'lightblue';
-            case Grade.B      : return 'lightblue';
-            case Grade.B_MINUS: return 'lightblue';
-            case Grade.C_PLUS : return 'blue';
-            case Grade.C      : return 'blue';
-            case Grade.C_MINUS: return 'blue';
-            case Grade.D_PLUS : return 'orange';
-            case Grade.D      : return 'orange';
-            case Grade.D_MINUS: return 'orange';
-            case Grade.F      : return 'red';
+            case Grade.B_PLUS : return 'gold';
+            case Grade.B      : return 'gold';
+            case Grade.B_MINUS: return 'grey';
+            case Grade.C_PLUS : return 'grey';
+            case Grade.C      : return 'orange';
+            case Grade.C_MINUS: return 'orange';
+            case Grade.D_PLUS : return 'brown';
             case Grade.XF     : return 'black';
+            default: return 'black';
         }
     }
 }
