@@ -61,8 +61,6 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         });
 
         this._registerListener('updateGame', (gameUpdate) => {
-            // TODO : Enabling game master to update game
-
             GAMES[this._gameId] = gameUpdate;
             this.socket.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameUpdated', gameUpdate)
 
@@ -74,6 +72,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         });
 
         this._registerListener('unspyGame', () => {
+            delete GAMES[this._gameId].masterId;
             this.unspyGame();
         })
 
@@ -81,7 +80,10 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
             const oldGameId = this._gameId;
             this.unspyGame();
             delete GAMES[oldGameId];
-            RUNNING_GAMES[oldGameId].onForcedGameEnd();
+            const currGame = RUNNING_GAMES[oldGameId];
+            if (currGame) {
+                currGame.onForcedGameEnd();
+            }
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', oldGameId);
         });
     }
@@ -94,8 +96,8 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         if (game) {
             // 1) Notify players to leave the game
             this.io.to(this._gameId).emit('leaveGame');
-            // 2) Remove the game from our map
-            delete GAMES[this._gameId];
+            // 2) Remove the masterId from the game he created
+            delete GAMES[this._gameId].masterId;
             // 3) Broadcast to all ergos/children that the game is closed
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).emit('gameClosed', this._gameId);
         }

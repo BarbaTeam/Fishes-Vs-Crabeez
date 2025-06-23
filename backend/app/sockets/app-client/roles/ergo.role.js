@@ -90,7 +90,7 @@ class ErgoRole_Impl extends AppClientRole_Impl {
                 const game = GAMES[gameId];
                 const canSpyGame = (
                     game                // Ergo can't spy a game that doesn't exist
-                    && game.masterId    // Ergo can't spy a game that already has a game master
+                    && !game.masterId    // Ergo can't spy a game that already has a game master
                 );
                 if (!canSpyGame) {
                     this.socket.emit('trySpyGame_FAILURE');

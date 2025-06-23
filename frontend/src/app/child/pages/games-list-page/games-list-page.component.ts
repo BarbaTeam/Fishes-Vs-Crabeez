@@ -23,7 +23,6 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
     public user!: User;
     public waitingGames: Game[] = [];
-    public runningGames : Game[] = [];
 
     showSettings = false;
     showRules = false;
@@ -67,7 +66,6 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.gamesService.gamesPerStates$.subscribe(gamePerStates => {
                 this.waitingGames = gamePerStates[GameState.WAITING];
-                this.runningGames = gamePerStates[GameState.RUNNING];
             })
         );
     }

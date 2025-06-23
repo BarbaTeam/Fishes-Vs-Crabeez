@@ -1,0 +1,72 @@
+app-body {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.game-modes-container {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 4rem;
+    width: 100%;
+    max-width: 75rem;
+    margin-top: 2rem;
+    flex: 1;
+    min-height: 0;
+}
+
+.ergo-conteneur {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1;
+    min-width: 18.75rem;
+}
+
+.multi-conteneur {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    flex: 1;
+    min-width: 18.75rem;
+    min-height: 0;
+}
+
+.game-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 0.625rem;
+    width: 100%;
+    min-height: 0;
+}
+
+.title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.sub-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+    flex-shrink: 0;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.waiting {
+    margin-top: 2rem;
+    color: #7f8c8d;
+    font-style: italic;
+}
