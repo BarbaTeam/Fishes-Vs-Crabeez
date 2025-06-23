@@ -137,7 +137,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal"
+                    class="horizontal unclickable"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>
@@ -188,7 +188,7 @@
         </app-inner-box>
 
         <app-inner-box *ngIf="isInHistorySections() && user.userConfig.leaderBoard" class="main-box blue little">
-            <h1 class="title">Classment</h1>
+            <h1 class="title">Classement</h1>
 
             <ng-template *ngIf="sectionData.leaderboard === undefined">
                 <p>Classement Indisponible</p>
@@ -198,7 +198,7 @@
                 <app-user-card
                     *ngFor="let lbuserId of leaderboard.ranking"
                     [userId]="lbuserId"
-                    class="horizontal"
+                    class="horizontal unclickable"
                 />
             </ng-container>
             <ng-template #loadingLeaderboar>
