@@ -3,7 +3,9 @@ const { Server, Socket } = require('socket.io');
 const { GameLobby, GameID } = require("../../../shared/types");
 const { GameLobbyState } = require("../../../shared/types/enums/game-lobby-state.enum");
 
-const { GAMES, ERGO_ROOM, CHILD_ROOM } = require("../app-client.helpers");
+const { GameRuntime } = require('../../../game/runtime');
+
+const { GAMES, ERGO_ROOM, CHILD_ROOM, GAMES_RUNTIME } = require("../app-client.helpers");
 
 const { AppClientRole } = require('./app-client-role.enum');
 const { ErgoRole_Impl } = require("./ergo.role");
@@ -30,6 +32,7 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         this._gameId = gameId;
     }
 
+
     ////////////////////////////////////////////////////////////////////////////
     // Implementation :
 
@@ -42,10 +45,12 @@ class GameMasterRole_Impl extends ErgoRole_Impl {
         this._registerListener('startGame', () => {
             const game = GAMES.get(this._gameId);
             game.state = GameLobbyState.RUNNING;
+
             this.io.to(ERGO_ROOM).to(CHILD_ROOM).except(this._gameId).emit('gameStarted', game.gameId);
 
             this.io.to(this._gameId).emit('startCountdown');
             setTimeout(() => {
+                GAMES_RUNTIME[game.gameId] = new GameRuntime(this.io, game);
                 this.io.to(this._gameId).emit('endCountdown');
             }, 5000);
         });
