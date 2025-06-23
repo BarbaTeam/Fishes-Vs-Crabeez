@@ -38,7 +38,8 @@ export class GameComponent implements OnInit, OnDestroy {
     public inputs: Input[] = [];
 
     public cursorPosition: number;
-
+    
+    @ViewChild('headerRef') headerRef!: ElementRef<HTMLElement>;
     @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
     private gameEngine!: GameEngine;
 
@@ -55,7 +56,7 @@ export class GameComponent implements OnInit, OnDestroy {
         });
 
         this.question = QuestionsGenerator.genQuestion(this.questionMask);
-
+        this.setupEncryptAudio();
         this.keydownHandler = this.checkInput.bind(this);
 
         this.expected_answerInputs = this.question.answer.split("");
@@ -70,17 +71,22 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.setupAudio();
         document.addEventListener("keydown", this.keydownHandler);
         this.updateInputs();
     }
 
     ngAfterViewInit(): void {
+        this.setupFontSize(`${3 * this.user.userConfig.fontSize}rem`);
+
         const canvas = this.canvasRef.nativeElement;
         this.gameEngine = new GameEngine(this, canvas);
     }
 
     ngOnDestroy(): void {
         document.removeEventListener("keydown", this.keydownHandler);
+        this.stopAudio();
+        this.encryptAudio?.pause();
     }
 
 
@@ -201,8 +207,8 @@ export class GameComponent implements OnInit, OnDestroy {
             this.score++;
             this.gameEngine.answerCorrectly(this.gameEngine.playerInstance);
         }
-
         this.question = QuestionsGenerator.genQuestion(this.questionMask);
+        this.setupEncryptAudio();
 
         if (this.question === undefined) {
             this.hasEnded = true;
@@ -220,6 +226,61 @@ export class GameComponent implements OnInit, OnDestroy {
         this.proposed_answerInputs.splice(
             this.cursorPosition++, 0, c
         );
+    }
+
+    private audio: HTMLAudioElement | null = null;
+
+    private setupAudio(): void {
+        if (!this.audio) {
+            this.audio = new Audio('../../../../assets/sons/in-game-music.mp3');
+            this.audio.loop = true;
+            this.audio.volume = 0.5 * this.user.userConfig.sound;
+        }
+        this.audio.play();
+    }
+
+    private stopAudio(): void {
+        if (this.audio) {
+            this.audio.pause();
+            this.audio.currentTime = 0; 
+        }
+    }
+
+    private encryptAudio: HTMLAudioElement | null = null;
+    private hasDecryptAudio: boolean = true;
+    private setupEncryptAudio(): void {
+        if(this.questionNotion === "ENCRYPTION"){
+            this.playEncryptAudio();
+            this.hasDecryptAudio = false;
+        }   else if(!this.hasDecryptAudio){
+            this.stopEncryptAudio();
+            this.hasDecryptAudio = true;
+        }
+    }
+
+    private stopEncryptAudio(): void {
+        if (this.encryptAudio) {
+            this.encryptAudio.pause();
+            this.encryptAudio.currentTime = 0; 
+            let decryptAudio = new Audio('../../../../assets/sons/decrypted.mp3');
+            decryptAudio.volume = 0.5 * this.user.userConfig.sound;
+            decryptAudio.play();
+        }
+    }
+
+    private playEncryptAudio(): void {
+        if (!this.encryptAudio) {
+            this.encryptAudio = new Audio('../../../../assets/sons/encrypted.mp3');
+            this.encryptAudio.loop = true;
+            this.encryptAudio.volume = 0.5 * this.user.userConfig.sound;
+        }
+        this.encryptAudio.play();
+    }
+
+    private setupFontSize(size: string): void {
+        if (this.headerRef) {
+          this.headerRef.nativeElement.style.fontSize = size;
+        }
     }
 
     private checkInput(event: KeyboardEvent): void {
@@ -271,7 +332,6 @@ export class GameComponent implements OnInit, OnDestroy {
 ////////////////////////////////////////////////////////////////////////////////
 
 import { num2words_fr, filterOnMask, randint } from "src/utils";
-
 
 export class QuestionsGenerator {
     private static _chooseNotion(mask: boolean[]): QuestionNotion {
@@ -325,7 +385,7 @@ export class QuestionsGenerator {
 
     private static _genEncryptedString(length: number): string {
         // TODO : utiliser l'ensemble complet des caractères si besoin
-        const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+        const characters = "!\"#$%&'()*+,-./:;<=>?@[\\]^_{|}";
 
         let ret = "";
         for (let i = 0; i < length; i++) {
@@ -333,7 +393,7 @@ export class QuestionsGenerator {
         }
         return ret;
     }
-
+ 
     // Mask : "ADDITION" | "SUBSTRACTION" | "MULTIPLICATION" | "DIVISION" | "REWRITING" | "ENCRYPTION" | "EQUATION"
     public static genQuestion(notionMask: boolean[] = [true, true, false, false, false, false, false]): Question {
         const notion = this._chooseNotion(notionMask);

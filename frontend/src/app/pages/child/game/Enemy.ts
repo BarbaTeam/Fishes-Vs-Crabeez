@@ -39,7 +39,7 @@ export class Enemy {
         this.width = 100,
         this.height = 100
         this.alive = true;
-        this.speed = 0.5; 
+        this.speed = 0.2; 
         this.score = 10; 
 
     }   

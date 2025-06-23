@@ -9,6 +9,7 @@ import { Ui } from "./Ui";
 import { Background } from "./Background";
 import { Turtle } from "./Turtle";
 import { QuestionNotion } from "src/app/shared/models/question.model";
+import { playBubbleSound, playKillSound, playScoreSound } from "./Sound";
 
 export class GameEngine {
     private ctx: CanvasRenderingContext2D;
@@ -38,6 +39,7 @@ export class GameEngine {
     public answerCorrectly(player : Player): void {
         if(this.closestEnemy(player.seatValue)){
             this.player.shoot();
+            playBubbleSound(this.gameComponent.user.userConfig.sound);
         }
     }
     public get speedValue(): number {
@@ -96,6 +98,7 @@ export class GameEngine {
         if(enemy instanceof HiveCrab){
             this.enemies.push(new Drone(this,this.canvas, enemy.position.x, enemy.position.y - 50, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x+40, enemy.position.y-80, enemy.sideValue), new Drone(this,this.canvas, enemy.position.x-100, enemy.position.y, enemy.sideValue));
         }
+        playKillSound(this.gameComponent.user.userConfig.sound);
         enemy.destroy();
     }
 
@@ -114,6 +117,7 @@ export class GameEngine {
                     this.kill(enemy);
                     projectile.destroy();
                     this.score += enemy.scoreValue;
+                    playScoreSound(this.gameComponent.user.userConfig.sound);
                 }
             });
         });
