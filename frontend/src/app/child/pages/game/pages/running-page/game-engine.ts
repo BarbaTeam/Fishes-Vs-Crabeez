@@ -235,7 +235,7 @@ export class GameEngine {
                 if(enemy){
                     enemy.health = enemyHealth;
 
-                    if(enemy.type == "papa"){
+                    if(enemy.type == EnemyKind.PAPA){
                         this.bossHealth = enemyHealth;
                         this.bossHealth$.next(this.bossHealth);
                     }
