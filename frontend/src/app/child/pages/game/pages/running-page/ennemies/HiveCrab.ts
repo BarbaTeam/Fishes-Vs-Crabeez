@@ -1,8 +1,9 @@
+import { EnemyKind } from "@app/shared/models/enemy-kind.model";
 import { Enemy } from "./Enemy";
 
 export class HiveCrab extends Enemy {
 
-    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: string ) {
+    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: EnemyKind ) {
         super(canvas, id);
 
         this.enemyImage = new Image();
@@ -18,6 +19,7 @@ export class HiveCrab extends Enemy {
 
         this.speed = speed;
         this.health = health;
+        this.maxHealth = health;
         this.type = type;
     }
 
