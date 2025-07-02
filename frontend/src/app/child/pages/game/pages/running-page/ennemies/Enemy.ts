@@ -1,9 +1,9 @@
-import { GameEngine } from "../game-engine";
+import { EnemyKind } from "@app/shared/models/enemy-kind.model";
 import { scaleToCanvas } from "../utils";
 
 export class Enemy {
     public _id: string;
-    public type!: string;
+    public type!: EnemyKind;
     public x!: number;
     public y!: number;
     public virtualWidth!: number;
@@ -13,7 +13,8 @@ export class Enemy {
     public enemyUrl!: string;
     public speed!: number;
     public health! : number;
-    
+    public maxHealth! : number;
+
     constructor(
         private canvas: HTMLCanvasElement,
         id : string,
@@ -38,6 +39,25 @@ export class Enemy {
             this.enemyImage,
         );        
         ctx.drawImage(this.enemyImage, x, y, width, height); 
+        
+        if(this.health < this.maxHealth)
+            this.drawHealthBar(ctx, x, y + height, width);
+    
+    }
+
+    private drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number, width: number): void {
+        if(!this.maxHealth) return; //dans le cas d'un boss
+
+        const healthPercentage = this.health / this.maxHealth;
+        const barHeight = 4;
+        console.log("health : " + this.health);
+        console.log("maxhealth : " +this.maxHealth);
+        ctx.fillStyle = "rgba(0, 0, 0, 0.8)";
+        ctx.fillRect(x, y, width, barHeight);
+        
+        ctx.fillStyle = healthPercentage > 0.6 ? "green" : 
+                        healthPercentage > 0.3 ? "yellow" : "red";
+        ctx.fillRect(x + 1, y + 1, (width - 2) * healthPercentage, barHeight - 2);
     }
 
     public update(): void {

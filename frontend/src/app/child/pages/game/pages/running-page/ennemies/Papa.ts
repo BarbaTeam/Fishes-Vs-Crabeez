@@ -1,7 +1,8 @@
+import { EnemyKind } from "@app/shared/models/enemy-kind.model";
 import { Enemy } from "./Enemy";
 
 export class Papa extends Enemy {
-    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: string) {
+    private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: EnemyKind) {
         super(canvas, id);
 
         this.enemyImage = new Image();
