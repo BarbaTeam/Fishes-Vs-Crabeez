@@ -219,8 +219,12 @@ export class GameEngine {
         this.subscriptions.add(
             this.socket.on<{projectile: any, enemyId: string}>('enemyKilled').subscribe(({projectile : projectile, enemyId : enemyId})=>{
                 this.projectiles = this.projectiles.filter(p => p.id !== projectile.id);
-                this.enemies.delete(enemyId);
 
+                const enemy = this.enemies.get(enemyId);
+                if(enemy){
+                    enemy.kill();
+                }
+        
                 if(projectile.playerId == this.localPlayerId){
                     this.soundBoard.play("score");
                 }
@@ -312,6 +316,10 @@ export class GameEngine {
     private update(): void {
         for (const [, enemy] of this.enemies) {
             enemy.update();
+
+            if (enemy.isDead) {
+                this.enemies.delete(enemy.id); 
+            }
         }
         for (const projectile of this.projectiles) {
             projectile.update();
