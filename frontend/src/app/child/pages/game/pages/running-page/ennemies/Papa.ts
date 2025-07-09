@@ -5,13 +5,17 @@ export class Papa extends Enemy {
     private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: EnemyKind) {
         super(canvas, id);
 
-        this.enemyImage = new Image();
-        this.enemyHitUrl = 'assets/images/game/enemy/dad_crab_hit.png';
-        this.enemyUrl = 'assets/images/game/enemy/dad_crab.png';
-        this.enemyImage.src = this.enemyUrl;
+        this.enemyHitUrl = 'assets/images/game/enemy/dad_crab_hit_sh.png';
+        this.enemyUrl = 'assets/images/game/enemy/dad_crab_sh.png';
         this.virtualWidth = 35;
         this.virtualHeight = 35;
         
+        /*
+        this.totalFrames = 8;
+        this.frameDelay = 5;
+        this.setAnimation(this.enemyUrl);
+        */
+
         this.x = x;
         this.y = y;
         

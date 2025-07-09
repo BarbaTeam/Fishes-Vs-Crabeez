@@ -191,22 +191,22 @@ export class GameEngine {
                 switch (enemy.type) {
                     case EnemyKind.CRAB:
                         const crab = Crab.fromJson(enemy, this.canvas);
-                        this.enemies.set(crab._id ,crab);
+                        this.enemies.set(crab.id ,crab);
                         console.log(`New Crab received: ${crab.id}, position: (${crab.x}, ${crab.y})`);
                         break;
                     case EnemyKind.HIVECRAB:
                         const hiveCrab = HiveCrab.fromJson(enemy, this.canvas);
-                        this.enemies.set(hiveCrab._id, hiveCrab);
+                        this.enemies.set(hiveCrab.id, hiveCrab);
                         console.log(`New Hive Crab received: ${hiveCrab.id}, position: (${hiveCrab.x}, ${hiveCrab.y})`);
                         break;
                     case EnemyKind.DRONE:
                         const drone = Drone.fromJson(enemy, this.canvas);
-                        this.enemies.set(drone._id, drone);
+                        this.enemies.set(drone.id, drone);
                         console.log(`New Drone received: ${drone.id}, position: (${drone.x}, ${drone.y})`);
                         break;
                     case EnemyKind.PAPA:
                         const papa = Papa.fromJson(enemy, this.canvas);
-                        this.enemies.set(papa._id, papa);
+                        this.enemies.set(papa.id, papa);
                         console.log(`ATTENTION NEW PAPA SPAWNED IN THE SEA : ${papa.id}, position: (${papa.x}, ${papa.y})`);
                         this.bossHealth = papa.health;
                         this.bossHealth$.next(this.bossHealth);
@@ -244,9 +244,9 @@ export class GameEngine {
                         this.bossHealth$.next(this.bossHealth);
                     }
 
-                    enemy.enemyImage.src = enemy.enemyHitUrl!;
+                    enemy.setAnimation(enemy.enemyHitUrl!); // TODO: Set the hit animation properly
                     setTimeout(() => {
-                        enemy.enemyImage.src = enemy.enemyUrl!;
+                        enemy.setAnimation(enemy.enemyUrl!);
                     }, 100)
                 }
     

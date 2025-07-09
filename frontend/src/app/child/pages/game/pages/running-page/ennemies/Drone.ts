@@ -6,12 +6,16 @@ export class Drone extends Enemy {
     private constructor(canvas: HTMLCanvasElement, id: string, x: number, y: number, speed: number, health: number, type: EnemyKind ) {
         super(canvas, id);
 
-        this.enemyImage = new Image();
-        this.enemyUrl = 'assets/images/game/enemy/drone_32x32.png';
-        this.enemyImage.src = this.enemyUrl;
+        this.enemyUrl = 'assets/images/game/enemy/drone_32x32_sh.png';
         this.virtualWidth = 4;
         this.virtualHeight = 4;
         
+        /*
+        this.totalFrames = 8;
+        this.frameDelay = 5;
+        this.setAnimation(this.enemyUrl);
+        */
+       
         this.x = x;
         this.y = y;
 
