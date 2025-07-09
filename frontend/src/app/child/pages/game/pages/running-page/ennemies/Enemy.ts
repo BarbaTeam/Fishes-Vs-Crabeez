@@ -1,27 +1,25 @@
 import { EnemyKind } from "@app/shared/models/enemy-kind.model";
 import { scaleToCanvas } from "../utils";
+import { SpriteSheetAnimation } from "../SpriteSheetAnimation";
 
 export class Enemy {
-    public _id: string;
+    public id: string;
     public type!: EnemyKind;
     public x!: number;
     public y!: number;
     public virtualWidth!: number;
     public virtualHeight!: number;
-    public enemyImage!: HTMLImageElement;
+
     public enemyHitUrl?: string;
     public enemyUrl!: string;
+    public totalFrames!: number;
+    public frameDelay!: number;
+
     public speed!: number;
     public health!: number;
     public maxHealth!: number;
 
-    private deadEffectScale?: { width: number; height: number };
-    private animationFrame: number = 0;
-    private totalFrames: number = 0;
-    private frameWidth: number = 0;
-    private frameHeight: number = 0;
-    private frameDelay: number = 4;
-    private frameCounter: number = 0;
+    private animation?: SpriteSheetAnimation;
 
     public isDying: boolean = false;
     public isDead: boolean = false;
@@ -30,40 +28,26 @@ export class Enemy {
         private canvas: HTMLCanvasElement,
         id: string,
     ) {
-        this._id = id;
+        this.id = id;
+        setTimeout(() => {
+            this.setAnimation(this.enemyUrl);
+        }, Math.random() * 2000); 
     }
 
-    public get id(): string {
-        return this._id;
+    public setAnimation(imageUrl: string) {
+        this._setAnimation(imageUrl, this.totalFrames, this.frameDelay);
     }
 
-    public get position(): { x: number; y: number } {
-        return { x: this.x, y: this.y };
+    protected _setAnimation(imageUrl: string, totalFrames: number, frameDelay: number) {
+        const img = new Image();
+        img.src = imageUrl;
+        this.animation = new SpriteSheetAnimation(img, totalFrames, frameDelay);
     }
 
     public kill(): void {
-        const { width, height } = scaleToCanvas(
-            this.x,
-            this.y,
-            this.virtualWidth,
-            this.virtualHeight,
-            this.canvas,
-            this.enemyImage,
-        );
-
-        this.deadEffectScale = { width, height };
-
-        this.enemyImage = new Image();
-        this.enemyImage.src = 'assets/images/effects/smoke.png';
-        this.totalFrames = 8;
         this.isDying = true;
-        this.animationFrame = 0;
-        this.frameCounter = 0;
-
-        this.enemyImage.onload = () => {
-            this.frameWidth = this.enemyImage.width / this.totalFrames;
-            this.frameHeight = this.enemyImage.height;
-        };
+        this._setAnimation('assets/images/effects/smoke.png', 8, 1)
+        this.animation?.reset();
     }
 
     public draw(ctx: CanvasRenderingContext2D): void {
@@ -73,27 +57,13 @@ export class Enemy {
             this.virtualWidth,
             this.virtualHeight,
             this.canvas,
-            this.enemyImage,
+            undefined,
         );
 
-        if (this.isDying && this.frameWidth && this.frameHeight) {
-            const sx = this.animationFrame * this.frameWidth;
-            const offsetY = -height * 0.5;
+        this.animation?.draw(ctx, x, y, width, height);
 
-            ctx.drawImage(
-                this.enemyImage,
-                sx, 0,
-                this.frameWidth, this.frameHeight,
-                x, y + offsetY,
-                this.deadEffectScale?.width ?? width,
-                this.deadEffectScale?.height ?? height
-            );
-        } else {
-            ctx.drawImage(this.enemyImage, x, y, width, height);
-
-            if (this.health < this.maxHealth) {
-                this.drawHealthBar(ctx, x, y + height, width);
-            }
+        if (this.health < this.maxHealth) {
+            this.drawHealthBar(ctx, x, y + height, width);
         }
     }
 
@@ -112,17 +82,14 @@ export class Enemy {
     }
 
     public update(): void {
-        if (this.isDying) {
-            this.frameCounter++;
-            if (this.frameCounter >= this.frameDelay) {
-                this.frameCounter = 0;
-                this.animationFrame++;
-                if (this.animationFrame >= this.totalFrames) {
-                    this.isDead = true;
-                }
+        if (this.isDying && this.animation) {
+            this.animation.update();
+            if (this.animation.isFinished()) {
+                this.isDead = true;
             }
         } else {
             this.x -= this.speed;
+            this.animation?.update();
         }
     }
 }
