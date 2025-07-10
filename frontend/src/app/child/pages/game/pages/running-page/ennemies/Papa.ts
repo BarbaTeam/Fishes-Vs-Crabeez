@@ -10,11 +10,8 @@ export class Papa extends Enemy {
         this.virtualWidth = 35;
         this.virtualHeight = 35;
         
-        /*
-        this.totalFrames = 8;
+        this.totalFrames = 24;
         this.frameDelay = 5;
-        this.setAnimation(this.enemyUrl);
-        */
 
         this.x = x;
         this.y = y;

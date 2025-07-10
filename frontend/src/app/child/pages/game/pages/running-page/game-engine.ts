@@ -244,10 +244,10 @@ export class GameEngine {
                         this.bossHealth$.next(this.bossHealth);
                     }
 
-                    enemy.setAnimation(enemy.enemyHitUrl!); // TODO: Set the hit animation properly
+                    enemy.animation!.imageUrl = enemy.enemyHitUrl!;
                     setTimeout(() => {
-                        enemy.setAnimation(enemy.enemyUrl!);
-                    }, 100)
+                        enemy.animation!.imageUrl = enemy.enemyUrl!;
+                    }, 150)
                 }
     
                 if(projectile.playerId == this.localPlayerId){

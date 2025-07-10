@@ -13,7 +13,6 @@ export class Drone extends Enemy {
         /*
         this.totalFrames = 8;
         this.frameDelay = 5;
-        this.setAnimation(this.enemyUrl);
         */
        
         this.x = x;

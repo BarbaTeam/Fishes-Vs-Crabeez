@@ -19,7 +19,7 @@ export class Enemy {
     public health!: number;
     public maxHealth!: number;
 
-    private animation?: SpriteSheetAnimation;
+    public animation?: SpriteSheetAnimation;
 
     public isDying: boolean = false;
     public isDead: boolean = false;

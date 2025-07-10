@@ -15,6 +15,10 @@ export class SpriteSheetAnimation {
         };
     }
 
+    public set imageUrl(url: string) {
+        this.image.src = url;
+    }
+
     public update(): void {
         this.frameCounter++;
         if (this.frameCounter >= this.frameDelay) {
