@@ -1,4 +1,4 @@
-![FishesVSCrabeez](docs/images/banner.png)
+![FishesVSCrabeez](assets/banner.png)
 
 **Fishes VS Crabeez** is an upcoming [browser game](https://en.wikipedia.org/wiki/Browser_game) designed for French children.  
 Its goal is to teach math and keyboard skills through a fun and engaging experience.
