@@ -13,7 +13,7 @@ import { PlayerResults } from "../models/player-results.model";
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PlayerResultsService {
     // Local Storage Keys :

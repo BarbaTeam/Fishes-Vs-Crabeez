@@ -13,7 +13,7 @@ import { GameInfo } from '@app/shared/models/game-info.model';
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class GameInfoService {
     // Local Storage Keys :

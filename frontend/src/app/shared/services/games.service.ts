@@ -11,7 +11,7 @@ import { GameID } from '@app/shared/models/ids';
 
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class GamesService {
     // Local Storage Keys :

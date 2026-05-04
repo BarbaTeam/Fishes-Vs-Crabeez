@@ -1,42 +1,42 @@
 @font-face {
-  font-family: 'Joystix';
-  src: url('assets/fonts/joystix.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'Joystix';
+    src: url('assets/fonts/joystix.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html, body {
-  height: 100%;
-  margin: 0;
+    height: 100%;
+    margin: 0;
 }
 
 html {
-  //font-family: 'Press Start 2P', cursive;
-  font-family: 'Joystix', monospace;
-  font-size: 16px;
-  line-height: 1.6;
-  background-color: #f8f9fa;
-  color: #333;
-  scroll-behavior: smooth;
+    //font-family: 'Press Start 2P', cursive;
+    font-family: 'Joystix', monospace;
+    font-size: 16px;
+    line-height: 1.6;
+    background-color: #f8f9fa;
+    color: #333;
+    scroll-behavior: smooth;
 }
 
 
 body {
-  width: 100%;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    width: 100%;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 @media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
+    html {
+        font-size: 14px;
+    }
 }

@@ -234,7 +234,7 @@ const { GameState } = require('./enums/game-state.enum');
  * @property {number} gameConfig.monstersSpawnRate
  * @property {boolean} gameConfig.encrypted
  * @property {Record<UserID, PlayerConfig>} playersConfig - Mapping from user ID to their configuration.
- * @property {string} [masterId] 
+ * @property {string} [masterId]
  *
  * @memberof types
  */

@@ -8,7 +8,7 @@ import { UserID } from '../../models/ids';
 @Component({
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
-    styleUrl: './user-list.component.scss'
+    styleUrl: './user-list.component.scss',
 })
 export class UserListComponent {
     @Input()

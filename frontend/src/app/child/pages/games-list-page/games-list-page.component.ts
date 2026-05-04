@@ -17,7 +17,7 @@ import { User } from '@app/shared/models/user.model';
 @Component({
     selector: 'app-games-list-page',
     templateUrl: './games-list-page.component.html',
-    styleUrl: './games-list-page.component.scss'
+    styleUrl: './games-list-page.component.scss',
 })
 export class GamesListPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
@@ -69,7 +69,7 @@ export class GamesListPageComponent implements OnInit, OnDestroy {
             })
         );
     }
-    
+
     public playSolo() {
         this.socket.on<GameID>('openGame_SUCCESS')
             .pipe(first()) // <-- one time subscription

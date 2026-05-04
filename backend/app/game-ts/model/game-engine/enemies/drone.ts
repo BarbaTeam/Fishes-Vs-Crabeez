@@ -7,14 +7,14 @@ export class Drone extends Enemy {
     constructor(lane? : LaneNumber, x? : number, y?: number) {
         super(
             EnemyKind.DRONE,
-            DRONE_HEALTH, 
-            DRONE_SPEED, 
+            DRONE_HEALTH,
+            DRONE_SPEED,
             DRONE_DAMAGE,
-            DRONE_SCORE, 
-            DRONE_WIDTH, 
-            DRONE_HEIGHT, 
-            lane, 
-            x, 
+            DRONE_SCORE,
+            DRONE_WIDTH,
+            DRONE_HEIGHT,
+            lane,
+            x,
             y
         );
     }

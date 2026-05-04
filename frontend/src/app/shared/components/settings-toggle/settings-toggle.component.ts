@@ -5,7 +5,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 @Component({
     selector: 'app-settings-toggle',
     templateUrl: './settings-toggle.component.html',
-    styleUrls: ['./settings-toggle.component.scss']
+    styleUrl: './settings-toggle.component.scss',
 })
 export class SettingsToggleComponent {
 

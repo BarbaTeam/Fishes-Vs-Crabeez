@@ -39,7 +39,7 @@ interface Monster {
 @Component({
     selector: 'app-bestiary-page',
     templateUrl: './bestiary-page.component.html',
-    styleUrls: ['./bestiary-page.component.scss']
+    styleUrl: './bestiary-page.component.scss',
 })
 export class BestiaryPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();

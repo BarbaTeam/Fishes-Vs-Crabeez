@@ -6,7 +6,7 @@ import { SocketService } from './shared/services/socket.service';
 @Component({
     selector: 'app-root',
     template: `<router-outlet></router-outlet>`,
-    styleUrls: ['./app.component.scss']
+    styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, OnDestroy {
     constructor(

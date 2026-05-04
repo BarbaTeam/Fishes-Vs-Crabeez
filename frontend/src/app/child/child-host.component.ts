@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 
 
 @Component({
-  selector: 'app-child-host',
-  template: `<router-outlet></router-outlet>`,
+    selector: 'app-child-host',
+    template: `<router-outlet></router-outlet>`,
 })
 export class ChildHostComponent implements OnInit, OnDestroy{
     private subscriptions = new Subscription();

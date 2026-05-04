@@ -3,9 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 
 
-const routes: Routes = [
+const ROUTES: Routes = [
     // Redirecting root to home :
-    { path: "", redirectTo: "home", pathMatch: "full",},
+    { path: "", redirectTo: "home", pathMatch: "full" },
 
     // Lazy loading sub-routing modules :
     {
@@ -35,7 +35,7 @@ const routes: Routes = [
 
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
-    exports: [RouterModule]
+    imports: [RouterModule.forRoot(ROUTES)],
+    exports: [RouterModule],
 })
 export class AppRoutingModule {}

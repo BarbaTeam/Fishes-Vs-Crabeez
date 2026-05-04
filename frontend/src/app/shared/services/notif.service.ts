@@ -10,7 +10,7 @@ import { Notif, NotifKind } from '../models/notif.model';
  * Service to ease the display of notification.
  */
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class NotifService {
     public readonly notif$: BehaviorSubject<Notif|null>

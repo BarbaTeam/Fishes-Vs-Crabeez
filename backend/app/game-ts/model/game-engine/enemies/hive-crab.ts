@@ -7,14 +7,14 @@ export class HiveCrab extends Enemy {
     constructor(lane? : LaneNumber, x? : number, y?: number) {
         super(
             EnemyKind.HIVECRAB,
-            HIVECRAB_HEALTH, 
-            HIVECRAB_SPEED, 
+            HIVECRAB_HEALTH,
+            HIVECRAB_SPEED,
             HIVECRAB_DAMAGE,
-            HIVECRAB_SCORE, 
-            HIVECRAB_WIDTH, 
-            HIVECRAB_HEIGHT, 
-            lane, 
-            x, 
+            HIVECRAB_SCORE,
+            HIVECRAB_WIDTH,
+            HIVECRAB_HEIGHT,
+            lane,
+            x,
             y
         );
     }

@@ -18,7 +18,7 @@ type ConnectionState = "Connected"|"Disconnected";
 @Component({
     selector: 'childs-list-page',
     templateUrl: './childs-list-page.component.html',
-    styleUrl: './childs-list-page.component.scss'
+    styleUrl: './childs-list-page.component.scss',
 })
 export class ChildsListPageComponent implements OnInit {
     private subscriptions: Subscription = new Subscription();

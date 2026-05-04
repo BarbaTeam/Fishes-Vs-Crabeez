@@ -7,7 +7,7 @@ import { User } from '@app/shared/models/user.model';
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class SocketService {
     private _currentUser?: User;

@@ -14,7 +14,7 @@ type NotifKind = typeof NotifKind[keyof typeof NotifKind];
 @Component({
     selector: 'app-notif',
     templateUrl: './notif.component.html',
-    styleUrls: ['./notif.component.scss']
+    styleUrl: './notif.component.scss',
 })
 export class NotifComponent {
     @Input()

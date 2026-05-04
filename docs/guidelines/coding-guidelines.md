@@ -218,11 +218,11 @@ import { helperFn } from './utils';
 In `tsconfig.json` :
 ```json
 {
-  "compilerOptions": {
-    // ...
-    "types": ["node"],
-    "lib": ["es6"]
-  }
+    "compilerOptions": {
+        // ...
+        "types": ["node"],
+        "lib": ["es6"]
+    }
 }
 ```
 

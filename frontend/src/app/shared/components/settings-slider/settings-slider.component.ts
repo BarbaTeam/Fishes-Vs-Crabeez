@@ -5,7 +5,7 @@ import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewC
 @Component({
     selector: 'app-settings-slider',
     templateUrl: './settings-slider.component.html',
-    styleUrls: ['./settings-slider.component.scss']
+    styleUrl: './settings-slider.component.scss',
 })
 export class SettingsSliderComponent implements AfterViewInit {
     @Input()

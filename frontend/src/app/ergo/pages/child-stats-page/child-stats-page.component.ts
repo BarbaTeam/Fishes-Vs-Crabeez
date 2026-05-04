@@ -54,7 +54,7 @@ type HistorySectionData = {
 @Component({
     selector: 'app-child-stats-page',
     templateUrl: './child-stats-page.component.html',
-    styleUrl: './child-stats-page.component.scss'
+    styleUrl: './child-stats-page.component.scss',
 })
 export class ChildStatsPageComponent implements OnInit {
     public user!: User;

@@ -13,7 +13,7 @@ import { QuestionNotion } from '@app/shared/models/question.model';
 @Component({
     selector: 'app-child-config-page',
     templateUrl: './child-config-page.component.html',
-    styleUrls: ['./child-config-page.component.scss']
+    styleUrl: './child-config-page.component.scss',
 })
 export class ChildConfigPageComponent implements OnInit {
     private subsriptions: Subscription = new Subscription();

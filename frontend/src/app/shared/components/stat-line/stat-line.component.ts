@@ -16,7 +16,7 @@ type StatLineState = typeof StatLineState[keyof typeof StatLineState];
 @Component({
     selector: 'app-stat-line',
     templateUrl: './stat-line.component.html',
-    styleUrls: ['./stat-line.component.scss']
+    styleUrl: './stat-line.component.scss',
 })
 export class StatLineComponent implements OnInit {
     private state!: StatLineState;

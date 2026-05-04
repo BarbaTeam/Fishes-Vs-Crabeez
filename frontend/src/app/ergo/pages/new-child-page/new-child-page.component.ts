@@ -11,7 +11,7 @@ import { QuestionNotion } from '@app/shared/models/question.model';
 @Component({
     selector: 'app-new-child-page',
     templateUrl: './new-child-page.component.html',
-    styleUrl: './new-child-page.component.scss'
+    styleUrl: './new-child-page.component.scss',
 })
 export class NewChildPageComponent {
     public userBlank: User;

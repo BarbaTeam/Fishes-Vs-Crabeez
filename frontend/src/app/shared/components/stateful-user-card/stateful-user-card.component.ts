@@ -16,11 +16,11 @@ type ConnectionState = "Connected"|"Disconnected";
 @Component({
     selector: 'app-stateful-user-card',
     templateUrl: './stateful-user-card.component.html',
-    styleUrls: ['./stateful-user-card.component.scss'],
+    styleUrl: './stateful-user-card.component.scss',
     host: {
         '[class.connected]': 'state === "Connected"',
-        '[class.disconnected]': 'state === "Disconnected"'
-    }
+        '[class.disconnected]': 'state === "Disconnected"',
+    },
 })
 export class StatefulUserCardComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();

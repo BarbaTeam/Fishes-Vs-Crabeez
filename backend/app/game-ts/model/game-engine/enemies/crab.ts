@@ -7,14 +7,14 @@ export class Crab extends Enemy {
     constructor(lane? : LaneNumber, x? : number, y?: number) {
         super(
             EnemyKind.CRAB,
-            CRAB_HEALTH, 
-            CRAB_SPEED, 
+            CRAB_HEALTH,
+            CRAB_SPEED,
             CRAB_DAMAGE,
-            CRAB_SCORE, 
-            CRAB_WIDTH, 
-            CRAB_HEIGHT, 
-            lane, 
-            x, 
+            CRAB_SCORE,
+            CRAB_WIDTH,
+            CRAB_HEIGHT,
+            lane,
+            x,
             y
         );
     }

@@ -14,7 +14,7 @@ import { UserID } from '@app/shared/models/ids';
 @Component({
     selector: 'app-childs-list-page',
     templateUrl: './childs-list-page.component.html',
-    styleUrl: './childs-list-page.component.scss'
+    styleUrl: './childs-list-page.component.scss',
 })
 export class ChildsListPageComponent {
     private subscriptions: Subscription = new Subscription();

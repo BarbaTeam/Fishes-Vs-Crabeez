@@ -85,7 +85,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
             };
 
             this.socket.emit('openGame_SUCCESS', newGame.gameId);
-            
+
             this.joinGame(newGame.gameId);
 
             newGame.playersId.push(this._userId);
@@ -95,7 +95,7 @@ class ChildRole_Impl extends AppClientRole_Impl {
             }
 
             newGame.state = GameState.RUNNING;
-            
+
             GAMES[newGame.gameId] = newGame;
 
             this.io.to(ERGO_ROOM).emit('gameStarted', newGame.gameId, () =>

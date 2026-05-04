@@ -1,33 +1,33 @@
 .buttons {
-  width: 100%;
-  padding-top: 2%;
-  display: flex;
-  justify-content: space-between;
+    width: 100%;
+    padding-top: 2%;
+    display: flex;
+    justify-content: space-between;
 }
 
 .delete-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
 }
 
 .delete-container app-big-button.delete {
-  margin-right: 2.5rem; 
+    margin-right: 2.5rem;
 }
 
 .delete-container .icon {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 5rem;
-  height: 5rem;
-  opacity: 0;
-  cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5rem;
+    height: 5rem;
+    opacity: 0;
+    cursor: pointer;
 }
 
 .delete-container .icon.visible {
-  opacity: 1;
-  z-index: 1;
+    opacity: 1;
+    z-index: 1;
 }

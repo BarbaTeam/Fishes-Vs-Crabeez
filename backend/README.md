@@ -18,9 +18,9 @@ To test if your backend is running correctly, you first shouldn't see any error 
 
 To fix it, two options:
 - Updating the `dev` command in the package.json as follow: `"dev": "%INIT_CWD%/node_modules/.bin/nodemon app/index.js",`
-- In case it doesn't work: 
+- In case it doesn't work:
 1) Install nodemon: `npm install -g nodemon`
-2) Run from git bash command line the nodemon command directly to start the server: `nodemon app/index.js` 
+2) Run from git bash command line the nodemon command directly to start the server: `nodemon app/index.js`
 
 ## Development
 

@@ -1,128 +1,128 @@
 :host {
-  --primary-color: #ff9918;
-  --primary-shadow: #b07039;
-  --hover-color: #df904b;
-  --active-color: #b07039;
-  --active-shadow: #724926;
+    --primary-color: #ff9918;
+    --primary-shadow: #b07039;
+    --hover-color: #df904b;
+    --active-color: #b07039;
+    --active-shadow: #724926;
 
-  --green-color: #4caf50;
-  --green-hover: #409343;
-  --green-shadow: #1f4821;
+    --green-color: #4caf50;
+    --green-hover: #409343;
+    --green-shadow: #1f4821;
 
-  --red-color: #af4c4c;
-  --red-hover: #934040;
-  --red-shadow: #481f1f;
+    --red-color: #af4c4c;
+    --red-hover: #934040;
+    --red-shadow: #481f1f;
 
 
-  --grey-color: #adadad;
-  --grey-shadow: #555555;
+    --grey-color: #adadad;
+    --grey-shadow: #555555;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-  height: 10vh;
-  width: 40vw;
-  border-radius: 0.5rem;
-  margin: 0 5vw;
+    height: 10vh;
+    width: 40vw;
+    border-radius: 0.5rem;
+    margin: 0 5vw;
 
-  font-size: clamp(1.2rem, 2vw, 2rem);
-  font-weight: bold;
-  color: #11262d;
-  text-align: center;
-  background-color: var(--primary-color);
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    font-weight: bold;
+    color: #11262d;
+    text-align: center;
+    background-color: var(--primary-color);
 
-  box-shadow:
-    0 8px 0 var(--primary-shadow),
-    0 12px 15px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    box-shadow:
+        0 8px 0 var(--primary-shadow),
+        0 12px 15px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
 }
 
 :host(:hover) {
-  cursor: pointer;
-  background-color: var(--hover-color);
+    cursor: pointer;
+    background-color: var(--hover-color);
 }
 
 :host(:active) {
-  background-color: var(--active-color);
-  box-shadow:
-    0 4px 0 var(--active-shadow),
-    0 6px 10px rgba(0, 0, 0, 0.3);
-  transform: translateY(4px);
+    background-color: var(--active-color);
+    box-shadow:
+        0 4px 0 var(--active-shadow),
+        0 6px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(4px);
 }
 
 /* 🟢 Green Variant */
 :host(.green) {
-  height: 7vh;
-  width: 22vw;
-  color: white;
-  background-color: var(--green-color);
-  box-shadow:
-    0 8px 0 var(--green-shadow),
-    0 12px 15px rgba(0, 0, 0, 0.3);
+    height: 7vh;
+    width: 22vw;
+    color: white;
+    background-color: var(--green-color);
+    box-shadow:
+        0 8px 0 var(--green-shadow),
+        0 12px 15px rgba(0, 0, 0, 0.3);
 }
 
 :host(.green:hover) {
-  background-color: var(--green-hover);
+    background-color: var(--green-hover);
 }
 
 :host(.green:active) {
-  box-shadow:
-    0 4px 0 var(--green-shadow),
-    0 6px 10px rgba(0, 0, 0, 0.3);
-  transform: translateY(4px);
+    box-shadow:
+        0 4px 0 var(--green-shadow),
+        0 6px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(4px);
 }
 
 /* red Variant */
 :host(.red) {
-  height: 7vh;
-  width: 22vw;
-  color: white;
-  background-color: var(--red-color);
-  box-shadow:
-    0 8px 0 var(--red-shadow),
-    0 12px 15px rgba(0, 0, 0, 0.3);
+    height: 7vh;
+    width: 22vw;
+    color: white;
+    background-color: var(--red-color);
+    box-shadow:
+        0 8px 0 var(--red-shadow),
+        0 12px 15px rgba(0, 0, 0, 0.3);
 }
 
 :host(.red:hover) {
-  background-color: var(--red-hover);
+    background-color: var(--red-hover);
 }
 
 :host(.red:active) {
-  box-shadow:
-    0 4px 0 var(--red-shadow),
-    0 6px 10px rgba(0, 0, 0, 0.3);
-  transform: translateY(4px);
+    box-shadow:
+        0 4px 0 var(--red-shadow),
+        0 6px 10px rgba(0, 0, 0, 0.3);
+    transform: translateY(4px);
 }
 
 /* ⚪ Grey Variant */
 :host(.grey) {
-  height: 7vh;
-  width: 22vw;
-  color: #010101;
-  background-color: var(--grey-color);
-  box-shadow:
-    0 8px 0 var(--grey-shadow),
-    0 12px 15px rgba(0, 0, 0, 0.3);
-  cursor: not-allowed;
+    height: 7vh;
+    width: 22vw;
+    color: #010101;
+    background-color: var(--grey-color);
+    box-shadow:
+        0 8px 0 var(--grey-shadow),
+        0 12px 15px rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
 }
 
 /* ⚪ Grey Variant */
 :host(.grey:active) {
-  height: 7vh;
-  width: 22vw;
-  color: #010101;
-  background-color: var(--grey-color);
-  box-shadow:
-    0 8px 0 var(--grey-shadow),
-    0 12px 15px rgba(0, 0, 0, 0.3);
-  cursor: not-allowed;
-  transform: translateY(0px);
+    height: 7vh;
+    width: 22vw;
+    color: #010101;
+    background-color: var(--grey-color);
+    box-shadow:
+        0 8px 0 var(--grey-shadow),
+        0 12px 15px rgba(0, 0, 0, 0.3);
+    cursor: not-allowed;
+    transform: translateY(0px);
 }
 
 /* 🔚 End Game Button */
 :host(.endGameButton) {
-  margin: 0;
-  height: 8vh;
-  width: 15vw;
+    margin: 0;
+    height: 8vh;
+    width: 15vw;
 }

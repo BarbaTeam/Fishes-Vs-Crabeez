@@ -55,11 +55,11 @@ router.post('/', (req, res) => {
 
 router.put('/:gameInfoId', (req, res) => {
     try {
-      res.status(201).json(Manager.updateGameInfoById(req.params.gameInfoId, req.body));
+        res.status(201).json(Manager.updateGameInfoById(req.params.gameInfoId, req.body));
     } catch (err) {
-      manageAllErrors(res, err);
+        manageAllErrors(res, err);
     }
-  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////

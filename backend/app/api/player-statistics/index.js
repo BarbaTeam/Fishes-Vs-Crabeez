@@ -55,11 +55,11 @@ router.post('/', (req, res) => {
 
 router.put('/:playerId', (req, res) => {
     try {
-      res.status(201).json(Manager.updatePlayerStatisticsById(req.params.playerId, req.body));
+        res.status(201).json(Manager.updatePlayerStatisticsById(req.params.playerId, req.body));
     } catch (err) {
-      manageAllErrors(res, err);
+        manageAllErrors(res, err);
     }
-  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////
