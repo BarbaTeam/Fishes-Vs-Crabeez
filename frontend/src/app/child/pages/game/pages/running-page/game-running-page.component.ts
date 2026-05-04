@@ -26,7 +26,7 @@ type Input = {
 @Component({
     selector: 'app-game-running-page',
     templateUrl: './game-running-page.component.html',
-    styleUrls: ['./game-running-page.component.scss']
+    styleUrl: './game-running-page.component.scss',
 })
 export class GameRunningPageComponent implements OnInit, OnDestroy {
     private static readonly INPUTS_END: Input = {
@@ -37,7 +37,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     public user!: User;
     public question!: Question;
-    
+
     public localPlayerIconUrl: string = '';
     public player1IconUrl: string = '';
     public player2IconUrl: string = '';
@@ -53,7 +53,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
 
     @ViewChild('headerRef') headerRef!: ElementRef<HTMLElement>;
     @ViewChild('gameCanvas', { static: false }) canvasRef!: ElementRef<HTMLCanvasElement>;
-    
+
     private gameEngine!: GameEngine;
 
     public personalScore: number;
@@ -163,7 +163,7 @@ export class GameRunningPageComponent implements OnInit, OnDestroy {
         this.subscriptions.add(
             this.gameEngine.hasEnded$.subscribe(hasEnded => {
                 this.hasEnded = hasEnded;
-                console.log("hasEnded received:", hasEnded, typeof hasEnded);            
+                console.log("hasEnded received:", hasEnded, typeof hasEnded);
             })
         );
     }

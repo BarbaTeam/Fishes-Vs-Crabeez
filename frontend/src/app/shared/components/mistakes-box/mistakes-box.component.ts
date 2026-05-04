@@ -14,7 +14,7 @@ type Mistakes = {
 @Component({
     selector: 'app-mistakes-box',
     templateUrl: './mistakes-box.component.html',
-    styleUrl: './mistakes-box.component.scss'
+    styleUrl: './mistakes-box.component.scss',
 })
 export class MistakesBoxComponent {
 

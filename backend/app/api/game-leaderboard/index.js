@@ -55,11 +55,11 @@ router.post('/', (req, res) => {
 
 router.put('/:gameLeaderboardId', (req, res) => {
     try {
-      res.status(201).json(Manager.updateGameLeaderboardById(req.params.gameLeaderboardId, req.body));
+        res.status(201).json(Manager.updateGameLeaderboardById(req.params.gameLeaderboardId, req.body));
     } catch (err) {
-      manageAllErrors(res, err);
+        manageAllErrors(res, err);
     }
-  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////

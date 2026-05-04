@@ -13,7 +13,7 @@ import { GameID } from '../models/ids';
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class LeaderboardService {
     // Local Storage Keys :

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 @Component({
     selector: 'app-game-lobby-page',
     templateUrl: './game-lobby-page.component.html',
-    styleUrls: ['./game-lobby-page.component.scss']
+    styleUrl: './game-lobby-page.component.scss',
 })
 export class GameLobbyPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();
@@ -52,7 +52,7 @@ export class GameLobbyPageComponent implements OnInit, OnDestroy {
     public startGame(): void {
         this.socket.sendMessage('startGame');
     }
-    
+
     public deleteLobby(): void{
         this.socket.sendMessage('closeGame');
         this.router.navigate(['/ergo/games-manager']);

@@ -12,7 +12,7 @@ import { Grade, Grading } from '@app/shared/models/results.model';
 @Component({
     selector: 'app-player-in-leaderboard',
     templateUrl: './player-in-leaderboard.component.html',
-    styleUrl: './player-in-leaderboard.component.scss'
+    styleUrl: './player-in-leaderboard.component.scss',
 })
 export class PlayerInLeaderboardComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();

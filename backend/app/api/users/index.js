@@ -46,11 +46,11 @@ router.post('/', (req, res) => {
 
 router.put('/:userId', (req, res) => {
     try {
-      res.status(200).json(Manager.updateUserById(req.params.userId, req.body))
+        res.status(200).json(Manager.updateUserById(req.params.userId, req.body))
     } catch (err) {
-      manageAllErrors(res, err)
+        manageAllErrors(res, err)
     }
-  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////

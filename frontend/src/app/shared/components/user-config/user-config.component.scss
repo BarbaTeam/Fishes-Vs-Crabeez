@@ -1,165 +1,165 @@
 :host {
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-  height: auto;
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+    height: auto;
 }
 
 .required {
-  display: flex;
+    display: flex;
 }
 
 .asterisk {
-  margin-left: 0.25rem;
-  color: red;
+    margin-left: 0.25rem;
+    color: red;
 }
 
 /* === GRILLE SUPÉRIEURE : ligne haute fixe === */
 .config-section-left {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
-  gap: 1rem;
-  width: 50%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    width: 50%;
 }
 
 /* === GRILLE INFÉRIEURE : ligne basse fixe === */
 .config-section-right {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto;
-  gap: 1rem;
-  width: 50%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
+    width: 50%;
 }
 
 /* === BLOCS CONFIGURATION === */
 .config-group {
-  padding: 1rem;
-  border: 1px solid #ddd;
-  background-color: #f9f9f9;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow: auto;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow: auto;
 }
 
 .config-group h3 {
-  font-size: 1rem;
-  margin: 0 0 0.75rem;
+    font-size: 1rem;
+    margin: 0 0 0.75rem;
 }
 
 .config-group span {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  font-size: 14px;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 14px;
+    flex-wrap: wrap;
 }
 
 .config-group span label {
-  min-width: 80px;
-  font-weight: 600;
-  margin-right: auto;
+    min-width: 80px;
+    font-weight: 600;
+    margin-right: auto;
 }
 
 /* === Sliders & Toggles à droite === */
 .config-group span app-settings-slider,
 .config-group span app-settings-toggle {
-  margin-left: auto;
+    margin-left: auto;
 }
 
 /* === Cas spéciaux : Nom & Âge === */
 .config-group span.text-line {
-  justify-content: flex-start;
+    justify-content: flex-start;
 }
 
 .config-group span.text-line input.underline-input {
-  flex: 0 0 auto;
-  width: auto;
-  min-width: 100px;
-  max-width: 300px;
-  margin: 0;
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 100px;
+    max-width: 300px;
+    margin: 0;
 }
 
 /* === INPUT STYLE === */
 .underline-input {
-  background: transparent;
-  border: none;
-  border-bottom: 2px solid #ccc;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 14px;
-  color: inherit;
-  padding: 4px 0;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 14px;
+    color: inherit;
+    padding: 4px 0;
 }
 
 .underline-input:focus {
-  outline: none;
-  border-bottom-color: #ffae00;
+    outline: none;
+    border-bottom-color: #ffae00;
 }
 
 /* === ICONES === */
 .icon-select-trigger {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  margin-top: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
 }
 
 .affichage-group{
-  display: flex;
-  justify-content: space-around;
+    display: flex;
+    justify-content: space-around;
 }
 
 .affichage-config-group{
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 
 .icon-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
 }
 
 .icon-option {
-  width: 50px;
-  height: 50px;
-  border: 2px solid transparent;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
+    width: 50px;
+    height: 50px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
 }
 
 .icon-option:hover {
-  border-color: #ffae00;
+    border-color: #ffae00;
 }
 
 /* === RESPONSIVE === */
 @media (max-width: 600px) {
-  .config-section-left,
-  .config-section-right {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto;
-  }
+    .config-section-left,
+    .config-section-right {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+    }
 
-  .config-group span {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+    .config-group span {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-  .config-group span label,
-  .config-group span input,
-  .config-group span app-settings-slider,
-  .config-group span app-settings-toggle {
-    width: 100%;
-    max-width: 100%;
-  }
+    .config-group span label,
+    .config-group span input,
+    .config-group span app-settings-slider,
+    .config-group span app-settings-toggle {
+        width: 100%;
+        max-width: 100%;
+    }
 
-  .config-group span app-settings-toggle,
-  .config-group span app-settings-slider {
-    margin-left: 0;
-  }
+    .config-group span app-settings-toggle,
+    .config-group span app-settings-slider {
+        margin-left: 0;
+    }
 }

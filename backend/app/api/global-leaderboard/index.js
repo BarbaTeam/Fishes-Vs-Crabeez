@@ -32,9 +32,9 @@ router.get('/', (req, res) => {
 
 router.put('/', (req, res) => {
     try {
-      res.status(201).json(Manager.updateGlobalLeaderboard(req.body))
+        res.status(201).json(Manager.updateGlobalLeaderboard(req.body))
     } catch (err) {
-      manageAllErrors(res, err)
+        manageAllErrors(res, err)
     }
 });
 

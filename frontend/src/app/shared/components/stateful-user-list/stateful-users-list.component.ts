@@ -12,7 +12,7 @@ type ConnectionState = "Connected"|"Disconnected";
 @Component({
     selector: 'app-stateful-users-list',
     templateUrl: './stateful-users-list.component.html',
-    styleUrl: './stateful-users-list.component.scss'
+    styleUrl: './stateful-users-list.component.scss',
 })
 export class StatefulUsersListComponent {
     @Input()

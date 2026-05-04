@@ -64,7 +64,7 @@ export type Statistics = {
         spelling: [AnsweredQuestion, Date][], // mistake-date pairs
         calculation: [AnsweredQuestion, Date][],
     },
-    
+
     globalScore : number,
 
     globalKills: { [key in EnemyKind]: number },

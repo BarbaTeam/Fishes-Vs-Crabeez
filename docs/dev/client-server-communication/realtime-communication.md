@@ -26,7 +26,7 @@ Those instances follow the lifecycle :
 
 <style>
 td {
-  vertical-align: top;
+    vertical-align: top;
 }
 </style>
 

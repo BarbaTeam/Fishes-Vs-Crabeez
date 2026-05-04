@@ -11,7 +11,7 @@ import { UserID } from '../../models/ids';
 @Component({
     selector: 'app-user-card',
     templateUrl: './user-card.component.html',
-    styleUrl: './user-card.component.scss'
+    styleUrl: './user-card.component.scss',
 })
 export class UserCardComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();

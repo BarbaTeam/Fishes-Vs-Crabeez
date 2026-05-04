@@ -12,7 +12,7 @@ import { PlayerStatistics } from "../models/player-results.model";
 
 
 @Injectable({
-    providedIn: 'root'
+    providedIn: 'root',
 })
 export class PlayerStatisticsService {
     // Internal State :

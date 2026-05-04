@@ -4,9 +4,9 @@
     height: 10px;
     background: transparent;
     cursor: pointer;
-  }
+}
 
-  .settings-slider-line {
+.settings-slider-line {
     position: absolute;
     top: 50%;
     left: 0;
@@ -15,9 +15,9 @@
     background-color: #669d94;
     transform: translateY(-50%);
     border-radius: 2px;
-  }
+}
 
-  .settings-slider-head {
+.settings-slider-head {
     position: absolute;
     top: 50%;
     width: 16px;
@@ -26,4 +26,4 @@
     border-radius: 50%;
     transform: translate(-50%, -50%);
     cursor: grab;
-  }
+}

@@ -46,11 +46,11 @@ export class Enemy {
 
         this.width = width;
         this.height = height;
-        
+
         this.maxHealth = health;
         this.health = health;
         this.speed = speed;
-        
+
         this.alive = true;
         this.score = score;
         this.damage = damage;
@@ -89,7 +89,7 @@ export class Enemy {
         this.alive = false;
         this.health = 0;
     }
-    
+
     public hit() {
         this.health--;
         if( this.health == 0) {

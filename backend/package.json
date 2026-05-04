@@ -1,53 +1,53 @@
 {
-  "name": "backend-ps6-starter-quiz",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "node app/index.js",
-    "dev": "./node_modules/.bin/nodemon app/index.js",
-    "lint": "./node_modules/.bin/eslint -c .eslintrc.js app/",
-    "lint:fix": "./node_modules/.bin/eslint -c .eslintrc.js app/ --fix",
-    "start:e2e": "rimraf ./database/e2e && copyfiles -f ./database/e2e-starter/* ./database/e2e ./database/e2e && cross-env DB_FOLDER=e2e/ TEST_E2E=true node app/index.js"
-  },
-  "precommit": [
-    "lint"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NablaT/backend-ps6-starter-quiz"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NablaT/backend-ps6-starter-quiz/issues"
-  },
-  "homepage": "https://github.com/NablaT/backend-ps6-starter-quiz#readme",
-  "dependencies": {
-    "@types/socket.io": "^3.0.2",
-    "body-parser": "1.19.0",
-    "cors": "2.8.5",
-    "express": "^4.17.1",
-    "joi": "^14.3.1",
-    "morgan": "1.9.1",
-    "socket-io": "^1.0.0",
-    "socket.io": "^4.8.1"
-  },
-  "devDependencies": {
-    "copyfiles": "^2.4.1",
-    "cross-env": "^7.0.3",
-    "eslint": "6.8.0",
-    "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.20.0",
-    "mkdirp": "^3.0.1",
-    "nodemon": "2.0.2",
-    "pre-commit": "1.2.2",
-    "rimraf": "^5.0.1"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "database/*"
-    ]
-  }
+    "name": "backend-ps6-starter-quiz",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node app/index.js",
+        "dev": "./node_modules/.bin/nodemon app/index.js",
+        "lint": "./node_modules/.bin/eslint -c .eslintrc.js app/",
+        "lint:fix": "./node_modules/.bin/eslint -c .eslintrc.js app/ --fix",
+        "start:e2e": "rimraf ./database/e2e && copyfiles -f ./database/e2e-starter/* ./database/e2e ./database/e2e && cross-env DB_FOLDER=e2e/ TEST_E2E=true node app/index.js"
+    },
+    "precommit": [
+        "lint"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NablaT/backend-ps6-starter-quiz"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/NablaT/backend-ps6-starter-quiz/issues"
+    },
+    "homepage": "https://github.com/NablaT/backend-ps6-starter-quiz#readme",
+    "dependencies": {
+        "@types/socket.io": "^3.0.2",
+        "body-parser": "1.19.0",
+        "cors": "2.8.5",
+        "express": "^4.17.1",
+        "joi": "^14.3.1",
+        "morgan": "1.9.1",
+        "socket-io": "^1.0.0",
+        "socket.io": "^4.8.1"
+    },
+    "devDependencies": {
+        "copyfiles": "^2.4.1",
+        "cross-env": "^7.0.3",
+        "eslint": "6.8.0",
+        "eslint-config-airbnb-base": "14.0.0",
+        "eslint-plugin-import": "2.20.0",
+        "mkdirp": "^3.0.1",
+        "nodemon": "2.0.2",
+        "pre-commit": "1.2.2",
+        "rimraf": "^5.0.1"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "database/*"
+        ]
+    }
 }

@@ -5,9 +5,9 @@ import { GameLobby, GameState } from '@app/shared/models/game.model';
 
 
 @Component({
-  selector: 'app-game-card',
-  templateUrl: './game-card.component.html',
-  styleUrl: './game-card.component.scss'
+    selector: 'app-game-card',
+    templateUrl: './game-card.component.html',
+    styleUrl: './game-card.component.scss',
 })
 export class GameCardComponent {
     @Input()

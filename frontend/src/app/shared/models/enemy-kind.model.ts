@@ -5,4 +5,3 @@ export const EnemyKind = {
     PAPA: "PAPA",
 } as const;
 export type EnemyKind = typeof EnemyKind[keyof typeof EnemyKind];
-

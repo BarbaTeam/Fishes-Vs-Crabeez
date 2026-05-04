@@ -64,11 +64,11 @@ router.post('/', (req, res) => {
 
 router.put('/:playerId/:gameId', (req, res) => {
     try {
-      res.status(201).json(Manager.updatePlayerResultsByIds(req.params.playerId, req.params.gameId, req.body));
+        res.status(201).json(Manager.updatePlayerResultsByIds(req.params.playerId, req.params.gameId, req.body));
     } catch (err) {
-      manageAllErrors(res, err);
+        manageAllErrors(res, err);
     }
-  });
+});
 
 
 ////////////////////////////////////////////////////////////////////////////////

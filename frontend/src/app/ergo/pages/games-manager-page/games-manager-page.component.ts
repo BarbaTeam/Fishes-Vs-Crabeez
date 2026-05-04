@@ -13,20 +13,20 @@ import { Game, GameLobby, GameState } from '@app/shared/models/game.model';
 @Component({
     selector: 'app-games-manager-page',
     templateUrl: './games-manager-page.component.html',
-    styleUrl: './games-manager-page.component.scss'
+    styleUrl: './games-manager-page.component.scss',
 })
 export class GamesManagerPageComponent implements OnInit, OnDestroy {
 
     public subscriptions = new Subscription();
     public waitingGames: Game[] = [];
     public runningGames : Game[] = [];
-    
+
     constructor(
         private socket: SocketService,
         private gamesService: GamesService,
         private router: Router,
     ) {}
-    
+
 
     ngOnInit(){
         this.subscriptions.add(

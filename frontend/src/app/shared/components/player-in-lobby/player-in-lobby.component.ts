@@ -12,7 +12,7 @@ import { QuestionNotion } from '@app/shared/models/question.model';
 @Component({
     selector: 'app-player-in-lobby',
     templateUrl: './player-in-lobby.component.html',
-    styleUrl: './player-in-lobby.component.scss'
+    styleUrl: './player-in-lobby.component.scss',
 })
 export class PlayerInLobbyComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();

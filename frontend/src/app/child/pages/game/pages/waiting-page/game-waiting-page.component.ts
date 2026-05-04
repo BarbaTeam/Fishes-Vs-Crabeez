@@ -13,7 +13,7 @@ import { Game } from '@app/shared/models/game.model';
 @Component({
     selector: 'app-game-waiting-page',
     templateUrl: './game-waiting-page.component.html',
-    styleUrl: './game-waiting-page.component.scss'
+    styleUrl: './game-waiting-page.component.scss',
 })
 export class GameWaitingPageComponent implements OnInit, OnDestroy {
     private subscriptions = new Subscription();

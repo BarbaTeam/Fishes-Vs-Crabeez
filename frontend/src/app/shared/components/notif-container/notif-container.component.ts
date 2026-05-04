@@ -10,7 +10,7 @@ import { Notif } from '@app/shared/models/notif.model';
 @Component({
     selector: 'app-notif-container',
     templateUrl: './notif-container.component.html',
-    styleUrls: ['./notif-container.component.scss']
+    styleUrl: './notif-container.component.scss',
 })
 export class NotifContainerComponent {
     public notif: Notif|null = null;
